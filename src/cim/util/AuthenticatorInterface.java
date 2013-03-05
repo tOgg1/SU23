@@ -18,8 +18,7 @@ public interface AuthenticatorInterface {
 	public boolean authenticate(String email, String password);
 	
 	/**
-	 * 
-	 * @return
+	 * @return Returns the Account to the currently logged in user. Returns null if not logged in.
 	 */
 	public Account getSelf();
 	

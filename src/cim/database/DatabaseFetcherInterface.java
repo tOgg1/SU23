@@ -1,4 +1,6 @@
 package cim.database;
+import java.util.ArrayList;
+
 import cim.models.*;
 
 public interface DatabaseFetcherInterface {
@@ -13,7 +15,14 @@ public interface DatabaseFetcherInterface {
 	 * This method return all room objects in database
 	 * @return ArrayList of all rooms
 	 */
-	//public ArrayList<Room> getAllRooms();
+	public ArrayList<Room> getAllRooms();
+	
+	/**
+	 * 
+	 * @param email Email (primary key) to the user to find)
+	 * @return the account if email found, null if not found.
+	 */
+	public Account getAccount(String email);
 	
 	
 }

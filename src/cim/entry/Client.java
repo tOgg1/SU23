@@ -8,6 +8,7 @@ public class Client
 	 */
 	public static void main(String[] args)
     {
-        System.out.println("Client");
+		cim.application.Client client = new cim.application.Client();
+		client.run();
 	}
 }
