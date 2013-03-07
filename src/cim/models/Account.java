@@ -12,11 +12,21 @@ public class Account extends CalendarObject implements Attendable
 	private String name;
 	private ArrayList<CalendarObject> calendars;
 	private ArrayList<Group> groups;
+<<<<<<< HEAD
 	private String password;
+=======
+
+	private String password;
+
+>>>>>>> e20069bc7dce03da469b7f38c07cda575c026f6e
 	private static Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+"
             + "(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*"
             + "(\\.[A-Za-z]{2,})$");
 	private static Matcher matcher;
+<<<<<<< HEAD
+=======
+
+>>>>>>> e20069bc7dce03da469b7f38c07cda575c026f6e
 	
 	public Account(String name, String email)
 	{
@@ -82,6 +92,10 @@ public class Account extends CalendarObject implements Attendable
     public int getData() {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> e20069bc7dce03da469b7f38c07cda575c026f6e
 
 	public String getPassword() {
 		return password;
@@ -90,5 +104,11 @@ public class Account extends CalendarObject implements Attendable
 	public boolean isValidPassword(String password){
 		return this.password == password;
 	}
+<<<<<<< HEAD
     
+=======
+
+    
+
+>>>>>>> e20069bc7dce03da469b7f38c07cda575c026f6e
 }
