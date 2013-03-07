@@ -7,6 +7,8 @@ public class Account extends CalendarObject implements Attendable
 	private String email;
 	private String name;
 	private ArrayList<CalendarObject> calendars;
+	private ArrayList<Group> groups;
+	private String password;
 	
 	public Account(String name, String email)
 	{
@@ -22,11 +24,19 @@ public class Account extends CalendarObject implements Attendable
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.name;
 	}
 
     @Override
     public int getData() {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+	public String getPassword() {
+		return password;
+	}
+
+	public boolean isValidPassword(String password){
+		return this.password == password;
+	}
 }
