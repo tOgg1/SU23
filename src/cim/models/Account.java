@@ -1,20 +1,57 @@
 package cim.models;
 
 import java.util.ArrayList;
-
+import java.util.regex.Pattern;
 import cim.util.AuthenticatorInterface;
 
-public class Account extends CalendarObject implements Attendable
+public class Account extends CalendarObject implements Attendable 
 {
 	private String email;
 	private String name;
 	private ArrayList<CalendarObject> calendars;
+	private ArrayList<Group> groups;
+	private static Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+"
+            + "(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*"
+            + "(\\.[A-Za-z]{2,})$");
 	
 	public Account(String name, String email)
 	{
 		this.name = name;
 		this.email = email;
 		this.calendars = new ArrayList<CalendarObject>();
+		this.groups = new ArrayList<Group>();
+	}
+	
+	public void addCalendar(CalendarObject calendar)
+	{
+		if(!this.calendars.contains(calendar))
+		{
+			this.calendars.add(calendar);
+		}
+	}
+	
+	public void removeCalendar(CalendarObject calendar)
+	{
+		this.calendars.remove(calendar);
+	}
+	
+	public void addGroup(Group group)
+	{
+		if(!this.groups.contains(group))
+		{
+			this.groups.add(group);
+		}
+	}
+	
+	public void removeGroup(Group group)
+	{
+		this.groups.remove(group);
+	}
+	
+	public void changeAccount(String newName, String newEmail)
+	{
+		this.name = newName;
+		this.email = newEmail;
 	}
 	
 	@Override
@@ -32,5 +69,5 @@ public class Account extends CalendarObject implements Attendable
     public int getData() {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
-
+    
 }
