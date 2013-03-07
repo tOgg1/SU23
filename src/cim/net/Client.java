@@ -1,4 +1,4 @@
-package cim.application;
+package cim.net;
 
 public class Client {
 	/**

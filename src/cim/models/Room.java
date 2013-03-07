@@ -17,7 +17,8 @@ public class Room extends CalendarObject {
 	}
 
     @Override
-    public int getData() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    public int getData()
+    {
+        return 0;
     }
 }
