@@ -2,7 +2,9 @@ package cim.models;
 
 import java.util.ArrayList;
 
-public class Account extends CalendarObject implements Attendable 
+import cim.util.AuthenticatorInterface;
+
+public class Account extends CalendarObject implements Attendable
 {
 	private String email;
 	private String name;
@@ -30,4 +32,5 @@ public class Account extends CalendarObject implements Attendable
     public int getData() {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
 }
