@@ -1,7 +1,7 @@
 package cim.models;
 
 import java.util.ArrayList;
-public class Group implements Attendable {
+public class Group extends CalendarObject implements Attendable {
 	String name;
 	Account owner;
 	Calendar calendar;
@@ -30,4 +30,9 @@ public class Group implements Attendable {
 	public String getName() {
 		return this.name;
 	}
+
+    @Override
+    public int getData() {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

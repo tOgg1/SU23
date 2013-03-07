@@ -24,4 +24,9 @@ public class Account extends CalendarObject implements Attendable
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    @Override
+    public int getData() {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

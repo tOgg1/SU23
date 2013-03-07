@@ -28,6 +28,10 @@ public class Appointment extends CalendarObject
 		this.startDate = newStartDate;
 		this.endDate = newEndDate;
 	}
-	
 
+
+    @Override
+    public int getData() {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }
