@@ -14,6 +14,7 @@ public class Room extends CalendarObject {
 		this.name = name;
 		this.size = size;
 		this.info = info;
+		this.isBooked = false;
 	}
 	public Boolean isAvailiable()
 	{
