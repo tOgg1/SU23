@@ -2,6 +2,8 @@ package cim.models;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 import cim.util.AuthenticatorInterface;
 
 public class Account extends CalendarObject implements Attendable 
@@ -13,6 +15,7 @@ public class Account extends CalendarObject implements Attendable
 	private static Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+"
             + "(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*"
             + "(\\.[A-Za-z]{2,})$");
+	private static Matcher matcher;
 	
 	public Account(String name, String email)
 	{
@@ -48,10 +51,19 @@ public class Account extends CalendarObject implements Attendable
 		this.groups.remove(group);
 	}
 	
+	private static boolean validate(final String hex) {
+        matcher = pattern.matcher(hex);
+        return matcher.matches();
+    }
+	
 	public void changeAccount(String newName, String newEmail)
 	{
 		this.name = newName;
-		this.email = newEmail;
+		if(validate(newEmail))
+		{
+			this.email = newEmail;
+		}
+	
 	}
 	
 	@Override
