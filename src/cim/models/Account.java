@@ -14,6 +14,7 @@ public class Account extends CalendarObject implements Attendable
 	{
 		this.name = name;
 		this.email = email;
+		this.calendars = new ArrayList<CalendarObject>();
 	}
 	
 	@Override
