@@ -32,6 +32,7 @@ public class Calendar extends CalendarObject {
 	}
 	public void addAppointment(Appointment appointment)
 	{
+		if(!this.appointments.contains(appointment))
 		this.appointments.add(appointment);
 	}
 	public void addAccess(Attendable person)
@@ -42,6 +43,7 @@ public class Calendar extends CalendarObject {
 	}
 	public void removeAppointment(Appointment appointment)
 	{
+		if(!this.appointments.isEmpty())
 		this.appointments.remove(appointment);
 	}
 	public void removeAccess(Attendable person)
