@@ -1,13 +1,16 @@
 package cim.models;
 
 import java.util.ArrayList;
+
 public class Group extends CalendarObject implements Attendable {
+	
 	String name;
 	Account owner;
 	Calendar calendar;
 	ArrayList<Attendable> members;
 	
 	public void addMember(Attendable member){
+		if(!this.members.contains(member))
 		this.members.add(member);
 	}
 	

@@ -6,7 +6,6 @@ import java.util.Map;
 public class Meeting extends Appointment
 {
 	private Map<Integer, Attendable> invitees;
-	private Room room;
 
     private final static int STATUS_INVITED = 0;
     private final static int STATUS_ACCEPTED = 1;

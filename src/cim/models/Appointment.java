@@ -8,6 +8,7 @@ public class Appointment extends CalendarObject
 	private Date startDate;
 	private Date endDate;
 	private String info;
+	protected Room room;
 	
 	public Appointment(Date startDate, Date endDate, String info)
 	{
