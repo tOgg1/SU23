@@ -1,9 +1,13 @@
 package cim.models;
 
+import java.util.Date;
+
 public class Room extends CalendarObject {
 	private String name;
 	private int size;
 	private String info;
+	private Date bookedTime;
+	
 	public Room(String name, int size, String info)
 	{
 		this.name = name;
