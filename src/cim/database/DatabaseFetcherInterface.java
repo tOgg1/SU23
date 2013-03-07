@@ -10,7 +10,6 @@ public interface DatabaseFetcherInterface {
 	 * @return ArrayList of calendars to the given user.
 	 */
 	//public Calendar getCalendars(Account acc) ArrayList<Calendar>;
-	
 	/**
 	 * This method return all room objects in database
 	 * @return ArrayList of all rooms
