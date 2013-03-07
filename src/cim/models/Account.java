@@ -1,6 +1,10 @@
 package cim.models;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+import cim.util.AuthenticatorInterface;
 
 public class Account extends CalendarObject implements Attendable 
 {
@@ -8,12 +12,62 @@ public class Account extends CalendarObject implements Attendable
 	private String name;
 	private ArrayList<CalendarObject> calendars;
 	private ArrayList<Group> groups;
+<<<<<<< HEAD
 	private String password;
+=======
+	private static Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+"
+            + "(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*"
+            + "(\\.[A-Za-z]{2,})$");
+	private static Matcher matcher;
+>>>>>>> 7e75e64287cf3151d7f85f4de640ff4eb470271f
 	
 	public Account(String name, String email)
 	{
 		this.name = name;
 		this.email = email;
+		this.calendars = new ArrayList<CalendarObject>();
+		this.groups = new ArrayList<Group>();
+	}
+	
+	public void addCalendar(CalendarObject calendar)
+	{
+		if(!this.calendars.contains(calendar))
+		{
+			this.calendars.add(calendar);
+		}
+	}
+	
+	public void removeCalendar(CalendarObject calendar)
+	{
+		this.calendars.remove(calendar);
+	}
+	
+	public void addGroup(Group group)
+	{
+		if(!this.groups.contains(group))
+		{
+			this.groups.add(group);
+		}
+	}
+	
+	public void removeGroup(Group group)
+	{
+		this.groups.remove(group);
+	}
+	
+	private static boolean validate(final String hex) {
+        matcher = pattern.matcher(hex);
+        return matcher.matches();
+    }
+	
+	public void changeAccount(String newName, String newEmail)
+	{
+		this.name = newName;
+		if(validate(newEmail))
+		{
+			this.email = newEmail;
+		}
+	
 	}
 	
 	@Override
@@ -31,6 +85,7 @@ public class Account extends CalendarObject implements Attendable
     public int getData() {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
+<<<<<<< HEAD
 
 	public String getPassword() {
 		return password;
@@ -39,4 +94,7 @@ public class Account extends CalendarObject implements Attendable
 	public boolean isValidPassword(String password){
 		return this.password == password;
 	}
+=======
+    
+>>>>>>> 7e75e64287cf3151d7f85f4de640ff4eb470271f
 }
