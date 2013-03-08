@@ -14,7 +14,7 @@ public class DatabaseHandler {
 		DatabaseHandler db = new DatabaseHandler();
 		String sql = "SELECT email FROM account WHERE first_name = 'Petter'";
 		System.out.println("running");
-		//System.out.println(db.executeQuery(sql));
+		System.out.println(db.executeQuery(sql));
 	}
 
 	public DatabaseHandler(){
