@@ -30,7 +30,7 @@ public class Server
 		this.port = port;
         try
         {
-        server = new ServerSocket(port);
+            server = new ServerSocket(port);
         }
         catch(IOException e)
         {

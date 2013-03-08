@@ -13,9 +13,26 @@ public class DatabaseHandler {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			con = DriverManager.getConnection(url, user, password);
-		} catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
 		}
+        catch (ClassNotFoundException c)
+        {
+			c.printStackTrace();
+		}
+        catch(SQLException s)
+        {
+            s.printStackTrace();
+
+        }
+        catch(InstantiationException i)
+        {
+            i.printStackTrace();
+
+        }
+        catch(IllegalAccessException o)
+        {
+            o.printStackTrace();
+
+        }
 	}
 	
 	
