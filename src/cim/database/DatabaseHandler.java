@@ -39,12 +39,13 @@ public class DatabaseHandler {
 	
 	
 	public boolean requestLogin(String email, String password){
-		String sql = "SELECT email, password FROM account WHERE email = ";
+		String sql = "SELECT password FROM account WHERE email = ";
 		sql = sql + "'" + email + "'";
 		ResultSet rs = executeQuery(sql);
 		System.out.println(rs);
 		try {
 			rs.next();
+			rs.getString("password");
 			return password.equals(rs.getString("password"));
 		} catch (SQLException | NullPointerException e) {
 			return false;
