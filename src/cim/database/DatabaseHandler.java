@@ -8,15 +8,9 @@ public class DatabaseHandler {
 	private static String user = "Petter";
 	private static String password = "123456";
 	private static Connection con;
-
-
-	public static void main(String[] args) {
-		DatabaseHandler db = new DatabaseHandler();
-		String sql = "SELECT email FROM account WHERE first_name = 'Petter'";
-		System.out.println("running");
-		System.out.println(db.executeQuery(sql));
-	}
-
+	
+	
+	
 	public DatabaseHandler(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -42,12 +36,30 @@ public class DatabaseHandler {
 
 		}
 	}
+	
+	
+	public boolean requestLogin(String email, String password){
+		String sql = "SELECT email, password FROM account WHERE email = ";
+		email = email.toLowerCase();
+		sql = sql + email;
+		ResultSet rs = executeQuery(sql);
+		try {
+			rs.next();
+			return (email.equals(rs.getString("email")) && password.equals(rs.getString("password")));
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+	
+	
 
 
-	public ResultSet executeQuery(String sql){
+	private ResultSet executeQuery(String sql){
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
+			con.close();
+			stmt.close();
 			return rs;
 		}
 		catch (SQLException e){
