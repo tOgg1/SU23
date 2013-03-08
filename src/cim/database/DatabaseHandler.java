@@ -43,6 +43,7 @@ public class DatabaseHandler {
 		email = email;
 		sql = sql + email;
 		ResultSet rs = executeQuery(sql);
+		System.out.println(rs);
 		try {
 			rs.next();
 			return password.equals(rs.getString("password"));
