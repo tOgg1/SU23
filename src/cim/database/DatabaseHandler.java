@@ -1,4 +1,4 @@
-package cim.db;
+package cim.database;
 
 import java.sql.*;
 
