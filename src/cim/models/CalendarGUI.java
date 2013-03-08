@@ -125,7 +125,7 @@ public class CalendarGUI {
 			String hentPassordFraBrukernavn = "select password from account where email = '" + bruker + "'";
 			String passord = passwordField.getText();
 			
-			if(db.executeQuery(hentPassordFraBrukernavn).equals(passord))
+			if(db.requestLogin(bruker, passord))
 			{
 				System.out.println("Dette gikk jo bra");
 			}

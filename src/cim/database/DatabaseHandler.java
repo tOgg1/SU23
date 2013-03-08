@@ -42,6 +42,7 @@ public class DatabaseHandler {
 		String sql = "SELECT password FROM account WHERE email = ";
 		sql = sql + "'" + email + "'";
 		ResultSet rs = executeQuery(sql);
+		System.out.println(rs);
 		try {
 			rs.next();
 			return password.equals(rs.getString("password"));
