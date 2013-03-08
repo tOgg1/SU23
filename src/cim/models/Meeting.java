@@ -18,7 +18,16 @@ public class Meeting extends Appointment
 	}
 
     @Override
-    public int getData() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    public Object[] getData()
+    {
+        Object[] superData = super.getData();
+        Object[] data = new Object[superData.length + 1];
+        int i = 0;
+        for(Object o : superData)
+        {
+            data[i++] = o;
+        }
+        data[i] = invitees;
+        return data;
     }
 }

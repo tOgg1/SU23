@@ -1,10 +1,8 @@
 package cim.models;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-
-import cim.util.AuthenticatorInterface;
+import java.util.regex.Pattern;
 
 public class Account extends CalendarObject implements Attendable 
 {
@@ -81,11 +79,6 @@ public class Account extends CalendarObject implements Attendable
 		return this.name;
 	}
 
-    @Override
-    public int getData() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
 	public String getPassword() {
 		return password;
 	}
@@ -93,4 +86,18 @@ public class Account extends CalendarObject implements Attendable
 	public boolean isValidPassword(String password){
 		return this.password == password;
 	}
+
+
+    @Override
+    public Object[] getData()
+    {
+        Object[] data = new Object[5];
+        data[0] = email;
+        data[1] = name;
+        data[2] = calendars;
+        data[3] = groups;
+        data[4] = password;
+        return data;
+
+    }
 }

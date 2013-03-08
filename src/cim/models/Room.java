@@ -7,7 +7,7 @@ public class Room extends CalendarObject {
 	private int size;
 	private String info;
 	private Date bookedTime;
-	private Boolean isBooked;
+	private boolean isBooked;
 	
 	public Room(String name, int size, String info)
 	{
@@ -16,7 +16,7 @@ public class Room extends CalendarObject {
 		this.info = info;
 		this.isBooked = false;
 	}
-	public Boolean isAvailiable()
+	public boolean isAvailiable()
 	{
 		return isBooked;
 		
@@ -26,8 +26,14 @@ public class Room extends CalendarObject {
 		this.isBooked = truthValue;
 	}
     @Override
-    public int getData()
+    public Object[] getData()
     {
-        return 0;
+        Object[] data = new Object[5];
+        data[0] = name;
+        data[1] = size;
+        data[2] = info;
+        data[3] = bookedTime;
+        data[4] = isBooked;
+        return data;
     }
 }

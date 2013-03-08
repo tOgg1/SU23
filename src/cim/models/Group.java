@@ -35,7 +35,13 @@ public class Group extends CalendarObject implements Attendable {
 	}
 
     @Override
-    public int getData() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    public Object[] getData()
+    {
+        Object[] data = new Object[4];
+        data[0] = name;
+        data[1] = owner;
+        data[2] = calendar;
+        data[3] = members;
+        return data;
     }
 }

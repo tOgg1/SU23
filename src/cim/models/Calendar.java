@@ -52,7 +52,12 @@ public class Calendar extends CalendarObject {
 	}
 
     @Override
-    public int getData() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    public Object[] getData()
+    {
+        Object[] data = new Object[3];
+        data[0] = owner;
+        data[1] = appointments;
+        data[2] = hasAccess;
+        return data;
     }
 }

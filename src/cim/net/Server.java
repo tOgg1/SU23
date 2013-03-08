@@ -1,8 +1,10 @@
 package cim.net;
 
+import cim.database.DatabaseHandler;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,10 +15,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Server
 {
-	
+
+    DatabaseHandler dbHandler;
+
 	private final short port;
     private ServerSocket server;
-    private Thread serverThread;
     private Thread listenThread;
     // Thread-safe
     private ConcurrentLinkedQueue<Bucket> bucketQueue;
@@ -31,6 +34,20 @@ public class Server
 	 */
 	public Server(short port) throws CloakedIronManException
     {
+        // Create log file
+        File file = new File("serverlog.txt");
+        try
+        {
+            if(!file.isFile())
+                file.createNewFile();
+            Log.setLogFile(file);
+        }
+        catch(IOException e)
+        {
+            throw new CloakedIronManException("Log file not found, or can't be accessed!");
+        }
+        // //
+
 		this.port = port;
         try
         {
@@ -39,8 +56,10 @@ public class Server
         catch(IOException e)
         {
             // Sad Panda
-            throw new CloakedIronManException("Server Connection not established, shutting down");
+            throw new CloakedIronManException("Server Connection not established");
         }
+
+        Log.d("Server", "Server running");
 	}
 	
 	/**
@@ -49,18 +68,6 @@ public class Server
 	public void run()
     {
         running = true;
-
-		serverThread = new Thread()
-        {
-            public void run()
-            {
-                while(running)
-                {
-                    //TODO: Do stuff
-                }
-            }
-        };
-
         listenThread = new Thread()
         {
             public void run()
@@ -80,13 +87,18 @@ public class Server
                 }
             }
         };
+        listenThread.start();
 	}
 
-    public void listen()
-    {
 
+    public Bucket handleQuery(Bucket bucket)
+    {
+        String sqlAction = Bucket.decodeFlag(bucket.flag);
+        int[] indexFlags = Bucket.getIndexes(bucket.indexFlag);
+        return null;
     }
 
+    //Connection stuff
     public void addConnection(Socket socket)
     {
         ConnectionThread connection = new ConnectionThread(socket, this);
