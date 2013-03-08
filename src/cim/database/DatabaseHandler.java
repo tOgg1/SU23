@@ -42,10 +42,8 @@ public class DatabaseHandler {
 		String sql = "SELECT password FROM account WHERE email = ";
 		sql = sql + "'" + email + "'";
 		ResultSet rs = executeQuery(sql);
-		System.out.println(rs);
 		try {
 			rs.next();
-			rs.getString("password");
 			return password.equals(rs.getString("password"));
 		} catch (SQLException | NullPointerException e) {
 			return false;
@@ -65,14 +63,7 @@ public class DatabaseHandler {
 			return null;
 		}		
 	}
-	
-	
-	public static void main(String[] args) {
-		DatabaseHandler db = new DatabaseHandler();
-		String bruker = "Pettegl@stud.ntnu.no";
-		String passord = "halal";
-		System.out.println(db.requestLogin(bruker,passord));
-	}
+
 
 
 }
