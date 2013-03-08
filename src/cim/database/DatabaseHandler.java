@@ -39,7 +39,7 @@ public class DatabaseHandler {
 	
 	
 	public boolean requestLogin(String email, String password){
-		String sql = "SELECT email, password FROM account WHERE email = ";
+		String sql = "SELECT password FROM account WHERE email = ";
 		sql = sql + "'" + email + "'";
 		ResultSet rs = executeQuery(sql);
 		try {
@@ -57,13 +57,19 @@ public class DatabaseHandler {
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			con.close();
-			stmt.close();
 			return rs;
 		}
 		catch (SQLException e){
 			return null;
 		}		
+	}
+	
+	
+	public static void main(String[] args) {
+		DatabaseHandler db = new DatabaseHandler();
+		String bruker = "Pettegl@stud.ntnu.no";
+		String passord = "halal";
+		System.out.println(db.requestLogin(bruker,passord));
 	}
 
 
