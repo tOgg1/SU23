@@ -45,7 +45,7 @@ public class DatabaseHandler {
 		ResultSet rs = executeQuery(sql);
 		try {
 			rs.next();
-			return (email.equals(rs.getString("email")) && password.equals(rs.getString("password")));
+			return (email.equals(rs.getString("email").toLowerCase()) && password.equals(rs.getString("password")));
 		} catch (SQLException e) {
 			return false;
 		}
