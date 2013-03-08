@@ -11,7 +11,6 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Server
 {
@@ -22,9 +21,7 @@ public class Server
     private ServerSocket server;
     private Thread listenThread;
     // Thread-safe
-    private ConcurrentLinkedQueue<Bucket> bucketQueue;
     private Vector<ConnectionThread> connections;
-
     private boolean running = false;
 
 	
