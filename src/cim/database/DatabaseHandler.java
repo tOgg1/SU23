@@ -39,14 +39,13 @@ public class DatabaseHandler {
 	
 	
 	public boolean requestLogin(String email, String password){
-		String sql = "SELECT email, password FROM account WHERE email = ";
-		email = email.toLowerCase();
-		sql = sql + email;
+		String sql = "SELECT password FROM account WHERE email = ";
+		sql = sql + "'" + email + "'";
 		ResultSet rs = executeQuery(sql);
 		try {
 			rs.next();
-			return (email.equals(rs.getString("email")) && password.equals(rs.getString("password")));
-		} catch (SQLException e) {
+			return password.equals(rs.getString("password"));
+		} catch (SQLException | NullPointerException e) {
 			return false;
 		}
 	}
@@ -58,14 +57,13 @@ public class DatabaseHandler {
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			con.close();
-			stmt.close();
 			return rs;
 		}
 		catch (SQLException e){
 			return null;
 		}		
 	}
+
 
 
 }
