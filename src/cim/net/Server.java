@@ -1,6 +1,7 @@
 package cim.net;
 
 import cim.util.CloakedIronManException;
+import cim.util.Log;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,9 +17,12 @@ public class Server
 	private final short port;
     private ServerSocket server;
     private Thread serverThread;
+    private Thread listenThread;
     // Thread-safe
     private ConcurrentLinkedQueue<Bucket> bucketQueue;
     private Vector<ConnectionThread> connections;
+
+    private boolean running = false;
 
 	
 	/**
@@ -44,7 +48,38 @@ public class Server
 	 */
 	public void run()
     {
-		System.out.println("Server is runnnig on " + this.port + ".");
+        running = true;
+
+		serverThread = new Thread()
+        {
+            public void run()
+            {
+                while(running)
+                {
+                    //TODO: Do stuff
+                }
+            }
+        };
+
+        listenThread = new Thread()
+        {
+            public void run()
+            {
+                while(running)
+                {
+                    try
+                    {
+                        Socket socket = server.accept();
+                        ConnectionThread newConnection = new ConnectionThread(socket, Server.this);
+                        connections.add(newConnection);
+                    }
+                    catch(IOException e)
+                    {
+                        Log.e("Server", "Connection accept error");
+                    }
+                }
+            }
+        };
 	}
 
     public void listen()
