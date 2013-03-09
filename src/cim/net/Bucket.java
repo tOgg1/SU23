@@ -49,9 +49,7 @@ public class Bucket implements Serializable
      */
     public static boolean isIndexFlagged(int indexFlag, int index)
     {
-        int iterator = 1;
-        iterator = iterator << index;
-        return (indexFlag & index) > 0;
+        return (indexFlag & (1<<index)) > 0;
     }
 
     public static int[] getIndexes(int indexFlag)
