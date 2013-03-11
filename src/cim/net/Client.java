@@ -1,7 +1,7 @@
 package cim.net;
 
 import cim.models.Account;
-import cim.util.Authenticator;
+import cim.util.AuthenticatorInterface;
 //import cim.models.CalendarRegister;
 import cim.util.Settings;
 
