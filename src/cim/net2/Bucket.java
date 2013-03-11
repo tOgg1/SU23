@@ -1,4 +1,4 @@
-package cim.net;
+package cim.net2;
 
 import cim.models.CalendarObject;
 import cim.util.Helper;

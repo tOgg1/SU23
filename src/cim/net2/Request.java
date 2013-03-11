@@ -1,4 +1,4 @@
-package cim.net;
+package cim.net2;
 
 import java.io.Serializable;
 
