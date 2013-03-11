@@ -12,7 +12,6 @@ public class Account extends CalendarObject implements Attendable
 	private String name;
 	private ArrayList<CalendarObject> calendars;
 	private ArrayList<Group> groups;
-
 	private String password;
 
 	private static Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+"
