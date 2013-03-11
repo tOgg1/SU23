@@ -9,9 +9,24 @@ public class Test {
 		DatabaseHandler db = new DatabaseHandler();
 <<<<<<< HEAD
 		db.deleteAppointment(322);
-=======
 		
 		System.out.println(db.getAllRooms());
->>>>>>> 3a9e7b0e2e96b353d4aec89f1a15ea3bb72d1ded
+=======
+
+		db.deleteAppointment(322);
+		
+		System.out.println(db.getAllRooms());
+
+>>>>>>> 4538d8be541745c332b5bdb3e3276422ee6da84e
+
+		db.deleteAppointment(322);
+
+		
+		System.out.println(db.getAllRooms());
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4538d8be541745c332b5bdb3e3276422ee6da84e
 	}
 }
