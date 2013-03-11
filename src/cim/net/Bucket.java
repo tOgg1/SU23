@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Time: 12:53 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Bucket implements Serializable
+public class Bucket
 {
     public static final int FLAG_CREATE = 1;
     public static final int FLAG_READ = 2;

@@ -88,10 +88,11 @@ public class Server
 	}
 
 
-    public Bucket handleQuery(Bucket bucket)
+    public Request handleRequest(Request request)
     {
-        String sqlAction = Bucket.decodeFlag(bucket.flag);
-        int[] indexFlags = Bucket.getIndexes(bucket.indexFlag);
+    	
+        //String sqlAction = Bucket.decodeFlag(bucket.flag);
+        //int[] indexFlags = Bucket.getIndexes(bucket.indexFlag);
         return null;
     }
 
@@ -144,10 +145,10 @@ public class Server
         @Override
         public void run()
         {
-            Bucket bucket;
+            Request request;
             try
             {
-                while(running && (bucket = (Bucket)input.readObject()) != null)
+                while(running && (request = (Request)input.readObject()) != null)
                 {
 
                 }

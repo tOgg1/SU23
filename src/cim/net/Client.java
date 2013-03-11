@@ -18,7 +18,7 @@ public class Client
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private Thread runThread;
-    private ConcurrentLinkedQueue<Bucket> bucketQueue;
+    private ConcurrentLinkedQueue<Request> requestQueue;
 
     private boolean running = false;
 
