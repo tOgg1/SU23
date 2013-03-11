@@ -2,8 +2,9 @@ package cim.models;
 
 import java.util.ArrayList;
 
-public class Group extends CalendarObject implements Attendable {
-	
+public class Group extends CalendarObject implements Attendable
+{
+    int id;
 	String name;
 	Account owner;
 	Calendar calendar;
@@ -33,4 +34,10 @@ public class Group extends CalendarObject implements Attendable {
 	public String getName() {
 		return this.name;
 	}
+
+    @Override
+    public int getId()
+    {
+        return id;
+    }
 }

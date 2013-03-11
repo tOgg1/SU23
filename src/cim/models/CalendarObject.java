@@ -22,4 +22,6 @@ public abstract class CalendarObject
 	{
 		pcs.removePropertyChangeListener(listener);
 	}
+
+    public abstract int getId();
 }

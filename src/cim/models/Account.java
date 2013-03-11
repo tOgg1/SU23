@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 public class Account extends CalendarObject implements Attendable 
 {
+    private int id;
 	private String email;
 	private String firstName;
 	private String lastName;
@@ -88,4 +89,9 @@ public class Account extends CalendarObject implements Attendable
 	public boolean isValidPassword(String password){
 		return this.password == password;
 	}
+    @Override
+    public int getId()
+    {
+        return id;
+    }
 }
