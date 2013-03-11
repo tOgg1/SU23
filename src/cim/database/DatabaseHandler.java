@@ -68,6 +68,19 @@ public class DatabaseHandler {
 		}		
 	}
 	
+	
+	private boolean executeUpdate(String sql){
+		try{
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(sql);
+			return true;
+		}
+		catch (SQLException e){
+			System.out.println(e);
+			return false;
+		}		
+	}
+	
 	private Account getAccount(int accountId){
 		String sql = 
 				"SELECT * " +
@@ -87,10 +100,7 @@ public class DatabaseHandler {
 				"FROM account " +
 				"WHERE user_id = ";
 		sql += accountId1;		
-		rs = executeQuery(sql);
-		System.out.println(sql);
-
-		
+		rs = executeQuery(sql);		
 		try {
 			rs.next();
 			return new Account(rs.getString("first_name"),
@@ -126,7 +136,7 @@ public class DatabaseHandler {
 		}
 		
 		sql = 
-				"SELECT name, date, start, end , info, place " +
+				"SELECT name, date, start, end , info, place, appointment_id " +
 				"FROM appointment " +
 				"WHERE calendar_id = ";
 		sql += calendar_id;
@@ -138,7 +148,8 @@ public class DatabaseHandler {
 				Appointment a = new Appointment(rs.getTime("start"), 
 												rs.getTime("end"),
 												rs.getString("info"),
-												rs.getDate("date"));
+												rs.getDate("date"),
+												rs.getInt("appointment_id"));
 				c.addAppointment(a);
 			}
 			return c;
@@ -151,6 +162,31 @@ public class DatabaseHandler {
 	}
 	
 	
+	public boolean createAppointment(int owner_id, int calendar_id, Time startTime, Time endTime, Date date, String info, String name,int room_id, String place){
+		String sql = 
+				"INSERT INTO appointment(name, date, start, end, info, calendar_id, place, meeting_room_id, appointment_owner) " +
+				"VALUES(" + "'" + name + "'"  
+						+ ", " + "'" + date + "'"
+						+ ", " + "'"+ startTime + "'"
+						+ ", " + "'" + endTime + "'"
+						+ ", " + "'" + info + "'" 
+						+ ", " + calendar_id +  ", " + 
+						"'" +place + "'" + ", " + 
+						"'" + room_id +"'" + ", " + 
+						"'"+ owner_id + "'" + ");";
+		try{
+			return executeUpdate(sql);
+		}catch(Exception e){
+			return false;
+		}
+		
+	}
+	
+	public boolean deleteAppointment(int appointmentId){
+		String sql = "DELETE from appointment WHERE appointment_id = ";
+		sql += appointmentId;
+		return executeUpdate(sql);
+	}
 	
 
 
