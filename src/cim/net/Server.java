@@ -13,10 +13,18 @@ import cim.util.Log;
 
 public class Server {
 	
-	private final short port;
-    private ServerSocket server;
+	private final short eventPort;
+	private final short requestPort;
+    private ServerSocket eventServerSocket;
+    private ServerSocket requestServerSocket;
+    private boolean running = false;
+
+	private Vector<RequestThread> requestThreads = new Vector<RequestThread>();
+	private Vector<EventThread> eventThreads = new Vector<EventThread>();
 	
-	public Server(short port) throws CloakedIronManException {
+    
+	
+	public Server(short eventPort, short requestPort) throws CloakedIronManException {
 		// Create log file
         File file = new File("serverlog.txt");
         try
@@ -31,10 +39,12 @@ public class Server {
         }
         // //
 
-		this.port = port;
+		this.eventPort = eventPort;
+		this.requestPort = requestPort;
         try
         {
-            server = new ServerSocket(port);
+            this.eventServerSocket = new ServerSocket(this.eventPort);
+            this.requestServerSocket = new ServerSocket(this.requestPort);
         }
         catch(IOException e)
         {
@@ -46,11 +56,40 @@ public class Server {
 	}
 	
 	public void run() {
-		
+		this.running = true;
+		Thread et = new Thread() {
+			public void run() {
+				while(Server.this.running){
+					try {
+						Socket s = Server.this.eventServerSocket.accept();
+						EventThread et = new EventThread(s);
+						Server.this.eventThreads.add(et);
+					} catch (IOException e) {
+						Log.e("Server", "Connection event accept error");
+					}
+					
+				}
+			}
+		};
+		et.run();
+		Thread rt = new Thread() {
+			public void run() {
+				while(Server.this.running){
+					try {
+						Socket s = Server.this.requestServerSocket.accept();
+						RequestThread et = new RequestThread(s);
+						Server.this.requestThreads.add(et);
+					} catch (IOException e) {
+						Log.e("Server", "Connection request accept error");
+					}
+					
+				}
+			}
+		};
+		rt.run();
 	}
 	
 	
-	private Vector<RequestThread> requestThreads = new Vector<RequestThread>();
 	
 	/**
 	 * Abstract class for managing connetions in separate threads
