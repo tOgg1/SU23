@@ -77,7 +77,6 @@ public class Server {
 						Server.this.eventThreads.add(etInner);
 						etInner.start();
 						Log.d(tag, "Connection added");
-						broadcast(new Event(Event.Type.ADDED));
 					} catch (IOException e) {
 						Log.e(tag, "Connection event accept error");
 					}
