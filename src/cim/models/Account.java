@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 public class Account extends CalendarObject implements Attendable 
 {
 	private String email;
-	private String name;
+	private String firstName;
+	private String lastName;
 	private ArrayList<CalendarObject> calendars;
 	private ArrayList<Group> groups;
 
@@ -18,9 +19,10 @@ public class Account extends CalendarObject implements Attendable
             + "(\\.[A-Za-z]{2,})$");
 	private static Matcher matcher;
 
-	public Account(String name, String email)
+	public Account(String first_name,String last_name, String email)
 	{
-		this.name = name;
+		this.firstName = first_name;
+		this.lastName = last_name;
 		this.email = email;
 		this.calendars = new ArrayList<CalendarObject>();
 		this.groups = new ArrayList<Group>();

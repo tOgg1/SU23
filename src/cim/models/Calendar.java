@@ -13,6 +13,10 @@ public class Calendar extends CalendarObject {
 		this.appointments = new ArrayList<Appointment>();
 		this.hasAccess = new ArrayList<Attendable>();
 	}
+	public Calendar(){
+		this.appointments = new ArrayList<Appointment>();
+		this.hasAccess = new ArrayList<Attendable>();	
+		}
 	
 	public Attendable getOwner()
 	{
