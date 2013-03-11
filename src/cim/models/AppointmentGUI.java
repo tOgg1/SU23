@@ -14,6 +14,7 @@ import javax.swing.JList;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLayeredPane;
 
 public class AppointmentGUI{
 
@@ -29,9 +30,9 @@ public class AppointmentGUI{
 		frame.pack();
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200};
-		gridBagLayout.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200};
+		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		frame.getContentPane().setLayout(gridBagLayout);
 		
 		JLabel lblBeskrivelse = new JLabel("Beskrivelse");
@@ -214,7 +215,7 @@ public class AppointmentGUI{
 		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
 		gbc_chckbxNewCheckBox.anchor = GridBagConstraints.WEST;
 		gbc_chckbxNewCheckBox.gridwidth = 4;
-		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 5);
 		gbc_chckbxNewCheckBox.gridx = 1;
 		gbc_chckbxNewCheckBox.gridy = 11;
 		frame.getContentPane().add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
@@ -225,7 +226,7 @@ public class AppointmentGUI{
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton.gridx = 9;
 		gbc_btnNewButton.gridy = 11;
 		frame.getContentPane().add(btnNewButton, gbc_btnNewButton);
@@ -236,7 +237,7 @@ public class AppointmentGUI{
 			}
 		});
 		GridBagConstraints gbc_btnAvbryt = new GridBagConstraints();
-		gbc_btnAvbryt.insets = new Insets(0, 0, 0, 5);
+		gbc_btnAvbryt.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAvbryt.gridx = 10;
 		gbc_btnAvbryt.gridy = 11;
 		frame.getContentPane().add(btnAvbryt, gbc_btnAvbryt);
