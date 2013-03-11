@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class CalendarRegister
 {
+
 	ArrayList<Calendar> calendars;
     ArrayList<Group> groups;
     ArrayList<Appointment> appointments;
@@ -15,6 +16,26 @@ public class CalendarRegister
         groups = new ArrayList<Group>();
         appointments = new ArrayList<Appointment>();
         accounts = new ArrayList<Account>();
+    }
+
+    public ArrayList<Account> getAccounts()
+    {
+        return accounts;
+    }
+
+    public ArrayList<Appointment> getAppointments()
+    {
+        return appointments;
+    }
+
+    public ArrayList<Calendar> getCalendars()
+    {
+        return calendars;
+    }
+
+    public ArrayList<Group> getGroups()
+    {
+        return groups;
     }
 
     public void registerCalendar(Calendar calendar)
@@ -65,6 +86,7 @@ public class CalendarRegister
             accounts.add(account);
     }
 
+    //Checking if an arraylist consisting of a calendarobject-subclass already contains a similar calendar (same id)
     public boolean containsById(ArrayList<? extends CalendarObject> list, CalendarObject object)
     {
         for(CalendarObject listObject : list)

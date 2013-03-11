@@ -1,6 +1,7 @@
 package cim.net;
 
 import cim.models.Account;
+import cim.models.CalendarRegister;
 import cim.util.Settings;
 
 import java.io.IOException;
@@ -20,10 +21,13 @@ public class Client
     private Thread runThread;
     private ConcurrentLinkedQueue<Request> requestQueue;
 
+    CalendarRegister register;
+
     private boolean running = false;
 
     public Client()
     {
+        register = new CalendarRegister();
         try
         {
             socket = new Socket(InetAddress.getLocalHost(), Settings.SERVER_PORT);
