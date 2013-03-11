@@ -17,6 +17,7 @@ public class Client {
 	private Socket requestSocket;
 
 	private ObjectInputStream eventInput;
+	private ObjectOutputStream eventOutput;
 	private ObjectInputStream requestInput;
 	private ObjectOutputStream requestOutput;
 	
@@ -37,24 +38,32 @@ public class Client {
 		
 		// Set up sockets
 		try {
-			this.eventSocket = new Socket(InetAddress.getLocalHost(), Settings.SERVER_EVENT_PORT);
-			this.requestSocket = new Socket(InetAddress.getLocalHost(), Settings.SERVER_REQUEST_PORT);
+			this.eventSocket = new Socket("localhost", Settings.SERVER_EVENT_PORT);
+			this.requestSocket = new Socket("localhost", Settings.SERVER_REQUEST_PORT);
 		} catch (IOException e) {
 			Log.e("Client", e.getMessage());
 			throw new CloakedIronManException("Sockets could not be established.", e);
 		}
-		
 		// Saving IO-streams is always a good idea
 		try {
+			this.eventOutput = new ObjectOutputStream(this.eventSocket.getOutputStream());
 			this.eventInput = new ObjectInputStream(this.eventSocket.getInputStream());
-			this.requestInput = new ObjectInputStream(this.requestSocket.getInputStream());
 			this.requestOutput = new ObjectOutputStream(this.requestSocket.getOutputStream());
+			this.requestInput = new ObjectInputStream(this.requestSocket.getInputStream());
 		} catch (IOException e) {
 			Log.e("Client", e.getMessage());
 			throw new CloakedIronManException("Streams could not be created.", e);
 			
 		}
 		
+	}
+	
+	public void run() {
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

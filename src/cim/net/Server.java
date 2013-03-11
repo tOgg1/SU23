@@ -1,6 +1,7 @@
 package cim.net;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -66,8 +67,9 @@ public class Server {
 					try {
 						Log.d(tag, "Wating for incoming connection.");
 						Socket s = Server.this.eventServerSocket.accept();
-						EventThread et = new EventThread(s);
-						Server.this.eventThreads.add(et);
+						EventThread etInner = new EventThread(s);
+						Server.this.eventThreads.add(etInner);
+						etInner.start();
 						Log.d(tag, "Connection added");
 					} catch (IOException e) {
 						Log.e(tag, "Connection event accept error");
@@ -84,8 +86,9 @@ public class Server {
 					try {
 						Log.d(tag, "Wating for incoming connection.");
 						Socket s = Server.this.requestServerSocket.accept();
-						RequestThread et = new RequestThread(s);
-						Server.this.requestThreads.add(et);
+						RequestThread rtInner = new RequestThread(s);
+						Server.this.requestThreads.add(rtInner);
+						rtInner.start();
 						Log.d(tag, "Connection added");
 					} catch (IOException e) {
 						Log.e(tag, "Connection request accept error");
@@ -117,13 +120,12 @@ public class Server {
         	// Sockets
         	this.socket = s;
         	//Streams
-        	this.input = new ObjectInputStream(this.socket.getInputStream());
         	this.output = new ObjectOutputStream(this.socket.getOutputStream());
-        	this.run();
+        	this.input = new ObjectInputStream(this.socket.getInputStream());
     	
         }
         void d(String message) {
-        	Log.d("Connection Thread " + this.id, message);
+        	Log.d(this.getClass().toString() + " " + this.id, message);
         }
 		
 	}

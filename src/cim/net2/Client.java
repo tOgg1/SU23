@@ -34,7 +34,7 @@ public class Client
         register = new CalendarRegister();
         try
         {
-            socket = new Socket(InetAddress.getLocalHost(), Settings.SERVER_PORT);
+            //socket = new Socket(InetAddress.getLocalHost(), Settings.SERVER_PORT);
             ois = new ObjectInputStream(socket.getInputStream());
             oos = new ObjectOutputStream(socket.getOutputStream());
         }
