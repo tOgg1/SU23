@@ -64,8 +64,11 @@ public class Account extends CalendarObject implements Attendable
 	{
 		String[] splittet = new String[3];
 		splittet = newName.split(" ");
-		this.firstName = splittet[0];
-		this.lastName = splittet[1];
+		if(!(splittet[0] == null) && !(splittet[1] == null))
+		{
+			this.firstName = splittet[0];
+			this.lastName = splittet[1];
+		}
 		if(validate(newEmail))
 		{
 			this.email = newEmail;
