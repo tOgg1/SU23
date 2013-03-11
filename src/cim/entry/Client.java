@@ -10,7 +10,7 @@ public class Client
 
 	public static void main(String[] args)
     {
-		cim.net2.Client client = new cim.net2.Client();
+		cim.net.Client client = new cim.net.Client();
 		client.run();
 	}
 

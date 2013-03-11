@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.UUID;
 import java.util.Vector;
 
 import cim.util.CloakedIronManException;
@@ -58,32 +59,36 @@ public class Server {
 	public void run() {
 		this.running = true;
 		Thread et = new Thread() {
+			private final String tag = "Server Event Socket Listener";
 			public void run() {
-				Log.d("Server", "Event Socket Listener started");
+				Log.d(tag, "Started");
 				while(Server.this.running){
 					try {
-						Log.d("Server", "Waiting for incoming event socket connection.");
+						Log.d(tag, "Wating for incoming connection.");
 						Socket s = Server.this.eventServerSocket.accept();
 						EventThread et = new EventThread(s);
 						Server.this.eventThreads.add(et);
+						Log.d(tag, "Connection added");
 					} catch (IOException e) {
-						Log.e("Server", "Connection event accept error");
+						Log.e(tag, "Connection event accept error");
 					}
 					
 				}
 			}
 		};
 		Thread rt = new Thread() {
+			private final String tag = "Server Request Socket Listener";
 			public void run() {
-				Log.d("Server", "Request Socket Listener started");
+				Log.d(tag, "Started.");
 				while(Server.this.running){
 					try {
-						Log.d("Server", "Waiting for incoming request socket connection.");
+						Log.d(tag, "Wating for incoming connection.");
 						Socket s = Server.this.requestServerSocket.accept();
 						RequestThread et = new RequestThread(s);
 						Server.this.requestThreads.add(et);
+						Log.d(tag, "Connection added");
 					} catch (IOException e) {
-						Log.e("Server", "Connection request accept error");
+						Log.e(tag, "Connection request accept error");
 					}
 					
 				}
@@ -105,13 +110,20 @@ public class Server {
         ObjectInputStream input;
         ObjectOutputStream output;
         
+        UUID id = UUID.randomUUID();
+        
+        
         public ConnectionThread(Socket s) throws IOException {
         	// Sockets
         	this.socket = s;
         	//Streams
         	this.input = new ObjectInputStream(this.socket.getInputStream());
         	this.output = new ObjectOutputStream(this.socket.getOutputStream());
+        	this.run();
     	
+        }
+        void d(String message) {
+        	Log.d("Connection Thread " + this.id, message);
         }
 		
 	}
@@ -127,7 +139,7 @@ public class Server {
 		}
 		
 		public void run() {
-			System.out.println("Request handler thread running");
+			d("Running.");
 		}
 		
 	}
@@ -142,7 +154,7 @@ public class Server {
 		}
 
 		public void run() {
-			System.out.println("Request");
+			d("Running.");
 		}
 	}
 
