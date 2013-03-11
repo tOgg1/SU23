@@ -1,2 +1,11 @@
 
 11/03/2013 10:21:18 AM [Debug Server]: Server running
+11/03/2013 07:07:44 PM [Debug Server]: Server running
+11/03/2013 07:10:25 PM [Debug Server]: Server running
+11/03/2013 07:10:25 PM [Debug Server]: Event Socket Listener started
+11/03/2013 07:10:25 PM [Debug Server]: Waiting for incoming event socket connection.
+11/03/2013 07:12:19 PM [Debug Server]: Server running
+
+11/03/2013 07:12:19 PM [Debug Server]: Event Socket Listener started11/03/2013 07:12:19 PM [Debug Server]: Request Socket Listener started
+11/03/2013 07:12:19 PM [Debug Server]: Waiting for incoming request socket connection.
+11/03/2013 07:12:19 PM [Debug Server]: Waiting for incoming event socket connection.

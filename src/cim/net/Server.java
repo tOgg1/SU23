@@ -59,8 +59,10 @@ public class Server {
 		this.running = true;
 		Thread et = new Thread() {
 			public void run() {
+				Log.d("Server", "Event Socket Listener started");
 				while(Server.this.running){
 					try {
+						Log.d("Server", "Waiting for incoming event socket connection.");
 						Socket s = Server.this.eventServerSocket.accept();
 						EventThread et = new EventThread(s);
 						Server.this.eventThreads.add(et);
@@ -71,11 +73,12 @@ public class Server {
 				}
 			}
 		};
-		et.run();
 		Thread rt = new Thread() {
 			public void run() {
+				Log.d("Server", "Request Socket Listener started");
 				while(Server.this.running){
 					try {
+						Log.d("Server", "Waiting for incoming request socket connection.");
 						Socket s = Server.this.requestServerSocket.accept();
 						RequestThread et = new RequestThread(s);
 						Server.this.requestThreads.add(et);
@@ -86,7 +89,8 @@ public class Server {
 				}
 			}
 		};
-		rt.run();
+		et.start();
+		rt.start();
 	}
 	
 	
