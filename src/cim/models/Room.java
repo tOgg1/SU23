@@ -2,7 +2,9 @@ package cim.models;
 
 import java.util.Date;
 
-public class Room extends CalendarObject {
+public class Room extends CalendarObject
+{
+    private int id;
 	private String name;
 	private int size;
 	private String info;
@@ -25,5 +27,9 @@ public class Room extends CalendarObject {
 	{
 		this.isBooked = truthValue;
 	}
-
+    @Override
+    public int getId()
+    {
+        return id;
+    }
 }
