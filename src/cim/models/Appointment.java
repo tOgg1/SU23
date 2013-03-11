@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Appointment extends CalendarObject 
 {
+    private int id;
 	private Account owner;
 	private Date startDate;
 	private Date endDate;
@@ -29,5 +30,9 @@ public class Appointment extends CalendarObject
 		this.startDate = newStartDate;
 		this.endDate = newEndDate;
 	}
-
+    @Override
+    public int getId()
+    {
+        return id;
+    }
 }

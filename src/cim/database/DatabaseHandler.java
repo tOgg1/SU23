@@ -2,6 +2,8 @@ package cim.database;
 
 import java.sql.*;
 
+import cim.models.Calendar;
+
 public class DatabaseHandler {
 
 	private static String url = "jdbc:mysql://78.91.2.66:3306/cim";
@@ -45,13 +47,10 @@ public class DatabaseHandler {
 		try {
 			rs.next();
 			return password.equals(rs.getString("password"));
-		} catch (SQLException | NullPointerException e) {
+		}catch (SQLException | NullPointerException e) {
 			return false;
 		}
 	}
-	
-	
-
 
 	private ResultSet executeQuery(String sql){
 		try{
@@ -63,6 +62,17 @@ public class DatabaseHandler {
 			return null;
 		}		
 	}
+	
+	public Calendar getCalendar(String email){
+		String sql = 
+				"GET calendar_id" +
+				"FROM calendar";
+		ResultSet rs = executeQuery(sql);
+		
+	}
+	
+	
+	
 
 
 
