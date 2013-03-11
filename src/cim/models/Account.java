@@ -3,6 +3,8 @@ package cim.models;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyChangeListener;
 
 public class Account extends CalendarObject implements Attendable 
 {
@@ -22,6 +24,7 @@ public class Account extends CalendarObject implements Attendable
 
 	public Account(String first_name,String last_name, String email)
 	{
+		super();
 		this.firstName = first_name;
 		this.lastName = last_name;
 		this.email = email;
@@ -71,9 +74,13 @@ public class Account extends CalendarObject implements Attendable
 		}
 		if(validate(newEmail))
 		{
+			String oldMail = this.email;
 			this.email = newEmail;
+			pcs.firePropertyChange("email", oldMail, newEmail);
 		}
+		String oldPassword = this.password;
 		this.password = newPassword;
+		pcs.firePropertyChange("password", oldPassword, newPassword);
 	
 	}
 	
@@ -100,4 +107,5 @@ public class Account extends CalendarObject implements Attendable
     {
         return id;
     }
+   
 }
