@@ -11,14 +11,11 @@ public class Calendar extends CalendarObject
 	
 	public Calendar(Account owner)
 	{
+		super();
 		this.appointments = new ArrayList<Appointment>();
 		this.hasAccess = new ArrayList<Attendable>();
 		this.owner = owner;
 	}
-	public Calendar(){
-		this.appointments = new ArrayList<Appointment>();
-		this.hasAccess = new ArrayList<Attendable>();	
-		}
 	
 	public Attendable getOwner()
 	{
@@ -26,7 +23,10 @@ public class Calendar extends CalendarObject
 	}
 	public void setOwner(Attendable owner)
 	{
+		Account oldValue = this.owner;
 		this.owner = (Account)owner;
+		pcs.firePropertyChange("owner", oldValue, this.owner);
+
 	}
 	public Boolean hasAccess(Attendable person)
 	{
@@ -51,6 +51,8 @@ public class Calendar extends CalendarObject
 	{
 		if(!this.appointments.isEmpty())
 		this.appointments.remove(appointment);
+		pcs.firePropertyChange("appointment", appointment, null);
+
 	}
 	public void removeAccess(Attendable person)
 	{
