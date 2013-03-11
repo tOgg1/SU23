@@ -4,6 +4,7 @@ import java.sql.*;
 
 
 import cim.models.Account;
+import cim.models.Appointment;
 import cim.models.Calendar;
 
 public class DatabaseHandler {
@@ -74,10 +75,14 @@ public class DatabaseHandler {
 				"WHERE user_id = ";
 		sql += accountId;
 		ResultSet rs = executeQuery(sql);
-		rs.next();
-		return new Account(rs.getString('first_name'),
-						   rs.getString('last_naem'),
-						   rs.getString('email'));
+		try {
+			rs.next();
+			return new Account(rs.getString("first_name"),
+							   rs.getString("last_name"),
+							   rs.getString("email"));
+		} catch (SQLException e) {
+			return null;
+		}
 	}
 	
 	public Calendar getCalendar(int calendar_id){
@@ -89,7 +94,7 @@ public class DatabaseHandler {
 		ResultSet rs = executeQuery(sql);
 		rs.next();
 		
-		Account owner = getAccount(rs.getInt('owner_attendable_id'));
+		Account owner = getAccount(rs.getInt("owner_attendable_id"));
 		
 		sql = 
 				"SELECT name, date, start, end , info, place " +
@@ -97,11 +102,17 @@ public class DatabaseHandler {
 				"WHERE calendar_id = ";
 		sql += calendar_id;
 		rs = executeQuery(sql);
+		
 		Calendar c = new Calendar(owner);
 		try {
 			while(rs.next()){				
-				Appointment a = new Appointment(rs.getDate(""))
+				Appointment a = new Appointment(rs.getTime("start"), 
+												rs.getTime("end"),
+												rs.getDate("date"),
+												rs.getString("info"));
+				c.addAppointment(a);
 			}
+			return c;
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
