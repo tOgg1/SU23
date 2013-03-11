@@ -160,7 +160,7 @@ public class DatabaseHandler {
 		try {
 			while(rs.next())
 			{
-				rom.add(new Room("Rommet", rs.getInt("size"), "Informasjon"));
+				rom.add(new Room(rs.getInt("meeting_room_id"), "Navn", rs.getInt("size"), "Info"));
 			}
 			return rom;
 		} catch (SQLException e) {
