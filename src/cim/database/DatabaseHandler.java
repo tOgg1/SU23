@@ -77,7 +77,7 @@ public class DatabaseHandler {
 		ResultSet rs = executeQuery(sql);
 		try {
 			rs.next();
-			System.out.println(rs.getString("first_name"));
+			System.out.println(rs.getString("email"));
 			return new Account(rs.getString("first_name"),
 							   rs.getString("last_name"),
 							   rs.getString("email"));
