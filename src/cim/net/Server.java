@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -24,6 +25,7 @@ public class Server {
 	private Vector<RequestThread> requestThreads = new Vector<RequestThread>();
 	private Vector<EventThread> eventThreads = new Vector<EventThread>();
 	
+	private ServerRequestAPI api = new ServerRequestAPI();
     
 	
 	public Server(short eventPort, short requestPort) throws CloakedIronManException {
@@ -101,6 +103,12 @@ public class Server {
 		rt.start();
 	}
 	
+	/**
+	 * Returns response object to the output stream.
+	 * @param req
+	 * @return
+	 */
+	
 	
 	
 	/**
@@ -127,6 +135,9 @@ public class Server {
         void d(String message) {
         	Log.d(this.getClass().toString() + " " + this.id, message);
         }
+        void e(String message) {
+        	Log.e(this.getClass().toString() + " " + this.id, message);
+        }
 		
 	}
 	
@@ -141,7 +152,27 @@ public class Server {
 		}
 		
 		public void run() {
-			d("Running.");
+			while(Server.this.running) {
+				try {
+					Request request = (Request) this.input.readObject();
+					Response r = Server.this.api.getResponse(request);
+					this.output.writeObject(r);
+				} catch (ClassNotFoundException e) {
+					e("Error receiving object: " + e.getMessage());
+					continue;
+				} catch (IOException e) {
+					if (e instanceof SocketException) {
+						// Connection is torn down by client
+						Server.this.requestThreads.removeElement(this);
+						d("Connection thread torn down, initiated by client.");
+						break;
+					} else {
+						e("Error receiving object: " + e.getMessage());
+						continue;
+					}
+				}
+				
+			}
 		}
 		
 	}

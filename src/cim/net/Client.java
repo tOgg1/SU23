@@ -6,8 +6,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.Scanner;
 
+import cim.util.Authenticator;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
 import cim.util.Settings;
@@ -20,6 +21,8 @@ public class Client {
 	private ObjectOutputStream eventOutput;
 	private ObjectInputStream requestInput;
 	private ObjectOutputStream requestOutput;
+	
+	private Authenticator auth;
 	
 	public Client() throws CloakedIronManException {
 		
@@ -38,8 +41,8 @@ public class Client {
 		
 		// Set up sockets
 		try {
-			this.eventSocket = new Socket("localhost", Settings.SERVER_EVENT_PORT);
-			this.requestSocket = new Socket("localhost", Settings.SERVER_REQUEST_PORT);
+			this.eventSocket = new Socket(InetAddress.getLocalHost(), Settings.SERVER_EVENT_PORT);
+			this.requestSocket = new Socket(InetAddress.getLocalHost(),Settings.SERVER_REQUEST_PORT);
 		} catch (IOException e) {
 			Log.e("Client", e.getMessage());
 			throw new CloakedIronManException("Sockets could not be established.", e);
@@ -56,14 +59,37 @@ public class Client {
 			
 		}
 		
+		// Creating authenticator instance
+		this.auth = new Authenticator();
+		
 	}
 	
-	public void run() {
+	public void run() throws CloakedIronManException {
+		// Must log in first
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Skriv inn brukernavn: ");
+		//String username = sc.nextLine();
+		//String pw = sc.nextLine();
+		Response resp = this.request(new Request("AUTHENTICATE", "per", "pål"));
+		System.out.println(resp.getData()[0]);
+		
+		/*
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
+	}
+	
+	public Response request(Request req) throws CloakedIronManException {
+		Response r = null;
+		try {
+			this.requestOutput.writeObject(req);
+			r = (Response)this.requestInput.readObject();	
+			return r;
+		} catch (IOException | ClassNotFoundException e) {
+			throw new CloakedIronManException("Invalid response from server.", e);
+		} 
 	}
 	
 }

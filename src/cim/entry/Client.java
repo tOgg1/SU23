@@ -9,11 +9,13 @@ public class Client
 	/**
 	 * @param args
 	 */	
-
+	public static cim.net.Client instance;
+	
+	
 	public static void main(String[] args) throws CloakedIronManException
     {
-		cim.net.Client client = new cim.net.Client();
-		client.run();
+		instance = new cim.net.Client();
+		instance.run();
 	}
 
 }
