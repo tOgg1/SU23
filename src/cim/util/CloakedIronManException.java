@@ -22,4 +22,8 @@ public class CloakedIronManException extends Exception
         super(s);
         Log.e("Exception", s);
     }
+    
+    public CloakedIronManException(String s, Exception inner) {
+    	super(s, inner);
+    }
 }
