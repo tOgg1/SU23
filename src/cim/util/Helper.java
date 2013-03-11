@@ -21,4 +21,9 @@ public class Helper
         newArray[i] = element;
         return newArray;
     }
+    /**
+     * Returns the first part of the string to the separator, and removes that part from the original string
+     * @param str
+     * @return
+     */
 }

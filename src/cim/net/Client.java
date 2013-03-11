@@ -1,7 +1,8 @@
 package cim.net;
 
 import cim.models.Account;
-import cim.models.CalendarRegister;
+import cim.util.AuthenticatorInterface;
+//import cim.models.CalendarRegister;
 import cim.util.Settings;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+
 public class Client
 {
     private Socket socket;
@@ -20,14 +22,16 @@ public class Client
     private ObjectOutputStream oos;
     private Thread runThread;
     private ConcurrentLinkedQueue<Request> requestQueue;
+    
+	private static Authenticator authenticator = new Authenticator();
 
-    CalendarRegister register;
+    //CalendarRegister register;
 
     private boolean running = false;
 
     public Client()
     {
-        register = new CalendarRegister();
+        //register = new CalendarRegister();
         try
         {
             socket = new Socket(InetAddress.getLocalHost(), Settings.SERVER_PORT);
@@ -46,10 +50,32 @@ public class Client
 
 	public void run()
     {
+		
+		// Først må man authentisere
+		// Her skal programmet settes opp med listeners og GUI.
+		
+		// Creating a thread that sends messages to the server.
+		RequestSenderThread rct = new RequestSenderThread();
+		rct.run();
 		running = true;
         while(running)
         {
 
         }
 	}
+	
+	public Request sendRequestToServer(Request req)
+	{
+		requestQueue.add(req);
+		return null;
+	}
+	
+	private class RequestSenderThread extends Thread {
+		public void run() {
+			while (true) {
+				
+			}
+		}
+	}
+	
 }

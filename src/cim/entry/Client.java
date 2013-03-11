@@ -1,11 +1,15 @@
 package cim.entry;
 
+
 public class Client
 {
 
 	/**
 	 * @param args
 	 */
+	
+	//public static final cim.net.Client instance
+	
 
 	public static void main(String[] args)
     {

@@ -90,6 +90,12 @@ public class Server
 
     public Request handleRequest(Request request)
     {
+    	String requestString = request.getRequest().toUpperCase();
+    	Object[] args = request.getArgs();
+    	if (requestString.equals("GET CALENDAR BY ID")){
+    		return this.getCalendarByID((int)args[0]);
+    	}
+    	
     	
         //String sqlAction = Bucket.decodeFlag(bucket.flag);
         //int[] indexFlags = Bucket.getIndexes(bucket.indexFlag);
@@ -166,5 +172,9 @@ public class Server
             }
         }
 
+    }
+    
+    private Request getCalendarByID(int id) {
+    	return null;
     }
 }
