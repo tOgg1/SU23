@@ -1,11 +1,26 @@
 package cim.net;
 
+import cim.net.packet.Request;
+import cim.net.packet.Response;
+
 /**
  * This class defines the API for the entire server request
  * @author Håkon
  *
  */
 public class ServerRequestAPI {
+	
+	private final Server server;
+	
+	public ServerRequestAPI(Server server) {
+		this.server = server;
+	}
+	
+	/**
+	 * Returns response object to the output stream.
+	 * @param req
+	 * @return
+	 */
 	public Response getResponse(Request req) {
 		String method = req.getMethod().toUpperCase();
 		Object[] args = req.getArgs();

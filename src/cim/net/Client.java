@@ -6,8 +6,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Scanner;
 
+import cim.net.packet.Event;
+import cim.net.packet.Request;
+import cim.net.packet.Response;
 import cim.util.Authenticator;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
@@ -23,6 +27,7 @@ public class Client {
 	private ObjectOutputStream requestOutput;
 	
 	private Authenticator auth;
+	private ClientEventHandler evt;
 	
 	public Client() throws CloakedIronManException {
 		
@@ -61,10 +66,14 @@ public class Client {
 		
 		// Creating authenticator instance
 		this.auth = new Authenticator();
-		
+		this.evt = new ClientEventHandler();
 	}
 	
 	public void run() throws CloakedIronManException {
+		// Creating server event listener
+		EventListenerThread e = new EventListenerThread();
+		e.start();
+		
 		// Must log in first
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Skriv inn brukernavn: ");
@@ -90,6 +99,29 @@ public class Client {
 		} catch (IOException | ClassNotFoundException e) {
 			throw new CloakedIronManException("Invalid response from server.", e);
 		} 
+	}
+	
+	private class EventListenerThread extends Thread implements Runnable {
+		
+		public void run() {
+			while(true) {
+				try {
+					Event e = (Event) eventInput.readObject();
+					Client.this.evt.handleEvent(e);
+				} catch (ClassNotFoundException e) {
+					Log.e("Client", "Error receiving event: " + e.getMessage());
+					continue;
+				} catch (IOException e) {
+					if (e instanceof SocketException) {
+						Log.d("Client", "Server cancelled the connection.");
+						break;
+					} else {
+						Log.e("Client","Error receiving event: " + e.getMessage());
+						continue;
+					}
+				}
+			}
+		}
 	}
 	
 }

@@ -11,6 +11,9 @@ import java.net.SocketException;
 import java.util.UUID;
 import java.util.Vector;
 
+import cim.net.packet.Event;
+import cim.net.packet.Request;
+import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
 
@@ -25,7 +28,7 @@ public class Server {
 	private Vector<RequestThread> requestThreads = new Vector<RequestThread>();
 	private Vector<EventThread> eventThreads = new Vector<EventThread>();
 	
-	private ServerRequestAPI api = new ServerRequestAPI();
+	private ServerRequestAPI api;
     
 	
 	public Server(short eventPort, short requestPort) throws CloakedIronManException {
@@ -57,6 +60,7 @@ public class Server {
         }
 
         Log.d("Server", "Server running");
+        this.api = new ServerRequestAPI(this);
 	}
 	
 	public void run() {
@@ -73,6 +77,7 @@ public class Server {
 						Server.this.eventThreads.add(etInner);
 						etInner.start();
 						Log.d(tag, "Connection added");
+						broadcast(new Event(Event.Type.ADDED));
 					} catch (IOException e) {
 						Log.e(tag, "Connection event accept error");
 					}
@@ -104,11 +109,14 @@ public class Server {
 	}
 	
 	/**
-	 * Returns response object to the output stream.
-	 * @param req
-	 * @return
+	 * Broadcasting an event to all connected clients
+	 * @param e
 	 */
-	
+	public void broadcast(Event e){
+		for(EventThread et : this.eventThreads) {
+			et.broadcast(e);
+		}
+	}
 	
 	
 	/**
@@ -187,7 +195,29 @@ public class Server {
 		}
 
 		public void run() {
-			d("Running.");
+			while(Server.this.running) {
+				// Wating for an object which will never arrive
+				try {
+					this.input.readObject();
+				} catch (ClassNotFoundException e) {
+					
+				} catch(IOException e) {
+					if (e instanceof SocketException) {
+						Server.this.eventThreads.removeElement(this);
+						d("Connection thread torn down, initiated by client.");
+						break;
+					}
+				}
+				e("Event thread received an object which it should not");
+			}
+		}
+		
+		public void broadcast(Event e) {
+			try {
+				this.output.writeObject(e);
+			} catch (IOException e1) {
+				e("Could not write event to client.");
+			}
 		}
 	}
 
