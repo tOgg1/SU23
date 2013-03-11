@@ -13,12 +13,13 @@ public class Appointment extends CalendarObject
 	private String info;
 	protected Room room;
 	
-	public Appointment(Time startDate, Time endDate, String info, Date date)
+	public Appointment(Time startDate, Time endDate, String info, Date date, int id)
 	{
 		this.startDate = startDate;
 		this.date = date;
 		this.endDate = endDate;
 		this.info = info;
+		this.id = id;
 	}
 	public void modifyStart(Time newStartDate)
 	{
