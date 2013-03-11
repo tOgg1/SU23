@@ -15,24 +15,32 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
+import java.awt.Color;
+import javax.swing.border.LineBorder;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Dimension;
 
-public class AppointmentGUI{
+public class ChangeMeetingGUI{
 
 	private static JTextField textField;
 	private static JTextField txtDd;
 	private static JTextField txtYyyy;
+	private static JTextField navn_Person;
 	
 
 
 	public static void main(String args[]){
-		JFrame frame = new JFrame("Ny Avtale");
+		JFrame frame = new JFrame("Endre avtale");
 		frame.setResizable(false);
 		frame.pack();
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200};
-		gridBagLayout.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200};
-		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[] {30, 0, 30, 0, 0, 0, 30, 30, 30, 0, 0, 30};
+		gridBagLayout.rowHeights = new int[] {30, 0, 0, 0, 0, 30, 30, 30, 30, 30, 0, 0, 0, 30};
+		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0};
 		frame.getContentPane().setLayout(gridBagLayout);
 		
 		JLabel lblBeskrivelse = new JLabel("Beskrivelse");
@@ -53,7 +61,6 @@ public class AppointmentGUI{
 		textField.setColumns(30);
 		
 		JRadioButton rdbtnSted = new JRadioButton("Sted");
-		rdbtnSted.setSelected(true);
 		GridBagConstraints gbc_rdbtnSted = new GridBagConstraints();
 		gbc_rdbtnSted.anchor = GridBagConstraints.WEST;
 		gbc_rdbtnSted.insets = new Insets(0, 0, 5, 5);
@@ -99,6 +106,7 @@ public class AppointmentGUI{
 		txtYyyy.setColumns(4);
 		
 		JRadioButton rdbtnRom = new JRadioButton("Reserver rom");
+		rdbtnRom.setSelected(true);
 		GridBagConstraints gbc_rdbtnRom = new GridBagConstraints();
 		gbc_rdbtnRom.anchor = GridBagConstraints.WEST;
 		gbc_rdbtnRom.insets = new Insets(0, 0, 5, 5);
@@ -193,6 +201,7 @@ public class AppointmentGUI{
 		frame.getContentPane().add(lblLedigeRomstrrelse, gbc_lblLedigeRomstrrelse);
 		
 		JList list = new JList();
+		list.setBorder(new LineBorder(new Color(0, 0, 0)));
 		GridBagConstraints gbc_list = new GridBagConstraints();
 		gbc_list.insets = new Insets(0, 0, 5, 5);
 		gbc_list.gridheight = 3;
@@ -202,45 +211,160 @@ public class AppointmentGUI{
 		gbc_list.gridy = 5;
 		frame.getContentPane().add(list, gbc_list);
 		
-		JCheckBox chckbxLeggTilPersoner = new JCheckBox("Legg til personer/grupper");
-		GridBagConstraints gbc_chckbxLeggTilPersoner = new GridBagConstraints();
-		gbc_chckbxLeggTilPersoner.anchor = GridBagConstraints.WEST;
-		gbc_chckbxLeggTilPersoner.gridwidth = 4;
-		gbc_chckbxLeggTilPersoner.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxLeggTilPersoner.gridx = 1;
-		gbc_chckbxLeggTilPersoner.gridy = 10;
-		frame.getContentPane().add(chckbxLeggTilPersoner, gbc_chckbxLeggTilPersoner);
+		JCheckBox LeggTilPersoner = new JCheckBox("Legg til personer/grupper");
+		GridBagConstraints gbc_LeggTilPersoner = new GridBagConstraints();
+		gbc_LeggTilPersoner.anchor = GridBagConstraints.WEST;
+		gbc_LeggTilPersoner.gridwidth = 4;
+		gbc_LeggTilPersoner.insets = new Insets(0, 0, 5, 5);
+		gbc_LeggTilPersoner.gridx = 1;
+		gbc_LeggTilPersoner.gridy = 10;
+		frame.getContentPane().add(LeggTilPersoner, gbc_LeggTilPersoner);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Legg til personlig varsel");
-		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
-		gbc_chckbxNewCheckBox.anchor = GridBagConstraints.WEST;
-		gbc_chckbxNewCheckBox.gridwidth = 4;
-		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox.gridx = 1;
-		gbc_chckbxNewCheckBox.gridy = 11;
-		frame.getContentPane().add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
+		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane.setBorder(new LineBorder(new Color(0, 0, 0)));
+		GridBagConstraints gbc_layeredPane = new GridBagConstraints();
+		gbc_layeredPane.gridwidth = 10;
+		gbc_layeredPane.insets = new Insets(0, 0, 5, 5);
+		gbc_layeredPane.fill = GridBagConstraints.BOTH;
+		gbc_layeredPane.gridx = 1;
+		gbc_layeredPane.gridy = 11;
+		frame.getContentPane().add(layeredPane, gbc_layeredPane);
+		GridBagLayout gbl_layeredPane = new GridBagLayout();
+		gbl_layeredPane.rowHeights = new int[] {30, 30, 30, 30, 30, 30, 30, 30};
+		gbl_layeredPane.columnWidths = new int[] {0, 0, 30, 30, 30, 30};
+		gbl_layeredPane.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, 1.0, 0.0};
+		gbl_layeredPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0};
+		layeredPane.setLayout(gbl_layeredPane);
 		
-		JButton btnNewButton = new JButton("Legg til i kalender");
-		btnNewButton.addActionListener(new ActionListener() {
+		JLabel NavnPaPersongrupper = new JLabel("Navn p\u00E5 person/grupper");
+		GridBagConstraints gbc_NavnPaPersongrupper = new GridBagConstraints();
+		gbc_NavnPaPersongrupper.anchor = GridBagConstraints.WEST;
+		gbc_NavnPaPersongrupper.insets = new Insets(0, 0, 5, 5);
+		gbc_NavnPaPersongrupper.gridx = 0;
+		gbc_NavnPaPersongrupper.gridy = 0;
+		layeredPane.add(NavnPaPersongrupper, gbc_NavnPaPersongrupper);
+		
+		JButton sok = new JButton("S\u00F8k");
+		GridBagConstraints gbc_sok = new GridBagConstraints();
+		gbc_sok.insets = new Insets(0, 0, 5, 5);
+		gbc_sok.gridx = 1;
+		gbc_sok.gridy = 0;
+		layeredPane.add(sok, gbc_sok);
+		
+		navn_Person = new JTextField();
+		GridBagConstraints gbc_navn_Person = new GridBagConstraints();
+		gbc_navn_Person.anchor = GridBagConstraints.WEST;
+		gbc_navn_Person.insets = new Insets(0, 0, 5, 5);
+		gbc_navn_Person.gridx = 0;
+		gbc_navn_Person.gridy = 1;
+		layeredPane.add(navn_Person, gbc_navn_Person);
+		navn_Person.setColumns(15);
+		
+		JLabel Sketreff = new JLabel("S\u00F8ketreff");
+		GridBagConstraints gbc_Sketreff = new GridBagConstraints();
+		gbc_Sketreff.anchor = GridBagConstraints.WEST;
+		gbc_Sketreff.insets = new Insets(0, 0, 5, 5);
+		gbc_Sketreff.gridx = 0;
+		gbc_Sketreff.gridy = 3;
+		layeredPane.add(Sketreff, gbc_Sketreff);
+		
+		JLabel Deltakere = new JLabel("Deltakere");
+		GridBagConstraints gbc_Deltakere = new GridBagConstraints();
+		gbc_Deltakere.insets = new Insets(0, 0, 5, 5);
+		gbc_Deltakere.gridx = 3;
+		gbc_Deltakere.gridy = 3;
+		layeredPane.add(Deltakere, gbc_Deltakere);
+		
+		JList treff = new JList();
+		treff.setBorder(new LineBorder(new Color(0, 0, 0)));
+		GridBagConstraints gbc_treff = new GridBagConstraints();
+		gbc_treff.gridheight = 4;
+		gbc_treff.insets = new Insets(0, 0, 0, 5);
+		gbc_treff.fill = GridBagConstraints.BOTH;
+		gbc_treff.gridx = 0;
+		gbc_treff.gridy = 4;
+		layeredPane.add(treff, gbc_treff);
+		
+		JList deltakere = new JList();
+		deltakere.setBorder(new LineBorder(new Color(0, 0, 0)));
+		GridBagConstraints gbc_deltakere = new GridBagConstraints();
+		gbc_deltakere.gridwidth = 3;
+		gbc_deltakere.gridheight = 4;
+		gbc_deltakere.fill = GridBagConstraints.BOTH;
+		gbc_deltakere.gridx = 3;
+		gbc_deltakere.gridy = 4;
+		layeredPane.add(deltakere, gbc_deltakere);
+		
+		JButton leggtil = new JButton("Legg til");
+		GridBagConstraints gbc_leggtil = new GridBagConstraints();
+		gbc_leggtil.gridwidth = 2;
+		gbc_leggtil.insets = new Insets(0, 0, 5, 5);
+		gbc_leggtil.gridx = 1;
+		gbc_leggtil.gridy = 5;
+		layeredPane.add(leggtil, gbc_leggtil);
+		
+		JButton fjern = new JButton("  Fjern ");
+		GridBagConstraints gbc_fjern = new GridBagConstraints();
+		gbc_fjern.gridwidth = 2;
+		gbc_fjern.insets = new Insets(0, 0, 5, 5);
+		gbc_fjern.gridx = 1;
+		gbc_fjern.gridy = 6;
+		layeredPane.add(fjern, gbc_fjern);
+		
+		JCheckBox LeggTilVarsel = new JCheckBox("Legg til personlig varsel");
+		GridBagConstraints gbc_LeggTilVarsel = new GridBagConstraints();
+		gbc_LeggTilVarsel.anchor = GridBagConstraints.WEST;
+		gbc_LeggTilVarsel.gridwidth = 4;
+		gbc_LeggTilVarsel.insets = new Insets(0, 0, 5, 5);
+		gbc_LeggTilVarsel.gridx = 1;
+		gbc_LeggTilVarsel.gridy = 12;
+		frame.getContentPane().add(LeggTilVarsel, gbc_LeggTilVarsel);
+		
+		JButton saveChange = new JButton("Lagre Endringer");
+		saveChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton.gridx = 9;
-		gbc_btnNewButton.gridy = 11;
-		frame.getContentPane().add(btnNewButton, gbc_btnNewButton);
 		
-		JButton btnAvbryt = new JButton("        Avbryt         ");
+		JButton btnAvlysMtet = new JButton("  Avlys m\u00F8tet  ");
+		GridBagConstraints gbc_btnAvlysMtet = new GridBagConstraints();
+		gbc_btnAvlysMtet.insets = new Insets(0, 0, 0, 5);
+		gbc_btnAvlysMtet.gridx = 8;
+		gbc_btnAvlysMtet.gridy = 13;
+		frame.getContentPane().add(btnAvlysMtet, gbc_btnAvlysMtet);
+		GridBagConstraints gbc_saveChange = new GridBagConstraints();
+		gbc_saveChange.insets = new Insets(0, 0, 0, 5);
+		gbc_saveChange.gridx = 9;
+		gbc_saveChange.gridy = 13;
+		frame.getContentPane().add(saveChange, gbc_saveChange);
+		
+		JButton btnAvbryt = new JButton("       Avbryt        ");
 		btnAvbryt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		GridBagConstraints gbc_btnAvbryt = new GridBagConstraints();
-		gbc_btnAvbryt.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAvbryt.insets = new Insets(0, 0, 0, 5);
 		gbc_btnAvbryt.gridx = 10;
-		gbc_btnAvbryt.gridy = 11;
+		gbc_btnAvbryt.gridy = 13;
 		frame.getContentPane().add(btnAvbryt, gbc_btnAvbryt);
 		frame.setVisible(true);
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }

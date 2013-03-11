@@ -11,7 +11,6 @@ public class Client
 	 */	
 	public static cim.net.Client instance;
 	
-	
 	public static void main(String[] args) throws CloakedIronManException
     {
 		instance = new cim.net.Client();

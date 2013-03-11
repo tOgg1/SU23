@@ -1,6 +1,10 @@
 package cim.net;
 
 import java.io.File;
+
+//import cim.models.CalendarRegister;
+import cim.util.Settings;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,7 +19,6 @@ import cim.net.packet.Response;
 import cim.util.Authenticator;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
-import cim.util.Settings;
 
 public class Client {
 	private Socket eventSocket;
