@@ -32,4 +32,8 @@ public class Room extends CalendarObject
     {
         return id;
     }
+    public String toString()
+    {
+    	return "Navn: " + this.name + "\nStørrelse: " + this.size + "\nInfo: " + this.info;
+    }
 }

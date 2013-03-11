@@ -1,11 +1,13 @@
 package cim.database;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 
 import cim.models.Account;
 import cim.models.Appointment;
 import cim.models.Calendar;
+import cim.models.Room;
 
 public class DatabaseHandler {
 
@@ -160,7 +162,25 @@ public class DatabaseHandler {
 		return null;
 		
 	}
-	
+	public ArrayList<Room> getAllRooms()
+	{
+		ArrayList<Room> rom = new ArrayList<Room>();
+		String sql = "SELECT *" +
+				"FROM meeting_room;";
+		ResultSet rs = executeQuery(sql);
+		try {
+			while(rs.next())
+			{
+				rom.add(new Room("Rommet", rs.getInt("size"), "Informasjon"));
+			}
+			return rom;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			return null;
+		}
+				
+	}
 	
 	public boolean createAppointment(int owner_id, int calendar_id, Time startTime, Time endTime, Date date, String info, String name,int room_id, String place){
 		String sql = 
