@@ -13,6 +13,7 @@ public class Calendar extends CalendarObject
 	{
 		this.appointments = new ArrayList<Appointment>();
 		this.hasAccess = new ArrayList<Attendable>();
+		this.owner = owner;
 	}
 	public Calendar(){
 		this.appointments = new ArrayList<Appointment>();
@@ -62,7 +63,7 @@ public class Calendar extends CalendarObject
     }
     
     public String toString(){
-    	String returnString = this.owner + "\n";
+    	String returnString = this.owner.getName() + "\n";
     	for (Appointment x : appointments){
     		returnString += "\n" + x;
     	}

@@ -71,17 +71,33 @@ public class DatabaseHandler {
 	private Account getAccount(int accountId){
 		String sql = 
 				"SELECT * " +
-				"FROM account " +
-				"WHERE user_id = ";
+				"FROM attendable " +
+				"WHERE attendable_id = ";
 		sql += accountId;
 		ResultSet rs = executeQuery(sql);
+		int accountId1 = 0;
 		try {
 			rs.next();
-			System.out.println(rs.getString("email"));
+			accountId1 = rs.getInt("user_id");
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		sql = "SELECT * " +
+				"FROM account " +
+				"WHERE user_id = ";
+		sql += accountId1;		
+		rs = executeQuery(sql);
+		System.out.println(sql);
+
+		
+		try {
+			rs.next();
 			return new Account(rs.getString("first_name"),
 							   rs.getString("last_name"),
 							   rs.getString("email"));
 		} catch (SQLException e) {
+			System.out.println(e);
 			return null;
 		}
 	}
