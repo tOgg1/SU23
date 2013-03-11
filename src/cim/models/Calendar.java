@@ -32,6 +32,8 @@ public class Calendar extends CalendarObject
 	{
 		return this.hasAccess.contains(person);
 	}
+	
+	
 	public Boolean hasAppointment(Appointment appointment)
 	{
 		return this.appointments.contains(appointment);
@@ -40,11 +42,15 @@ public class Calendar extends CalendarObject
 	{
 		if(!this.appointments.contains(appointment))
 		this.appointments.add(appointment);
+		pcs.firePropertyChange("appointment", null, appointment);
+
 	}
 	public void addAccess(Attendable person)
 	{
 		if(!hasAccess(person))
 		this.hasAccess.add(person);
+		pcs.firePropertyChange("hasaccess", null, person);
+
 		
 	}
 	public void removeAppointment(Appointment appointment)
@@ -57,6 +63,8 @@ public class Calendar extends CalendarObject
 	public void removeAccess(Attendable person)
 	{
 		this.hasAccess.remove(person);
+		pcs.firePropertyChange("hasacsess", person, null);
+
 	}
     @Override
     public int getId()

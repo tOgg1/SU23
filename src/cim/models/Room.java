@@ -25,8 +25,11 @@ public class Room extends CalendarObject
 		
 	}
 	public void setBooked(Boolean truthValue)
-	{
+	{	Boolean oldValue = this.isBooked;
 		this.isBooked = truthValue;
+		pcs.firePropertyChange("booked", oldValue , truthValue);
+
+
 	}
     @Override
     public int getId()
@@ -35,6 +38,6 @@ public class Room extends CalendarObject
     }
     public String toString()
     {
-    	return "Navn: " + this.name + "\nStørrelse: " + this.size + "\nInfo: " + this.info;
+    	return "Navn: " + this.name + "\nStorrelse: " + this.size + "\nInfo: " + this.info;
     }
 }
