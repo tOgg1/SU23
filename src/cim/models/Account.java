@@ -86,18 +86,4 @@ public class Account extends CalendarObject implements Attendable
 	public boolean isValidPassword(String password){
 		return this.password == password;
 	}
-
-
-    @Override
-    public Object[] getData()
-    {
-        Object[] data = new Object[5];
-        data[0] = email;
-        data[1] = name;
-        data[2] = calendars;
-        data[3] = groups;
-        data[4] = password;
-        return data;
-
-    }
 }

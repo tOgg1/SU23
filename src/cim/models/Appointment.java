@@ -30,16 +30,4 @@ public class Appointment extends CalendarObject
 		this.endDate = newEndDate;
 	}
 
-
-    @Override
-    public Object[] getData()
-    {
-        Object[] data = new Object[5];
-        data[0] = owner;
-        data[1] = startDate;
-        data[2] = endDate;
-        data[3] = info;
-        data[4] = room;
-        return data;
-    }
 }

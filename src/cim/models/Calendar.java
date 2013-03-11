@@ -51,13 +51,4 @@ public class Calendar extends CalendarObject {
 		this.hasAccess.remove(person);
 	}
 
-    @Override
-    public Object[] getData()
-    {
-        Object[] data = new Object[3];
-        data[0] = owner;
-        data[1] = appointments;
-        data[2] = hasAccess;
-        return data;
-    }
 }

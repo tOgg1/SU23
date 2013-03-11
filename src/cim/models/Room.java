@@ -25,15 +25,5 @@ public class Room extends CalendarObject {
 	{
 		this.isBooked = truthValue;
 	}
-    @Override
-    public Object[] getData()
-    {
-        Object[] data = new Object[5];
-        data[0] = name;
-        data[1] = size;
-        data[2] = info;
-        data[3] = bookedTime;
-        data[4] = isBooked;
-        return data;
-    }
+
 }
