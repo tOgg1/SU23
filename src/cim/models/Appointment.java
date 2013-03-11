@@ -1,34 +1,41 @@
 package cim.models;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Time;
 
 public class Appointment extends CalendarObject 
 {
     private int id;
 	private Account owner;
-	private Date startDate;
-	private Date endDate;
+	private Time startDate;
+	private Time endDate;
+	private Date date;
 	private String info;
 	protected Room room;
 	
-	public Appointment(Date startDate, Date endDate, String info)
+	public Appointment(Time startDate, Time endDate, String info, Date date)
 	{
 		this.startDate = startDate;
+		this.date = date;
 		this.endDate = endDate;
 		this.info = info;
 	}
-	public void modifyStart(Date newStartDate)
+	public void modifyStart(Time newStartDate)
 	{
 		this.startDate = newStartDate;
 	}
-	public void modifyEnd(Date newEndDate)
+	public void modifyEnd(Time newEndDate)
 	{
 		this.endDate = newEndDate;
 	}
-	public void modifyTime(Date newStartDate, Date newEndDate)
+	public void modifyTime(Time newStartDate, Time newEndDate)
 	{
 		this.startDate = newStartDate;
 		this.endDate = newEndDate;
+	}
+	public void modifyDate(Date newDate)
+	{
+		this.date = newDate;
 	}
     @Override
     public int getId()
