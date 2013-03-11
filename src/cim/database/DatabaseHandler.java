@@ -199,7 +199,6 @@ public class DatabaseHandler {
 		}catch(Exception e){
 			return false;
 		}
-		
 	}
 	
 	public boolean deleteAppointment(int appointmentId){
@@ -207,6 +206,7 @@ public class DatabaseHandler {
 		sql += appointmentId;
 		return executeUpdate(sql);
 	}
+	
 	
 
 

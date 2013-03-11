@@ -6,7 +6,7 @@ import java.beans.PropertyChangeSupport;
 public abstract class CalendarObject
 {
 	
-	PropertyChangeSupport pcs;
+	protected PropertyChangeSupport pcs;
 	
 	public CalendarObject()
 	{
