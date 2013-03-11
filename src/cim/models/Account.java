@@ -3,15 +3,17 @@ package cim.models;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyChangeListener;
 
 public class Account extends CalendarObject implements Attendable 
 {
     private int id;
 	private String email;
-	private String name;
+	private String firstName;
+	private String lastName;
 	private ArrayList<CalendarObject> calendars;
 	private ArrayList<Group> groups;
-
 	private String password;
 
 	private static Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+"
@@ -19,9 +21,11 @@ public class Account extends CalendarObject implements Attendable
             + "(\\.[A-Za-z]{2,})$");
 	private static Matcher matcher;
 
-	public Account(String name, String email)
+	public Account(String first_name,String last_name, String email)
 	{
-		this.name = name;
+		super();
+		this.firstName = first_name;
+		this.lastName = last_name;
 		this.email = email;
 		this.calendars = new ArrayList<CalendarObject>();
 		this.groups = new ArrayList<Group>();
@@ -60,12 +64,22 @@ public class Account extends CalendarObject implements Attendable
 	
 	public void changeAccount(String newName, String newEmail, String newPassword)
 	{
-		this.name = newName;
+		String[] splittet = new String[3];
+		splittet = newName.split(" ");
+		if(!(splittet[0] == null) && !(splittet[1] == null))
+		{
+			this.firstName = splittet[0];
+			this.lastName = splittet[1];
+		}
 		if(validate(newEmail))
 		{
+			String oldMail = this.email;
 			this.email = newEmail;
+			pcs.firePropertyChange("email", oldMail, newEmail);
 		}
+		String oldPassword = this.password;
 		this.password = newPassword;
+		pcs.firePropertyChange("password", oldPassword, newPassword);
 	
 	}
 	
@@ -77,7 +91,7 @@ public class Account extends CalendarObject implements Attendable
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return this.name;
+		return this.lastName;
 	}
 
 	public String getPassword() {
@@ -92,4 +106,5 @@ public class Account extends CalendarObject implements Attendable
     {
         return id;
     }
+   
 }
