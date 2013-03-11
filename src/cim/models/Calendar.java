@@ -2,8 +2,9 @@ package cim.models;
 
 import java.util.ArrayList;
 
-public class Calendar extends CalendarObject {
-	
+public class Calendar extends CalendarObject
+{
+    private int id;
 	private Account owner;
 	private ArrayList<Appointment> appointments;
 	private ArrayList<Attendable> hasAccess;
@@ -12,7 +13,12 @@ public class Calendar extends CalendarObject {
 	{
 		this.appointments = new ArrayList<Appointment>();
 		this.hasAccess = new ArrayList<Attendable>();
+		this.owner = owner;
 	}
+	public Calendar(){
+		this.appointments = new ArrayList<Appointment>();
+		this.hasAccess = new ArrayList<Attendable>();	
+		}
 	
 	public Attendable getOwner()
 	{
@@ -50,9 +56,19 @@ public class Calendar extends CalendarObject {
 	{
 		this.hasAccess.remove(person);
 	}
-
     @Override
-    public int getData() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    public int getId()
+    {
+        return id;
     }
+    
+    public String toString(){
+    	String returnString = this.owner.getName() + "\n";
+    	for (Appointment x : appointments){
+    		returnString += "\n" + x;
+    	}
+    	return returnString;
+    	
+    }
+
 }

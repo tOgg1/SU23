@@ -13,10 +13,13 @@ public class CloakedIronManException extends Exception
     public CloakedIronManException()
     {
         super();
+        Log.e("Exception", "Some CloakedIronManException occured");
+
     }
 
     public CloakedIronManException(String s)
     {
         super(s);
+        Log.e("Exception", s);
     }
 }

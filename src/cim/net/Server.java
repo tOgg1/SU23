@@ -1,24 +1,28 @@
 package cim.net;
 
+import cim.database.DatabaseHandler;
 import cim.util.CloakedIronManException;
+import cim.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Server
 {
-	
+
+    DatabaseHandler dbHandler;
+
 	private final short port;
     private ServerSocket server;
-    private Thread serverThread;
+    private Thread listenThread;
     // Thread-safe
-    private ConcurrentLinkedQueue<Bucket> bucketQueue;
     private Vector<ConnectionThread> connections;
+    private boolean running = false;
 
 	
 	/**
@@ -27,16 +31,32 @@ public class Server
 	 */
 	public Server(short port) throws CloakedIronManException
     {
+        // Create log file
+        File file = new File("serverlog.txt");
+        try
+        {
+            if(!file.isFile())
+                file.createNewFile();
+            Log.setLogFile(file);
+        }
+        catch(IOException e)
+        {
+            throw new CloakedIronManException("Log file not found, or can't be accessed!");
+        }
+        // //
+
 		this.port = port;
         try
         {
-        server = new ServerSocket(port);
+            server = new ServerSocket(port);
         }
         catch(IOException e)
         {
             // Sad Panda
-            throw new CloakedIronManException("Server Connection not established, shutting down");
+            throw new CloakedIronManException("Server Connection not established");
         }
+
+        Log.d("Server", "Server running");
 	}
 	
 	/**
@@ -44,14 +64,39 @@ public class Server
 	 */
 	public void run()
     {
-		System.out.println("Server is runnnig on " + this.port + ".");
+        running = true;
+        listenThread = new Thread()
+        {
+            public void run()
+            {
+                while(running)
+                {
+                    try
+                    {
+                        Socket socket = server.accept();
+                        ConnectionThread newConnection = new ConnectionThread(socket, Server.this);
+                        connections.add(newConnection);
+                    }
+                    catch(IOException e)
+                    {
+                        Log.e("Server", "Connection accept error");
+                    }
+                }
+            }
+        };
+        listenThread.start();
 	}
 
-    public void listen()
-    {
 
+    public Request handleRequest(Request request)
+    {
+    	
+        //String sqlAction = Bucket.decodeFlag(bucket.flag);
+        //int[] indexFlags = Bucket.getIndexes(bucket.indexFlag);
+        return null;
     }
 
+    //Connection stuff
     public void addConnection(Socket socket)
     {
         ConnectionThread connection = new ConnectionThread(socket, this);
@@ -100,10 +145,10 @@ public class Server
         @Override
         public void run()
         {
-            Bucket bucket;
+            Request request;
             try
             {
-                while(running && (bucket = (Bucket)input.readObject()) != null)
+                while(running && (request = (Request)input.readObject()) != null)
                 {
 
                 }

@@ -2,12 +2,14 @@ package cim.models;
 
 import java.util.Date;
 
-public class Room extends CalendarObject {
+public class Room extends CalendarObject
+{
+    private int id;
 	private String name;
 	private int size;
 	private String info;
 	private Date bookedTime;
-	private Boolean isBooked;
+	private boolean isBooked;
 	
 	public Room(String name, int size, String info)
 	{
@@ -16,7 +18,7 @@ public class Room extends CalendarObject {
 		this.info = info;
 		this.isBooked = false;
 	}
-	public Boolean isAvailiable()
+	public boolean isAvailiable()
 	{
 		return isBooked;
 		
@@ -26,8 +28,12 @@ public class Room extends CalendarObject {
 		this.isBooked = truthValue;
 	}
     @Override
-    public int getData()
+    public int getId()
     {
-        return 0;
+        return id;
+    }
+    public String toString()
+    {
+    	return "Navn: " + this.name + "\nStørrelse: " + this.size + "\nInfo: " + this.info;
     }
 }

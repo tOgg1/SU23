@@ -1,15 +1,15 @@
 package cim.models;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-
-import cim.util.AuthenticatorInterface;
+import java.util.regex.Pattern;
 
 public class Account extends CalendarObject implements Attendable 
 {
+    private int id;
 	private String email;
-	private String name;
+	private String firstName;
+	private String lastName;
 	private ArrayList<CalendarObject> calendars;
 	private ArrayList<Group> groups;
 	private String password;
@@ -19,9 +19,10 @@ public class Account extends CalendarObject implements Attendable
             + "(\\.[A-Za-z]{2,})$");
 	private static Matcher matcher;
 
-	public Account(String name, String email)
+	public Account(String first_name,String last_name, String email)
 	{
-		this.name = name;
+		this.firstName = first_name;
+		this.lastName = last_name;
 		this.email = email;
 		this.calendars = new ArrayList<CalendarObject>();
 		this.groups = new ArrayList<Group>();
@@ -60,7 +61,13 @@ public class Account extends CalendarObject implements Attendable
 	
 	public void changeAccount(String newName, String newEmail, String newPassword)
 	{
-		this.name = newName;
+		String[] splittet = new String[3];
+		splittet = newName.split(" ");
+		if(!(splittet[0] == null) && !(splittet[1] == null))
+		{
+			this.firstName = splittet[0];
+			this.lastName = splittet[1];
+		}
 		if(validate(newEmail))
 		{
 			this.email = newEmail;
@@ -77,13 +84,8 @@ public class Account extends CalendarObject implements Attendable
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return this.name;
+		return this.lastName;
 	}
-
-    @Override
-    public int getData() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
 	public String getPassword() {
 		return password;
@@ -92,4 +94,9 @@ public class Account extends CalendarObject implements Attendable
 	public boolean isValidPassword(String password){
 		return this.password == password;
 	}
+    @Override
+    public int getId()
+    {
+        return id;
+    }
 }
