@@ -62,7 +62,7 @@ public class Account extends CalendarObject implements Attendable
 	
 	public void changeAccount(String newName, String newEmail, String newPassword)
 	{
-		this.name = newName;
+		String[] splittet = newName.split(" ");
 		if(validate(newEmail))
 		{
 			this.email = newEmail;
