@@ -79,7 +79,7 @@ public class Account extends CalendarObject implements Attendable
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return this.name;
+		return this.lastName;
 	}
 
 	public String getPassword() {

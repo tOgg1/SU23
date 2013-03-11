@@ -42,4 +42,8 @@ public class Appointment extends CalendarObject
     {
         return id;
     }
+    
+    public String toString(){
+    	return "startDate: " + startDate + " endDate: " + endDate;
+    }
 }

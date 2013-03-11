@@ -77,6 +77,7 @@ public class DatabaseHandler {
 		ResultSet rs = executeQuery(sql);
 		try {
 			rs.next();
+			System.out.println(rs.getString("first_name"));
 			return new Account(rs.getString("first_name"),
 							   rs.getString("last_name"),
 							   rs.getString("email"));
@@ -92,9 +93,21 @@ public class DatabaseHandler {
 				"WHERE calendar_id = ";
 		sql += calendar_id;
 		ResultSet rs = executeQuery(sql);
-		rs.next();
+		try {
+			rs.next();
+		} catch (SQLException e2) {
+			System.out.println(e2);
+			return null;
+		}
 		
-		Account owner = getAccount(rs.getInt("owner_attendable_id"));
+		Account owner;
+		try {
+			owner = getAccount(rs.getInt("owner_attendable_id"));
+		} catch (SQLException e1) {
+			System.out.println(e1);
+			return null;
+			
+		}
 		
 		sql = 
 				"SELECT name, date, start, end , info, place " +
@@ -108,16 +121,16 @@ public class DatabaseHandler {
 			while(rs.next()){				
 				Appointment a = new Appointment(rs.getTime("start"), 
 												rs.getTime("end"),
-												rs.getDate("date"),
-												rs.getString("info"));
+												rs.getString("info"),
+												rs.getDate("date"));
 				c.addAppointment(a);
 			}
 			return c;
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 		
 	}
 	

@@ -60,5 +60,14 @@ public class Calendar extends CalendarObject
     {
         return id;
     }
+    
+    public String toString(){
+    	String returnString = this.owner + "\n";
+    	for (Appointment x : appointments){
+    		returnString += "\n" + x;
+    	}
+    	return returnString;
+    	
+    }
 
 }
