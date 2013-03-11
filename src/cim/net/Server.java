@@ -1,12 +1,55 @@
 package cim.net;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
 
+import cim.util.CloakedIronManException;
+import cim.util.Log;
+
 public class Server {
+	
+	private final short port;
+    private ServerSocket server;
+	
+	public Server(short port) throws CloakedIronManException {
+		// Create log file
+        File file = new File("serverlog.txt");
+        try
+        {
+            if(!file.isFile())
+                file.createNewFile();
+            Log.setLogFile(file);
+        }
+        catch(IOException e)
+        {
+            throw new CloakedIronManException("Log file not found, or can't be accessed!");
+        }
+        // //
+
+		this.port = port;
+        try
+        {
+            server = new ServerSocket(port);
+        }
+        catch(IOException e)
+        {
+            // Sad Panda
+            throw new CloakedIronManException("Server Connection not established");
+        }
+
+        Log.d("Server", "Server running");
+	}
+	
+	public void run() {
+		
+	}
+	
+	
 	private Vector<RequestThread> requestThreads = new Vector<RequestThread>();
 	
 	/**

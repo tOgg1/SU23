@@ -12,7 +12,7 @@ public class Server {
 
 	public static void main(String[] args) throws CloakedIronManException {
 
-		cim.net2.Server server = new cim.net2.Server(Settings.SERVER_PORT);
+		cim.net.Server server = new cim.net.Server(Settings.SERVER_PORT);
 		server.run();
 		
 	}
