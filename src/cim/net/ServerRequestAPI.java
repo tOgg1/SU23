@@ -1,7 +1,12 @@
 package cim.net;
 
+import java.sql.SQLException;
+
+import cim.database.DatabaseHandlerHawk;
+import cim.models.Account;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
+import cim.util.CloakedIronManException;
 
 /**
  * This class defines the API for the entire server request
@@ -11,9 +16,11 @@ import cim.net.packet.Response;
 public class ServerRequestAPI {
 	
 	private final Server server;
+	private final DatabaseHandlerHawk db;
 	
-	public ServerRequestAPI(Server server) {
+	public ServerRequestAPI(Server server) throws CloakedIronManException {
 		this.server = server;
+		this.db = new DatabaseHandlerHawk();
 	}
 	
 	/**
@@ -22,18 +29,35 @@ public class ServerRequestAPI {
 	 * @return
 	 */
 	public Response getResponse(Request req) {
-		String method = req.getMethod().toUpperCase();
-		Object[] args = req.getArgs();
-		//	Big fat-ass if
-		if(method.equals("AUTHENTICATE")) {
-			return authenticate((String)args[0], (String)args[1]);
+		try {
+			String method = req.getMethod().toUpperCase();
+			Object[] args = req.getArgs();
+			//	Big fat-ass if
+			if(method.equals("AUTHENTICATE")) {
+				return authenticate((String)args[0], (String)args[1]);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
 		return null;
+		
 	}
-	
-	private Response authenticate(String email, String pw) {
-		return new Response(true);
+	/**
+	 * Returns an account if the user is validated
+	 * @param email
+	 * @param pw
+	 * @return
+	 * @throws SQLException
+	 */
+	private Response authenticate(String email, String pw) throws SQLException {
+		Account acc = db.getAccountByEmail(email);
+		if(acc != null){
+			if(acc.isValidPassword(pw)){
+				return new Response(acc);
+			}
+		}
+		return new Response((Object)null);
 	}
 	
 }
