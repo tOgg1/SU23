@@ -107,7 +107,8 @@ public class DatabaseHandler {
 			rs.next();
 			return new Account(rs.getString("first_name"),
 							   rs.getString("last_name"),
-							   rs.getString("email"));
+							   rs.getString("email"),
+							   rs.getString("password"));
 		} catch (SQLException e) {
 			System.out.println(e);
 			return null;
