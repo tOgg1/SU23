@@ -38,9 +38,7 @@ public class DatabaseHandlerHawk {
 	 */
 	public int saveAccount(Account acc) throws CloakedIronManException {
 		try {
-			boolean bNew = false;
 			if(acc.getId() == -1) {
-				bNew = true;
 				acc.setId(this.getNextAutoIncrease("account", "user_id"));
 			}
 			System.out.println(acc.getId());
@@ -59,7 +57,7 @@ public class DatabaseHandlerHawk {
 			st.setString(7, acc.getLastName());
 			st.setString(8, acc.getPassword());
 			st.setString(9, acc.getEmail());
-			int rows = st.executeUpdate();
+			st.executeUpdate();
 			try {
 				this.addAttendable("user_id", acc.getId());
 			} catch (Exception e) {
