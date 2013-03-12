@@ -32,28 +32,38 @@ public class DatabaseHandlerHawk {
 	// PUBLIC METHODS
 	/**
 	 * This method saves an Account. It creates a new one if not exists, updates otherwise.
+	 * If a email that is in use is passed, the method will appear to work, but its not actually saved.
 	 * @param acc
 	 * @return ID of the current user;
 	 */
 	public int saveAccount(Account acc) throws CloakedIronManException {
 		try {
-			if(accountExists(acc)){
-				PreparedStatement st = this.con.prepareStatement("UPDATE account SET first_name=?, last_name=?, password=?, email=? WHERE user_id=?");
-				st.setString(0, acc.getFirstName());
-				st.setString(1, acc.getLastName());
-				st.setString(2, acc.getPassword());
-				st.setString(3, acc.getEmail());
-				st.setInt(4, acc.getId());
-				st.execute();
-				return acc.getId();
-			} else {
-				// Fetch net id
-				if(acc.getId == -1) {
-					acc.setId(this.getNextAutoIncrease("account", "user_id"));
-				}
-				int id = 
-				// Create statement
-				acc.
+			boolean bNew = false;
+			if(acc.getId() == -1) {
+				bNew = true;
+				acc.setId(this.getNextAutoIncrease("account", "user_id"));
+			}
+			System.out.println(acc.getId());
+			// Create statement
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO account " +
+					"(user_id, first_name, last_name, password,email)" +
+					"VALUES (?,?,?,?,?)" +
+					"ON DUPLICATE KEY UPDATE " +
+					"first_name=?, last_name=?,password=?,email=?");
+			st.setInt(1, acc.getId());
+			st.setString(2, acc.getFirstName());
+			st.setString(3, acc.getLastName());
+			st.setString(4, acc.getPassword());
+			st.setString(5, acc.getEmail());
+			st.setString(6, acc.getFirstName());
+			st.setString(7, acc.getLastName());
+			st.setString(8, acc.getPassword());
+			st.setString(9, acc.getEmail());
+			int rows = st.executeUpdate();
+			try {
+				this.addAttendable("user_id", acc.getId());
+			} catch (Exception e) {
+				
 			}
 			return acc.getId();
 		} catch (SQLException e) {
@@ -62,21 +72,21 @@ public class DatabaseHandlerHawk {
 		
 	}
 	
-	private boolean accountExists(Account acc) throws SQLException {
-		if(acc.getId() == -1) {
-			return false;
-		}
-		PreparedStatement statement = this.con.prepareStatement("SELECT COUNT(*) as has_user FROM account WHERE user_id=?");
-		statement.setInt(0, acc.getId());
-		ResultSet rs = statement.executeQuery();
+	private void addAttendable(String column, int id) throws SQLException {
+		PreparedStatement st = this.con.prepareStatement("SELECT COUNT(*) as has_att FROM attendable WHERE " + column +"=?");
+		st.setInt(1, id);
+		ResultSet rs = st.executeQuery();
 		rs.next();
-		return rs.getInt("has_user") == 1;
+		if (rs.getInt("has_att") < 1) {
+			// Must add to attendable
+			st = this.con.prepareStatement("INSERT INTO attendable ("+ column + ") VALUES (?)");
+			st.setInt(1, id);
+			st.execute();
+		}
 	}
 	
 	private int getNextAutoIncrease(String table, String column)throws SQLException {
-		PreparedStatement st = this.con.prepareStatement("SELECT MAX(?) as max FROM ?");
-		st.setString(0, column);
-		st.setString(1, table);
+		PreparedStatement st = this.con.prepareStatement("SELECT MAX(" + column + ") as max FROM " + table);
 		
 		ResultSet rs = st.executeQuery();
 		rs.next();
