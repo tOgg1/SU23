@@ -68,7 +68,7 @@ public class Client {
 		}
 		
 		// Creating authenticator instance
-		this.auth = new Authenticator();
+		this.auth = new Authenticator(this);
 		this.evt = new ClientEventHandler();
 	}
 	
@@ -88,6 +88,8 @@ public class Client {
 		if(!this.auth.isAuthenticated()) {
 			Log.d("Client", "Invalid username and password");
 			return;
+		} else {
+			Log.d("Client", "User logged in " + this.auth.getSelf().toString());
 		}
 		
 		/*
