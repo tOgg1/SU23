@@ -83,14 +83,22 @@ public class Account extends CalendarObject implements Attendable
 	
 	}
 	
-	@Override
 	public void receiveInvite(Meeting meeting) {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+		// For the attendable interface
+		return this.getFirstName() + " " + this.getLastName();
+	}
+	
+	public String getFirstName() {
+		return this.firstName;
+	}
+	
+	public String getLastName() {
 		return this.lastName;
 	}
 
@@ -106,5 +114,6 @@ public class Account extends CalendarObject implements Attendable
     {
         return id;
     }
+
    
 }
