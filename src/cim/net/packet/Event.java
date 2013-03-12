@@ -25,5 +25,13 @@ public class Event extends Packet {
 		this.type = type;
 		this.object = object;
 	}
+	
+	public Type getType() {
+		return this.type;
+	}
+	
+	public CalendarObject getObject() {
+		return this.object;
+	}
 
 }
