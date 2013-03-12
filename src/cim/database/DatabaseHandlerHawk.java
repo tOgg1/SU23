@@ -40,6 +40,7 @@ public class DatabaseHandlerHawk {
 			if(acc.getId() == -1) {
 				acc.setId(this.getNextAutoIncrease("account", "user_id"));
 			}
+			System.out.println(acc.getId());
 			// Create statement
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO account " +
 					"(user_id, first_name, last_name, password,email)" +
@@ -80,9 +81,7 @@ public class DatabaseHandlerHawk {
 	}
 	
 	private int getNextAutoIncrease(String table, String column)throws SQLException {
-		PreparedStatement st = this.con.prepareStatement("SELECT MAX(?) as max FROM ?");
-		st.setString(0, column);
-		st.setString(1, table);
+		PreparedStatement st = this.con.prepareStatement("SELECT MAX(" + column + ") as max FROM " + table);
 		
 		ResultSet rs = st.executeQuery();
 		rs.next();
