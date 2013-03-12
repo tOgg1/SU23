@@ -45,17 +45,17 @@ public class DatabaseHandlerHawk {
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO account " +
 					"(user_id, first_name, last_name, password,email)" +
 					"VALUES (?,?,?,?,?)" +
-					"ON DUPLICATE KEY UPDATE" +
+					"ON DUPLICATE KEY UPDATE " +
 					"first_name=?, last_name=?,password=?,email=?");
-			st.setInt(0, acc.getId());
-			st.setString(1, acc.getFirstName());
-			st.setString(2, acc.getLastName());
-			st.setString(3, acc.getPassword());
-			st.setString(4, acc.getEmail());
-			st.setString(5, acc.getFirstName());
-			st.setString(6, acc.getLastName());
-			st.setString(7, acc.getPassword());
-			st.setString(8, acc.getEmail());
+			st.setInt(1, acc.getId());
+			st.setString(2, acc.getFirstName());
+			st.setString(3, acc.getLastName());
+			st.setString(4, acc.getPassword());
+			st.setString(5, acc.getEmail());
+			st.setString(6, acc.getFirstName());
+			st.setString(7, acc.getLastName());
+			st.setString(8, acc.getPassword());
+			st.setString(9, acc.getEmail());
 			st.execute();
 			
 			// Must add attendable
@@ -69,7 +69,7 @@ public class DatabaseHandlerHawk {
 	
 	private void addAttendable(String column, int id) throws SQLException {
 		PreparedStatement st = this.con.prepareStatement("SELECT COUNT(*) as has_att FROM attendable WHERE " + column +"=?");
-		st.setInt(0, id);
+		st.setInt(1, id);
 		ResultSet rs = st.executeQuery();
 		rs.next();
 		if (rs.getInt("has_att") < 1) {

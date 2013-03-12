@@ -20,12 +20,13 @@ public class Account extends CalendarObject implements Attendable
             + "(\\.[A-Za-z]{2,})$");
 	private static Matcher matcher;
 
-	public Account(String first_name,String last_name, String email)
+	public Account(String first_name,String last_name, String email, String password)
 	{
 		super();
 		this.firstName = first_name;
 		this.lastName = last_name;
 		this.email = email;
+		this.password = password;
 		this.calendars = new ArrayList<CalendarObject>();
 		this.groups = new ArrayList<Group>();
 	}
@@ -113,6 +114,10 @@ public class Account extends CalendarObject implements Attendable
 		return this.password == password;
 	}
     
+	public void setPassword(String password) {
+		this.pcs.firePropertyChange("password", this.password, password);
+		this.password = password;
+	}
 
    
 }
