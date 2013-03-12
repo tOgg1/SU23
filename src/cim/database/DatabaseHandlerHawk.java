@@ -32,6 +32,7 @@ public class DatabaseHandlerHawk {
 	// PUBLIC METHODS
 	/**
 	 * This method saves an Account. It creates a new one if not exists, updates otherwise.
+	 * If a email that is in use is passed, the method will appear to work, but its not actually saved.
 	 * @param acc
 	 * @return ID of the current user;
 	 */
@@ -58,13 +59,11 @@ public class DatabaseHandlerHawk {
 			st.setString(7, acc.getLastName());
 			st.setString(8, acc.getPassword());
 			st.setString(9, acc.getEmail());
-			if(st.execute()) {
-				// New user added
+			int rows = st.executeUpdate();
+			try {
 				this.addAttendable("user_id", acc.getId());
-			} else {
-				if (bNew == true) {
-					throw new CloakedIronManException("User not added. Is the email a duplicate?");
-				}
+			} catch (Exception e) {
+				
 			}
 			return acc.getId();
 		} catch (SQLException e) {

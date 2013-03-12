@@ -11,7 +11,7 @@ public class Hawktest {
 	public static void main(String[] args) {
 		try {
 			DatabaseHandlerHawk db = new DatabaseHandlerHawk();
-			Account acc = new Account("Håkon", "Åmdal", "hakon@aamdal.com", "123");
+			Account acc = new Account("1", "Åmdal", "hakon@.com", "123");
 			acc.setId(1);
 			db.saveAccount(acc);
 		} catch (Exception e) {
