@@ -37,7 +37,9 @@ public class DatabaseHandlerHawk {
 	 */
 	public int saveAccount(Account acc) throws CloakedIronManException {
 		try {
+			boolean bNew = false;
 			if(acc.getId() == -1) {
+				bNew = true;
 				acc.setId(this.getNextAutoIncrease("account", "user_id"));
 			}
 			System.out.println(acc.getId());
@@ -56,10 +58,14 @@ public class DatabaseHandlerHawk {
 			st.setString(7, acc.getLastName());
 			st.setString(8, acc.getPassword());
 			st.setString(9, acc.getEmail());
-			st.execute();
-			
-			// Must add attendable
-			this.addAttendable("user_id", acc.getId());
+			if(st.execute()) {
+				// New user added
+				this.addAttendable("user_id", acc.getId());
+			} else {
+				if (bNew == true) {
+					throw new CloakedIronManException("User not added. Is the email a duplicate?");
+				}
+			}
 			return acc.getId();
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle database query.", e);
@@ -75,7 +81,7 @@ public class DatabaseHandlerHawk {
 		if (rs.getInt("has_att") < 1) {
 			// Must add to attendable
 			st = this.con.prepareStatement("INSERT INTO attendable ("+ column + ") VALUES (?)");
-			st.setInt(0, id);
+			st.setInt(1, id);
 			st.execute();
 		}
 	}

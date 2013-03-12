@@ -33,6 +33,5 @@ public abstract class CalendarObject
     	
     	this.pcs.firePropertyChange("id", this.id, id);
     	this.id = id;
-    	System.out.println(this.id);
     }
 }
