@@ -13,10 +13,12 @@ public class Hawktest {
 		try {
 			DatabaseHandlerHawk db = new DatabaseHandlerHawk();
 			Account acc = db.getAccountByEmail("hakon@aamdal.com");
+			Group g = db.getGroup(1);
 			
+			db.addGroupMember(g, acc);
 			//db.saveAccount(acc);
 			System.out.println(acc);
-			System.out.println(db.getGroup(1));
+			System.out.println();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

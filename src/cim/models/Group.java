@@ -1,8 +1,9 @@
 package cim.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Group extends CalendarObject implements Attendable
+public class Group extends CalendarObject implements Attendable, Serializable
 {
 	String name;
 	Account owner;

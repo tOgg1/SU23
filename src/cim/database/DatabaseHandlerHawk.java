@@ -138,6 +138,13 @@ public class DatabaseHandlerHawk {
 		}
 	}
 	
+	public void addGroupMember(Group group, Account acc) throws SQLException {
+		PreparedStatement st = this.con.prepareStatement("INSERT IGNORE INTO member_of (group_id, user_id) VALUES (?,?)");
+		st.setInt(1, group.getId());
+		st.setInt(2, acc.getId());
+		st.execute();
+	}
+	
 	private void addAttendable(String column, int id) throws SQLException {
 		PreparedStatement st = this.con.prepareStatement("SELECT COUNT(*) as has_att FROM attendable WHERE " + column +"=?");
 		st.setInt(1, id);
@@ -171,8 +178,15 @@ public class DatabaseHandlerHawk {
 		return acc;
 	}
 	
+	/**
+	 * Fils a new group with data from a resultset. The resultset must be at the correct position.
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
 	private Group fillGroup(ResultSet rs) throws SQLException {
 		Group g = new Group(rs.getString("name"), this.getAccount(rs.getInt("group_owner")));
+		g.setId(rs.getInt("group_id"));
 		return g;
 	}
 	
