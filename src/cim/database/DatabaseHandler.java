@@ -11,7 +11,7 @@ import cim.models.Room;
 
 public class DatabaseHandler {
 
-	private static String url = "jdbc:mysql://78.91.3.54:3306/cim";
+	private static String url = "jdbc:mysql://192.168.0.104:3306/cim";
 	private static String user = "Petter";
 	private static String password = "123456";
 	private static Connection con;
@@ -144,10 +144,10 @@ public class DatabaseHandler {
 				"WHERE calendar_id = ";
 		sql += calendar_id;
 		rs = executeQuery(sql);
-		
 		Calendar c = new Calendar(owner);
 		try {
-			while(rs.next()){				
+			while(rs.next()){
+				
 				Appointment a = new Appointment(rs.getTime("start"), 
 												rs.getTime("end"),
 												rs.getString("info"),
@@ -163,6 +163,13 @@ public class DatabaseHandler {
 		return null;
 		
 	}
+	
+	private void getMeeting(int appointment_id){
+		
+	}
+	
+	
+	
 	public ArrayList<Room> getAllRooms()
 	{
 		ArrayList<Room> rom = new ArrayList<Room>();
@@ -180,8 +187,33 @@ public class DatabaseHandler {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public ArrayList<Calendar> getAllCalendars(int user_id) {
+		String sql =
+				"SELECT calendar_id " +
+				"FROM calendar " +
+				"WHERE owner_attendable_id = ";
+		sql += user_id;
+		ResultSet rs = executeQuery(sql);
+		System.out.println(sql);
+		ArrayList<Calendar> allCals = new ArrayList<Calendar>();
+		try {
+			while(rs.next()){
+				allCals.add(getCalendar(rs.getInt("calendar_id")));
+			}
+			return allCals;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+			return null;
+		}
+		
 				
 	}
+	
+	
+	
 	
 	public boolean createAppointment(int owner_id, int calendar_id, Time startTime, Time endTime, Date date, String info, String name,int room_id, String place){
 		String sql = 
