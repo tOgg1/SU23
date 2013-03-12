@@ -8,6 +8,8 @@ public abstract class CalendarObject
 	
 	protected PropertyChangeSupport pcs;
 	
+	private int id = -1; 
+	
 	public CalendarObject()
 	{
 		pcs = new PropertyChangeSupport(this);
@@ -23,5 +25,12 @@ public abstract class CalendarObject
 		pcs.removePropertyChangeListener(listener);
 	}
 
-    public abstract int getId();
+    public int getId() {
+    	return this.id;
+    }
+    
+    public void setId(int id) {
+    	this.pcs.firePropertyChange("id", this.id, id);
+    	this.id = id;
+    }
 }

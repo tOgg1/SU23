@@ -38,13 +38,17 @@ public class DatabaseHandlerHawk {
 	public int saveAccount(Account acc) throws CloakedIronManException {
 		try {
 			if(accountExists(acc)){
-				PreparedStatement st = this.con.prepareStatement("UPDATE accuont SET first_name=?, last_name=?, password=?, email=? WHERE user_id=?");
+				PreparedStatement st = this.con.prepareStatement("UPDATE account SET first_name=?, last_name=?, password=?, email=? WHERE user_id=?");
 				st.setString(0, acc.getFirstName());
 				st.setString(1, acc.getLastName());
 				st.setString(2, acc.getPassword());
 				st.setString(3, acc.getEmail());
+				st.setInt(4, acc.getId());
+				st.execute();
 				return acc.getId();
 			} else {
+				// Fetch net id
+				
 				// Create statement
 			}
 			return acc.getId();
@@ -63,6 +67,16 @@ public class DatabaseHandlerHawk {
 		ResultSet rs = statement.executeQuery();
 		rs.next();
 		return rs.getInt("has_user") == 1;
+	}
+	
+	private int getNextAutoIncrease(String table, String column)throws SQLException {
+		PreparedStatement st = this.con.prepareStatement("SELECT MAX(?) as max FROM ?");
+		st.setString(0, column);
+		st.setString(1, table);
+		
+		ResultSet rs = st.executeQuery();
+		rs.next();
+		return rs.getInt("max") + 1;
 	}
 	
 	
