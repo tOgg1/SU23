@@ -73,18 +73,10 @@ public class DatabaseHandlerHawk {
 		rs.next();
 		if (rs.getInt("has_att") < 1) {
 			// Must add to attendable
+			st = this.con.prepareStatement("INSERT INTO attendable ("+ column + ") VALUES (?)");
+			st.setInt(0, id);
+			st.execute();
 		}
-	}
-	
-	private boolean accountExists(Account acc) throws SQLException {
-		if(acc.getId() == -1) {
-			return false;
-		}
-		PreparedStatement statement = this.con.prepareStatement("SELECT COUNT(*) as has_user FROM account WHERE user_id=?");
-		statement.setInt(0, acc.getId());
-		ResultSet rs = statement.executeQuery();
-		rs.next();
-		return rs.getInt("has_user") == 1;
 	}
 	
 	private int getNextAutoIncrease(String table, String column)throws SQLException {
