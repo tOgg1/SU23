@@ -8,7 +8,7 @@ import java.beans.PropertyChangeListener;
 
 public class Account extends CalendarObject implements Attendable 
 {
-    private int id;
+    private int id = -1;
 	private String email;
 	private String firstName;
 	private String lastName;
