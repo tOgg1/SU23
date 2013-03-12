@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
 import cim.models.Account;
+import cim.models.Group;
 import cim.util.CloakedIronManException;
 import cim.util.PersonalSettings;
 
@@ -41,7 +42,7 @@ public class DatabaseHandlerHawk {
 			if(acc.getId() == -1) {
 				acc.setId(this.getNextAutoIncrease("account", "user_id"));
 			}
-			System.out.println(acc.getId());
+			
 			// Create statement
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO account " +
 					"(user_id, first_name, last_name, password,email)" +
@@ -94,6 +95,49 @@ public class DatabaseHandlerHawk {
 		return null;
 	}
 	
+	public Group getGroup(int id) throws SQLException {
+		PreparedStatement st = this.con.prepareStatement("SELECT * FROM cim.group WHERE group_id=?");
+		st.setInt(1, id);
+		ResultSet rs = st.executeQuery();
+		if (rs.next()) {
+			return fillGroup(rs);
+		}
+		return null;
+	}
+	/**
+	 * Saves a group into the database. If it has key, it will be updated. Elsewise created
+	 * @param group
+	 * @return
+	 * @throws CloakedIronManException 
+	 */
+	public int saveGroup(Group group) throws CloakedIronManException {
+		try {
+			if(group.getId() == -1) {
+				group.setId(this.getNextAutoIncrease("cim.group", "group_id"));
+			}
+			// Create statement
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO cim.group " +
+					"(group_id, name, group_owner)" +
+					"VALUES (?,?,?)" +
+					"ON DUPLICATE KEY UPDATE " +
+					"name=?, group_owner=?");
+			st.setInt(1, group.getId());
+			st.setString(2, group.getName());
+			st.setInt(3, group.getOwner().getId());
+			st.setString(4, group.getName());
+			st.setInt(5, group.getOwner().getId());
+			st.executeUpdate();
+			try {
+				this.addAttendable("group_id", group.getId());
+			} catch (Exception e) {
+				
+			}
+			return group.getId();
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not handle database query.", e);
+		}
+	}
+	
 	private void addAttendable(String column, int id) throws SQLException {
 		PreparedStatement st = this.con.prepareStatement("SELECT COUNT(*) as has_att FROM attendable WHERE " + column +"=?");
 		st.setInt(1, id);
@@ -108,7 +152,9 @@ public class DatabaseHandlerHawk {
 	}
 	
 	private int getNextAutoIncrease(String table, String column)throws SQLException {
-		PreparedStatement st = this.con.prepareStatement("SELECT MAX(" + column + ") as max FROM " + table);
+		String sql = "SELECT MAX(" + column + ") as max FROM " + table;
+		System.out.println(sql);
+		PreparedStatement st = this.con.prepareStatement(sql);
 		
 		ResultSet rs = st.executeQuery();
 		rs.next();
@@ -123,6 +169,11 @@ public class DatabaseHandlerHawk {
 		Account acc = new Account(rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("password"));
 		acc.setId(rs.getInt("user_id"));
 		return acc;
+	}
+	
+	private Group fillGroup(ResultSet rs) throws SQLException {
+		Group g = new Group(rs.getString("name"), this.getAccount(rs.getInt("group_owner")));
+		return g;
 	}
 	
 	

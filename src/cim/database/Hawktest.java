@@ -1,6 +1,7 @@
 package cim.database;
 
 import cim.models.Account;
+import cim.models.Group;
 
 
 public class Hawktest {
@@ -15,6 +16,7 @@ public class Hawktest {
 			
 			//db.saveAccount(acc);
 			System.out.println(acc);
+			System.out.println(db.getGroup(1));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

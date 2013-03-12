@@ -4,11 +4,15 @@ import java.util.ArrayList;
 
 public class Group extends CalendarObject implements Attendable
 {
-    int id;
 	String name;
 	Account owner;
 	Calendar calendar;
 	ArrayList<Attendable> members;
+	
+	public Group(String name, Account owner) {
+		this.owner = owner;
+		this.name = name;
+	}
 	
 	public void addMember(Attendable member){
 		if(!this.members.contains(member))
@@ -34,10 +38,8 @@ public class Group extends CalendarObject implements Attendable
 	public String getName() {
 		return this.name;
 	}
-
-    @Override
-    public int getId()
-    {
-        return id;
-    }
+	
+	public Account getOwner() {
+		return this.owner;
+	}
 }
