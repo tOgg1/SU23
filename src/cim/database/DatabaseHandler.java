@@ -165,7 +165,14 @@ public class DatabaseHandler {
 	}
 	
 	private void getMeeting(int appointment_id){
+		String sql = 
+				"SELECT * " +
+				"FROM meeting " +
+				"WHERE appointment_id = ";
+		sql += appointment_id;
 		
+		
+				
 	}
 	
 	
@@ -196,7 +203,6 @@ public class DatabaseHandler {
 				"WHERE owner_attendable_id = ";
 		sql += user_id;
 		ResultSet rs = executeQuery(sql);
-		System.out.println(sql);
 		ArrayList<Calendar> allCals = new ArrayList<Calendar>();
 		try {
 			while(rs.next()){
