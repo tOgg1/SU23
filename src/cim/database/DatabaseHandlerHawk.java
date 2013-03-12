@@ -48,8 +48,12 @@ public class DatabaseHandlerHawk {
 				return acc.getId();
 			} else {
 				// Fetch net id
-				
+				if(acc.getId == -1) {
+					acc.setId(this.getNextAutoIncrease("account", "user_id"));
+				}
+				int id = 
 				// Create statement
+				acc.
 			}
 			return acc.getId();
 		} catch (SQLException e) {
