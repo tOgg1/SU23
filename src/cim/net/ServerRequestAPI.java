@@ -20,7 +20,7 @@ public class ServerRequestAPI {
 	
 	public ServerRequestAPI(Server server) throws CloakedIronManException {
 		this.server = server;
-		this.db = new DatabaseHandlerHawk(server);
+		this.db = new DatabaseHandlerHawk();
 	}
 	
 	/**

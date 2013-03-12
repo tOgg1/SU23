@@ -84,6 +84,16 @@ public class DatabaseHandlerHawk {
 		return null;
 	}
 	
+	public Account getAccount(int id) throws SQLException {
+		PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE user_id=?");
+		st.setInt(1, id);
+		ResultSet rs = st.executeQuery();
+		if (rs.next()) {
+			return fillAccount(rs);
+		}
+		return null;
+	}
+	
 	private void addAttendable(String column, int id) throws SQLException {
 		PreparedStatement st = this.con.prepareStatement("SELECT COUNT(*) as has_att FROM attendable WHERE " + column +"=?");
 		st.setInt(1, id);
