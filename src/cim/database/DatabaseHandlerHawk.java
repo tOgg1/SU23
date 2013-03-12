@@ -37,29 +37,43 @@ public class DatabaseHandlerHawk {
 	 */
 	public int saveAccount(Account acc) throws CloakedIronManException {
 		try {
-			if(accountExists(acc)){
-				PreparedStatement st = this.con.prepareStatement("UPDATE account SET first_name=?, last_name=?, password=?, email=? WHERE user_id=?");
-				st.setString(0, acc.getFirstName());
-				st.setString(1, acc.getLastName());
-				st.setString(2, acc.getPassword());
-				st.setString(3, acc.getEmail());
-				st.setInt(4, acc.getId());
-				st.execute();
-				return acc.getId();
-			} else {
-				// Fetch net id
-				if(acc.getId == -1) {
-					acc.setId(this.getNextAutoIncrease("account", "user_id"));
-				}
-				int id = 
-				// Create statement
-				acc.
+			if(acc.getId() == -1) {
+				acc.setId(this.getNextAutoIncrease("account", "user_id"));
 			}
+			// Create statement
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO account " +
+					"(user_id, first_name, last_name, password,email)" +
+					"VALUES (?,?,?,?,?)" +
+					"ON DUPLICATE KEY UPDATE" +
+					"first_name=?, last_name=?,password=?,email=?");
+			st.setInt(0, acc.getId());
+			st.setString(1, acc.getFirstName());
+			st.setString(2, acc.getLastName());
+			st.setString(3, acc.getPassword());
+			st.setString(4, acc.getEmail());
+			st.setString(5, acc.getFirstName());
+			st.setString(6, acc.getLastName());
+			st.setString(7, acc.getPassword());
+			st.setString(8, acc.getEmail());
+			st.execute();
+			
+			// Must add attendable
+			this.addAttendable("user_id", acc.getId());
 			return acc.getId();
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle database query.", e);
 		}
 		
+	}
+	
+	private void addAttendable(String column, int id) throws SQLException {
+		PreparedStatement st = this.con.prepareStatement("SELECT COUNT(*) as has_att FROM attendable WHERE " + column +"=?");
+		st.setInt(0, id);
+		ResultSet rs = st.executeQuery();
+		rs.next();
+		if (rs.getInt("has_att") < 1) {
+			// Must add to attendable
+		}
 	}
 	
 	private boolean accountExists(Account acc) throws SQLException {
