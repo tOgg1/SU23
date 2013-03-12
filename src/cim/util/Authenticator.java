@@ -1,25 +1,32 @@
 package cim.util;
 
+import cim.database.DatabaseHandlerHawk;
 import cim.models.Account;
+import cim.net.Client;
+import cim.net.packet.Request;
+import cim.net.packet.Response;
 
-public class Authenticator implements AuthenticatorInterface{
+public class Authenticator{
 
-	@Override
+	private Account self;
+	private final Client parent;
+	
+	public Authenticator(Client parent) {
+		this.parent = parent;
+	}
+	
 	public boolean isAuthenticated() {
-		// TODO Auto-generated method stub
-		return false;
+		return (this.self != null);
 	}
 
-	@Override
-	public boolean authenticate(String email, String password) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean authenticate(String email, String password) throws CloakedIronManException {
+		Response resp = this.parent.request(new Request("AUTHENTICATE", "hakon@aamdal.com", "123"));
+		this.self = (Account)resp.getData()[0];
+		return this.isAuthenticated();
 	}
 
-	@Override
 	public Account getSelf() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.self;
 	}
 
 }

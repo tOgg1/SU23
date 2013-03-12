@@ -82,8 +82,13 @@ public class Client {
 		System.out.println("Skriv inn brukernavn: ");
 		//String username = sc.nextLine();
 		//String pw = sc.nextLine();
-		Response resp = this.request(new Request("AUTHENTICATE", "per", "pål"));
-		System.out.println(resp.getData()[0]);
+		String username = "hakon@aamdal.com";
+		String pw = "123";
+		this.auth.authenticate(username, pw);
+		if(!this.auth.isAuthenticated()) {
+			Log.d("Client", "Invalid username and password");
+			return;
+		}
 		
 		/*
 		try {

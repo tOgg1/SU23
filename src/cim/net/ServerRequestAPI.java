@@ -51,9 +51,12 @@ public class ServerRequestAPI {
 	 * @throws SQLException
 	 */
 	private Response authenticate(String email, String pw) throws SQLException {
+		System.out.println(email + pw);
 		Account acc = db.getAccountByEmail(email);
+		System.out.println(acc);
 		if(acc != null){
 			if(acc.isValidPassword(pw)){
+				System.out.println("her");
 				return new Response(acc);
 			}
 		}

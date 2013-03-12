@@ -5,8 +5,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 
-public class Account extends CalendarObject implements Attendable 
+public class Account extends CalendarObject implements Attendable, Serializable
 {
 	private String email;
 	private String firstName;
@@ -115,7 +116,7 @@ public class Account extends CalendarObject implements Attendable
 	}
 
 	public boolean isValidPassword(String password){
-		return this.password == password;
+		return this.password.equals(password);
 	}
     
 	public void setPassword(String password) {
