@@ -31,6 +31,10 @@ public class Account extends CalendarObject implements Attendable
 		this.groups = new ArrayList<Group>();
 	}
 	
+	public String toString() {
+		return this.getFirstName() + " " + this.getLastName() + " (" + this.getEmail() + ")";
+	}
+	
 	public void addCalendar(CalendarObject calendar)
 	{
 		if(!this.calendars.contains(calendar))

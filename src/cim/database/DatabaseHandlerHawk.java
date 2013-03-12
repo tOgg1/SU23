@@ -71,6 +71,20 @@ public class DatabaseHandlerHawk {
 		}
 		
 	}
+	/**
+	 * Get an account by its email. Returns null if not found.
+	 * @param email
+	 * @return
+	 */
+	public Account getAccountByEmail(String email) throws SQLException {
+		PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE email=?");
+		st.setString(1, email);
+		ResultSet rs = st.executeQuery();
+		if (rs.next()) {
+			return fillAccount(rs);
+		}
+		return null;
+	}
 	
 	private void addAttendable(String column, int id) throws SQLException {
 		PreparedStatement st = this.con.prepareStatement("SELECT COUNT(*) as has_att FROM attendable WHERE " + column +"=?");
@@ -91,6 +105,16 @@ public class DatabaseHandlerHawk {
 		ResultSet rs = st.executeQuery();
 		rs.next();
 		return rs.getInt("max") + 1;
+	}
+	/**
+	 * Fills a new account with data. The ResultSet pointer must be at the correct position
+	 * @return
+	 * @throws SQLException 
+	 */
+	private Account fillAccount(ResultSet rs) throws SQLException {
+		Account acc = new Account(rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("password"));
+		acc.setId(rs.getInt("user_id"));
+		return acc;
 	}
 	
 	

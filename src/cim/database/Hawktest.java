@@ -11,9 +11,10 @@ public class Hawktest {
 	public static void main(String[] args) {
 		try {
 			DatabaseHandlerHawk db = new DatabaseHandlerHawk();
-			Account acc = new Account("1", "Åmdal", "hakon@.com", "123");
-			acc.setId(1);
-			db.saveAccount(acc);
+			Account acc = db.getAccountByEmail("hakon@aamdal.com");
+			
+			//db.saveAccount(acc);
+			System.out.println(acc);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
