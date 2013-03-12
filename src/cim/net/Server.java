@@ -1,37 +1,38 @@
 package cim.net;
 
-import cim.database.DatabaseHandler;
-import cim.util.CloakedIronManException;
-import cim.util.Log;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.UUID;
 import java.util.Vector;
 
-public class Server
-{
+import cim.net.packet.Event;
+import cim.net.packet.Request;
+import cim.net.packet.Response;
+import cim.util.CloakedIronManException;
+import cim.util.Log;
 
-    DatabaseHandler dbHandler;
-
-	private final short port;
-    private ServerSocket server;
-    private Thread listenThread;
-    // Thread-safe
-    private Vector<ConnectionThread> connections;
+public class Server {
+	
+	private final short eventPort;
+	private final short requestPort;
+    private ServerSocket eventServerSocket;
+    private ServerSocket requestServerSocket;
     private boolean running = false;
 
+	private Vector<RequestThread> requestThreads = new Vector<RequestThread>();
+	private Vector<EventThread> eventThreads = new Vector<EventThread>();
 	
-	/**
-	 * Initiates a server with the given port number
-	 * @param port
-	 */
-	public Server(short port) throws CloakedIronManException
-    {
-        // Create log file
+	private ServerRequestAPI api;
+    
+	
+	public Server(short eventPort, short requestPort) throws CloakedIronManException {
+		// Create log file
         File file = new File("serverlog.txt");
         try
         {
@@ -45,10 +46,12 @@ public class Server
         }
         // //
 
-		this.port = port;
+		this.eventPort = eventPort;
+		this.requestPort = requestPort;
         try
         {
-            server = new ServerSocket(port);
+            this.eventServerSocket = new ServerSocket(this.eventPort);
+            this.requestServerSocket = new ServerSocket(this.requestPort);
         }
         catch(IOException e)
         {
@@ -57,124 +60,164 @@ public class Server
         }
 
         Log.d("Server", "Server running");
+        this.api = new ServerRequestAPI(this);
+	}
+	
+	public void run() {
+		this.running = true;
+		Thread et = new Thread() {
+			private final String tag = "Server Event Socket Listener";
+			public void run() {
+				Log.d(tag, "Started");
+				while(Server.this.running){
+					try {
+						Log.d(tag, "Wating for incoming connection.");
+						Socket s = Server.this.eventServerSocket.accept();
+						EventThread etInner = new EventThread(s);
+						Server.this.eventThreads.add(etInner);
+						etInner.start();
+						Log.d(tag, "Connection added");
+					} catch (IOException e) {
+						Log.e(tag, "Connection event accept error");
+					}
+					
+				}
+			}
+		};
+		Thread rt = new Thread() {
+			private final String tag = "Server Request Socket Listener";
+			public void run() {
+				Log.d(tag, "Started.");
+				while(Server.this.running){
+					try {
+						Log.d(tag, "Wating for incoming connection.");
+						Socket s = Server.this.requestServerSocket.accept();
+						RequestThread rtInner = new RequestThread(s);
+						Server.this.requestThreads.add(rtInner);
+						rtInner.start();
+						Log.d(tag, "Connection added");
+					} catch (IOException e) {
+						Log.e(tag, "Connection request accept error");
+					}
+					
+				}
+			}
+		};
+		et.start();
+		rt.start();
 	}
 	
 	/**
-	 * Starts the server.
+	 * Broadcasting an event to all connected clients
+	 * @param e
 	 */
-	public void run()
-    {
-        running = true;
-        listenThread = new Thread()
-        {
-            public void run()
-            {
-                while(running)
-                {
-                    try
-                    {
-                        Socket socket = server.accept();
-                        ConnectionThread newConnection = new ConnectionThread(socket, Server.this);
-                        connections.add(newConnection);
-                    }
-                    catch(IOException e)
-                    {
-                        Log.e("Server", "Connection accept error");
-                    }
-                }
-            }
-        };
-        listenThread.start();
+	public void broadcast(Event e){
+		for(EventThread et : this.eventThreads) {
+			et.broadcast(e);
+		}
 	}
-
-
-    public Request handleRequest(Request request)
-    {
-    	String requestString = request.getRequest().toUpperCase();
-    	Object[] args = request.getArgs();
-    	if (requestString.equals("GET CALENDAR BY ID")){
-    		return this.getCalendarByID((int)args[0]);
-    	}
-    	
-    	
-        //String sqlAction = Bucket.decodeFlag(bucket.flag);
-        //int[] indexFlags = Bucket.getIndexes(bucket.indexFlag);
-        return null;
-    }
-
-    //Connection stuff
-    public void addConnection(Socket socket)
-    {
-        ConnectionThread connection = new ConnectionThread(socket, this);
-        connections.add(connection);
-    }
-
-    public void removeConnection(ConnectionThread connection)
-    {
-        if(connections.contains(connection))
-            connections.remove(connection);
-    }
-
-    private class ConnectionThread extends Thread implements Runnable
-    {
-        private Server server;
-        private Socket socket;
+	
+	
+	/**
+	 * Abstract class for managing connetions in separate threads
+	 * @author Håkon
+	 *
+	 */
+	private abstract class ConnectionThread extends Thread implements Runnable {
+		Socket socket;
         ObjectInputStream input;
         ObjectOutputStream output;
-        private boolean running;
-
-        public ConnectionThread(Socket socket, Server server)
-        {
-            this.socket = socket;
-            this.server = server;
-
-            init();
-            run();
+        
+        UUID id = UUID.randomUUID();
+        
+        
+        public ConnectionThread(Socket s) throws IOException {
+        	// Sockets
+        	this.socket = s;
+        	//Streams
+        	this.output = new ObjectOutputStream(this.socket.getOutputStream());
+        	this.input = new ObjectInputStream(this.socket.getInputStream());
+    	
         }
-
-        private void init()
-        {
-            running = true;
-            try
-            {
-                input = new ObjectInputStream(socket.getInputStream());
-                output = new ObjectOutputStream(socket.getOutputStream());
-            }
-            catch(Exception e)
-            {
-                //TODO: Handle Exception (Bad socket)
-                e.printStackTrace();
-            }
+        void d(String message) {
+        	Log.d(this.getClass().toString() + " " + this.id, message);
         }
-
-
-        @Override
-        public void run()
-        {
-            Request request;
-            try
-            {
-                while(running && (request = (Request)input.readObject()) != null)
-                {
-
-                }
-            }
-            catch(ClassNotFoundException e)
-            {
-                //At this point we should hang ourselves
-
-            }
-            catch(IOException e)
-            {
-                //Connection is most likely broken, shut down
-                running = false;
-                server.removeConnection(this);
-            }
+        void e(String message) {
+        	Log.e(this.getClass().toString() + " " + this.id, message);
         }
+		
+	}
+	
+	/**
+	 * This class manages request coming from the clients
+	 * @author Håkon
+	 *
+	 */	
+	private class RequestThread extends ConnectionThread {
+		public RequestThread(Socket s) throws IOException {
+			super(s);
+		}
+		
+		public void run() {
+			while(Server.this.running) {
+				try {
+					Request request = (Request) this.input.readObject();
+					Response r = Server.this.api.getResponse(request);
+					this.output.writeObject(r);
+				} catch (ClassNotFoundException e) {
+					e("Error receiving object: " + e.getMessage());
+					continue;
+				} catch (IOException e) {
+					if (e instanceof SocketException) {
+						// Connection is torn down by client
+						Server.this.requestThreads.removeElement(this);
+						d("Connection thread torn down, initiated by client.");
+						break;
+					} else {
+						e("Error receiving object: " + e.getMessage());
+						continue;
+					}
+				}
+				
+			}
+		}
+		
+	}
+	/**
+	 * This calss manages events to be sent out to clients
+	 * @author Håkon
+	 *
+	 */
+	private class EventThread extends ConnectionThread {
+		public EventThread(Socket s) throws IOException {
+			super(s);
+		}
 
-    }
-    
-    private Request getCalendarByID(int id) {
-    	return null;
-    }
+		public void run() {
+			while(Server.this.running) {
+				// Wating for an object which will never arrive
+				try {
+					this.input.readObject();
+				} catch (ClassNotFoundException e) {
+					
+				} catch(IOException e) {
+					if (e instanceof SocketException) {
+						Server.this.eventThreads.removeElement(this);
+						d("Connection thread torn down, initiated by client.");
+						break;
+					}
+				}
+				e("Event thread received an object which it should not");
+			}
+		}
+		
+		public void broadcast(Event e) {
+			try {
+				this.output.writeObject(e);
+			} catch (IOException e1) {
+				e("Could not write event to client.");
+			}
+		}
+	}
+
 }

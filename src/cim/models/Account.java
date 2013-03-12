@@ -8,7 +8,7 @@ import java.beans.PropertyChangeListener;
 
 public class Account extends CalendarObject implements Attendable 
 {
-    private int id;
+    private int id = -1;
 	private String email;
 	private String firstName;
 	private String lastName;
@@ -83,19 +83,31 @@ public class Account extends CalendarObject implements Attendable
 	
 	}
 	
-	@Override
 	public void receiveInvite(Meeting meeting) {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+		// For the attendable interface
+		return this.getFirstName() + " " + this.getLastName();
+	}
+	
+	public String getFirstName() {
+		return this.firstName;
+	}
+	
+	public String getLastName() {
 		return this.lastName;
 	}
 
 	public String getPassword() {
 		return password;
+	}
+	
+	public String getEmail() {
+		return this.email;
 	}
 
 	public boolean isValidPassword(String password){
@@ -106,5 +118,6 @@ public class Account extends CalendarObject implements Attendable
     {
         return id;
     }
+
    
 }
