@@ -39,7 +39,10 @@ public class DatabaseHandlerHawk {
 		try {
 			if(accountExists(acc)){
 				PreparedStatement st = this.con.prepareStatement("UPDATE accuont SET first_name=?, last_name=?, password=?, email=? WHERE user_id=?");
-				st.setString(0, acc.get)
+				st.setString(0, acc.getFirstName());
+				st.setString(1, acc.getLastName());
+				st.setString(2, acc.getPassword());
+				st.setString(3, acc.getEmail());
 				return acc.getId();
 			} else {
 				// Create statement

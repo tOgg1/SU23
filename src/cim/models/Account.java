@@ -105,6 +105,10 @@ public class Account extends CalendarObject implements Attendable
 	public String getPassword() {
 		return password;
 	}
+	
+	public String getEmail() {
+		return this.email;
+	}
 
 	public boolean isValidPassword(String password){
 		return this.password == password;
