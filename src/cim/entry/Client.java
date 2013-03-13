@@ -1,6 +1,7 @@
 package cim.entry;
 
 import cim.util.CloakedIronManException;
+import cim.util.PersonalSettings;
 
 
 public class Client
@@ -13,7 +14,7 @@ public class Client
 	
 	public static void main(String[] args) throws CloakedIronManException
     {
-		instance = new cim.net.Client();
+		instance = new cim.net.Client(PersonalSettings.SERVER_IP);
 		instance.run();
 	}
 

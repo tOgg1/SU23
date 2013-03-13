@@ -17,11 +17,10 @@ import cim.models.Account;
 import cim.net.packet.Event;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
-import cim.util.Authenticator;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
+import cim.views.ApplicationWindow;
 import cim.views.AuthenticateView;
-import cim.views.CalendarView;
 
 public class Client {
 	private Socket eventSocket;
@@ -32,10 +31,9 @@ public class Client {
 	private ObjectInputStream requestInput;
 	private ObjectOutputStream requestOutput;
 	
-	private Authenticator auth;
 	private ClientEventHandler evt;
 	
-	public Client() throws CloakedIronManException {
+	public Client(String ip) throws CloakedIronManException {
 		
 		// Configuring Log file
 		File file = new File("serverlog.txt");
@@ -52,8 +50,8 @@ public class Client {
 		
 		// Set up sockets
 		try {
-			this.eventSocket = new Socket(InetAddress.getLocalHost(), Settings.SERVER_EVENT_PORT);
-			this.requestSocket = new Socket(InetAddress.getLocalHost(),Settings.SERVER_REQUEST_PORT);
+			this.eventSocket = new Socket(ip, Settings.SERVER_EVENT_PORT);
+			this.requestSocket = new Socket(ip,Settings.SERVER_REQUEST_PORT);
 		} catch (IOException e) {
 			Log.e("Client", e.getMessage());
 			throw new CloakedIronManException("Sockets could not be established.", e);
@@ -71,7 +69,6 @@ public class Client {
 		}
 		
 		// Creating authenticator instance
-		this.auth = new Authenticator(this);
 		this.evt = new ClientEventHandler();
 	}
 	
@@ -89,7 +86,7 @@ public class Client {
 		if (acc != null) {
 			// User managed to log in
 			// Create new calendar gui.
-			CalendarView cv = new CalendarView(this, acc);
+			ApplicationWindow cv = new ApplicationWindow(this, acc);
 			cv.setVisible(true);
 		} else {
 			this.exit();
