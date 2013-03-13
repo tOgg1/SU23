@@ -1,6 +1,5 @@
 package cim.views;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,11 +13,21 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
+
+import cim.models.Account;
+import cim.net.Client;
 
 public class CalendarView extends JFrame {
 
+	/**
+	 * Because dunno
+	 */
+	private static final long serialVersionUID = -1769196092599686176L;
+
 	private JPanel contentPane;
+	
+	private final Account account;
+	private final Client client;
 	
 	private static JTextField txtMandag;
 	private static JTextField txtTirsdag;
@@ -29,26 +38,17 @@ public class CalendarView extends JFrame {
 	private static JTextField txtSndag;
 	private static JTextField txtUke;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CalendarView frame = new CalendarView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public CalendarView() {
+	public CalendarView(Client c, Account a) {
+		this.client = c;
+		this.account = a;
+		
+		/*
+		 * CREATE LAYOUT
+		 */
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
