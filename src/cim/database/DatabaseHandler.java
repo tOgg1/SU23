@@ -87,43 +87,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	}
 
 	
-	private Account getAccount(int accountId){
-		String sql = 
-				"SELECT * " +
-				"FROM attendable " +
-				"WHERE attendable_id = ";
-		sql += accountId;
-		ResultSet rs = executeQuery(sql);
-		int accountId1 = 0;
-		try {
-			rs.next();
-			accountId1 = rs.getInt("user_id");
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		
-		sql = "SELECT * " +
-				"FROM account " +
-				"WHERE user_id = ";
-		sql += accountId1;		
-		rs = executeQuery(sql);		
-		try {
-			rs.next();
-			Account a = new Account(rs.getString("first_name"),
-					   rs.getString("last_name"),
-					   rs.getString("email"),
-					   rs.getString("password"));
-			a.setId(accountId);
-			
-			return a;
-		} catch (SQLException e) {
-			System.out.println(e);
-			return null;
-		}
-	}
-	
-
-	public Calendar getCalendar(int calendar_id){
+		public Calendar getCalendar(int calendar_id){
 		String sql = 
 				"SELECT owner_attendable_id " +
 						"FROM Calendar " +
