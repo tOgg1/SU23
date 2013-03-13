@@ -116,14 +116,14 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		sql += calendar_id;
 		rs = executeQuery(sql);
 		Calendar c = new Calendar(owner);
+		c.setId(calendar_id);
 		try {
 			while(rs.next()){
 
 				Appointment a = new Appointment(rs.getTime("start"), 
 						rs.getTime("end"),
 						rs.getString("info"),
-						rs.getDate("date"),
-						rs.getInt("appointment_id"));
+						rs.getDate("date"));
 				c.addAppointment(a);
 			}
 			return c;
@@ -255,6 +255,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		}
 		return null;
 	}
+
 	public Appointment getAppointment(int appointment_id) throws SQLException
 	{
 		PreparedStatement st = this.con.prepareStatement("SELECT meeting.is_cancelled FROM appointment LEFT JOIN meeting ON appointment.appointment_id=meeting.appointment_id WHERE appointment.appointment_id=?");
@@ -429,7 +430,8 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		try {
 			if(rs.next())
 			{
-				a = new Appointment(rs.getTime("start") , rs.getTime("end"), rs.getString("info"), rs.getDate("date"), rs.getInt("appointment_id"));
+				a = new Appointment(rs.getTime("start") , rs.getTime("end"), rs.getString("info"), rs.getDate("date"));
+				a.setId(rs.getInt("appointment_id"));
 				return a;
 			}
 

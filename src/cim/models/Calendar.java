@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Calendar extends CalendarObject
 {
-    private int id;
 	private Account owner;
 	private ArrayList<Appointment> appointments;
 	private ArrayList<Attendable> hasAccess;
@@ -66,11 +65,7 @@ public class Calendar extends CalendarObject
 		pcs.firePropertyChange("hasacsess", person, null);
 
 	}
-    @Override
-    public int getId()
-    {
-        return id;
-    }
+   
     
     public String toString(){
     	String returnString = this.owner.getName() + "\n";
