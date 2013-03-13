@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
@@ -99,16 +100,20 @@ public class AuthenticateView extends JDialog {
 						String email = txtEmail.getText();
 						String pw = new String(txtPassword.getPassword());
 						txtPassword.setText("");
-						Response re;
 						try {
-							Account acc = (Account)AuthenticateView.this.client.request(new Request("AUTHENTICATE", email, pw)).getData()[0];
-							System.out.println(acc);
+							AuthenticateView.this.account = (Account)AuthenticateView.this.client.request(new Request("AUTHENTICATE", email, pw)).getData()[0];
 						} catch (CloakedIronManException e1) {
 							AuthenticateView.this.client.d(e1.getMessage());
 						}
+						if (AuthenticateView.this.account != null) {
+							setVisible(false);
+						} else {
+							JOptionPane.showMessageDialog(AuthenticateView.this,
+								    "Innloggingsinformasjonen stemte ikke.",
+								    "Feil",
+								    JOptionPane.ERROR_MESSAGE);
+						}
 						
-						
-						//String email = Authenticate.this.
 					}
 				});
 				okButton.setActionCommand("OK");

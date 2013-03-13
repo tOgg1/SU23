@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DropMode;
 
-public class CalenderView {
+public class CalenderView2 {
 	private static JTextField txtMandag;
 	private static JTextField txtTirsdag;
 	private static JTextField txtOnsdag;
