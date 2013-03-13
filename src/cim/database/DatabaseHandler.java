@@ -424,7 +424,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 					MeetingResponse meeting = new MeetingResponse(getAccountByEmail(rs2.getString("account_email")), rs2.getString("status"));
 					meetingResponses.add(meeting);
 				}
-				return m = new Meeting(rs.getString("info"), meetingResponses,);				
+				return m = new Meeting(rs.getString("info"), meetingResponses, getRoom(rs.getInt("meeting_room_id")), rs.getTime("start"), rs.getTime("end"), rs.getDate("date"));				
 			}
 		}
 		catch (SQLException e)
@@ -452,10 +452,13 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		}
 		return null;
 	}
-	public Room getRoom(int meeting_room_id)
+	public Room getRoom(int meeting_room_id) throws SQLException
 	{
-		PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting_room WHERE meeting_room_id = ?");
+		PreparedStatement st;
+		st = this.con.prepareStatement("SELECT * FROM meeting_room WHERE meeting_room_id = ?");
+
 		st.setInt(1, meeting_room_id);
+
 		
 		ResultSet rs = st.executeQuery();
 		
