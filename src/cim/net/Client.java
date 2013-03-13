@@ -91,8 +91,10 @@ public class Client {
 			// Create new calendar gui.
 			CalendarView cv = new CalendarView(this, acc);
 			cv.setVisible(true);
+		} else {
+			this.exit();
 		}
-		this.exit();
+		
 		/*
 		// Must log in first
 		Scanner sc = new Scanner(System.in);
