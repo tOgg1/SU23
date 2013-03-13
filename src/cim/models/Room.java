@@ -11,6 +11,13 @@ public class Room extends CalendarObject
 	private Date bookedTime;
 	private boolean isBooked;
 	
+	
+	public Room(int id, int size)
+	{
+		this.id = id;
+		this.size = size;
+	}
+	
 	public Room(int id, String name, int size, String info)
 	{
 		this.id = id;

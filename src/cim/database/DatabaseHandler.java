@@ -15,9 +15,9 @@ import cim.util.CloakedIronManException;
 
 public class DatabaseHandler implements DatabaseFetcherInterface {
 
-	private static String url = "jdbc:mysql://78.91.2.123/cim";
-	private static String user = "Petter";
-	private static String password = "123456";
+	private static String url = cim.util.PersonalSettings.JDBC_URL;
+	private static String user = cim.util.PersonalSettings.MYSQL_USER;
+	private static String password = cim.util.PersonalSettings.MYSQL_PW;
 	private static Connection con;
 
 
@@ -146,7 +146,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 				ResultSet rs = st.executeQuery();
 				while(rs.next())
 				{
-					return null;
+					return (Meeting)getAppointment(appointment_id);
 				}
 
 				{
@@ -273,7 +273,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			}
 			else
 			{
-				return fillMeeting(rs2);
+				return fillMeeting(rs2, appointment_id);
 			}
 		}
 		return null;
@@ -424,7 +424,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 					MeetingResponse meeting = new MeetingResponse(getAccountByEmail(rs2.getString("account_email")), rs2.getString("status"));
 					meetingResponses.add(meeting);
 				}
-				m = new Meeting(rs.getString("info"), meetingResponses,);				
+				return m = new Meeting(rs.getString("info"), meetingResponses, getRoom(rs.getInt("meeting_room_id")), rs.getTime("start"), rs.getTime("end"), rs.getDate("date"));				
 			}
 		}
 		catch (SQLException e)
@@ -452,6 +452,22 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		}
 		return null;
 	}
+	public Room getRoom(int meeting_room_id) throws SQLException
+	{
+		PreparedStatement st;
+		st = this.con.prepareStatement("SELECT * FROM meeting_room WHERE meeting_room_id = ?");
 
+		st.setInt(1, meeting_room_id);
+
+		
+		ResultSet rs = st.executeQuery();
+		
+		if(rs.next())
+		{
+			return new Room(rs.getInt("meeting_room_id"),rs.getInt("size"));
+		}
+		return null;
+		
+	}
 
 }
