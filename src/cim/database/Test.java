@@ -10,7 +10,6 @@ public class Test {
 		try {
 			System.out.println(db.getAppointment(123));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
