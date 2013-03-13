@@ -9,6 +9,7 @@ import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.models.Group;
 import cim.models.Meeting;
+import cim.models.MeetingResponse;
 import cim.models.Room;
 import cim.util.CloakedIronManException;
 
@@ -407,13 +408,23 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	 * @return
 	 * @throws SQLException
 	 */
-	private Meeting fillMeeting(ResultSet rs) throws SQLException
+	private Meeting fillMeeting(ResultSet rs,int appointment_id) throws SQLException
 	{
+		PreparedStatement st = this.con.prepareStatement("SELECT * " +
+				"FROM meeting_response WHERE meeting_appointment_id = ?");
+		st.setInt(1, appointment_id);
+		ResultSet rs2 = st.executeQuery();
+		
 		Meeting m;
 		try {
 			if(rs.next())
 			{
-				return null;
+				ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
+				while(rs2.next()){
+					MeetingResponse meeting = new MeetingResponse(getAccountByEmail(rs2.getString("account_email")), rs2.getString("status"));
+					meetingResponses.add(meeting);
+				}
+				m = new Meeting(rs.getString("info"), meetingResponses,);				
 			}
 		}
 		catch (SQLException e)
