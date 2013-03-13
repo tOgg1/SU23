@@ -1,4 +1,4 @@
-package cim.models;
+package cim.views;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -15,15 +15,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
-import java.awt.Color;
-import javax.swing.border.LineBorder;
 
-public class MeetingGUI{
+public class AppointmentView{
 
 	private static JTextField textField;
 	private static JTextField txtDd;
 	private static JTextField txtYyyy;
-	private static JTextField textField_1;
 	
 
 
@@ -32,10 +29,10 @@ public class MeetingGUI{
 		frame.setResizable(false);
 		frame.pack();
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] {30, 0, 30, 0, 0, 0, 30, 30, 30, 0, 0, 30};
-		gridBagLayout.rowHeights = new int[] {30, 0, 0, 0, 0, 30, 30, 30, 30, 30, 0, 0, 0, 30};
-		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0};
+		gridBagLayout.columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200};
+		gridBagLayout.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200};
+		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		frame.getContentPane().setLayout(gridBagLayout);
 		
 		JLabel lblBeskrivelse = new JLabel("Beskrivelse");
@@ -196,7 +193,6 @@ public class MeetingGUI{
 		frame.getContentPane().add(lblLedigeRomstrrelse, gbc_lblLedigeRomstrrelse);
 		
 		JList list = new JList();
-		list.setBorder(new LineBorder(new Color(0, 0, 0)));
 		GridBagConstraints gbc_list = new GridBagConstraints();
 		gbc_list.insets = new Insets(0, 0, 5, 5);
 		gbc_list.gridheight = 3;
@@ -207,7 +203,6 @@ public class MeetingGUI{
 		frame.getContentPane().add(list, gbc_list);
 		
 		JCheckBox chckbxLeggTilPersoner = new JCheckBox("Legg til personer/grupper");
-		chckbxLeggTilPersoner.setSelected(true);
 		GridBagConstraints gbc_chckbxLeggTilPersoner = new GridBagConstraints();
 		gbc_chckbxLeggTilPersoner.anchor = GridBagConstraints.WEST;
 		gbc_chckbxLeggTilPersoner.gridwidth = 4;
@@ -216,107 +211,13 @@ public class MeetingGUI{
 		gbc_chckbxLeggTilPersoner.gridy = 10;
 		frame.getContentPane().add(chckbxLeggTilPersoner, gbc_chckbxLeggTilPersoner);
 		
-		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setForeground(Color.LIGHT_GRAY);
-		layeredPane.setBackground(Color.LIGHT_GRAY);
-		layeredPane.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_layeredPane = new GridBagConstraints();
-		gbc_layeredPane.gridwidth = 10;
-		gbc_layeredPane.insets = new Insets(0, 0, 5, 5);
-		gbc_layeredPane.fill = GridBagConstraints.BOTH;
-		gbc_layeredPane.gridx = 1;
-		gbc_layeredPane.gridy = 11;
-		frame.getContentPane().add(layeredPane, gbc_layeredPane);
-		GridBagLayout gbl_layeredPane = new GridBagLayout();
-		gbl_layeredPane.rowHeights = new int[] {30, 30, 30, 30, 30, 30, 30, 30};
-		gbl_layeredPane.columnWidths = new int[] {0, 0, 0, 30, 30, 30, 30, 30, 30, 30, 30};
-		gbl_layeredPane.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0};
-		gbl_layeredPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0};
-		layeredPane.setLayout(gbl_layeredPane);
-		
-		JLabel lblNavnPPersongrupper = new JLabel("Navn p\u00E5 person/grupper");
-		GridBagConstraints gbc_lblNavnPPersongrupper = new GridBagConstraints();
-		gbc_lblNavnPPersongrupper.anchor = GridBagConstraints.WEST;
-		gbc_lblNavnPPersongrupper.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNavnPPersongrupper.gridx = 0;
-		gbc_lblNavnPPersongrupper.gridy = 0;
-		layeredPane.add(lblNavnPPersongrupper, gbc_lblNavnPPersongrupper);
-		
-		JButton btnSk = new JButton("S\u00F8k");
-		GridBagConstraints gbc_btnSk = new GridBagConstraints();
-		gbc_btnSk.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSk.gridx = 3;
-		gbc_btnSk.gridy = 0;
-		layeredPane.add(btnSk, gbc_btnSk);
-		
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.anchor = GridBagConstraints.WEST;
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.gridx = 0;
-		gbc_textField_1.gridy = 1;
-		layeredPane.add(textField_1, gbc_textField_1);
-		textField_1.setColumns(15);
-		
-		JLabel lblSketreff = new JLabel("S\u00F8ketreff");
-		GridBagConstraints gbc_lblSketreff = new GridBagConstraints();
-		gbc_lblSketreff.anchor = GridBagConstraints.WEST;
-		gbc_lblSketreff.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSketreff.gridx = 0;
-		gbc_lblSketreff.gridy = 3;
-		layeredPane.add(lblSketreff, gbc_lblSketreff);
-		
-		JLabel lblDeltakere = new JLabel("Deltakere");
-		GridBagConstraints gbc_lblDeltakere = new GridBagConstraints();
-		gbc_lblDeltakere.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDeltakere.gridx = 5;
-		gbc_lblDeltakere.gridy = 3;
-		layeredPane.add(lblDeltakere, gbc_lblDeltakere);
-		
-		JList list_1 = new JList();
-		list_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_list_1 = new GridBagConstraints();
-		gbc_list_1.gridwidth = 3;
-		gbc_list_1.gridheight = 4;
-		gbc_list_1.insets = new Insets(0, 0, 0, 5);
-		gbc_list_1.fill = GridBagConstraints.BOTH;
-		gbc_list_1.gridx = 0;
-		gbc_list_1.gridy = 4;
-		layeredPane.add(list_1, gbc_list_1);
-		
-		JList list_2 = new JList();
-		list_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_list_2 = new GridBagConstraints();
-		gbc_list_2.gridwidth = 6;
-		gbc_list_2.gridheight = 4;
-		gbc_list_2.fill = GridBagConstraints.BOTH;
-		gbc_list_2.gridx = 5;
-		gbc_list_2.gridy = 4;
-		layeredPane.add(list_2, gbc_list_2);
-		
-		JButton btnNewButton_1 = new JButton("Legg til");
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.gridwidth = 2;
-		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton_1.gridx = 3;
-		gbc_btnNewButton_1.gridy = 5;
-		layeredPane.add(btnNewButton_1, gbc_btnNewButton_1);
-		
-		JButton btnFjern = new JButton("  Fjern ");
-		GridBagConstraints gbc_btnFjern = new GridBagConstraints();
-		gbc_btnFjern.gridwidth = 2;
-		gbc_btnFjern.insets = new Insets(0, 0, 5, 5);
-		gbc_btnFjern.gridx = 3;
-		gbc_btnFjern.gridy = 6;
-		layeredPane.add(btnFjern, gbc_btnFjern);
-		
 		JCheckBox chckbxNewCheckBox = new JCheckBox("Legg til personlig varsel");
 		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
 		gbc_chckbxNewCheckBox.anchor = GridBagConstraints.WEST;
 		gbc_chckbxNewCheckBox.gridwidth = 4;
 		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 5);
 		gbc_chckbxNewCheckBox.gridx = 1;
-		gbc_chckbxNewCheckBox.gridy = 12;
+		gbc_chckbxNewCheckBox.gridy = 11;
 		frame.getContentPane().add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
 		
 		JButton btnNewButton = new JButton("Legg til i kalender");
@@ -325,9 +226,9 @@ public class MeetingGUI{
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton.gridx = 9;
-		gbc_btnNewButton.gridy = 13;
+		gbc_btnNewButton.gridy = 11;
 		frame.getContentPane().add(btnNewButton, gbc_btnNewButton);
 		
 		JButton btnAvbryt = new JButton("        Avbryt         ");
@@ -336,9 +237,9 @@ public class MeetingGUI{
 			}
 		});
 		GridBagConstraints gbc_btnAvbryt = new GridBagConstraints();
-		gbc_btnAvbryt.insets = new Insets(0, 0, 0, 5);
+		gbc_btnAvbryt.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAvbryt.gridx = 10;
-		gbc_btnAvbryt.gridy = 13;
+		gbc_btnAvbryt.gridy = 11;
 		frame.getContentPane().add(btnAvbryt, gbc_btnAvbryt);
 		frame.setVisible(true);
 	}

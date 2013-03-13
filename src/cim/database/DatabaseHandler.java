@@ -12,7 +12,7 @@ import cim.models.Meeting;
 import cim.models.Room;
 import cim.util.CloakedIronManException;
 
-public class DatabaseHandler {
+public class DatabaseHandler implements DatabaseFetcherInterface {
 
 	private static String url = "jdbc:mysql://78.91.2.123/cim";
 	private static String user = "Petter";
@@ -85,6 +85,43 @@ public class DatabaseHandler {
 			return false;
 		}		
 	}
+
+	
+	private Account getAccount(int accountId){
+		String sql = 
+				"SELECT * " +
+				"FROM attendable " +
+				"WHERE attendable_id = ";
+		sql += accountId;
+		ResultSet rs = executeQuery(sql);
+		int accountId1 = 0;
+		try {
+			rs.next();
+			accountId1 = rs.getInt("user_id");
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		sql = "SELECT * " +
+				"FROM account " +
+				"WHERE user_id = ";
+		sql += accountId1;		
+		rs = executeQuery(sql);		
+		try {
+			rs.next();
+			Account a = new Account(rs.getString("first_name"),
+					   rs.getString("last_name"),
+					   rs.getString("email"),
+					   rs.getString("password"));
+			a.setId(accountId);
+			
+			return a;
+		} catch (SQLException e) {
+			System.out.println(e);
+			return null;
+		}
+	}
+	
 
 	public Calendar getCalendar(int calendar_id){
 		String sql = 
@@ -204,6 +241,7 @@ public class DatabaseHandler {
 		sql += appointmentId;
 		return executeUpdate(sql);
 	}
+
 	// getAppointment(id)
 	// get
 	public int saveAccount(Account acc) throws CloakedIronManException {
@@ -276,6 +314,21 @@ public class DatabaseHandler {
 	}
 
 
+
+	
+	public Account getAccount(String email) {
+		String sql = "SELECT * FROM account WHERE email = ";
+		sql += email;
+		ResultSet rs = executeQuery(sql);
+		try {
+			rs.next();
+			return getAccount(rs.getInt("user_id"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 
 
 	public Account getAccount(int id) throws SQLException {

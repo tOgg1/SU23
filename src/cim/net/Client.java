@@ -13,12 +13,14 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Scanner;
 
+import cim.models.Account;
 import cim.net.packet.Event;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.Authenticator;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
+import cim.views.AuthenticateView;
 
 public class Client {
 	private Socket eventSocket;
@@ -77,6 +79,18 @@ public class Client {
 		EventListenerThread e = new EventListenerThread();
 		e.start();
 		
+		
+		// Spawning authenticate window
+		AuthenticateView auth = new AuthenticateView();
+		auth.setVisible(true);
+		Account acc = auth.getAccount();
+		if (acc != null) {
+			// User managed to log in
+			// Create new calendar gui
+		} else {
+			// Terminate the application
+		}
+		/*
 		// Must log in first
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Skriv inn brukernavn: ");

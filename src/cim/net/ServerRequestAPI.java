@@ -35,6 +35,8 @@ public class ServerRequestAPI {
 			//	Big fat-ass if
 			if(method.equals("AUTHENTICATE")) {
 				return authenticate((String)args[0], (String)args[1]);
+			} else if (method.equals("GET_ALL_CALENDARS")) {
+				return get_all_calendars();
 			}
 			
 		} catch (Exception e) {
@@ -60,6 +62,16 @@ public class ServerRequestAPI {
 			}
 		}
 		return new Response((Object)null);
+	}
+	/**
+	 * Returnerer alle kalendre registrert i systemet.
+	 * @return
+	 * @throws SQLException
+	 */
+	private Response get_all_calendars() throws SQLException {
+		
+		//TODO: Skriv denne metoden
+		return null;
 	}
 	
 }
