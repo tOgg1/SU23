@@ -452,6 +452,18 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		}
 		return null;
 	}
-
+	public Room getRoom(int meeting_room_id)
+	{
+		PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting_room WHERE meeting_room_id = ?");
+		st.setInt(1, meeting_room_id);
+		
+		ResultSet rs = st.executeQuery();
+		
+		if(rs.next())
+		{
+			return new Room(rs.getInt("meeting_room_id"),rs.getInt("size"));
+		}
+		
+	}
 
 }
