@@ -80,15 +80,16 @@ public class Client {
 		e.start();
 		
 		
+		
 		// Spawning authenticate window
-		AuthenticateView auth = new AuthenticateView();
+		AuthenticateView auth = new AuthenticateView(this);
 		auth.setVisible(true);
 		Account acc = auth.getAccount();
 		if (acc != null) {
 			// User managed to log in
 			// Create new calendar gui
 		} else {
-			// Terminate the application
+			this.exit();
 		}
 		/*
 		// Must log in first
@@ -125,6 +126,18 @@ public class Client {
 		} 
 	}
 	
+	public void exit() {
+		System.exit(1);
+	}
+	
+	public void d(String d) {
+		Log.d("Client", d);
+	}
+	
+	public void e(String e) {
+		Log.e("Client", e);
+	}
+	
 	private class EventListenerThread extends Thread implements Runnable {
 		
 		public void run() {
@@ -147,5 +160,6 @@ public class Client {
 			}
 		}
 	}
+
 	
 }

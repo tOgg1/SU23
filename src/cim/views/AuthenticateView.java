@@ -16,6 +16,10 @@ import java.awt.Insets;
 import javax.swing.JPasswordField;
 
 import cim.models.Account;
+import cim.net.Client;
+import cim.net.packet.Request;
+import cim.net.packet.Response;
+import cim.util.CloakedIronManException;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -27,11 +31,15 @@ public class AuthenticateView extends JDialog {
 	private JTextField txtEmail;
 	private JPasswordField txtPassword;
 	private Account account = null;
+	private final Client client;
+	
 
 	/**
 	 * Create the dialog.
 	 */
-	public AuthenticateView() {
+	public AuthenticateView(Client client) {
+		this.client = client;
+		
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("Cloaked Ironman - Logg inn");
 		setBounds(100, 100, 315, 130);
@@ -91,7 +99,14 @@ public class AuthenticateView extends JDialog {
 						String email = txtEmail.getText();
 						String pw = new String(txtPassword.getPassword());
 						txtPassword.setText("");
-						System.out.println(pw);
+						Response re;
+						try {
+							Account acc = (Account)AuthenticateView.this.client.request(new Request("AUTHENTICATE", email, pw)).getData()[0];
+							System.out.println(acc);
+						} catch (CloakedIronManException e1) {
+							AuthenticateView.this.client.d(e1.getMessage());
+						}
+						
 						
 						//String email = Authenticate.this.
 					}
