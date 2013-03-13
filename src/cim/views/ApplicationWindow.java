@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 import cim.models.Account;
 import cim.net.Client;
 
-public class CalendarView extends JFrame {
+public class ApplicationWindow extends JFrame {
 
 	/**
 	 * Because dunno
@@ -42,7 +42,7 @@ public class CalendarView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CalendarView(Client c, Account a) {
+	public ApplicationWindow(Client c, Account a) {
 		this.client = c;
 		this.account = a;
 		
