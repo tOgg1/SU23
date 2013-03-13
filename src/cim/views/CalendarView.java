@@ -1,20 +1,25 @@
 package cim.views;
 
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import java.awt.Insets;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JButton;
 import javax.swing.SwingConstants;
-import javax.swing.JComboBox;
-import javax.swing.DropMode;
+import javax.swing.border.EmptyBorder;
 
-public class CalenderView {
+public class CalendarView extends JFrame {
+
+	private JPanel contentPane;
+	
 	private static JTextField txtMandag;
 	private static JTextField txtTirsdag;
 	private static JTextField txtOnsdag;
@@ -24,22 +29,44 @@ public class CalenderView {
 	private static JTextField txtSndag;
 	private static JTextField txtUke;
 
-
+	/**
+	 * Launch the application.
+	 */
 	public static void main(String[] args) {
-		JFrame frame = new JFrame("Kalender oversikt");
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CalendarView frame = new CalendarView();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public CalendarView() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		setContentPane(contentPane);
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {30, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 30};
 		gridBagLayout.rowHeights = new int[] {30, 30, 30, 150, 30, 150, 30};
 		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		gridBagLayout.rowWeights = new double[]{1.0, 0.0, 0.0, 1.0};
-		frame.getContentPane().setLayout(gridBagLayout);
+		contentPane.setLayout(gridBagLayout);
 		
 		JButton btnForrigeUke = new JButton("Forrige uke");
 		GridBagConstraints gbc_btnForrigeUke = new GridBagConstraints();
 		gbc_btnForrigeUke.insets = new Insets(0, 0, 5, 5);
 		gbc_btnForrigeUke.gridx = 1;
 		gbc_btnForrigeUke.gridy = 1;
-		frame.getContentPane().add(btnForrigeUke, gbc_btnForrigeUke);
+		contentPane.add(btnForrigeUke, gbc_btnForrigeUke);
 		
 		txtUke = new JTextField();
 		txtUke.setHorizontalAlignment(SwingConstants.CENTER);
@@ -50,7 +77,7 @@ public class CalenderView {
 		gbc_txtUke.insets = new Insets(0, 0, 5, 5);
 		gbc_txtUke.gridx = 2;
 		gbc_txtUke.gridy = 1;
-		frame.getContentPane().add(txtUke, gbc_txtUke);
+		contentPane.add(txtUke, gbc_txtUke);
 		txtUke.setColumns(10);
 		
 		JButton btnNesteUke = new JButton("Neste uke");
@@ -58,7 +85,7 @@ public class CalenderView {
 		gbc_btnNesteUke.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNesteUke.gridx = 3;
 		gbc_btnNesteUke.gridy = 1;
-		frame.getContentPane().add(btnNesteUke, gbc_btnNesteUke);
+		contentPane.add(btnNesteUke, gbc_btnNesteUke);
 		
 		JLabel lblHoppTilUke = new JLabel("Hopp til uke:");
 		GridBagConstraints gbc_lblHoppTilUke = new GridBagConstraints();
@@ -66,7 +93,7 @@ public class CalenderView {
 		gbc_lblHoppTilUke.insets = new Insets(0, 0, 5, 5);
 		gbc_lblHoppTilUke.gridx = 4;
 		gbc_lblHoppTilUke.gridy = 1;
-		frame.getContentPane().add(lblHoppTilUke, gbc_lblHoppTilUke);
+		contentPane.add(lblHoppTilUke, gbc_lblHoppTilUke);
 		
 		JComboBox comboBox = new JComboBox();
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
@@ -74,14 +101,14 @@ public class CalenderView {
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBox.gridx = 5;
 		gbc_comboBox.gridy = 1;
-		frame.getContentPane().add(comboBox, gbc_comboBox);
+		contentPane.add(comboBox, gbc_comboBox);
 		
 		JButton btnNyAvtale = new JButton("Ny avtale");
 		GridBagConstraints gbc_btnNyAvtale = new GridBagConstraints();
 		gbc_btnNyAvtale.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNyAvtale.gridx = 12;
 		gbc_btnNyAvtale.gridy = 1;
-		frame.getContentPane().add(btnNyAvtale, gbc_btnNyAvtale);
+		contentPane.add(btnNyAvtale, gbc_btnNyAvtale);
 		
 		txtMandag = new JTextField();
 		txtMandag.setHorizontalAlignment(SwingConstants.CENTER);
@@ -93,7 +120,7 @@ public class CalenderView {
 		gbc_txtMandag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtMandag.gridx = 1;
 		gbc_txtMandag.gridy = 2;
-		frame.getContentPane().add(txtMandag, gbc_txtMandag);
+		contentPane.add(txtMandag, gbc_txtMandag);
 		txtMandag.setColumns(10);
 		
 		txtTirsdag = new JTextField();
@@ -107,7 +134,7 @@ public class CalenderView {
 		gbc_txtTirsdag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtTirsdag.gridx = 3;
 		gbc_txtTirsdag.gridy = 2;
-		frame.getContentPane().add(txtTirsdag, gbc_txtTirsdag);
+		contentPane.add(txtTirsdag, gbc_txtTirsdag);
 		
 		txtOnsdag = new JTextField();
 		txtOnsdag.setHorizontalAlignment(SwingConstants.CENTER);
@@ -119,7 +146,7 @@ public class CalenderView {
 		gbc_txtOnsdag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtOnsdag.gridx = 5;
 		gbc_txtOnsdag.gridy = 2;
-		frame.getContentPane().add(txtOnsdag, gbc_txtOnsdag);
+		contentPane.add(txtOnsdag, gbc_txtOnsdag);
 		txtOnsdag.setColumns(10);
 		
 		txtTorsdag = new JTextField();
@@ -132,7 +159,7 @@ public class CalenderView {
 		gbc_txtTorsdag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtTorsdag.gridx = 7;
 		gbc_txtTorsdag.gridy = 2;
-		frame.getContentPane().add(txtTorsdag, gbc_txtTorsdag);
+		contentPane.add(txtTorsdag, gbc_txtTorsdag);
 		txtTorsdag.setColumns(10);
 		
 		txtFredag = new JTextField();
@@ -145,7 +172,7 @@ public class CalenderView {
 		gbc_txtFredag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtFredag.gridx = 9;
 		gbc_txtFredag.gridy = 2;
-		frame.getContentPane().add(txtFredag, gbc_txtFredag);
+		contentPane.add(txtFredag, gbc_txtFredag);
 		txtFredag.setColumns(10);
 		
 		txtLrdag = new JTextField();
@@ -158,7 +185,7 @@ public class CalenderView {
 		gbc_txtLrdag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtLrdag.gridx = 11;
 		gbc_txtLrdag.gridy = 2;
-		frame.getContentPane().add(txtLrdag, gbc_txtLrdag);
+		contentPane.add(txtLrdag, gbc_txtLrdag);
 		txtLrdag.setColumns(10);
 		
 		JList mandag = new JList();
@@ -169,7 +196,7 @@ public class CalenderView {
 		gbc_mandag.fill = GridBagConstraints.BOTH;
 		gbc_mandag.gridx = 1;
 		gbc_mandag.gridy = 3;
-		frame.getContentPane().add(mandag, gbc_mandag);
+		contentPane.add(mandag, gbc_mandag);
 		
 		JList tirsdag = new JList();
 		GridBagConstraints gbc_tirsdag = new GridBagConstraints();
@@ -179,7 +206,7 @@ public class CalenderView {
 		gbc_tirsdag.fill = GridBagConstraints.BOTH;
 		gbc_tirsdag.gridx = 3;
 		gbc_tirsdag.gridy = 3;
-		frame.getContentPane().add(tirsdag, gbc_tirsdag);
+		contentPane.add(tirsdag, gbc_tirsdag);
 		
 		JList onsdag = new JList();
 		GridBagConstraints gbc_onsdag = new GridBagConstraints();
@@ -189,7 +216,7 @@ public class CalenderView {
 		gbc_onsdag.fill = GridBagConstraints.BOTH;
 		gbc_onsdag.gridx = 5;
 		gbc_onsdag.gridy = 3;
-		frame.getContentPane().add(onsdag, gbc_onsdag);
+		contentPane.add(onsdag, gbc_onsdag);
 		
 		JList torsdag = new JList();
 		GridBagConstraints gbc_torsdag = new GridBagConstraints();
@@ -199,7 +226,7 @@ public class CalenderView {
 		gbc_torsdag.fill = GridBagConstraints.BOTH;
 		gbc_torsdag.gridx = 7;
 		gbc_torsdag.gridy = 3;
-		frame.getContentPane().add(torsdag, gbc_torsdag);
+		contentPane.add(torsdag, gbc_torsdag);
 		
 		JList fredag = new JList();
 		GridBagConstraints gbc_fredag = new GridBagConstraints();
@@ -209,7 +236,7 @@ public class CalenderView {
 		gbc_fredag.fill = GridBagConstraints.BOTH;
 		gbc_fredag.gridx = 9;
 		gbc_fredag.gridy = 3;
-		frame.getContentPane().add(fredag, gbc_fredag);
+		contentPane.add(fredag, gbc_fredag);
 		
 		JList lordag = new JList();
 		GridBagConstraints gbc_lordag = new GridBagConstraints();
@@ -218,7 +245,7 @@ public class CalenderView {
 		gbc_lordag.fill = GridBagConstraints.BOTH;
 		gbc_lordag.gridx = 11;
 		gbc_lordag.gridy = 3;
-		frame.getContentPane().add(lordag, gbc_lordag);
+		contentPane.add(lordag, gbc_lordag);
 		
 		txtSndag = new JTextField();
 		txtSndag.setHorizontalAlignment(SwingConstants.CENTER);
@@ -230,7 +257,7 @@ public class CalenderView {
 		gbc_txtSndag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtSndag.gridx = 11;
 		gbc_txtSndag.gridy = 4;
-		frame.getContentPane().add(txtSndag, gbc_txtSndag);
+		contentPane.add(txtSndag, gbc_txtSndag);
 		txtSndag.setColumns(10);
 		
 		JList sondag = new JList();
@@ -240,10 +267,9 @@ public class CalenderView {
 		gbc_sondag.fill = GridBagConstraints.BOTH;
 		gbc_sondag.gridx = 11;
 		gbc_sondag.gridy = 5;
-		frame.getContentPane().add(sondag, gbc_sondag);
-		frame.setResizable(false);
-		frame.pack();
-
+		contentPane.add(sondag, gbc_sondag);
+		this.setResizable(false);
+		this.pack();
 	}
 
 }
