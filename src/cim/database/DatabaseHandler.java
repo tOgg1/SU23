@@ -262,6 +262,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		PreparedStatement st = this.con.prepareStatement("SELECT meeting.is_cancelled FROM appointment LEFT JOIN meeting ON appointment.appointment_id=meeting.appointment_id WHERE appointment.appointment_id=?");
 		st.setInt(1,appointment_id);
 		PreparedStatement st2 = this.con.prepareStatement("SELECT * FROM appointment WHERE appointment_id=?");
+		st2.setInt(1, appointment_id);
 		ResultSet rs = st.executeQuery();
 		ResultSet rs2 = st2.executeQuery();
 
@@ -421,7 +422,8 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			{
 				ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
 				while(rs2.next()){
-					MeetingResponse meeting = new MeetingResponse(getAccountByEmail(rs2.getString("account_email")), rs2.getString("status"));
+					MeetingResponse meeting = new MeetingResponse(getAccount(rs2.getInt("account_user_id")), rs2.getString("status"));
+					System.out.println(meeting.response);
 					meetingResponses.add(meeting);
 				}
 				return m = new Meeting(rs.getString("info"), meetingResponses, getRoom(rs.getInt("meeting_room_id")), rs.getTime("start"), rs.getTime("end"), rs.getDate("date"));				
