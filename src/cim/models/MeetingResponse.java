@@ -26,7 +26,10 @@ public class MeetingResponse {
 		}
 		return null;
 	}
-	
+	public String toString()
+	{
+		return ("Account: " + this.account + "\nResponse: " + this.response);
+	}
 	
 
 }
