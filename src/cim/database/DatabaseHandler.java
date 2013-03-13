@@ -9,7 +9,7 @@ import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.models.Room;
 
-public class DatabaseHandler {
+public class DatabaseHandler implements DatabaseFetcherInterface {
 
 	private static String url = "jdbc:mysql://192.168.0.104:3306/cim";
 	private static String user = "Petter";
@@ -105,10 +105,13 @@ public class DatabaseHandler {
 		rs = executeQuery(sql);		
 		try {
 			rs.next();
-			return new Account(rs.getString("first_name"),
-							   rs.getString("last_name"),
-							   rs.getString("email"),
-							   rs.getString("password"));
+			Account a = new Account(rs.getString("first_name"),
+					   rs.getString("last_name"),
+					   rs.getString("email"),
+					   rs.getString("password"));
+			a.setId(accountId);
+			
+			return a;
 		} catch (SQLException e) {
 			System.out.println(e);
 			return null;
@@ -244,6 +247,21 @@ public class DatabaseHandler {
 		String sql = "DELETE from appointment WHERE appointment_id = ";
 		sql += appointmentId;
 		return executeUpdate(sql);
+	}
+
+
+	
+	public Account getAccount(String email) {
+		String sql = "SELECT * FROM account WHERE email = ";
+		sql += email;
+		ResultSet rs = executeQuery(sql);
+		try {
+			rs.next();
+			return getAccount(rs.getInt("user_id"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	
