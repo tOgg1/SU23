@@ -21,7 +21,7 @@ import cim.util.Authenticator;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
 import cim.views.AuthenticateView;
-import cim.views.CalendarView;
+import cim.views.ApplicationWindow;
 
 public class Client {
 	private Socket eventSocket;
@@ -89,7 +89,7 @@ public class Client {
 		if (acc != null) {
 			// User managed to log in
 			// Create new calendar gui.
-			CalendarView cv = new CalendarView(this, acc);
+			ApplicationWindow cv = new ApplicationWindow(this, acc);
 			cv.setVisible(true);
 		} else {
 			this.exit();

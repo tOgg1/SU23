@@ -101,7 +101,11 @@ public class AuthenticateView extends JDialog {
 						String pw = new String(txtPassword.getPassword());
 						txtPassword.setText("");
 						try {
-							AuthenticateView.this.account = (Account)AuthenticateView.this.client.request(new Request("AUTHENTICATE", email, pw)).getData()[0];
+							Request req = new Request("AUTHENTICATE", email, pw);
+							Response resp = AuthenticateView.this.client.request(req);
+							Object[] dataFromResponse = resp.getData();
+							Account acc = (Account)dataFromResponse[0];
+							AuthenticateView.this.account = acc;
 						} catch (CloakedIronManException e1) {
 							AuthenticateView.this.client.d(e1.getMessage());
 						}
