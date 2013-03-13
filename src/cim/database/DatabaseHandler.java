@@ -15,9 +15,9 @@ import cim.util.CloakedIronManException;
 
 public class DatabaseHandler implements DatabaseFetcherInterface {
 
-	private static String url = "jdbc:mysql://78.91.2.123/cim";
-	private static String user = "Petter";
-	private static String password = "123456";
+	private static String url = cim.util.PersonalSettings.JDBC_URL;
+	private static String user = cim.util.PersonalSettings.MYSQL_USER;
+	private static String password = cim.util.PersonalSettings.MYSQL_PW;
 	private static Connection con;
 
 
@@ -273,7 +273,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			}
 			else
 			{
-				return fillMeeting(rs2);
+				return fillMeeting(rs2, appointment_id);
 			}
 		}
 		return null;
@@ -466,6 +466,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		{
 			return new Room(rs.getInt("meeting_room_id"),rs.getInt("size"));
 		}
+		return null;
 		
 	}
 
