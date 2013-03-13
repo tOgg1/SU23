@@ -424,7 +424,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 					MeetingResponse meeting = new MeetingResponse(getAccountByEmail(rs2.getString("account_email")), rs2.getString("status"));
 					meetingResponses.add(meeting);
 				}
-				m = new Meeting(rs.getString("info"), meetingResponses,);				
+				return m = new Meeting(rs.getString("info"), meetingResponses,);				
 			}
 		}
 		catch (SQLException e)
