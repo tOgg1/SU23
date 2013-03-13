@@ -17,11 +17,10 @@ import cim.models.Account;
 import cim.net.packet.Event;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
-import cim.util.Authenticator;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
-import cim.views.AuthenticateView;
 import cim.views.ApplicationWindow;
+import cim.views.AuthenticateView;
 
 public class Client {
 	private Socket eventSocket;
@@ -32,7 +31,6 @@ public class Client {
 	private ObjectInputStream requestInput;
 	private ObjectOutputStream requestOutput;
 	
-	private Authenticator auth;
 	private ClientEventHandler evt;
 	
 	public Client() throws CloakedIronManException {
@@ -71,7 +69,6 @@ public class Client {
 		}
 		
 		// Creating authenticator instance
-		this.auth = new Authenticator(this);
 		this.evt = new ClientEventHandler();
 	}
 	
