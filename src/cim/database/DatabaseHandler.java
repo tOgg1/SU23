@@ -146,7 +146,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 				ResultSet rs = st.executeQuery();
 				while(rs.next())
 				{
-					return null;
+					return (Meeting)getAppointment(appointment_id);
 				}
 
 				{
