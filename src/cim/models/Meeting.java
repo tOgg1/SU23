@@ -12,9 +12,9 @@ public class Meeting extends Appointment
     private final static int STATUS_ACCEPTED = 1;
     private final static int STATUS_DECLINED = 2;
 
-	public Meeting(String info, Map<Integer, Attendable> invitees, Room room, Time startDate, Time endDate, Date date, int id)
+	public Meeting(String info, Map<Integer, Attendable> invitees, Room room, Time startDate, Time endDate, Date date)
 	{	
-		super(startDate, endDate, info, date, id);
+		super(startDate, endDate, info, date);
 		this.invitees = invitees;		
 	}
 

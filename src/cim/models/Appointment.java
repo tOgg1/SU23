@@ -5,7 +5,6 @@ import java.sql.Time;
 
 public class Appointment extends CalendarObject 
 {
-    private int id;
 	private Account owner;
 	private Time startDate;
 	private Time endDate;
@@ -13,13 +12,12 @@ public class Appointment extends CalendarObject
 	private String info;
 	protected Room room;
 	
-	public Appointment(Time startDate, Time endDate, String info, Date date, int id)
+	public Appointment(Time startDate, Time endDate, String info, Date date)
 	{
 		this.startDate = startDate;
 		this.date = date;
 		this.endDate = endDate;
 		this.info = info;
-		this.id = id;
 	}
 	public void modifyStart(Time newStartDate)
 	{
@@ -38,12 +36,7 @@ public class Appointment extends CalendarObject
 	{
 		this.date = newDate;
 	}
-    @Override
-    public int getId()
-    {
-        return id;
-    }
-    
+
     public String toString(){
     	return "startDate: " + startDate + " endDate: " + endDate;
     }

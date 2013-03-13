@@ -2,7 +2,7 @@ package cim.net;
 
 import java.sql.SQLException;
 
-import cim.database.DatabaseHandlerHawk;
+import cim.database.DatabaseHandler;
 import cim.models.Account;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
@@ -10,17 +10,17 @@ import cim.util.CloakedIronManException;
 
 /**
  * This class defines the API for the entire server request
- * @author Håkon
+ * @author Haakon
  *
  */
 public class ServerRequestAPI {
 	
 	private final Server server;
-	private final DatabaseHandlerHawk db;
+	private final DatabaseHandler db;
 	
 	public ServerRequestAPI(Server server) throws CloakedIronManException {
 		this.server = server;
-		this.db = new DatabaseHandlerHawk();
+		this.db = new DatabaseHandler();
 	}
 	
 	/**
@@ -58,7 +58,6 @@ public class ServerRequestAPI {
 		System.out.println(acc);
 		if(acc != null){
 			if(acc.isValidPassword(pw)){
-				System.out.println("her");
 				return new Response(acc);
 			}
 		}
