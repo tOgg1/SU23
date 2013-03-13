@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
 import cim.models.Account;
+import cim.models.Appointment;
 import cim.models.Group;
 import cim.util.CloakedIronManException;
 import cim.util.PersonalSettings;
@@ -84,6 +85,19 @@ public class DatabaseHandlerHawk {
 		}
 		return null;
 	}
+	public Appointment getAppointment(int appointment_id) throws SQLException
+	{
+		PreparedStatement st = this.con.prepareStatement("SELECT * FROM appointment WHERE appointment_id=?");
+		st.setInt(1,appointment_id);
+		ResultSet rs = st.executeQuery();
+		if(rs.next())
+		{
+			return fillAppointment(rs);
+		}
+		return null;
+		
+	}
+	
 	
 	public Account getAccount(int id) throws SQLException {
 		PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE user_id=?");
@@ -188,6 +202,42 @@ public class DatabaseHandlerHawk {
 		Group g = new Group(rs.getString("name"), this.getAccount(rs.getInt("group_owner")));
 		g.setId(rs.getInt("group_id"));
 		return g;
+	}
+	
+	/**
+	 * ResultSet should be a joined query of appintment and meeting.
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
+	private Meeting fillMeeting(ResultSet rs) throws SQLException
+	{
+		Meeting m;
+		try {
+			if(rs.next())
+			{
+				m = new Meeting()
+			}
+		}
+		
+		
+		
+	}
+	public Appointment fillAppointment(ResultSet rs)
+	{
+		Appointment a;
+		try {
+			if(rs.next())
+			{
+				a = new Appointment(rs.getTime("start") , rs.getTime("end"), rs.getString("info"), rs.getDate("date"), rs.getInt("appointment_id"));
+				return a;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	

@@ -56,7 +56,6 @@ public class ServerRequestAPI {
 		System.out.println(acc);
 		if(acc != null){
 			if(acc.isValidPassword(pw)){
-				System.out.println("her");
 				return new Response(acc);
 			}
 		}
