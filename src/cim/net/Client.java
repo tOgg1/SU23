@@ -33,7 +33,7 @@ public class Client {
 	
 	private ClientEventHandler evt;
 	
-	public Client() throws CloakedIronManException {
+	public Client(String ip) throws CloakedIronManException {
 		
 		// Configuring Log file
 		File file = new File("serverlog.txt");
@@ -50,8 +50,8 @@ public class Client {
 		
 		// Set up sockets
 		try {
-			this.eventSocket = new Socket(InetAddress.getLocalHost(), Settings.SERVER_EVENT_PORT);
-			this.requestSocket = new Socket(InetAddress.getLocalHost(),Settings.SERVER_REQUEST_PORT);
+			this.eventSocket = new Socket(ip, Settings.SERVER_EVENT_PORT);
+			this.requestSocket = new Socket(ip,Settings.SERVER_REQUEST_PORT);
 		} catch (IOException e) {
 			Log.e("Client", e.getMessage());
 			throw new CloakedIronManException("Sockets could not be established.", e);
