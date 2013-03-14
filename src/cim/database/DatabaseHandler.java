@@ -88,7 +88,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	}
 
 	
-		public Calendar getCalendar(int calendar_id){
+	public Calendar getCalendar(int calendar_id){
 		String sql = 
 				"SELECT owner_attendable_id " +
 						"FROM Calendar " +
@@ -130,30 +130,6 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			return c;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-
-	}
-
-	public Meeting getMeeting(int appointment_id){
-
-		try {
-			if(appointment_id >= 0)
-			{
-				PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting WHERE appointment_id = ?");
-				st.setInt(1, appointment_id);
-				ResultSet rs = st.executeQuery();
-				while(rs.next())
-				{
-					return (Meeting)getAppointment(appointment_id);
-				}
-
-				{
-
-				}
-			} 
-		} catch (SQLException e){
 			e.printStackTrace();
 		}
 		return null;
