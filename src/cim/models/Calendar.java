@@ -15,11 +15,17 @@ public class Calendar extends CalendarObject
 		this.hasAccess = new ArrayList<Attendable>();
 		this.owner = owner;
 	}
-	
+	/**
+	 * Returns a list of all appointment ids which is set. Not saved appointments are not returned.
+	 * @return
+	 */
 	public ArrayList<Integer> getAllAppointmentIds() {
 		ArrayList<Integer> l = new ArrayList<Integer>();
 		for (Appointment a : this.getAppointments()) {
-			l.add(a.getId());
+			if (a.getId() != -1) {
+				l.add(a.getId());
+			}
+			
 		}
 		return l;
 	}

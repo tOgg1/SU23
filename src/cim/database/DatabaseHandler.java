@@ -224,6 +224,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			st.executeUpdate();
 			
 			// Delete all appointments not in the calendars list
+			ArrayList<Integer> ids = c.getAllAppointmentIds();
 			
 			
 			return c.getId();
