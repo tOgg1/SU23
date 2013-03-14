@@ -91,6 +91,23 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	}
 
 	
+	public Calendar getCalendar2(int id) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT owner_attendable_id FROM calendar WHERE calendar_id=?");
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				int iAttendableID = rs.getInt("owner_attendable_id");
+			}  else {
+				throw new CloakedIronManException("Calendar ID not found in database");
+			}
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not execute query.", e);
+		}
+		return null;
+		
+		
+	}
+	
 	public Calendar getCalendar(int calendar_id){
 		String sql = 
 				"SELECT owner_attendable_id " +
@@ -255,12 +272,56 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			if(a.getId() == -1) {
 				a.setId(this.getNextAutoIncrease("appointment", "appointment_id"));
 			}
+			if(a.getOwner() == null) {
+				throw new CloakedIronManException("Owner not set");
+			}
+			if(a.getOwner().getId() == -1) {
+				throw new CloakedIronManException("Owner id not set (owner not in database)");
+			}
+			if(a.getRoom() != null) {
+				if (a.getRoom().getId() == -1) {
+					throw new CloakedIronManException("Room not saved in database");
+				}
+			}
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO appointment " +
 					"(appointment_id, name, date, start, end, info, calendar_id, place, meeting_room_id, appointment_owner) " +
 					"VALUES " +
 					"(?,?,?,?,?,?,?,?,?,?) " +
 					"ON DUPLICATE KEY UPDATE " +
 					"name=?, date=?,start=?, end=?, info=?, calendar_id=?, place=?, meeting_room_id=?, appointment_owner=?");
+			st.setInt(1, a.getId());
+			st.setString(2, a.getName());
+			st.setDate(3, a.getDate());
+			st.setTime(4, a.getStart());
+			st.setTime(5, a.getEnd());
+			st.setString(6, a.getInfo());
+			st.setInt(7, c.getId());
+			st.setString(8, a.getPlace());
+			if(a.getRoom() != null) {
+				st.setInt(9, a.getRoom().getId());
+			} else {
+				st.setNull(9, Types.INTEGER);
+			}
+			st.setInt(10, a.getOwner().getId());
+			
+			st.setString(11, a.getName());
+			st.setDate(12, a.getDate());
+			st.setTime(13, a.getStart());
+			st.setTime(14, a.getEnd());
+			st.setString(15, a.getInfo());
+			st.setInt(16, c.getId());
+			st.setString(17, a.getPlace());
+			if(a.getRoom() != null) {
+				st.setInt(18, a.getRoom().getId());
+			} else {
+				st.setNull(18, Types.INTEGER);
+			}
+			st.setInt(19, a.getOwner().getId());
+			
+			st.execute();
+			return a;
+			
+			
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
