@@ -260,7 +260,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 					"VALUES " +
 					"(?,?,?,?,?,?,?,?,?,?) " +
 					"ON DUPLICATE KEY UPDATE " +
-					"name=?, date=?,start=?, end=?,"
+					"name=?, date=?,start=?, end=?, info=?, calendar_id=?, place=?, meeting_room_id=?, appointment_owner=?");
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
