@@ -2,8 +2,9 @@ package cim.models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
-public abstract class CalendarObject
+public abstract class CalendarObject implements Serializable
 {
 	
 	protected PropertyChangeSupport pcs;
@@ -33,5 +34,15 @@ public abstract class CalendarObject
     	
     	this.pcs.firePropertyChange("id", this.id, id);
     	this.id = id;
+    }
+    
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (obj.getClass() != getClass())
+            return false;
+        return this.getId() == ((CalendarObject)obj).getId();
     }
 }

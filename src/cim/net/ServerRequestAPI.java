@@ -1,6 +1,7 @@
 package cim.net;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import cim.database.DatabaseHandler;
 import cim.models.Account;
@@ -42,6 +43,8 @@ public class ServerRequestAPI {
 				return get_all_calendars_to_account((Account)args[0]);
 			} else if (method.equals("SAVE_CALENDAR")) {
 				return save_calendar((Calendar)args[0]);
+			} else if (method.equals("GET_ACCOUNT")) {
+				return get_account((int)args[0]);
 			}
 			
 		} catch (Exception e) {
@@ -72,6 +75,7 @@ public class ServerRequestAPI {
 	 * @throws SQLException
 	 */
 	private Response get_all_calendars() throws CloakedIronManException {
+		//return new Response(new ArrayList());	
 		return new Response(this.db.getAllCalendars());
 	}
 	
@@ -82,6 +86,10 @@ public class ServerRequestAPI {
 	private Response save_calendar(Calendar c) throws CloakedIronManException {
 		int iID = this.db.saveCalendar(c);
 		return new Response(iID);
+	}
+	
+	private Response get_account(int id) throws CloakedIronManException {
+		return new Response(this.db.getAccount(id));
 	}
 	
 	
