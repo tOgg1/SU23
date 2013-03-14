@@ -3,6 +3,8 @@ package cim.database;
 import java.sql.*;
 import java.util.ArrayList;
 
+import com.mysql.jdbc.StringUtils;
+
 
 import cim.models.Account;
 import cim.models.Appointment;
@@ -212,6 +214,8 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			if(c.getOwner() == null) {
 				throw new CloakedIronManException("Calendar owner not set");
 			}
+			
+			int iAttendableId = this.getAttendableId(c.getOwner());
 
 			// Create statement for the calendar
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO calendar " +
@@ -220,18 +224,43 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 					"ON DUPLICATE KEY UPDATE " +
 					"owner_attendable_id=?");
 			st.setInt(1, c.getId());
-			st.setInt(2, c.getOwner().getId());
-			st.setInt(3, c.getOwner().getId());
+			st.setInt(2, iAttendableId);
+			st.setInt(3, iAttendableId);
 			st.executeUpdate();
 			
 			// Delete all appointments not in the calendars list
 			ArrayList<Integer> ids = c.getAllAppointmentIds();
+			String[] str = new String[ids.size()];
+			for(int i = 0;i<ids.size();i++) {
+				str[i] = ids.get(i).toString();
+			}
+			System.out.println(str);
 			
 			
 			return c.getId();
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
+	}
+	/**
+	 *  Saven the appointment and returns the saved version
+	 * @param a
+	 * @return
+	 */
+	public Appointment saveAppointment(Appointment a, Calendar c) throws CloakedIronManException {
+		try {
+			if(c.getId() == -1) {
+				throw new CloakedIronManException("Calendar not saved in the database");
+			}
+			if(a.getId() == -1) {
+				a.setId(this.getNextAutoIncrease("appointment", "appointment_id"));
+			}
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not handle query.", e);
+		}
+		
+		
+		return a;
 	}
 
 	// getAppointment(id)
