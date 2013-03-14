@@ -40,4 +40,8 @@ public class Appointment extends CalendarObject
     public String toString(){
     	return "startDate: " + startDate + " endDate: " + endDate;
     }
+    
+    public Account getOwner() {
+    	return this.owner;
+    }
 }
