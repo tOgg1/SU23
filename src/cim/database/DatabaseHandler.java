@@ -171,43 +171,48 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	 * @param acc
 	 * @return
 	 */
-    public ArrayList<Calendar> getAllCalendarsToAccount(Account acc) throws SQLException, CloakedIronManException
+    public ArrayList<Calendar> getAllCalendarsToAccount(Account acc) throws CloakedIronManException
     {
-        ArrayList<Group> groups = getAllGroupsToAccount(acc);
-        ArrayList<Calendar> calendars = new ArrayList<Calendar>();
-        int accCalendarId, groupCalendarId;
+    	try {
+    		ArrayList<Group> groups = getAllGroupsToAccount(acc);
+            ArrayList<Calendar> calendars = new ArrayList<Calendar>();
+            int accCalendarId, groupCalendarId;
 
-        PreparedStatement st = this.con.prepareStatement("SELECT calender_id FROM calendar where owner_attendable_id = ?");
-        st.setInt(1, getAttendableId(acc));
-        ResultSet rs = st.executeQuery();
-
-        if(!rs.next())
-        {
-            throw new CloakedIronManException("Account " + acc.getId() + "  is not registered as an attendable");
-        }
-        accCalendarId = rs.getInt("calendar_id");
-        calendars.add(getCalendar(accCalendarId));
-        rs.close();
-        st.close();
-
-        for(Group group : groups)
-        {
-            st = this.con.prepareStatement("SELECT calendar_id FROM calendar where owner_attendable_id = ?");
-            st.setInt(1, getAttendableId(group));
-            rs = st.executeQuery();
+            PreparedStatement st = this.con.prepareStatement("SELECT calender_id FROM calendar where owner_attendable_id = ?");
+            st.setInt(1, getAttendableId(acc));
+            ResultSet rs = st.executeQuery();
 
             if(!rs.next())
             {
-                throw new CloakedIronManException("Group " + group.getId() + " is not registered as an attendable");
+                throw new CloakedIronManException("Account " + acc.getId() + "  is not registered as an attendable");
+            }
+            accCalendarId = rs.getInt("calendar_id");
+            calendars.add(getCalendar(accCalendarId));
+            rs.close();
+            st.close();
+
+            for(Group group : groups)
+            {
+                st = this.con.prepareStatement("SELECT calendar_id FROM calendar where owner_attendable_id = ?");
+                st.setInt(1, getAttendableId(group));
+                rs = st.executeQuery();
+
+                if(!rs.next())
+                {
+                    throw new CloakedIronManException("Group " + group.getId() + " is not registered as an attendable");
+                }
+
+                groupCalendarId = rs.getInt("calendar_id");
+                calendars.add(getCalendar(groupCalendarId));
+                st.close();
+                rs.close();
             }
 
-            groupCalendarId = rs.getInt("calendar_id");
-            calendars.add(getCalendar(groupCalendarId));
-            st.close();
-            rs.close();
-        }
-
-        return calendars;
+            return calendars;
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not process query", e);
+		}
+        
     }
 
 
