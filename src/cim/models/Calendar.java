@@ -16,6 +16,14 @@ public class Calendar extends CalendarObject
 		this.owner = owner;
 	}
 	
+	public ArrayList<Integer> getAllAppointmentIds() {
+		ArrayList<Integer> l = new ArrayList<Integer>();
+		for (Appointment a : this.getAppointments()) {
+			l.add(a.getId());
+		}
+		return l;
+	}
+	
 	public Attendable getOwner()
 	{
 		return this.owner;
@@ -27,6 +35,11 @@ public class Calendar extends CalendarObject
 		pcs.firePropertyChange("owner", oldValue, this.owner);
 
 	}
+	
+	public ArrayList<Appointment> getAppointments() {
+		return this.appointments;
+	}
+	
 	public Boolean hasAccess(Attendable person)
 	{
 		return this.hasAccess.contains(person);

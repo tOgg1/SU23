@@ -205,12 +205,31 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	 */
 	public int saveCalendar(Calendar c) throws CloakedIronManException {
 		try {
+			if(c.getId() == -1) {
+				c.setId(this.getNextAutoIncrease("calendar", "calendar_id"));
+			}
+			if(c.getOwner() == null) {
+				throw new CloakedIronManException("Calendar owner not set");
+			}
+
+			// Create statement for the calendar
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO calendar " +
+					"(calendar_id, owner_attendable_id)" +
+					"VALUES (?,?)" +
+					"ON DUPLICATE KEY UPDATE " +
+					"owner_attendable_id=?");
+			st.setInt(1, c.getId());
+			st.setInt(2, c.getOwner().getId());
+			st.setInt(3, c.getOwner().getId());
+			st.executeUpdate();
 			
+			// Delete all appointments not in the calendars list
+			
+			
+			return c.getId();
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
-		// TODO: Håkon
-		return -1;
 	}
 
 	// getAppointment(id)
