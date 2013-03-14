@@ -13,9 +13,9 @@ public class AddAppointmentDialog extends JFrame{
 
 	// Panels
 	private JPanel mainPanel;
-	private AddAppointmentDetailsPanel addDetailsPanel;
-	private AddParticipantsPanel addParticipantsPanel;
-	private AddAlarmPanel addAlarmPanel;
+	private AppointmentDetailsPanel addDetailsPanel;
+	private ParticipantsPanel addParticipantsPanel;
+	private AlarmPanel addAlarmPanel;
 
 	// Components
 	private JCheckBox chckbxLeggTilPersonlig;
@@ -34,20 +34,20 @@ public class AddAppointmentDialog extends JFrame{
 		add(mainPanel);
 		mainPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		addDetailsPanel = new AddAppointmentDetailsPanel();
+		addDetailsPanel = new AppointmentDetailsPanel();
 		addDetailsPanel.setSize(470, 240);
 		mainPanel.add(addDetailsPanel);
 		
 		chckbxAddParticipants = new JCheckBox("Legg til personer/grupper");
 		mainPanel.add(chckbxAddParticipants);
 		
-		addParticipantsPanel = new AddParticipantsPanel();
+		addParticipantsPanel = new ParticipantsPanel();
 		mainPanel.add(addParticipantsPanel);
 		
 		chckbxLeggTilPersonlig = new JCheckBox("Legg til personlig alarm");
 		mainPanel.add(chckbxLeggTilPersonlig);
 		
-		addAlarmPanel = new AddAlarmPanel();
+		addAlarmPanel = new AlarmPanel();
 		mainPanel.add(addAlarmPanel);
 		
 		btnCancel = new JButton("Avbryt");

@@ -6,9 +6,9 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JList;
 
-public class AddParticipantsPanel extends JPanel{
+public class ParticipantsPanel extends JPanel{
 	private JTextField txtSearch;
-	public AddParticipantsPanel() {
+	public ParticipantsPanel() {
 		setLayout(null);
 		
 		JLabel lblSearch = new JLabel("Navn p\u00E5 person eller gruppe");

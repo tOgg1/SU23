@@ -11,14 +11,14 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JList;
 
-public class AddAppointmentDetailsPanel extends JPanel {
+public class AppointmentDetailsPanel extends JPanel {
 	private JTextField txtDescription;
 	private JTextField txtDay;
 	private JTextField txtYear;
 	private JTextField txtLocation;
 	private final ButtonGroup buttonGroupLocation = new ButtonGroup();
 	
-	public AddAppointmentDetailsPanel() {
+	public AppointmentDetailsPanel() {
 		this.setSize(470, 340);
 		setLayout(null);
 		
