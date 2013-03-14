@@ -67,7 +67,6 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		}		
 	}
 
-
 	private boolean executeUpdate(String sql){
 		try{
 			Statement stmt = con.createStatement();
@@ -80,6 +79,42 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		}		
 	}
 
+    public Attendable getAttendable(int attendableId) throws CloakedIronManException
+    {
+
+        //TODO: Fullføre getAttendable
+        try
+        {
+            PreparedStatement st = this.con.prepareStatement("SELECT group_id, user_id FROM attendable WHERE attendable_id = ?");
+            st.setInt(1,attendableId);
+            ResultSet rs = st.executeQuery();
+            if(!rs.next())
+            {
+                throw new CloakedIronManException("Can't find attendable");
+            }
+
+
+            Integer groupId, accountId;
+
+            groupId = rs.getInt("group_id");
+            accountId = rs.getInt("user_id");
+
+            st.close();
+            rs.close();
+
+            if(groupId == null && (accountId != null))
+            {
+
+            }
+
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 	
 	public Calendar getCalendar2(int id) throws CloakedIronManException {
 		try {
@@ -169,56 +204,72 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	 * @param acc
 	 * @return
 	 */
-    public ArrayList<Calendar> getAllCalendarsToAccount(Account acc) throws SQLException, CloakedIronManException
+    public ArrayList<Calendar> getAllCalendarsToAccount(Account acc) throws CloakedIronManException
     {
-        ArrayList<Group> groups = getAllGroupsToAccount(acc);
-        ArrayList<Calendar> calendars = new ArrayList<Calendar>();
-        int accCalendarId, groupCalendarId;
-
-        PreparedStatement st = this.con.prepareStatement("SELECT calender_id FROM calendar where owner_attendable_id = ?");
-        st.setInt(1, getAttendableId(acc));
-        ResultSet rs = st.executeQuery();
-
-        if(!rs.next())
+        try
         {
-            throw new CloakedIronManException("Account " + acc.getId() + "  is not registered as an attendable");
-        }
-        accCalendarId = rs.getInt("calendar_id");
-        calendars.add(getCalendar(accCalendarId));
-        rs.close();
-        st.close();
+            ArrayList<Group> groups = getAllGroupsToAccount(acc);
+            ArrayList<Calendar> calendars = new ArrayList<Calendar>();
+            int accCalendarId, groupCalendarId;
 
-        for(Group group : groups)
-        {
-            st = this.con.prepareStatement("SELECT calendar_id FROM calendar where owner_attendable_id = ?");
-            st.setInt(1, getAttendableId(group));
-            rs = st.executeQuery();
+            PreparedStatement st = this.con.prepareStatement("SELECT calender_id FROM calendar where owner_attendable_id = ?");
+            st.setInt(1, getAttendableId(acc));
+            ResultSet rs = st.executeQuery();
 
             if(!rs.next())
             {
-                throw new CloakedIronManException("Group " + group.getId() + " is not registered as an attendable");
+                throw new CloakedIronManException("Account " + acc.getId() + "  is not registered as an attendable");
+            }
+            accCalendarId = rs.getInt("calendar_id");
+            calendars.add(getCalendar(accCalendarId));
+            rs.close();
+            st.close();
+
+            for(Group group : groups)
+            {
+                st = this.con.prepareStatement("SELECT calendar_id FROM calendar where owner_attendable_id = ?");
+                st.setInt(1, getAttendableId(group));
+                rs = st.executeQuery();
+
+                if(!rs.next())
+                {
+                    throw new CloakedIronManException("Group " + group.getId() + " is not registered as an attendable");
+                }
+
+                groupCalendarId = rs.getInt("calendar_id");
+                calendars.add(getCalendar(groupCalendarId));
+                st.close();
+                rs.close();
             }
 
-            groupCalendarId = rs.getInt("calendar_id");
-            calendars.add(getCalendar(groupCalendarId));
-            st.close();
-            rs.close();
+            return calendars;
         }
-
-        return calendars;
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
-    public ArrayList<Group> getAllGroupsToAccount(Account acc) throws SQLException, CloakedIronManException
+    public ArrayList<Group> getAllGroupsToAccount(Account acc) throws CloakedIronManException
     {
-        ArrayList<Integer> groupIds = getGroupIdsFromUserid(acc.getId());
-        ArrayList<Group> groups = new ArrayList<Group>();
-
-        for(int groupId : groupIds)
+        try
         {
-            groups.add(getGroup(groupId));
+            ArrayList<Integer> groupIds = getGroupIdsFromUserid(acc.getId());
+            ArrayList<Group> groups = new ArrayList<Group>();
+
+            for(int groupId : groupIds)
+            {
+                groups.add(getGroup(groupId));
+            }
+            return groups;
         }
-        return groups;
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
