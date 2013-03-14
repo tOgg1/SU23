@@ -57,9 +57,6 @@ public class Appointment extends CalendarObject
 	public Time getEnd() {
 		return end;
 	}
-	public Date getDate() {
-		return date;
-	}
 	public String getInfo() {
 		return info;
 	}

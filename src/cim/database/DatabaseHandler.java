@@ -155,7 +155,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		try {
 			while(rs.next())
 			{
-				rom.add(new Room(rs.getInt("meeting_room_id"), "Navn", rs.getInt("size"), "Info"));
+				rom.add(new Room(rs.getInt("meeting_room_id"), rs.getString("name"), rs.getInt("size")));
 			}
 			return rom;
 		} catch (SQLException e) {
@@ -641,8 +641,6 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		}catch(SQLException e){
 			throw new CloakedIronManException("error: ", e);
 		}
-        return null;
-		
 	}
 
     private ArrayList<Integer> getGroupIdsFromUserid(int userId) throws SQLException
