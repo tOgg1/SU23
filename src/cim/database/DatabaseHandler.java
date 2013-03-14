@@ -255,6 +255,12 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			if(a.getId() == -1) {
 				a.setId(this.getNextAutoIncrease("appointment", "appointment_id"));
 			}
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO appointment " +
+					"(appointment_id, name, date, start, end, info, calendar_id, place, meeting_room_id, appointment_owner) " +
+					"VALUES " +
+					"(?,?,?,?,?,?,?,?,?,?) " +
+					"ON DUPLICATE KEY UPDATE " +
+					"name=?, date=?,start=?, end=?,"
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
