@@ -11,14 +11,17 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
+import cim.database.DatabaseHandler;
 import cim.models.Account;
 import cim.net.packet.Event;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
+import cim.util.PersonalSettings;
 import cim.views.ApplicationWindow;
 import cim.views.AuthenticateView;
 
@@ -32,6 +35,8 @@ public class Client {
 	private ObjectOutputStream requestOutput;
 	
 	private ClientEventHandler evt;
+	
+	private DatabaseHandler db;
 	
 	public Client(String ip) throws CloakedIronManException {
 		
@@ -70,6 +75,9 @@ public class Client {
 		
 		// Creating authenticator instance
 		this.evt = new ClientEventHandler();
+		
+		// Database
+		this.db = new DatabaseHandler();
 	}
 	
 	public void run() throws CloakedIronManException {
@@ -80,9 +88,11 @@ public class Client {
 		
 		
 		// Spawning authenticate window
-		AuthenticateView auth = new AuthenticateView(this);
+		/*AuthenticateView auth = new AuthenticateView(this);
 		auth.setVisible(true);
-		Account acc = auth.getAccount();
+		Account acc = auth.getAccount();*/
+		Response resp = this.request(new Request("GET_ACCOUNT", PersonalSettings.DEFAULT_ACCOUNT_ID));
+		Account acc = (Account) resp.getData()[0];
 		if (acc != null) {
 			// User managed to log in
 			// Create new calendar gui.

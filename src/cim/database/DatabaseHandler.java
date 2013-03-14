@@ -6,7 +6,7 @@ import cim.util.CloakedIronManException;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DatabaseHandler implements DatabaseFetcherInterface {
+public class DatabaseHandler {
 
 	private static String url = cim.util.PersonalSettings.JDBC_URL;
 	private static String user = cim.util.PersonalSettings.MYSQL_USER;
@@ -79,7 +79,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		}		
 	}
 
-    public Attendable getAttendable(int attendableId) throws CloakedIronManException
+    /*public Attendable getAttendable(int attendableId) throws CloakedIronManException
     {
         try
         {
@@ -92,10 +92,12 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
             }
 
 
-            Integer groupId, accountId;
-
-            groupId = rs.getInt("group_id");
-            accountId = rs.getInt("user_id");
+            int groupId = rs.getInt("group_id");
+            if (rs.wasNull()) {
+            	int userId
+            } else {
+            	// its a gorup
+            }
 
             st.close();
             rs.close();
@@ -108,11 +110,10 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
         }
         catch(SQLException e)
         {
-            e.printStackTrace();
-            return null;
+        	throw new CloakedIronManException("Could not execute query.", e);
         }
         return null;
-    }
+    }*/
 	
 	public Calendar getCalendar2(int id) throws CloakedIronManException {
 		try {
@@ -133,7 +134,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		
 	}
 	
-	public Calendar getCalendar(int calendar_id){
+	public Calendar getCalendar(int calendar_id) throws CloakedIronManException{
 		String sql = 
 				"SELECT owner_attendable_id " +
 						"FROM Calendar " +
@@ -471,33 +472,38 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		
 	}
 
-	public Appointment getAppointment(int appointment_id) throws SQLException
+	public Appointment getAppointment(int appointment_id) throws CloakedIronManException
 	{
-		PreparedStatement st = this.con.prepareStatement("SELECT meeting.is_cancelled FROM appointment LEFT JOIN meeting ON appointment.appointment_id=meeting.appointment_id WHERE appointment.appointment_id=?");
-		st.setInt(1,appointment_id);
-		PreparedStatement st2 = this.con.prepareStatement("SELECT * FROM appointment WHERE appointment_id=?");
-		st2.setInt(1, appointment_id);
-		ResultSet rs = st.executeQuery();
-		ResultSet rs2 = st2.executeQuery();
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT meeting.is_cancelled FROM appointment LEFT JOIN meeting ON appointment.appointment_id=meeting.appointment_id WHERE appointment.appointment_id=?");
+			st.setInt(1,appointment_id);
+			PreparedStatement st2 = this.con.prepareStatement("SELECT * FROM appointment WHERE appointment_id=?");
+			st2.setInt(1, appointment_id);
+			ResultSet rs = st.executeQuery();
+			ResultSet rs2 = st2.executeQuery();
 
-		if(rs.next())
-		{
-			if(rs.getObject("meeting.is_cancelled") == null)
+			if(rs.next())
 			{
-				return fillAppointment(rs2);
+				if(rs.getObject("meeting.is_cancelled") == null)
+				{
+					return fillAppointment(rs2);
+				}
+				else
+				{
+					return fillMeeting(rs2, appointment_id);
+				}
 			}
-			else
-			{
-				return fillMeeting(rs2, appointment_id);
-			}
+			return null;
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not get appointment", e);
 		}
-		return null;
+		
 	}
 
 
 
 	
-	public Account getAccount(String email) {
+	/*public Account getAccount(String email) {
 		String sql = "SELECT * FROM account WHERE email = ";
 		sql += email;
 		ResultSet rs = executeQuery(sql);
@@ -508,28 +514,38 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			e.printStackTrace();
 			return null;
 		}
-	}
+	}*/
 	
 
 
-	public Account getAccount(int id) throws SQLException {
-		PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE user_id=?");
-		st.setInt(1, id);
-		ResultSet rs = st.executeQuery();
-		if (rs.next()) {
-			return fillAccount(rs);
+	public Account getAccount(int id) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE user_id=?");
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) {
+				return fillAccount(rs);
+			}
+			return null;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get account.", e);
 		}
-		return null;
+		
 	}
 
-	public Group getGroup(int id) throws SQLException {
-		PreparedStatement st = this.con.prepareStatement("SELECT * FROM cim.group WHERE group_id=?");
-		st.setInt(1, id);
-		ResultSet rs = st.executeQuery();
-		if (rs.next()) {
-			return fillGroup(rs);
+	public Group getGroup(int id) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM cim.group WHERE group_id=?");
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) {
+				return fillGroup(rs);
+			}
+			return null;
+		} catch (SQLException | CloakedIronManException e) {
+			throw new CloakedIronManException("Could not get group.", e);
 		}
-		return null;
+		
 	}
 	/**
 	 * Saves a group into the database. If it has key, it will be updated. Elsewise created
@@ -611,10 +627,15 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	 * @return
 	 * @throws SQLException
 	 */
-	private Group fillGroup(ResultSet rs) throws SQLException {
-		Group g = new Group(rs.getString("name"), this.getAccount(rs.getInt("group_owner")));
-		g.setId(rs.getInt("group_id"));
-		return g;
+	private Group fillGroup(ResultSet rs) throws CloakedIronManException {
+		try {
+			Group g = new Group(rs.getString("name"), this.getAccount(rs.getInt("group_owner")));
+			g.setId(rs.getInt("group_id"));
+			return g;
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not fill group.", e);
+		}
+		
 	}
 
 	/**
@@ -623,15 +644,15 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	 * @return
 	 * @throws SQLException
 	 */
-	private Meeting fillMeeting(ResultSet rs,int appointment_id) throws SQLException
+	private Meeting fillMeeting(ResultSet rs,int appointment_id) throws CloakedIronManException
 	{
-		PreparedStatement st = this.con.prepareStatement("SELECT * " +
-				"FROM meeting_response WHERE meeting_appointment_id = ?");
-		st.setInt(1, appointment_id);
-		ResultSet rs2 = st.executeQuery();
-		
-		Meeting m;
 		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT * " +
+					"FROM meeting_response WHERE meeting_appointment_id = ?");
+			st.setInt(1, appointment_id);
+			ResultSet rs2 = st.executeQuery();
+			
+			Meeting m;
 			if(rs.next())
 			{
 				ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
@@ -641,12 +662,11 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 				}
 				return m = new Meeting(rs.getString("info"), meetingResponses, getRoom(rs.getInt("meeting_room_id")), rs.getTime("start"), rs.getTime("end"), rs.getDate("date"));				
 			}
+			return null;
+		} catch (CloakedIronManException |SQLException e) {
+			throw new CloakedIronManException("Could not fill meeting.", e);
 		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
+		
 
 
 	}
