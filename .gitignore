@@ -2,3 +2,7 @@
 .metadata
 serverlog.txt
 src/util/PersonalSettings.java
+.idea/*
+.idea/contents/*
+.idea/scopes/*
+.idea/copyright/*

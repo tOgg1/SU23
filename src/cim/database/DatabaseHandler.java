@@ -120,6 +120,8 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		try {
 			PreparedStatement st = this.con.prepareStatement("SELECT owner_attendable_id FROM calendar WHERE calendar_id=?");
 			ResultSet rs = st.executeQuery();
+			rs.close();
+			st.close();
 			if(rs.next()) {
 				int iAttendableID = rs.getInt("owner_attendable_id");
 			}  else {
