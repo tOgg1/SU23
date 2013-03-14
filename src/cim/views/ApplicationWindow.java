@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,8 +17,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import cim.models.*;
+import cim.net.packet.Response;
+
 import cim.models.Account;
 import cim.net.Client;
+import cim.net.packet.Request;
+import cim.util.CloakedIronManException;
+
 import javax.swing.JTabbedPane;
 
 public class ApplicationWindow extends JFrame {
@@ -33,6 +40,8 @@ public class ApplicationWindow extends JFrame {
 	
 	private final Account account;
 	private final Client client;
+	
+	private ArrayList<Calendar> allCalendars;
 	
 //	private static JTextField txtMandag;
 //	private static JTextField txtTirsdag;
@@ -61,8 +70,9 @@ public class ApplicationWindow extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws CloakedIronManException 
 	 */
-	public ApplicationWindow(Client c, Account a) {
+	public ApplicationWindow(Client c, Account a) throws CloakedIronManException {
 //	public ApplicationWindow() {
 		this.client = c;
 		this.account = a;
@@ -81,7 +91,10 @@ public class ApplicationWindow extends JFrame {
 		calendarView = new CalendarView();
 		tabbedPane.addTab("Kalender", null, calendarView, null);
 		
+		Response response = client.request(new Request("GET_ALL_CALENDARS"));
+		allCalendars = (ArrayList<Calendar>) response.getData()[0];
 		
+		System.out.println(allCalendars);
 		
 		this.setResizable(false);
 		this.pack();

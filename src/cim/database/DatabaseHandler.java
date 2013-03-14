@@ -501,9 +501,9 @@ public class DatabaseHandler {
 	}
 
 
-
 	
 	/*public Account getAccount(String email) {
+
 		String sql = "SELECT * FROM account WHERE email = ";
 		sql += email;
 		ResultSet rs = executeQuery(sql);
@@ -759,5 +759,10 @@ public class DatabaseHandler {
 		throw new CloakedIronManException("Could not find attendable id");
 		
 	}
+
+
+    
+
+
 
 }

@@ -1,6 +1,7 @@
 package cim.net;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import cim.database.DatabaseHandler;
 import cim.models.Account;
@@ -78,7 +79,8 @@ public class ServerRequestAPI {
 	}
 	
 	private Response get_all_calendars_to_account(Account acc) throws CloakedIronManException {
-		return new Response(this.db.getAllCalendarsToAccount(acc));
+		return new Response(new ArrayList());	
+		//return new Response(this.db.getAllCalendarsToAccount(acc));
 	}
 	
 	private Response save_calendar(Calendar c) throws CloakedIronManException {
