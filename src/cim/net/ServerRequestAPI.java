@@ -75,12 +75,12 @@ public class ServerRequestAPI {
 	 * @throws SQLException
 	 */
 	private Response get_all_calendars() throws CloakedIronManException {
+		//return new Response(new ArrayList());	
 		return new Response(this.db.getAllCalendars());
 	}
 	
 	private Response get_all_calendars_to_account(Account acc) throws CloakedIronManException {
-		return new Response(new ArrayList());	
-		//return new Response(this.db.getAllCalendarsToAccount(acc));
+		return new Response(this.db.getAllCalendarsToAccount(acc));
 	}
 	
 	private Response save_calendar(Calendar c) throws CloakedIronManException {

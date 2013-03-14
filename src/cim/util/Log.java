@@ -19,6 +19,7 @@ public class Log
 {
     private static File logFile;
     private static BufferedWriter logWriter;
+    
 
     public static void d(String tag, String content)
     {
