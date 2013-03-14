@@ -9,6 +9,10 @@ import javax.swing.border.EmptyBorder;
 
 public class testMain extends JFrame {
 
+	// Denne klassen er bare her så man kan herje villt i windowBuilder for å teste greier.
+	
+	
+	
 	private JPanel contentPane;
 
 	/**

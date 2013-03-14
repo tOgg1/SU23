@@ -1,4 +1,4 @@
-package cim.views;
+package cim.views.appointmentDialogs;
 
 import javax.swing.JFrame;
 import java.awt.GridBagLayout;
@@ -10,42 +10,50 @@ import javax.swing.JCheckBox;
 import javax.swing.JButton;
 
 public class AddAppointmentDialog extends JFrame{
-	private AddAppointmentDetailsPanel addDetailsPanel;
-	private AddParticipantsPanel addParticipantsPanel;
-	private AddAlarmPanel addAlarmPanel;
+
+	// Panels
 	private JPanel mainPanel;
+	private AppointmentDetailsPanel addDetailsPanel;
+	private ParticipantsPanel addParticipantsPanel;
+	private AlarmPanel addAlarmPanel;
+
+	// Components
+	private JCheckBox chckbxLeggTilPersonlig;
+	private JCheckBox chckbxAddParticipants;
+	private JButton btnSave;
+	private JButton btnCancel;
 	
 	public AddAppointmentDialog(){
+		setTitle("Ny avtale");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 571);
-//		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		
 		mainPanel = new JPanel();
 		mainPanel.setAlignmentY(Component.TOP_ALIGNMENT);
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		getContentPane().add(mainPanel);
+		add(mainPanel);
 		mainPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		addDetailsPanel = new AddAppointmentDetailsPanel();
+		addDetailsPanel = new AppointmentDetailsPanel();
 		addDetailsPanel.setSize(470, 240);
 		mainPanel.add(addDetailsPanel);
 		
-		JCheckBox chckbxAddParticipants = new JCheckBox("Legg til personer/grupper");
+		chckbxAddParticipants = new JCheckBox("Legg til personer/grupper");
 		mainPanel.add(chckbxAddParticipants);
 		
-		addParticipantsPanel = new AddParticipantsPanel();
+		addParticipantsPanel = new ParticipantsPanel();
 		mainPanel.add(addParticipantsPanel);
 		
-		JCheckBox chckbxLeggTilPersonlig = new JCheckBox("Legg til personlig alarm");
+		chckbxLeggTilPersonlig = new JCheckBox("Legg til personlig alarm");
 		mainPanel.add(chckbxLeggTilPersonlig);
 		
-		addAlarmPanel = new AddAlarmPanel();
+		addAlarmPanel = new AlarmPanel();
 		mainPanel.add(addAlarmPanel);
 		
-		JButton btnCancel = new JButton("Avbryt");
+		btnCancel = new JButton("Avbryt");
 		mainPanel.add(btnCancel);
 		
-		JButton btnSave = new JButton("Legg til i kalender");
+		btnSave = new JButton("Legg til i kalender");
 		mainPanel.add(btnSave);
 	}
 }

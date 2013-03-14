@@ -9,18 +9,17 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
 
-public class SaveChangeView {
+public class SaveChangesDialog extends JFrame{
 	
-	public static void main(String args[]){
-		JFrame frame = new JFrame("Lagre endringer?");
-		frame.setResizable(false);
-		frame.pack();
+	public SaveChangesDialog(){
+		setResizable(false);
+		pack();
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {30, 30, 30, 30, 30, 5};
 		gridBagLayout.rowHeights = new int[] {30, 30, 30};
 		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, 1.0};
 		gridBagLayout.rowWeights = new double[]{1.0, 1.0, 0.0};
-		frame.getContentPane().setLayout(gridBagLayout);
+		getContentPane().setLayout(gridBagLayout);
 		
 		JLabel lblVilDuLagre = new JLabel("Vil du lagre endringene dine?");
 		GridBagConstraints gbc_lblVilDuLagre = new GridBagConstraints();
@@ -29,7 +28,7 @@ public class SaveChangeView {
 		gbc_lblVilDuLagre.insets = new Insets(0, 0, 5, 5);
 		gbc_lblVilDuLagre.gridx = 1;
 		gbc_lblVilDuLagre.gridy = 0;
-		frame.getContentPane().add(lblVilDuLagre, gbc_lblVilDuLagre);
+		getContentPane().add(lblVilDuLagre, gbc_lblVilDuLagre);
 		
 		JButton btnLagre = new JButton("Lagre");
 		GridBagConstraints gbc_btnLagre = new GridBagConstraints();
@@ -37,14 +36,14 @@ public class SaveChangeView {
 		gbc_btnLagre.insets = new Insets(0, 0, 0, 5);
 		gbc_btnLagre.gridx = 3;
 		gbc_btnLagre.gridy = 2;
-		frame.getContentPane().add(btnLagre, gbc_btnLagre);
+		getContentPane().add(btnLagre, gbc_btnLagre);
 		
 		JButton btnAvbryt = new JButton("Avbryt");
 		GridBagConstraints gbc_btnAvbryt = new GridBagConstraints();
 		gbc_btnAvbryt.insets = new Insets(0, 0, 0, 5);
 		gbc_btnAvbryt.gridx = 4;
 		gbc_btnAvbryt.gridy = 2;
-		frame.getContentPane().add(btnAvbryt, gbc_btnAvbryt);
+		getContentPane().add(btnAvbryt, gbc_btnAvbryt);
 	}
 
 }
