@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import cim.database.DatabaseHandler;
 import cim.models.Account;
+import cim.models.Calendar;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
@@ -39,6 +40,8 @@ public class ServerRequestAPI {
 				return get_all_calendars();
 			} else if (method.equals("GET_ALL_CALENDARS_TO_ACCOUNT")) {
 				return get_all_calendars_to_account((Account)args[0]);
+			} else if (method.equals("SAVE_CALENDAR")) {
+				return save_calendar((Calendar)args[0]);
 			}
 			
 		} catch (Exception e) {
@@ -54,10 +57,8 @@ public class ServerRequestAPI {
 	 * @return
 	 * @throws SQLException
 	 */
-	private Response authenticate(String email, String pw) throws SQLException {
-		System.out.println(email + pw);
+	private Response authenticate(String email, String pw) throws CloakedIronManException {
 		Account acc = db.getAccountByEmail(email);
-		System.out.println(acc);
 		if(acc != null){
 			if(acc.isValidPassword(pw)){
 				return new Response(acc);
@@ -70,15 +71,19 @@ public class ServerRequestAPI {
 	 * @return
 	 * @throws SQLException
 	 */
-	private Response get_all_calendars() throws SQLException {
-		
-		//TODO: Skriv denne metoden
-		return null;
+	private Response get_all_calendars() throws CloakedIronManException {
+		return new Response(this.db.getAllCalendars());
 	}
 	
-	private Response get_all_calendars_to_account(Account acc) throws SQLException {
-		// TODO: Skriv denne metoden
-		return null;
+	private Response get_all_calendars_to_account(Account acc) throws CloakedIronManException {
+		return new Response(this.db.getAllCalendarsToAccount(acc));
 	}
+	
+	private Response save_calendar(Calendar c) throws CloakedIronManException {
+		int iID = this.db.saveCalendar(c);
+		return new Response(iID);
+	}
+	
+	
 	
 }
