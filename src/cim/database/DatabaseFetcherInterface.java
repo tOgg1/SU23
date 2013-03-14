@@ -22,6 +22,7 @@ public interface DatabaseFetcherInterface {
 	 * @return the account if email found, null if not found.
 	 */
 	public Account getAccount(String email);
+
 	
 	
 }
