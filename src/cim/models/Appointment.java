@@ -39,6 +39,10 @@ public class Appointment extends CalendarObject
 	{
 		this.date = newDate;
 	}
+	
+	public Date getDate(){
+		return this.date;
+	}
 
     public String toString(){
     	return "startDate: " + start + " endDate: " + end;
@@ -52,9 +56,6 @@ public class Appointment extends CalendarObject
 	}
 	public Time getEnd() {
 		return end;
-	}
-	public Date getDate() {
-		return date;
 	}
 	public String getInfo() {
 		return info;
