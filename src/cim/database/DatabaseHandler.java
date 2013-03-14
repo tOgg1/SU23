@@ -88,7 +88,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	}
 
 	
-		public Calendar getCalendar(int calendar_id){
+	public Calendar getCalendar(int calendar_id){
 		String sql = 
 				"SELECT owner_attendable_id " +
 						"FROM Calendar " +
@@ -136,30 +136,6 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 
 	}
 
-	public Meeting getMeeting(int appointment_id){
-
-		try {
-			if(appointment_id >= 0)
-			{
-				PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting WHERE appointment_id = ?");
-				st.setInt(1, appointment_id);
-				ResultSet rs = st.executeQuery();
-				while(rs.next())
-				{
-					return (Meeting)getAppointment(appointment_id);
-				}
-
-				{
-
-				}
-			} 
-		} catch (SQLException e){
-			e.printStackTrace();
-		}
-		return null;
-
-	}
-
 	public ArrayList<Room> getAllRooms()
 	{
 		ArrayList<Room> rom = new ArrayList<Room>();
@@ -178,8 +154,23 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			return null;
 		}
 	}
-
-	public ArrayList<Calendar> getAllCalendars(int user_id) {
+	/**
+	 * Returns all calendars associated with the current account, the accounts personal calendar and the calendars from his groups
+	 * @param acc
+	 * @return
+	 */
+	public ArrayList<Calendar> getAllCalendarsToAccount(Account acc) {
+		// TODO: Tormod
+		return null;
+	}
+	/**
+	 * Returns all calendars in the system.
+	 * @return
+	 */
+	public ArrayList<Calendar> getAllCalendars() throws CloakedIronManException {
+		// TODO: Tormod, skriv denne metoden
+		return null;
+		/*
 		String sql =
 				"SELECT calendar_id " +
 						"FROM calendar " +
@@ -196,7 +187,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			e.printStackTrace();
 
 			return null;
-		}
+		}*/
 
 
 	}
@@ -205,6 +196,21 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		String sql = "DELETE from appointment WHERE appointment_id = ";
 		sql += appointmentId;
 		return executeUpdate(sql);
+	}
+	/**
+	 * Saves a calendar into the database.
+	 * @param c
+	 * @return The new id.
+	 * @throws CloakedIronManException
+	 */
+	public int saveCalendar(Calendar c) throws CloakedIronManException {
+		try {
+			
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not handle query.", e);
+		}
+		// TODO: Håkon
+		return -1;
 	}
 
 	// getAppointment(id)
@@ -247,14 +253,19 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	 * @param email
 	 * @return
 	 */
-	public Account getAccountByEmail(String email) throws SQLException {
-		PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE email=?");
-		st.setString(1, email);
-		ResultSet rs = st.executeQuery();
-		if (rs.next()) {
-			return fillAccount(rs);
+	public Account getAccountByEmail(String email) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE email=?");
+			st.setString(1, email);
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) {
+				return fillAccount(rs);
+			}
+			return null;
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Unable to process query.", e);
 		}
-		return null;
+		
 	}
 
 	public Appointment getAppointment(int appointment_id) throws SQLException
