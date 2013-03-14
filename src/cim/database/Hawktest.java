@@ -1,28 +1,20 @@
 package cim.database;
 
 import cim.models.Account;
-import cim.models.Group;
-
+import cim.models.Calendar;
+import cim.util.CloakedIronManException;
 
 public class Hawktest {
 
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		try {
-			DatabaseHandlerHawk db = new DatabaseHandlerHawk();
-			Account acc = db.getAccountByEmail("hakon@aamdal.com");
-			Group g = db.getGroup(1);
-			
-			db.addGroupMember(g, acc);
-			//db.saveAccount(acc);
-			System.out.println(acc);
-			System.out.println();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+	public static void main(String[] args) throws CloakedIronManException {
+		DatabaseHandler db = new DatabaseHandler();
+		Account a = db.getAccountByEmail("hakon@aamdal.com");
+		Calendar c = db.getCalendar(1);
+		System.out.println(c);
+		db.saveCalendar(c);
 		
 
 	}
