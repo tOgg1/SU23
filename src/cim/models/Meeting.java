@@ -15,9 +15,19 @@ public class Meeting extends Appointment
 	public Meeting(String info, ArrayList<MeetingResponse> response, Room room, Time startDate, Time endDate, Date date)
 	{	
 		super(startDate, endDate, info, date);
-		this.invitees = invitees;		
+		this.invitees = response;		
 	}
 	
+	public String toString(){
+		String returnString = "";
+		for (MeetingResponse r : invitees){
+			returnString += r.account + "\n" + r.response + "\n";
+		}
+		return returnString;
+		
+		
+		
+	}
 
 	
 	
