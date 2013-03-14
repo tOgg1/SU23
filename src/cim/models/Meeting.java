@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Meeting extends Appointment
 {
-	private ArrayList invitees;
+	private ArrayList<MeetingResponse> invitees;
 
     private final static int STATUS_INVITED = 0;
     private final static int STATUS_ACCEPTED = 1;
@@ -15,7 +15,21 @@ public class Meeting extends Appointment
 	public Meeting(String info, ArrayList<MeetingResponse> response, Room room, Time startDate, Time endDate, Date date)
 	{	
 		super(startDate, endDate, info, date);
-		this.invitees = invitees;		
+		this.invitees = response;		
 	}
+	
+	public String toString(){
+		String returnString = "";
+		for (MeetingResponse r : invitees){
+			returnString += r.account + "\n" + r.response + "\n";
+		}
+		return returnString;
+		
+		
+		
+	}
+
+	
+	
 
 }

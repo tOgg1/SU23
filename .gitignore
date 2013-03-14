@@ -1,4 +1,8 @@
 *.class
 .metadata
 serverlog.txt
-PersonalSettings.java
+src/util/PersonalSettings.java
+.idea/*
+.idea/contents/*
+.idea/scopes/*
+.idea/copyright/*

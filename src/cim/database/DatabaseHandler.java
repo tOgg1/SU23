@@ -1,17 +1,10 @@
 package cim.database;
 
+import cim.models.*;
+import cim.util.CloakedIronManException;
+
 import java.sql.*;
 import java.util.ArrayList;
-
-
-import cim.models.Account;
-import cim.models.Appointment;
-import cim.models.Calendar;
-import cim.models.Group;
-import cim.models.Meeting;
-import cim.models.MeetingResponse;
-import cim.models.Room;
-import cim.util.CloakedIronManException;
 
 public class DatabaseHandler implements DatabaseFetcherInterface {
 
@@ -74,7 +67,6 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		}		
 	}
 
-
 	private boolean executeUpdate(String sql){
 		try{
 			Statement stmt = con.createStatement();
@@ -87,8 +79,63 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		}		
 	}
 
+    public Attendable getAttendable(int attendableId) throws CloakedIronManException
+    {
+
+        //TODO: Fullføre getAttendable
+        try
+        {
+            PreparedStatement st = this.con.prepareStatement("SELECT group_id, user_id FROM attendable WHERE attendable_id = ?");
+            st.setInt(1,attendableId);
+            ResultSet rs = st.executeQuery();
+            if(!rs.next())
+            {
+                throw new CloakedIronManException("Can't find attendable");
+            }
+
+
+            Integer groupId, accountId;
+
+            groupId = rs.getInt("group_id");
+            accountId = rs.getInt("user_id");
+
+            st.close();
+            rs.close();
+
+            if(groupId == null && (accountId != null))
+            {
+
+            }
+
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 	
-		public Calendar getCalendar(int calendar_id){
+	public Calendar getCalendar2(int id) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT owner_attendable_id FROM calendar WHERE calendar_id=?");
+			ResultSet rs = st.executeQuery();
+			rs.close();
+			st.close();
+			if(rs.next()) {
+				int iAttendableID = rs.getInt("owner_attendable_id");
+			}  else {
+				throw new CloakedIronManException("Calendar ID not found in database");
+			}
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not execute query.", e);
+		}
+		return null;
+		
+		
+	}
+	
+	public Calendar getCalendar(int calendar_id){
 		String sql = 
 				"SELECT owner_attendable_id " +
 						"FROM Calendar " +
@@ -136,30 +183,6 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 
 	}
 
-	public Meeting getMeeting(int appointment_id){
-
-		try {
-			if(appointment_id >= 0)
-			{
-				PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting WHERE appointment_id = ?");
-				st.setInt(1, appointment_id);
-				ResultSet rs = st.executeQuery();
-				while(rs.next())
-				{
-					return (Meeting)getAppointment(appointment_id);
-				}
-
-				{
-
-				}
-			} 
-		} catch (SQLException e){
-			e.printStackTrace();
-		}
-		return null;
-
-	}
-
 	public ArrayList<Room> getAllRooms()
 	{
 		ArrayList<Room> rom = new ArrayList<Room>();
@@ -169,7 +192,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		try {
 			while(rs.next())
 			{
-				rom.add(new Room(rs.getInt("meeting_room_id"), "Navn", rs.getInt("size"), "Info"));
+				rom.add(new Room(rs.getInt("meeting_room_id"), rs.getString("name"), rs.getInt("size")));
 			}
 			return rom;
 		} catch (SQLException e) {
@@ -178,33 +201,215 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			return null;
 		}
 	}
+	/**
+	 * Returns all calendars associated with the current account, the accounts personal calendar and the calendars from his groups
+	 * @param acc
+	 * @return
+	 */
+    public ArrayList<Calendar> getAllCalendarsToAccount(Account acc) throws CloakedIronManException
+    {
+        try
+        {
+            ArrayList<Group> groups = getAllGroupsToAccount(acc);
+            ArrayList<Calendar> calendars = new ArrayList<Calendar>();
+            int accCalendarId, groupCalendarId;
 
-	public ArrayList<Calendar> getAllCalendars(int user_id) {
-		String sql =
-				"SELECT calendar_id " +
-						"FROM calendar " +
-						"WHERE owner_attendable_id = ";
-		sql += user_id;
-		ResultSet rs = executeQuery(sql);
-		ArrayList<Calendar> allCals = new ArrayList<Calendar>();
-		try {
-			while(rs.next()){
-				allCals.add(getCalendar(rs.getInt("calendar_id")));
-			}
-			return allCals;
-		} catch (SQLException e) {
-			e.printStackTrace();
+            PreparedStatement st = this.con.prepareStatement("SELECT calender_id FROM calendar where owner_attendable_id = ?");
+            st.setInt(1, getAttendableId(acc));
+            ResultSet rs = st.executeQuery();
 
-			return null;
-		}
+            if(!rs.next())
+            {
+                throw new CloakedIronManException("Account " + acc.getId() + "  is not registered as an attendable");
+            }
+            accCalendarId = rs.getInt("calendar_id");
+            calendars.add(getCalendar(accCalendarId));
+            rs.close();
+            st.close();
+
+            for(Group group : groups)
+            {
+                st = this.con.prepareStatement("SELECT calendar_id FROM calendar where owner_attendable_id = ?");
+                st.setInt(1, getAttendableId(group));
+                rs = st.executeQuery();
+
+                if(!rs.next())
+                {
+                    throw new CloakedIronManException("Group " + group.getId() + " is not registered as an attendable");
+                }
+
+                groupCalendarId = rs.getInt("calendar_id");
+                calendars.add(getCalendar(groupCalendarId));
+                st.close();
+                rs.close();
+            }
+
+            return calendars;
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
-	}
+    public ArrayList<Group> getAllGroupsToAccount(Account acc) throws CloakedIronManException
+    {
+        try
+        {
+            ArrayList<Integer> groupIds = getGroupIdsFromUserid(acc.getId());
+            ArrayList<Group> groups = new ArrayList<Group>();
+
+            for(int groupId : groupIds)
+            {
+                groups.add(getGroup(groupId));
+            }
+            return groups;
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+	 * Returns all calendars in the system.
+	 * @return
+	 */
+    public ArrayList<Calendar> getAllCalendars() throws CloakedIronManException {
+        String sql = "SELECT calendar_id from calendar";
+        ResultSet rs = executeQuery(sql);
+        ArrayList<Calendar> returnCalendars = new ArrayList<Calendar>();
+        try
+        {
+            while(rs.next())
+            {
+                returnCalendars.add(getCalendar(rs.getInt("calendar_id")));
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        return returnCalendars;
+    }
 
 	public boolean deleteAppointment(int appointmentId){
 		String sql = "DELETE from appointment WHERE appointment_id = ";
 		sql += appointmentId;
 		return executeUpdate(sql);
+	}
+	/**
+	 * Saves a calendar into the database.
+	 * @param c
+	 * @return The new id.
+	 * @throws CloakedIronManException
+	 */
+	public int saveCalendar(Calendar c) throws CloakedIronManException {
+		try {
+			if(c.getId() == -1) {
+				c.setId(this.getNextAutoIncrease("calendar", "calendar_id"));
+			}
+			if(c.getOwner() == null) {
+				throw new CloakedIronManException("Calendar owner not set");
+			}
+			
+			int iAttendableId = this.getAttendableId(c.getOwner());
+
+			// Create statement for the calendar
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO calendar " +
+					"(calendar_id, owner_attendable_id)" +
+					"VALUES (?,?)" +
+					"ON DUPLICATE KEY UPDATE " +
+					"owner_attendable_id=?");
+			st.setInt(1, c.getId());
+			st.setInt(2, iAttendableId);
+			st.setInt(3, iAttendableId);
+			st.executeUpdate();
+			
+			// Delete all appointments not in the calendars list
+			ArrayList<Integer> ids = c.getAllAppointmentIds();
+			String[] str = new String[ids.size()];
+			for(int i = 0;i<ids.size();i++) {
+				str[i] = ids.get(i).toString();
+			}
+			System.out.println(str);
+			
+			
+			return c.getId();
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not handle query.", e);
+		}
+	}
+	/**
+	 *  Saven the appointment and returns the saved version
+	 * @param a
+	 * @return
+	 */
+	public Appointment saveAppointment(Appointment a, Calendar c) throws CloakedIronManException {
+		try {
+			if(c.getId() == -1) {
+				throw new CloakedIronManException("Calendar not saved in the database");
+			}
+			if(a.getId() == -1) {
+				a.setId(this.getNextAutoIncrease("appointment", "appointment_id"));
+			}
+			if(a.getOwner() == null) {
+				throw new CloakedIronManException("Owner not set");
+			}
+			if(a.getOwner().getId() == -1) {
+				throw new CloakedIronManException("Owner id not set (owner not in database)");
+			}
+			if(a.getRoom() != null) {
+				if (a.getRoom().getId() == -1) {
+					throw new CloakedIronManException("Room not saved in database");
+				}
+			}
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO appointment " +
+					"(appointment_id, name, date, start, end, info, calendar_id, place, meeting_room_id, appointment_owner) " +
+					"VALUES " +
+					"(?,?,?,?,?,?,?,?,?,?) " +
+					"ON DUPLICATE KEY UPDATE " +
+					"name=?, date=?,start=?, end=?, info=?, calendar_id=?, place=?, meeting_room_id=?, appointment_owner=?");
+			st.setInt(1, a.getId());
+			st.setString(2, a.getName());
+			st.setDate(3, a.getDate());
+			st.setTime(4, a.getStart());
+			st.setTime(5, a.getEnd());
+			st.setString(6, a.getInfo());
+			st.setInt(7, c.getId());
+			st.setString(8, a.getPlace());
+			if(a.getRoom() != null) {
+				st.setInt(9, a.getRoom().getId());
+			} else {
+				st.setNull(9, Types.INTEGER);
+			}
+			st.setInt(10, a.getOwner().getId());
+			
+			st.setString(11, a.getName());
+			st.setDate(12, a.getDate());
+			st.setTime(13, a.getStart());
+			st.setTime(14, a.getEnd());
+			st.setString(15, a.getInfo());
+			st.setInt(16, c.getId());
+			st.setString(17, a.getPlace());
+			if(a.getRoom() != null) {
+				st.setInt(18, a.getRoom().getId());
+			} else {
+				st.setNull(18, Types.INTEGER);
+			}
+			st.setInt(19, a.getOwner().getId());
+			
+			st.execute();
+			return a;
+			
+			
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not handle query.", e);
+		}
 	}
 
 	// getAppointment(id)
@@ -247,14 +452,19 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	 * @param email
 	 * @return
 	 */
-	public Account getAccountByEmail(String email) throws SQLException {
-		PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE email=?");
-		st.setString(1, email);
-		ResultSet rs = st.executeQuery();
-		if (rs.next()) {
-			return fillAccount(rs);
+	public Account getAccountByEmail(String email) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE email=?");
+			st.setString(1, email);
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) {
+				return fillAccount(rs);
+			}
+			return null;
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Unable to process query.", e);
 		}
-		return null;
+		
 	}
 
 	public Appointment getAppointment(int appointment_id) throws SQLException
@@ -262,6 +472,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		PreparedStatement st = this.con.prepareStatement("SELECT meeting.is_cancelled FROM appointment LEFT JOIN meeting ON appointment.appointment_id=meeting.appointment_id WHERE appointment.appointment_id=?");
 		st.setInt(1,appointment_id);
 		PreparedStatement st2 = this.con.prepareStatement("SELECT * FROM appointment WHERE appointment_id=?");
+		st2.setInt(1, appointment_id);
 		ResultSet rs = st.executeQuery();
 		ResultSet rs2 = st2.executeQuery();
 
@@ -421,7 +632,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			{
 				ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
 				while(rs2.next()){
-					MeetingResponse meeting = new MeetingResponse(getAccountByEmail(rs2.getString("account_email")), rs2.getString("status"));
+					MeetingResponse meeting = new MeetingResponse(getAccount(rs2.getInt("account_user_id")), rs2.getString("status"));
 					meetingResponses.add(meeting);
 				}
 				return m = new Meeting(rs.getString("info"), meetingResponses, getRoom(rs.getInt("meeting_room_id")), rs.getTime("start"), rs.getTime("end"), rs.getDate("date"));				
@@ -467,6 +678,61 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			return new Room(rs.getInt("meeting_room_id"),rs.getInt("size"));
 		}
 		return null;
+	}
+	
+	public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end) throws CloakedIronManException{
+		try{
+		PreparedStatement st;
+		st = this.con.prepareStatement("SELECT * FROM appointment WHERE date = ?");
+		st.setDate(1, date);
+		ResultSet rs = st.executeQuery();
+        ArrayList<Room> available = new ArrayList<Room>();
+        while (rs.next()){
+            if (!overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
+                 available.add(getRoom(rs.getInt("meeting_room_id")));
+            }
+        }
+	    return available;
+		}catch(SQLException e){
+			throw new CloakedIronManException("error: ", e);
+		}
+	}
+
+    private ArrayList<Integer> getGroupIdsFromUserid(int userId) throws SQLException
+    {
+        PreparedStatement st;
+        st = this.con.prepareStatement("SELECT group_id FROM member_of where user_id = ?");
+
+        st.setInt(1, userId);
+        ResultSet rs = st.executeQuery();
+        ArrayList<Integer> groupIds = new ArrayList<Integer>();
+        while(rs.next())
+        {
+            groupIds.add(rs.getInt("group_id"));
+        }
+        return groupIds;
+    }
+	
+	private boolean overlap(Time start, Time start2, Time end, Time end2){
+		return !(end.before(start2)) || (end2.before(start));
+	}
+	
+	
+	
+	private int getAttendableId(Attendable a) throws SQLException, CloakedIronManException {
+		PreparedStatement st;
+		if (a instanceof Account) {
+			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE user_id=?");
+		} else{
+			//Its a group
+			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE gruop_id=?");
+		}
+		st.setInt(1, a.getId());
+		ResultSet rs = st.executeQuery();
+		if(rs.next()) {
+			return rs.getInt("attendable_id");
+		}
+		throw new CloakedIronManException("Could not find attendable id");
 		
 	}
 
