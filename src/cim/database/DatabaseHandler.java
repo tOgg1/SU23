@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import cim.models.Account;
 import cim.models.Appointment;
+import cim.models.Attendable;
 import cim.models.Calendar;
 import cim.models.Group;
 import cim.models.Meeting;
@@ -500,6 +501,23 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			return new Room(rs.getInt("meeting_room_id"),rs.getInt("size"));
 		}
 		return null;
+		
+	}
+	
+	private int getAttendableId(Attendable a) throws SQLException, CloakedIronManException {
+		PreparedStatement st;
+		if (a instanceof Account) {
+			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE user_id=?");
+		} else{
+			//Its a group
+			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE gruop_id=?");
+		}
+		st.setInt(1, a.getId());
+		ResultSet rs = st.executeQuery();
+		if(rs.next()) {
+			return rs.getInt("attendable_id");
+		}
+		throw new CloakedIronManException("Could not find attendable id");
 		
 	}
 
