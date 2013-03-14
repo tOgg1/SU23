@@ -81,8 +81,6 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 
     public Attendable getAttendable(int attendableId) throws CloakedIronManException
     {
-
-        //TODO: Fullføre getAttendable
         try
         {
             PreparedStatement st = this.con.prepareStatement("SELECT group_id, user_id FROM attendable WHERE attendable_id = ?");
@@ -113,7 +111,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
             e.printStackTrace();
             return null;
         }
-
+        return null;
     }
 	
 	public Calendar getCalendar2(int id) throws CloakedIronManException {
@@ -208,9 +206,9 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	 */
     public ArrayList<Calendar> getAllCalendarsToAccount(Account acc) throws CloakedIronManException
     {
-        try
-        {
-            ArrayList<Group> groups = getAllGroupsToAccount(acc);
+    	try {
+    		ArrayList<Group> groups = getAllGroupsToAccount(acc);
+
             ArrayList<Calendar> calendars = new ArrayList<Calendar>();
             int accCalendarId, groupCalendarId;
 
@@ -226,7 +224,6 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
             calendars.add(getCalendar(accCalendarId));
             rs.close();
             st.close();
-
             for(Group group : groups)
             {
                 st = this.con.prepareStatement("SELECT calendar_id FROM calendar where owner_attendable_id = ?");
@@ -245,12 +242,9 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
             }
 
             return calendars;
-        }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not process query", e);
+		}
     }
 
 
@@ -404,6 +398,16 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			st.setInt(19, a.getOwner().getId());
 			
 			st.execute();
+			st.close();
+			
+			// If meeting
+			if(a instanceof Meeting) {
+				st = this.con.prepareStatement("INSERT INTO meeting (appointment_id) VALUES (?)");
+				st.setInt(1, a.getId());
+				st.execute();
+				st.close();
+			}
+			
 			return a;
 			
 			

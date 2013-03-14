@@ -31,8 +31,8 @@ public class ApplicationWindow extends JFrame {
 	private JTabbedPane tabbedPane;
 	private CalendarView calendarView;
 	
-//	private final Account account;
-//	private final Client client;
+	private final Account account;
+	private final Client client;
 	
 //	private static JTextField txtMandag;
 //	private static JTextField txtTirsdag;
@@ -49,8 +49,8 @@ public class ApplicationWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ApplicationWindow frame = new ApplicationWindow();
-					frame.setVisible(true);
+					//ApplicationWindow frame = new ApplicationWindow();
+					//frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -62,10 +62,10 @@ public class ApplicationWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-//	public ApplicationWindow(Client c, Account a) {
-	public ApplicationWindow() {
-//		this.client = c;
-//		this.account = a;
+	public ApplicationWindow(Client c, Account a) {
+//	public ApplicationWindow() {
+		this.client = c;
+		this.account = a;
 		
 		/*
 		 * CREATE LAYOUT
