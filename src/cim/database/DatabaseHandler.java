@@ -91,6 +91,23 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	}
 
 	
+	public Calendar getCalendar2(int id) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT owner_attendable_id FROM calendar WHERE calendar_id=?");
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				int iAttendableID = rs.getInt("owner_attendable_id");
+			}  else {
+				throw new CloakedIronManException("Calendar ID not found in database");
+			}
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not execute query.", e);
+		}
+		return null;
+		
+		
+	}
+	
 	public Calendar getCalendar(int calendar_id){
 		String sql = 
 				"SELECT owner_attendable_id " +
