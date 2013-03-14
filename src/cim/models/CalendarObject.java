@@ -35,4 +35,14 @@ public abstract class CalendarObject implements Serializable
     	this.pcs.firePropertyChange("id", this.id, id);
     	this.id = id;
     }
+    
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (obj.getClass() != getClass())
+            return false;
+        return this.getId() == ((CalendarObject)obj).getId();
+    }
 }

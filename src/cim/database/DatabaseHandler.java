@@ -79,7 +79,7 @@ public class DatabaseHandler {
 		}		
 	}
 
-    /*public Attendable getAttendable(int attendableId) throws CloakedIronManException
+    public Attendable getAttendable(int attendableId) throws CloakedIronManException
     {
         try
         {
@@ -91,29 +91,26 @@ public class DatabaseHandler {
                 throw new CloakedIronManException("Can't find attendable");
             }
 
-
+            st.close();
+           
             int groupId = rs.getInt("group_id");
             if (rs.wasNull()) {
-            	int userId
+            	int userId = rs.getInt("user_id");
+            	rs.close();
+            	return getAccount(userId);
             } else {
             	// its a gorup
+            	rs.close();
+            	return getGroup(groupId);
             }
 
-            st.close();
-            rs.close();
-
-            if(groupId == null && (accountId != null))
-            {
-
-            }
-
+            
         }
         catch(SQLException e)
         {
         	throw new CloakedIronManException("Could not execute query.", e);
         }
-        return null;
-    }*/
+    }
 	
 	public Calendar getCalendar2(int id) throws CloakedIronManException {
 		try {
