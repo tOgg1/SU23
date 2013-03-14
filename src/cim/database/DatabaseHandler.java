@@ -437,9 +437,6 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		return null;
 	}
 
-
-
-	
 	public Account getAccount(String email) {
 		String sql = "SELECT * FROM account WHERE email = ";
 		sql += email;
@@ -682,5 +679,10 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		throw new CloakedIronManException("Could not find attendable id");
 		
 	}
+
+
+    public
+
+
 
 }
