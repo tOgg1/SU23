@@ -1,0 +1,29 @@
+Navnekonvensjon GUI
+- Alt er engelsk
+
+
+--Klassenavn--
+
+Innhold i tabber: 
+[name]Views
+eks: "CalendarView"
+
+Egne vinduer:
+[name]Dialog
+eks: "AddAppointmentDialog"
+
+Paneler (JPanel):
+[name]Panel
+eks: "AlarmPanel"
+
+
+--Komponenter--
+[forkortelse for komponenttype]Name
+eks: "btnAddAppointment"
+
+txt		TextField
+btn		JButton
+lbl		JLabel
+comBox	ComboBox
+rtbn	RadioButton
+chckbx	CheckBox
