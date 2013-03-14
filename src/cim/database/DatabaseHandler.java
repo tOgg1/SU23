@@ -209,7 +209,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
-		// TODO: Håkon
+		// TODO: Haakon
 		return -1;
 	}
 
@@ -474,12 +474,39 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		
 		ResultSet rs = st.executeQuery();
 		
+		
 		if(rs.next())
 		{
-			return new Room(rs.getInt("meeting_room_id"),rs.getInt("size"));
+			return new Room(rs.getInt("meeting_room_id"),rs.getString("name"),rs.getInt("size"));
 		}
 		return null;
+	}
+	
+	public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end) throws CloakedIronManException{
+		try{
+		PreparedStatement st;
+		st = this.con.prepareStatement("SELECT * FROM appointment WHERE date = ?");
+		st.setDate(1, date);
+		ResultSet rs = st.executeQuery();
+        ArrayList<Room> available = new ArrayList<Room>();
+        while (rs.next()){
+            if (!overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
+                 available.add(getRoom(rs.getInt("meeting_room_id")));
+            }
+        }
+	    return available;
+		}catch(SQLException e){
+			throw new CloakedIronManException("error: ", e);
+		}
+        return null;
 		
 	}
+	
+	private boolean overlap(Time start, Time start2, Time end, Time end2){
+		return !(end.before(start2)) || (end2.before(start));
+	}
+	
+	
+	
 
 }

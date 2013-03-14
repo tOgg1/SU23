@@ -18,7 +18,7 @@ public class Room extends CalendarObject
 		this.size = size;
 	}
 	
-	public Room(int id, String name, int size, String info)
+	public Room(int id, String name, int size)
 	{
 		this.id = id;
 		this.name = name;
