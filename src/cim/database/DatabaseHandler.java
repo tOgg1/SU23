@@ -490,7 +490,6 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 				ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
 				while(rs2.next()){
 					MeetingResponse meeting = new MeetingResponse(getAccount(rs2.getInt("account_user_id")), rs2.getString("status"));
-					System.out.println(meeting.response);
 					meetingResponses.add(meeting);
 				}
 				return m = new Meeting(rs.getString("info"), meetingResponses, getRoom(rs.getInt("meeting_room_id")), rs.getTime("start"), rs.getTime("end"), rs.getDate("date"));				

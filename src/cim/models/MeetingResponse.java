@@ -28,7 +28,7 @@ public class MeetingResponse {
 	}
 	public String toString()
 	{
-		return ("Account: " + this.account + "\nResponse: " + this.response);
+		return account.toString();
 	}
 	
 
