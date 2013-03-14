@@ -82,37 +82,37 @@ public class AddAppointmentDetailsPanel extends JPanel {
 		comBoxEndMM.setBounds(141, 101, 59, 20);
 		add(comBoxEndMM);
 		
-		JRadioButton radioButton = new JRadioButton("Sted");
-		buttonGroupLocation.add(radioButton);
-		radioButton.setSelected(true);
-		radioButton.setBounds(278, 20, 47, 23);
-		add(radioButton);
+		JRadioButton rbtnLocation = new JRadioButton("Sted");
+		buttonGroupLocation.add(rbtnLocation);
+		rbtnLocation.setSelected(true);
+		rbtnLocation.setBounds(278, 20, 47, 23);
+		add(rbtnLocation);
 		
-		JRadioButton radioButton_1 = new JRadioButton("Reserver rom");
-		buttonGroupLocation.add(radioButton_1);
-		radioButton_1.setBounds(278, 46, 91, 23);
-		add(radioButton_1);
+		JRadioButton rbtnRoomReservation = new JRadioButton("Reserver rom");
+		buttonGroupLocation.add(rbtnRoomReservation);
+		rbtnRoomReservation.setBounds(278, 46, 91, 23);
+		add(rbtnRoomReservation);
 		
 		txtLocation = new JTextField();
 		txtLocation.setBounds(331, 21, 109, 20);
 		add(txtLocation);
 		txtLocation.setColumns(10);
 		
-		JLabel label = new JLabel("Romst\u00F8rrelse");
-		label.setBounds(306, 76, 63, 14);
-		add(label);
+		JLabel lblRoomSize = new JLabel("Romst\u00F8rrelse");
+		lblRoomSize.setBounds(306, 76, 63, 14);
+		add(lblRoomSize);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(388, 70, 59, 20);
-		add(comboBox);
+		JComboBox comBoxRoomSize = new JComboBox();
+		comBoxRoomSize.setBounds(388, 70, 59, 20);
+		add(comBoxRoomSize);
 		
-		JList list = new JList();
-		list.setBounds(306, 129, 141, 80);
-		add(list);
+		JList listAvailableRooms = new JList();
+		listAvailableRooms.setBounds(306, 129, 141, 80);
+		add(listAvailableRooms);
 		
-		JLabel label_1 = new JLabel("Ledige rom (st\u00F8rrelse)");
-		label_1.setBounds(306, 104, 105, 14);
-		add(label_1);
+		JLabel lblAvailableRooms = new JLabel("Ledige rom (st\u00F8rrelse)");
+		lblAvailableRooms.setBounds(306, 104, 105, 14);
+		add(lblAvailableRooms);
 		
 
 		
