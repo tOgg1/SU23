@@ -201,6 +201,8 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 
             groupCalendarId = rs.getInt("calendar_id");
             calendars.add(getCalendar(groupCalendarId));
+            st.close();
+            rs.close();
         }
 
         return calendars;
