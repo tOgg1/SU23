@@ -2,8 +2,9 @@ package cim.models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
-public abstract class CalendarObject
+public abstract class CalendarObject implements Serializable
 {
 	
 	protected PropertyChangeSupport pcs;

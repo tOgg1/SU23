@@ -213,7 +213,7 @@ public class DatabaseHandler {
             ArrayList<Calendar> calendars = new ArrayList<Calendar>();
             int accCalendarId, groupCalendarId;
 
-            PreparedStatement st = this.con.prepareStatement("SELECT calender_id FROM calendar where owner_attendable_id = ?");
+            PreparedStatement st = this.con.prepareStatement("SELECT calendar_id FROM calendar WHERE owner_attendable_id = ?");
             st.setInt(1, getAttendableId(acc));
             ResultSet rs = st.executeQuery();
 

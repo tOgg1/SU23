@@ -43,6 +43,8 @@ public class ApplicationWindow extends JFrame {
 	
 	private ArrayList<Calendar> allCalendars;
 	
+	private ArrayList<Calendar> myCalendars;
+	
 //	private static JTextField txtMandag;
 //	private static JTextField txtTirsdag;
 //	private static JTextField txtOnsdag;
@@ -93,6 +95,12 @@ public class ApplicationWindow extends JFrame {
 		
 		Response response = client.request(new Request("GET_ALL_CALENDARS"));
 		allCalendars = (ArrayList<Calendar>) response.getData()[0];
+		
+		response = client.request(new Request("GET_ALL_CALENDARS_TO_ACCOUNT", account));
+				
+		myCalendars = (ArrayList<Calendar>) response.getData()[0];
+		
+		System.out.println(myCalendars.size());
 		
 		System.out.println(allCalendars);
 		

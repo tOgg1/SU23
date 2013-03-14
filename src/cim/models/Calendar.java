@@ -85,14 +85,5 @@ public class Calendar extends CalendarObject
 
 	}
    
-    
-    public String toString(){
-    	String returnString = this.owner.getName() + "\n";
-    	for (Appointment x : appointments){
-    		returnString += "\n" + x;
-    	}
-    	return returnString;
-    	
-    }
 
 }
