@@ -18,9 +18,9 @@ import javax.swing.JLayeredPane;
 
 public class AppointmentView{
 
-	private static JTextField textField;
-	private static JTextField txtDd;
-	private static JTextField txtYyyy;
+	private static JTextField txtDescription;
+	private static JTextField txtDD;
+	private static JTextField txtYYYY;
 	
 
 
@@ -35,49 +35,49 @@ public class AppointmentView{
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		frame.getContentPane().setLayout(gridBagLayout);
 		
-		JLabel lblBeskrivelse = new JLabel("Beskrivelse");
-		GridBagConstraints gbc_lblBeskrivelse = new GridBagConstraints();
-		gbc_lblBeskrivelse.anchor = GridBagConstraints.EAST;
-		gbc_lblBeskrivelse.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBeskrivelse.gridx = 1;
-		gbc_lblBeskrivelse.gridy = 1;
-		frame.getContentPane().add(lblBeskrivelse, gbc_lblBeskrivelse);
+		JLabel lblDescription = new JLabel("Beskrivelse");
+		GridBagConstraints gbc_lblDescription = new GridBagConstraints();
+		gbc_lblDescription.anchor = GridBagConstraints.EAST;
+		gbc_lblDescription.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDescription.gridx = 1;
+		gbc_lblDescription.gridy = 1;
+		frame.getContentPane().add(lblDescription, gbc_lblDescription);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 5;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 1;
-		frame.getContentPane().add(textField, gbc_textField);
-		textField.setColumns(30);
+		txtDescription = new JTextField();
+		GridBagConstraints gbc_txtDescription = new GridBagConstraints();
+		gbc_txtDescription.gridwidth = 5;
+		gbc_txtDescription.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDescription.gridx = 2;
+		gbc_txtDescription.gridy = 1;
+		frame.getContentPane().add(txtDescription, gbc_txtDescription);
+		txtDescription.setColumns(30);
 		
-		JRadioButton rdbtnSted = new JRadioButton("Sted");
-		rdbtnSted.setSelected(true);
-		GridBagConstraints gbc_rdbtnSted = new GridBagConstraints();
-		gbc_rdbtnSted.anchor = GridBagConstraints.WEST;
-		gbc_rdbtnSted.insets = new Insets(0, 0, 5, 5);
-		gbc_rdbtnSted.gridx = 9;
-		gbc_rdbtnSted.gridy = 1;
-		frame.getContentPane().add(rdbtnSted, gbc_rdbtnSted);
+		JRadioButton rdbtnTown = new JRadioButton("Sted");
+		rdbtnTown.setSelected(true);
+		GridBagConstraints gbc_rdbtnTown = new GridBagConstraints();
+		gbc_rdbtnTown.anchor = GridBagConstraints.WEST;
+		gbc_rdbtnTown.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnTown.gridx = 9;
+		gbc_rdbtnTown.gridy = 1;
+		frame.getContentPane().add(rdbtnTown, gbc_rdbtnTown);
 		
-		JLabel lblDato = new JLabel("Dato");
-		GridBagConstraints gbc_lblDato = new GridBagConstraints();
-		gbc_lblDato.anchor = GridBagConstraints.EAST;
-		gbc_lblDato.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDato.gridx = 1;
-		gbc_lblDato.gridy = 2;
-		frame.getContentPane().add(lblDato, gbc_lblDato);
+		JLabel lblDate = new JLabel("Dato");
+		GridBagConstraints gbc_lblDate = new GridBagConstraints();
+		gbc_lblDate.anchor = GridBagConstraints.EAST;
+		gbc_lblDate.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDate.gridx = 1;
+		gbc_lblDate.gridy = 2;
+		frame.getContentPane().add(lblDate, gbc_lblDate);
 		
-		txtDd = new JTextField();
-		txtDd.setText("DD");
-		GridBagConstraints gbc_txtDd = new GridBagConstraints();
-		gbc_txtDd.insets = new Insets(0, 0, 5, 5);
-		gbc_txtDd.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtDd.gridx = 3;
-		gbc_txtDd.gridy = 2;
-		frame.getContentPane().add(txtDd, gbc_txtDd);
-		txtDd.setColumns(2);
+		txtDD = new JTextField();
+		txtDD.setText("DD");
+		GridBagConstraints gbc_txtDD = new GridBagConstraints();
+		gbc_txtDD.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDD.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDD.gridx = 3;
+		gbc_txtDD.gridy = 2;
+		frame.getContentPane().add(txtDD, gbc_txtDD);
+		txtDD.setColumns(2);
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setToolTipText("");
@@ -88,23 +88,23 @@ public class AppointmentView{
 		gbc_comboBox.gridy = 2;
 		frame.getContentPane().add(comboBox, gbc_comboBox);
 		
-		txtYyyy = new JTextField();
-		txtYyyy.setText("YYYY");
-		GridBagConstraints gbc_txtYyyy = new GridBagConstraints();
-		gbc_txtYyyy.insets = new Insets(0, 0, 5, 5);
-		gbc_txtYyyy.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtYyyy.gridx = 5;
-		gbc_txtYyyy.gridy = 2;
-		frame.getContentPane().add(txtYyyy, gbc_txtYyyy);
-		txtYyyy.setColumns(4);
+		txtYYYY = new JTextField();
+		txtYYYY.setText("YYYY");
+		GridBagConstraints gbc_txtYYYY = new GridBagConstraints();
+		gbc_txtYYYY.insets = new Insets(0, 0, 5, 5);
+		gbc_txtYYYY.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtYYYY.gridx = 5;
+		gbc_txtYYYY.gridy = 2;
+		frame.getContentPane().add(txtYYYY, gbc_txtYYYY);
+		txtYYYY.setColumns(4);
 		
-		JRadioButton rdbtnRom = new JRadioButton("Reserver rom");
-		GridBagConstraints gbc_rdbtnRom = new GridBagConstraints();
-		gbc_rdbtnRom.anchor = GridBagConstraints.WEST;
-		gbc_rdbtnRom.insets = new Insets(0, 0, 5, 5);
-		gbc_rdbtnRom.gridx = 9;
-		gbc_rdbtnRom.gridy = 2;
-		frame.getContentPane().add(rdbtnRom, gbc_rdbtnRom);
+		JRadioButton rdbtnRoom = new JRadioButton("Reserver rom");
+		GridBagConstraints gbc_rdbtnRoom = new GridBagConstraints();
+		gbc_rdbtnRoom.anchor = GridBagConstraints.WEST;
+		gbc_rdbtnRoom.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnRoom.gridx = 9;
+		gbc_rdbtnRoom.gridy = 2;
+		frame.getContentPane().add(rdbtnRoom, gbc_rdbtnRoom);
 		
 		JLabel lblStart = new JLabel("Start");
 		GridBagConstraints gbc_lblStart = new GridBagConstraints();
@@ -114,28 +114,28 @@ public class AppointmentView{
 		gbc_lblStart.gridy = 3;
 		frame.getContentPane().add(lblStart, gbc_lblStart);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		GridBagConstraints gbc_comboBox_1 = new GridBagConstraints();
-		gbc_comboBox_1.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox_1.gridx = 3;
-		gbc_comboBox_1.gridy = 3;
-		frame.getContentPane().add(comboBox_1, gbc_comboBox_1);
+		JComboBox comboBoxStarHH = new JComboBox();
+		GridBagConstraints gbc_comboBoxStarHH = new GridBagConstraints();
+		gbc_comboBoxStarHH.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBoxStarHH.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxStarHH.gridx = 3;
+		gbc_comboBoxStarHH.gridy = 3;
+		frame.getContentPane().add(comboBoxStarHH, gbc_comboBoxStarHH);
 		
-		JLabel label = new JLabel(":");
-		GridBagConstraints gbc_label = new GridBagConstraints();
-		gbc_label.insets = new Insets(0, 0, 5, 5);
-		gbc_label.gridx = 4;
-		gbc_label.gridy = 3;
-		frame.getContentPane().add(label, gbc_label);
+		JLabel lblColon1 = new JLabel(":");
+		GridBagConstraints gbc_lblColon1 = new GridBagConstraints();
+		gbc_lblColon1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblColon1.gridx = 4;
+		gbc_lblColon1.gridy = 3;
+		frame.getContentPane().add(lblColon1, gbc_lblColon1);
 		
-		JComboBox comboBox_3 = new JComboBox();
-		GridBagConstraints gbc_comboBox_3 = new GridBagConstraints();
-		gbc_comboBox_3.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox_3.gridx = 5;
-		gbc_comboBox_3.gridy = 3;
-		frame.getContentPane().add(comboBox_3, gbc_comboBox_3);
+		JComboBox comboBoxStartMM = new JComboBox();
+		GridBagConstraints gbc_comboBoxStartMM = new GridBagConstraints();
+		gbc_comboBoxStartMM.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBoxStartMM.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxStartMM.gridx = 5;
+		gbc_comboBoxStartMM.gridy = 3;
+		frame.getContentPane().add(comboBoxStartMM, gbc_comboBoxStartMM);
 		
 		JLabel lblRomstrrelse = new JLabel("Romst\u00F8rrelse");
 		GridBagConstraints gbc_lblRomstrrelse = new GridBagConstraints();
@@ -145,13 +145,13 @@ public class AppointmentView{
 		gbc_lblRomstrrelse.gridy = 3;
 		frame.getContentPane().add(lblRomstrrelse, gbc_lblRomstrrelse);
 		
-		JComboBox comboBox_5 = new JComboBox();
-		GridBagConstraints gbc_comboBox_5 = new GridBagConstraints();
-		gbc_comboBox_5.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_5.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox_5.gridx = 10;
-		gbc_comboBox_5.gridy = 3;
-		frame.getContentPane().add(comboBox_5, gbc_comboBox_5);
+		JComboBox comboBoxRoom = new JComboBox();
+		GridBagConstraints gbc_comboBoxRoom = new GridBagConstraints();
+		gbc_comboBoxRoom.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBoxRoom.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxRoom.gridx = 10;
+		gbc_comboBoxRoom.gridy = 3;
+		frame.getContentPane().add(comboBoxRoom, gbc_comboBoxRoom);
 		
 		JLabel lblSlutt = new JLabel("Slutt");
 		GridBagConstraints gbc_lblSlutt = new GridBagConstraints();
@@ -161,86 +161,86 @@ public class AppointmentView{
 		gbc_lblSlutt.gridy = 4;
 		frame.getContentPane().add(lblSlutt, gbc_lblSlutt);
 		
-		JComboBox comboBox_2 = new JComboBox();
-		GridBagConstraints gbc_comboBox_2 = new GridBagConstraints();
-		gbc_comboBox_2.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox_2.gridx = 3;
-		gbc_comboBox_2.gridy = 4;
-		frame.getContentPane().add(comboBox_2, gbc_comboBox_2);
+		JComboBox comboBoxEndHH = new JComboBox();
+		GridBagConstraints gbc_comboBoxEndHH = new GridBagConstraints();
+		gbc_comboBoxEndHH.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBoxEndHH.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxEndHH.gridx = 3;
+		gbc_comboBoxEndHH.gridy = 4;
+		frame.getContentPane().add(comboBoxEndHH, gbc_comboBoxEndHH);
 		
-		JLabel lblNewLabel = new JLabel(":");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 4;
-		gbc_lblNewLabel.gridy = 4;
-		frame.getContentPane().add(lblNewLabel, gbc_lblNewLabel);
+		JLabel lblColon2 = new JLabel(":");
+		GridBagConstraints gbc_lblColon2 = new GridBagConstraints();
+		gbc_lblColon2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblColon2.gridx = 4;
+		gbc_lblColon2.gridy = 4;
+		frame.getContentPane().add(lblColon2, gbc_lblColon2);
 		
-		JComboBox comboBox_4 = new JComboBox();
-		GridBagConstraints gbc_comboBox_4 = new GridBagConstraints();
-		gbc_comboBox_4.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_4.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox_4.gridx = 5;
-		gbc_comboBox_4.gridy = 4;
-		frame.getContentPane().add(comboBox_4, gbc_comboBox_4);
+		JComboBox comboBoxEndMM = new JComboBox();
+		GridBagConstraints gbc_comboBoxEndMM = new GridBagConstraints();
+		gbc_comboBoxEndMM.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBoxEndMM.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxEndMM.gridx = 5;
+		gbc_comboBoxEndMM.gridy = 4;
+		frame.getContentPane().add(comboBoxEndMM, gbc_comboBoxEndMM);
 		
-		JLabel lblLedigeRomstrrelse = new JLabel("Ledige rom (st\u00F8rrelse)");
-		GridBagConstraints gbc_lblLedigeRomstrrelse = new GridBagConstraints();
-		gbc_lblLedigeRomstrrelse.anchor = GridBagConstraints.WEST;
-		gbc_lblLedigeRomstrrelse.insets = new Insets(0, 0, 5, 5);
-		gbc_lblLedigeRomstrrelse.gridx = 9;
-		gbc_lblLedigeRomstrrelse.gridy = 4;
-		frame.getContentPane().add(lblLedigeRomstrrelse, gbc_lblLedigeRomstrrelse);
+		JLabel lblAvailableRooms = new JLabel("Ledige rom (st\u00F8rrelse)");
+		GridBagConstraints gbc_lblAvailableRooms = new GridBagConstraints();
+		gbc_lblAvailableRooms.anchor = GridBagConstraints.WEST;
+		gbc_lblAvailableRooms.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAvailableRooms.gridx = 9;
+		gbc_lblAvailableRooms.gridy = 4;
+		frame.getContentPane().add(lblAvailableRooms, gbc_lblAvailableRooms);
 		
-		JList list = new JList();
-		GridBagConstraints gbc_list = new GridBagConstraints();
-		gbc_list.insets = new Insets(0, 0, 5, 5);
-		gbc_list.gridheight = 3;
-		gbc_list.gridwidth = 2;
-		gbc_list.fill = GridBagConstraints.BOTH;
-		gbc_list.gridx = 9;
-		gbc_list.gridy = 5;
-		frame.getContentPane().add(list, gbc_list);
+		JList availableRooms = new JList();
+		GridBagConstraints gbc_availableRooms = new GridBagConstraints();
+		gbc_availableRooms.insets = new Insets(0, 0, 5, 5);
+		gbc_availableRooms.gridheight = 3;
+		gbc_availableRooms.gridwidth = 2;
+		gbc_availableRooms.fill = GridBagConstraints.BOTH;
+		gbc_availableRooms.gridx = 9;
+		gbc_availableRooms.gridy = 5;
+		frame.getContentPane().add(availableRooms, gbc_availableRooms);
 		
-		JCheckBox chckbxLeggTilPersoner = new JCheckBox("Legg til personer/grupper");
-		GridBagConstraints gbc_chckbxLeggTilPersoner = new GridBagConstraints();
-		gbc_chckbxLeggTilPersoner.anchor = GridBagConstraints.WEST;
-		gbc_chckbxLeggTilPersoner.gridwidth = 4;
-		gbc_chckbxLeggTilPersoner.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxLeggTilPersoner.gridx = 1;
-		gbc_chckbxLeggTilPersoner.gridy = 10;
-		frame.getContentPane().add(chckbxLeggTilPersoner, gbc_chckbxLeggTilPersoner);
+		JCheckBox chckbxAddParticipants = new JCheckBox("Legg til personer/grupper");
+		GridBagConstraints gbc_chckbxAddParticipants = new GridBagConstraints();
+		gbc_chckbxAddParticipants.anchor = GridBagConstraints.WEST;
+		gbc_chckbxAddParticipants.gridwidth = 4;
+		gbc_chckbxAddParticipants.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxAddParticipants.gridx = 1;
+		gbc_chckbxAddParticipants.gridy = 10;
+		frame.getContentPane().add(chckbxAddParticipants, gbc_chckbxAddParticipants);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Legg til personlig varsel");
-		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
-		gbc_chckbxNewCheckBox.anchor = GridBagConstraints.WEST;
-		gbc_chckbxNewCheckBox.gridwidth = 4;
-		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxNewCheckBox.gridx = 1;
-		gbc_chckbxNewCheckBox.gridy = 11;
-		frame.getContentPane().add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
+		JCheckBox chckbxAddAlarm = new JCheckBox("Legg til personlig varsel");
+		GridBagConstraints gbc_chckbxAddAlarm = new GridBagConstraints();
+		gbc_chckbxAddAlarm.anchor = GridBagConstraints.WEST;
+		gbc_chckbxAddAlarm.gridwidth = 4;
+		gbc_chckbxAddAlarm.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxAddAlarm.gridx = 1;
+		gbc_chckbxAddAlarm.gridy = 11;
+		frame.getContentPane().add(chckbxAddAlarm, gbc_chckbxAddAlarm);
 		
-		JButton btnNewButton = new JButton("Legg til i kalender");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnSave = new JButton("Legg til i kalender");
+		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton.gridx = 9;
-		gbc_btnNewButton.gridy = 11;
-		frame.getContentPane().add(btnNewButton, gbc_btnNewButton);
+		GridBagConstraints gbc_btnSave = new GridBagConstraints();
+		gbc_btnSave.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSave.gridx = 9;
+		gbc_btnSave.gridy = 11;
+		frame.getContentPane().add(btnSave, gbc_btnSave);
 		
-		JButton btnAvbryt = new JButton("        Avbryt         ");
-		btnAvbryt.addActionListener(new ActionListener() {
+		JButton btnCancel = new JButton("        Avbryt         ");
+		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		GridBagConstraints gbc_btnAvbryt = new GridBagConstraints();
-		gbc_btnAvbryt.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAvbryt.gridx = 10;
-		gbc_btnAvbryt.gridy = 11;
-		frame.getContentPane().add(btnAvbryt, gbc_btnAvbryt);
+		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
+		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
+		gbc_btnCancel.gridx = 10;
+		gbc_btnCancel.gridy = 11;
+		frame.getContentPane().add(btnCancel, gbc_btnCancel);
 		frame.setVisible(true);
 	}
 }
