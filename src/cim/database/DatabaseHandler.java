@@ -152,38 +152,78 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	 * @param acc
 	 * @return
 	 */
-	public ArrayList<Calendar> getAllCalendarsToAccount(Account acc) {
-		// TODO: Tormod
-		return null;
-	}
-	/**
+    public ArrayList<Calendar> getAllCalendarsToAccount(Account acc) throws SQLException, CloakedIronManException
+    {
+        ArrayList<Group> groups = getAllGroupsToAccount(acc);
+        ArrayList<Calendar> calendars = new ArrayList<Calendar>();
+        int accCalendarId, groupCalendarId;
+
+        PreparedStatement st = this.con.prepareStatement("SELECT calender_id FROM calendar where owner_attendable_id = ?");
+        st.setInt(1, getAttendableId(acc));
+        ResultSet rs = st.executeQuery();
+
+        if(!rs.next())
+        {
+            throw new CloakedIronManException("Account " + acc.getId() + "  is not registered as an attendable");
+        }
+        accCalendarId = rs.getInt("calendar_id");
+        calendars.add(getCalendar(accCalendarId));
+        rs.close();
+        st.close();
+
+        for(Group group : groups)
+        {
+            st = this.con.prepareStatement("SELECT calendar_id FROM calendar where owner_attendable_id = ?");
+            st.setInt(1, getAttendableId(group));
+            rs = st.executeQuery();
+
+            if(!rs.next())
+            {
+                throw new CloakedIronManException("Group " + group.getId() + " is not registered as an attendable");
+            }
+
+            groupCalendarId = rs.getInt("calendar_id");
+            calendars.add(getCalendar(groupCalendarId));
+        }
+
+        return calendars;
+    }
+
+
+    public ArrayList<Group> getAllGroupsToAccount(Account acc) throws SQLException, CloakedIronManException
+    {
+        ArrayList<Integer> groupIds = getGroupIdsFromUserid(acc.getId());
+        ArrayList<Group> groups = new ArrayList<Group>();
+
+        for(int groupId : groupIds)
+        {
+            groups.add(getGroup(groupId));
+        }
+        return groups;
+    }
+
+    /**
 	 * Returns all calendars in the system.
 	 * @return
 	 */
-	public ArrayList<Calendar> getAllCalendars() throws CloakedIronManException {
-		// TODO: Tormod, skriv denne metoden
-		return null;
-		/*
-		String sql =
-				"SELECT calendar_id " +
-						"FROM calendar " +
-						"WHERE owner_attendable_id = ";
-		sql += user_id;
-		ResultSet rs = executeQuery(sql);
-		ArrayList<Calendar> allCals = new ArrayList<Calendar>();
-		try {
-			while(rs.next()){
-				allCals.add(getCalendar(rs.getInt("calendar_id")));
-			}
-			return allCals;
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-			return null;
-		}*/
-
-
-	}
+    public ArrayList<Calendar> getAllCalendars() throws CloakedIronManException {
+        String sql = "SELECT calendar_id from calendar";
+        ResultSet rs = executeQuery(sql);
+        ArrayList<Calendar> returnCalendars = new ArrayList<Calendar>();
+        try
+        {
+            while(rs.next())
+            {
+                returnCalendars.add(getCalendar(rs.getInt("calendar_id")));
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        return returnCalendars;
+    }
 
 	public boolean deleteAppointment(int appointmentId){
 		String sql = "DELETE from appointment WHERE appointment_id = ";
@@ -287,9 +327,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
-		
-		
-		return a;
+
 	}
 
 	// getAppointment(id)
@@ -560,6 +598,21 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		return null;
 		
 	}
+
+    private ArrayList<Integer> getGroupIdsFromUserid(int userId) throws SQLException
+    {
+        PreparedStatement st;
+        st = this.con.prepareStatement("SELECT group_id FROM member_of where user_id = ?");
+
+        st.setInt(1, userId);
+        ResultSet rs = st.executeQuery();
+        ArrayList<Integer> groupIds = new ArrayList<Integer>();
+        while(rs.next())
+        {
+            groupIds.add(rs.getInt("group_id"));
+        }
+        return groupIds;
+    }
 	
 	private int getAttendableId(Attendable a) throws SQLException, CloakedIronManException {
 		PreparedStatement st;
