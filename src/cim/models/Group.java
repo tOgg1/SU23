@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Group extends CalendarObject implements Attendable, Serializable
 {
+	private int attendableId = -1;
 	String name;
 	Account owner;
 	Calendar calendar;
@@ -42,5 +43,14 @@ public class Group extends CalendarObject implements Attendable, Serializable
 	
 	public Account getOwner() {
 		return this.owner;
+	}
+	
+	public void setAttendableId(int id) {
+		this.pcs.firePropertyChange("attendableId", this.attendableId, attendableId);
+		this.attendableId = id;
+	}
+	
+	public int getAttendableId() {
+		return this.attendableId;
 	}
 }

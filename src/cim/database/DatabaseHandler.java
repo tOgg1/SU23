@@ -3,9 +3,12 @@ package cim.database;
 import java.sql.*;
 import java.util.ArrayList;
 
+import com.mysql.jdbc.StringUtils;
+
 
 import cim.models.Account;
 import cim.models.Appointment;
+import cim.models.Attendable;
 import cim.models.Calendar;
 import cim.models.Group;
 import cim.models.Meeting;
@@ -205,12 +208,67 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	 */
 	public int saveCalendar(Calendar c) throws CloakedIronManException {
 		try {
+			if(c.getId() == -1) {
+				c.setId(this.getNextAutoIncrease("calendar", "calendar_id"));
+			}
+			if(c.getOwner() == null) {
+				throw new CloakedIronManException("Calendar owner not set");
+			}
 			
+			int iAttendableId = this.getAttendableId(c.getOwner());
+
+			// Create statement for the calendar
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO calendar " +
+					"(calendar_id, owner_attendable_id)" +
+					"VALUES (?,?)" +
+					"ON DUPLICATE KEY UPDATE " +
+					"owner_attendable_id=?");
+			st.setInt(1, c.getId());
+			st.setInt(2, iAttendableId);
+			st.setInt(3, iAttendableId);
+			st.executeUpdate();
+			
+			// Delete all appointments not in the calendars list
+			ArrayList<Integer> ids = c.getAllAppointmentIds();
+			String[] str = new String[ids.size()];
+			for(int i = 0;i<ids.size();i++) {
+				str[i] = ids.get(i).toString();
+			}
+			System.out.println(str);
+			
+			
+			return c.getId();
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not handle query.", e);
+		}
+	}
+	/**
+	 *  Saven the appointment and returns the saved version
+	 * @param a
+	 * @return
+	 */
+	public Appointment saveAppointment(Appointment a, Calendar c) throws CloakedIronManException {
+		try {
+			if(c.getId() == -1) {
+				throw new CloakedIronManException("Calendar not saved in the database");
+			}
+			if(a.getId() == -1) {
+				a.setId(this.getNextAutoIncrease("appointment", "appointment_id"));
+			}
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO appointment " +
+					"(appointment_id, name, date, start, end, info, calendar_id, place, meeting_room_id, appointment_owner) " +
+					"VALUES " +
+					"(?,?,?,?,?,?,?,?,?,?) " +
+					"ON DUPLICATE KEY UPDATE " +
+					"name=?, date=?,start=?, end=?, info=?, calendar_id=?, place=?, meeting_room_id=?, appointment_owner=?");
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
 		// TODO: Haakon
 		return -1;
+
+		
+		return a;
 	}
 
 	// getAppointment(id)
@@ -508,5 +566,21 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	
 	
 	
+	private int getAttendableId(Attendable a) throws SQLException, CloakedIronManException {
+		PreparedStatement st;
+		if (a instanceof Account) {
+			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE user_id=?");
+		} else{
+			//Its a group
+			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE gruop_id=?");
+		}
+		st.setInt(1, a.getId());
+		ResultSet rs = st.executeQuery();
+		if(rs.next()) {
+			return rs.getInt("attendable_id");
+		}
+		throw new CloakedIronManException("Could not find attendable id");
+		
+	}
 
 }
