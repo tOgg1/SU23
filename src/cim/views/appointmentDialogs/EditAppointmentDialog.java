@@ -17,6 +17,7 @@ public class EditAppointmentDialog extends JFrame{
 	private AppointmentDetailsPanel addDetailsPanel;
 	private ParticipantsPanel addParticipantsPanel;
 	private AlarmPanel addAlarmPanel;
+	private AppointmentInfo appointmentInfo;
 
 	// Components
 	private JCheckBox chckbxLeggTilPersonlig;
@@ -25,7 +26,8 @@ public class EditAppointmentDialog extends JFrame{
 	private JButton btnCancelDialog;
 	private JButton btnCancelAppointment;
 	
-	public EditAppointmentDialog(Account account, Appointment appointment){
+//	public EditAppointmentDialog(Account account, Appointment appointment){ //Bytt til denne når GUI er koblet mot resten
+	public EditAppointmentDialog(){
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 571);
@@ -36,7 +38,10 @@ public class EditAppointmentDialog extends JFrame{
 		add(mainPanel);
 		mainPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		if(account.equals(appointment.getOwner())){
+//		if(account.equals(appointment.getOwner())){ //Bytt til denne når GUI er koblet mot resten
+		
+		if(true){ //Ninjatriks: endre denne til false når man vil jobbe (i Windowbuilder) med det som hentes i 'else'
+		
 		// Møteleder får endre på alt, og kan også avlyse hele shiten
 			
 			addDetailsPanel = new AppointmentDetailsPanel();
@@ -69,6 +74,8 @@ public class EditAppointmentDialog extends JFrame{
 		//Vanlig møtedeltager får kun endre sin egen alarm, ingenting annet.
 			
 			//Her må det inn noe som henter informasjon om tid/sted osv.
+			appointmentInfo = new AppointmentInfo();
+			mainPanel.add(appointmentInfo);
 			
 			addAlarmPanel = new AlarmPanel();
 			mainPanel.add(addAlarmPanel);
