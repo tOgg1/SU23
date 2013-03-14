@@ -16,7 +16,19 @@ public class AppointmentDetailsPanel extends JPanel {
 	private JTextField txtDay;
 	private JTextField txtYear;
 	private JTextField txtLocation;
+	
+	private JComboBox comBoxMonth;
+	private JComboBox comBoxStartHH;
+	private JComboBox comBoxStartMM;
+	private JComboBox comBoxEndHH;
+	private JComboBox comBoxEndMM;
+	private JComboBox comBoxRoomSize;
+	
 	private final ButtonGroup buttonGroupLocation = new ButtonGroup();
+	private JRadioButton rbtnLocation;
+	private JRadioButton rbtnRoomReservation;
+	
+	private JList listAvailableRooms;
 	
 	public AppointmentDetailsPanel() {
 		this.setSize(470, 340);
@@ -41,7 +53,7 @@ public class AppointmentDetailsPanel extends JPanel {
 		txtDay.setBounds(73, 47, 48, 20);
 		add(txtDay);
 		
-		JComboBox comBoxMonth = new JComboBox();
+		comBoxMonth = new JComboBox();
 		comBoxMonth.setToolTipText("");
 		comBoxMonth.setBounds(131, 47, 49, 20);
 		add(comBoxMonth);
@@ -56,7 +68,7 @@ public class AppointmentDetailsPanel extends JPanel {
 		lblStart.setBounds(40, 76, 24, 14);
 		add(lblStart);
 		
-		JComboBox comBoxStartHH = new JComboBox();
+		comBoxStartHH = new JComboBox();
 		comBoxStartHH.setBounds(74, 73, 48, 20);
 		add(comBoxStartHH);
 		
@@ -64,7 +76,7 @@ public class AppointmentDetailsPanel extends JPanel {
 		lblColon.setBounds(129, 76, 4, 14);
 		add(lblColon);
 		
-		JComboBox comBoxStartMM = new JComboBox();
+		comBoxStartMM = new JComboBox();
 		comBoxStartMM.setBounds(142, 73, 59, 20);
 		add(comBoxStartMM);
 		
@@ -72,7 +84,7 @@ public class AppointmentDetailsPanel extends JPanel {
 		lblEnd.setBounds(41, 104, 22, 14);
 		add(lblEnd);
 		
-		JComboBox comBoxEndHH = new JComboBox();
+		comBoxEndHH = new JComboBox();
 		comBoxEndHH.setBounds(73, 101, 48, 20);
 		add(comBoxEndHH);
 		
@@ -80,17 +92,17 @@ public class AppointmentDetailsPanel extends JPanel {
 		lblColon2.setBounds(128, 104, 4, 14);
 		add(lblColon2);
 		
-		JComboBox comBoxEndMM = new JComboBox();
+		comBoxEndMM = new JComboBox();
 		comBoxEndMM.setBounds(141, 101, 59, 20);
 		add(comBoxEndMM);
 		
-		JRadioButton rbtnLocation = new JRadioButton("Sted");
+		rbtnLocation = new JRadioButton("Sted");
 		buttonGroupLocation.add(rbtnLocation);
 		rbtnLocation.setSelected(true);
 		rbtnLocation.setBounds(278, 20, 47, 23);
 		add(rbtnLocation);
 		
-		JRadioButton rbtnRoomReservation = new JRadioButton("Reserver rom");
+		rbtnRoomReservation = new JRadioButton("Reserver rom");
 		buttonGroupLocation.add(rbtnRoomReservation);
 		rbtnRoomReservation.setBounds(278, 46, 91, 23);
 		add(rbtnRoomReservation);
@@ -104,11 +116,11 @@ public class AppointmentDetailsPanel extends JPanel {
 		lblRoomSize.setBounds(306, 76, 63, 14);
 		add(lblRoomSize);
 		
-		JComboBox comBoxRoomSize = new JComboBox();
+		comBoxRoomSize = new JComboBox();
 		comBoxRoomSize.setBounds(388, 70, 59, 20);
 		add(comBoxRoomSize);
 		
-		JList listAvailableRooms = new JList();
+		listAvailableRooms = new JList();
 		listAvailableRooms.setBounds(306, 129, 141, 80);
 		add(listAvailableRooms);
 		
