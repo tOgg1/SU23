@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Meeting extends Appointment
 {
-	private ArrayList invitees;
+	private ArrayList<MeetingResponse> invitees;
 
     private final static int STATUS_INVITED = 0;
     private final static int STATUS_ACCEPTED = 1;
@@ -17,5 +17,9 @@ public class Meeting extends Appointment
 		super(startDate, endDate, info, date);
 		this.invitees = invitees;		
 	}
+	
+
+	
+	
 
 }
