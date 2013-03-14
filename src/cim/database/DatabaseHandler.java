@@ -81,6 +81,23 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 	}
 
 	
+	public Calendar getCalendar2(int id) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT owner_attendable_id FROM calendar WHERE calendar_id=?");
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				int iAttendableID = rs.getInt("owner_attendable_id");
+			}  else {
+				throw new CloakedIronManException("Calendar ID not found in database");
+			}
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not execute query.", e);
+		}
+		return null;
+		
+		
+	}
+	
 	public Calendar getCalendar(int calendar_id){
 		String sql = 
 				"SELECT owner_attendable_id " +
@@ -285,6 +302,17 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			if(a.getId() == -1) {
 				a.setId(this.getNextAutoIncrease("appointment", "appointment_id"));
 			}
+			if(a.getOwner() == null) {
+				throw new CloakedIronManException("Owner not set");
+			}
+			if(a.getOwner().getId() == -1) {
+				throw new CloakedIronManException("Owner id not set (owner not in database)");
+			}
+			if(a.getRoom() != null) {
+				if (a.getRoom().getId() == -1) {
+					throw new CloakedIronManException("Room not saved in database");
+				}
+			}
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO appointment " +
 					"(appointment_id, name, date, start, end, info, calendar_id, place, meeting_room_id, appointment_owner) " +
 					"VALUES " +
@@ -327,7 +355,6 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
-
 	}
 
 	// getAppointment(id)
@@ -596,6 +623,25 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			return new Room(rs.getInt("meeting_room_id"),rs.getInt("size"));
 		}
 		return null;
+	}
+	
+	public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end) throws CloakedIronManException{
+		try{
+		PreparedStatement st;
+		st = this.con.prepareStatement("SELECT * FROM appointment WHERE date = ?");
+		st.setDate(1, date);
+		ResultSet rs = st.executeQuery();
+        ArrayList<Room> available = new ArrayList<Room>();
+        while (rs.next()){
+            if (!overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
+                 available.add(getRoom(rs.getInt("meeting_room_id")));
+            }
+        }
+	    return available;
+		}catch(SQLException e){
+			throw new CloakedIronManException("error: ", e);
+		}
+        return null;
 		
 	}
 
@@ -613,6 +659,12 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
         }
         return groupIds;
     }
+	
+	private boolean overlap(Time start, Time start2, Time end, Time end2){
+		return !(end.before(start2)) || (end2.before(start));
+	}
+	
+	
 	
 	private int getAttendableId(Attendable a) throws SQLException, CloakedIronManException {
 		PreparedStatement st;
