@@ -6,4 +6,5 @@ public class PersonalSettings {
 	public static final String MYSQL_PW  = "cim";
 	public static final String SERVER_IP = "129.241.163.113";
 
+
 }
