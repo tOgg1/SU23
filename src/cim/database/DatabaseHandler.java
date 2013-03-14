@@ -358,6 +358,16 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			st.setInt(19, a.getOwner().getId());
 			
 			st.execute();
+			st.close();
+			
+			// If meeting
+			if(a instanceof Meeting) {
+				st = this.con.prepareStatement("INSERT INTO meeting (appointment_id) VALUES (?)");
+				st.setInt(1, a.getId());
+				st.execute();
+				st.close();
+			}
+			
 			return a;
 			
 			
