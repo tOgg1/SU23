@@ -154,8 +154,16 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			return null;
 		}
 	}
+	
+	public ArrayList<Calendar> getAllCalendarsToAccount(Account acc) {
+		// TODO: Tormod
+		return null;
+	}
 
-	public ArrayList<Calendar> getAllCalendars(int user_id) {
+	public ArrayList<Calendar> getAllCalendars() {
+		// TODO: Tormod, skriv denne metoden
+		return null;
+		/*
 		String sql =
 				"SELECT calendar_id " +
 						"FROM calendar " +
@@ -172,7 +180,7 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			e.printStackTrace();
 
 			return null;
-		}
+		}*/
 
 
 	}

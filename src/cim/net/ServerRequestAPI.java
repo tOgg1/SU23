@@ -37,6 +37,8 @@ public class ServerRequestAPI {
 				return authenticate((String)args[0], (String)args[1]);
 			} else if (method.equals("GET_ALL_CALENDARS")) {
 				return get_all_calendars();
+			} else if (method.equals("GET_ALL_CALENDARS_TO_ACCOUNT")) {
+				return get_all_calendars_to_account((Account)args[0]);
 			}
 			
 		} catch (Exception e) {
@@ -71,6 +73,11 @@ public class ServerRequestAPI {
 	private Response get_all_calendars() throws SQLException {
 		
 		//TODO: Skriv denne metoden
+		return null;
+	}
+	
+	private Response get_all_calendars_to_account(Account acc) throws SQLException {
+		// TODO: Skriv denne metoden
 		return null;
 	}
 	
