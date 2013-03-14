@@ -1,5 +1,7 @@
 package cim.util;
 
+import java.sql.Time;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Mayacat
@@ -26,4 +28,9 @@ public class Helper
      * @param str
      * @return
      */
+    
+    public static Time getTime(int hrs, int mins) {
+    	long seconds = hrs*3600 + mins*60;
+    	return new Time(seconds * 1000);
+    }
 }

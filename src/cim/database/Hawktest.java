@@ -1,8 +1,12 @@
 package cim.database;
 
+import java.sql.Time;
+
 import cim.models.Account;
+import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.util.CloakedIronManException;
+import cim.util.Helper;
 
 public class Hawktest {
 
@@ -13,6 +17,7 @@ public class Hawktest {
 		DatabaseHandler db = new DatabaseHandler();
 		Account a = db.getAccountByEmail("hakon@aamdal.com");
 		Calendar c = db.getCalendar(1);
+		Appointment app1 = new Appointment(Helper.getTime(10, 00), Helper.getTime(11, 00), info, date)
 		System.out.println(c);
 		db.saveCalendar(c);
 		

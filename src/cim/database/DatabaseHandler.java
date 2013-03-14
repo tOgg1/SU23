@@ -341,7 +341,7 @@ public class DatabaseHandler {
 	 * @param a
 	 * @return
 	 */
-	public Appointment saveAppointment(Appointment a, Calendar c) throws CloakedIronManException {
+	private Appointment saveAppointment(Appointment a, Calendar c) throws CloakedIronManException {
 		try {
 			if(c.getId() == -1) {
 				throw new CloakedIronManException("Calendar not saved in the database");
