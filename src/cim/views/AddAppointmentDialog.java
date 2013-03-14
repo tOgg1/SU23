@@ -4,23 +4,34 @@ import javax.swing.JFrame;
 import java.awt.GridBagLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import java.awt.GridLayout;
+import java.awt.Component;
 
 public class AddAppointmentDialog extends JFrame{
+	private AddAppointmentDetailsPanel addDetailsPanel;
+	private AddParticipantsPanel addParticipantsPanel;
+	private AddAlarmPanel addAlarmPanel;
+	private JPanel mainPanel;
+	
 	public AddAppointmentDialog(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 528, 375);
+		setBounds(100, 100, 648, 571);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		
-		JPanel panel = new JPanel();
-		getContentPane().add(panel);
+		mainPanel = new JPanel();
+		mainPanel.setAlignmentY(Component.TOP_ALIGNMENT);
+		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		getContentPane().add(mainPanel);
+		mainPanel.setLayout(new GridLayout(6, 4, 0, 0));
 		
-		JPanel panel_1 = new JPanel();
-		getContentPane().add(panel_1);
+		addDetailsPanel = new AddAppointmentDetailsPanel();
+		addDetailsPanel.setSize(470, 240);
+		mainPanel.add(addDetailsPanel);
 		
-		JPanel panel_2 = new JPanel();
-		getContentPane().add(panel_2);
+		addParticipantsPanel = new AddParticipantsPanel();
+		mainPanel.add(addParticipantsPanel);
 		
-		JPanel panel_3 = new JPanel();
-		getContentPane().add(panel_3);
+		addAlarmPanel = new AddAlarmPanel();
+		mainPanel.add(addAlarmPanel);
 	}
 }

@@ -17,7 +17,9 @@ public class AddAppointmentDetailsPanel extends JPanel {
 	private JTextField txtYear;
 	private JTextField txtLocation;
 	private final ButtonGroup buttonGroupLocation = new ButtonGroup();
+	
 	public AddAppointmentDetailsPanel() {
+		this.setSize(470, 340);
 		setLayout(null);
 		
 		JLabel lblDescription = new JLabel("Beskrivelse");
