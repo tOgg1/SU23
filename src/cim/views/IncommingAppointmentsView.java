@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 
 public class IncommingAppointmentsView extends JPanel{
 	
+	// Det eksisterer en plan i hodet til Beate på hvordan den her kan bygges. 
+	
 	private int appointments;
 	
 	public IncommingAppointmentsView() {
