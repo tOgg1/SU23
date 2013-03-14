@@ -1,4 +1,4 @@
-package cim.views;
+package cim.views.appointmentDialogs;
 
 import java.awt.Component;
 import java.awt.GridLayout;

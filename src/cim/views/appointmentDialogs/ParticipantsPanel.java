@@ -1,4 +1,4 @@
-package cim.views;
+package cim.views.appointmentDialogs;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
