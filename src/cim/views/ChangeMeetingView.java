@@ -28,7 +28,7 @@ public class ChangeMeetingView{
 	private static JTextField textField;
 	private static JTextField txtDd;
 	private static JTextField txtYyyy;
-	private static JTextField navn_Person;
+	private static JTextField txtSearch;
 	
 
 
@@ -236,80 +236,80 @@ public class ChangeMeetingView{
 		gbl_layeredPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0};
 		layeredPane.setLayout(gbl_layeredPane);
 		
-		JLabel NavnPaPersongrupper = new JLabel("Navn p\u00E5 person/grupper");
-		GridBagConstraints gbc_NavnPaPersongrupper = new GridBagConstraints();
-		gbc_NavnPaPersongrupper.anchor = GridBagConstraints.WEST;
-		gbc_NavnPaPersongrupper.insets = new Insets(0, 0, 5, 5);
-		gbc_NavnPaPersongrupper.gridx = 0;
-		gbc_NavnPaPersongrupper.gridy = 0;
-		layeredPane.add(NavnPaPersongrupper, gbc_NavnPaPersongrupper);
+		JLabel lblNameOfParticipants = new JLabel("Navn p\u00E5 person/grupper");
+		GridBagConstraints gbc_lblNameOfParticipants = new GridBagConstraints();
+		gbc_lblNameOfParticipants.anchor = GridBagConstraints.WEST;
+		gbc_lblNameOfParticipants.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNameOfParticipants.gridx = 0;
+		gbc_lblNameOfParticipants.gridy = 0;
+		layeredPane.add(lblNameOfParticipants, gbc_lblNameOfParticipants);
 		
-		JButton sok = new JButton("S\u00F8k");
-		GridBagConstraints gbc_sok = new GridBagConstraints();
-		gbc_sok.insets = new Insets(0, 0, 5, 5);
-		gbc_sok.gridx = 1;
-		gbc_sok.gridy = 0;
-		layeredPane.add(sok, gbc_sok);
+		JButton btnSearch = new JButton("S\u00F8k");
+		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
+		gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSearch.gridx = 1;
+		gbc_btnSearch.gridy = 0;
+		layeredPane.add(btnSearch, gbc_btnSearch);
 		
-		navn_Person = new JTextField();
-		GridBagConstraints gbc_navn_Person = new GridBagConstraints();
-		gbc_navn_Person.anchor = GridBagConstraints.WEST;
-		gbc_navn_Person.insets = new Insets(0, 0, 5, 5);
-		gbc_navn_Person.gridx = 0;
-		gbc_navn_Person.gridy = 1;
-		layeredPane.add(navn_Person, gbc_navn_Person);
-		navn_Person.setColumns(15);
+		txtSearch = new JTextField();
+		GridBagConstraints gbc_txtSearch = new GridBagConstraints();
+		gbc_txtSearch.anchor = GridBagConstraints.WEST;
+		gbc_txtSearch.insets = new Insets(0, 0, 5, 5);
+		gbc_txtSearch.gridx = 0;
+		gbc_txtSearch.gridy = 1;
+		layeredPane.add(txtSearch, gbc_txtSearch);
+		txtSearch.setColumns(15);
 		
-		JLabel Sketreff = new JLabel("S\u00F8ketreff");
-		GridBagConstraints gbc_Sketreff = new GridBagConstraints();
-		gbc_Sketreff.anchor = GridBagConstraints.WEST;
-		gbc_Sketreff.insets = new Insets(0, 0, 5, 5);
-		gbc_Sketreff.gridx = 0;
-		gbc_Sketreff.gridy = 3;
-		layeredPane.add(Sketreff, gbc_Sketreff);
+		JLabel lblSearchResult = new JLabel("S\u00F8ketreff");
+		GridBagConstraints gbc_lblSearchResult = new GridBagConstraints();
+		gbc_lblSearchResult.anchor = GridBagConstraints.WEST;
+		gbc_lblSearchResult.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSearchResult.gridx = 0;
+		gbc_lblSearchResult.gridy = 3;
+		layeredPane.add(lblSearchResult, gbc_lblSearchResult);
 		
-		JLabel Deltakere = new JLabel("Deltakere");
-		GridBagConstraints gbc_Deltakere = new GridBagConstraints();
-		gbc_Deltakere.insets = new Insets(0, 0, 5, 5);
-		gbc_Deltakere.gridx = 3;
-		gbc_Deltakere.gridy = 3;
-		layeredPane.add(Deltakere, gbc_Deltakere);
+		JLabel lblParticipants = new JLabel("Deltakere");
+		GridBagConstraints gbc_lblParticipants = new GridBagConstraints();
+		gbc_lblParticipants.insets = new Insets(0, 0, 5, 5);
+		gbc_lblParticipants.gridx = 3;
+		gbc_lblParticipants.gridy = 3;
+		layeredPane.add(lblParticipants, gbc_lblParticipants);
 		
-		JList treff = new JList();
-		treff.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_treff = new GridBagConstraints();
-		gbc_treff.gridheight = 4;
-		gbc_treff.insets = new Insets(0, 0, 0, 5);
-		gbc_treff.fill = GridBagConstraints.BOTH;
-		gbc_treff.gridx = 0;
-		gbc_treff.gridy = 4;
-		layeredPane.add(treff, gbc_treff);
+		JList listSearchResult = new JList();
+		listSearchResult.setBorder(new LineBorder(new Color(0, 0, 0)));
+		GridBagConstraints gbc_listSearchResult = new GridBagConstraints();
+		gbc_listSearchResult.gridheight = 4;
+		gbc_listSearchResult.insets = new Insets(0, 0, 0, 5);
+		gbc_listSearchResult.fill = GridBagConstraints.BOTH;
+		gbc_listSearchResult.gridx = 0;
+		gbc_listSearchResult.gridy = 4;
+		layeredPane.add(listSearchResult, gbc_listSearchResult);
 		
-		JList deltakere = new JList();
-		deltakere.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_deltakere = new GridBagConstraints();
-		gbc_deltakere.gridwidth = 3;
-		gbc_deltakere.gridheight = 4;
-		gbc_deltakere.fill = GridBagConstraints.BOTH;
-		gbc_deltakere.gridx = 3;
-		gbc_deltakere.gridy = 4;
-		layeredPane.add(deltakere, gbc_deltakere);
+		JList listParticipants = new JList();
+		listParticipants.setBorder(new LineBorder(new Color(0, 0, 0)));
+		GridBagConstraints gbc_listParticipants = new GridBagConstraints();
+		gbc_listParticipants.gridwidth = 3;
+		gbc_listParticipants.gridheight = 4;
+		gbc_listParticipants.fill = GridBagConstraints.BOTH;
+		gbc_listParticipants.gridx = 3;
+		gbc_listParticipants.gridy = 4;
+		layeredPane.add(listParticipants, gbc_listParticipants);
 		
-		JButton leggtil = new JButton("Legg til");
-		GridBagConstraints gbc_leggtil = new GridBagConstraints();
-		gbc_leggtil.gridwidth = 2;
-		gbc_leggtil.insets = new Insets(0, 0, 5, 5);
-		gbc_leggtil.gridx = 1;
-		gbc_leggtil.gridy = 5;
-		layeredPane.add(leggtil, gbc_leggtil);
+		JButton btnAddParticipant = new JButton("Legg til");
+		GridBagConstraints gbc_btnAddParticipant = new GridBagConstraints();
+		gbc_btnAddParticipant.gridwidth = 2;
+		gbc_btnAddParticipant.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAddParticipant.gridx = 1;
+		gbc_btnAddParticipant.gridy = 5;
+		layeredPane.add(btnAddParticipant, gbc_btnAddParticipant);
 		
-		JButton fjern = new JButton("  Fjern ");
-		GridBagConstraints gbc_fjern = new GridBagConstraints();
-		gbc_fjern.gridwidth = 2;
-		gbc_fjern.insets = new Insets(0, 0, 5, 5);
-		gbc_fjern.gridx = 1;
-		gbc_fjern.gridy = 6;
-		layeredPane.add(fjern, gbc_fjern);
+		JButton btnRemoveParticipant = new JButton("  Fjern ");
+		GridBagConstraints gbc_btnRemoveParticipant = new GridBagConstraints();
+		gbc_btnRemoveParticipant.gridwidth = 2;
+		gbc_btnRemoveParticipant.insets = new Insets(0, 0, 5, 5);
+		gbc_btnRemoveParticipant.gridx = 1;
+		gbc_btnRemoveParticipant.gridy = 6;
+		layeredPane.add(btnRemoveParticipant, gbc_btnRemoveParticipant);
 		
 		JCheckBox LeggTilVarsel = new JCheckBox("Legg til personlig varsel");
 		GridBagConstraints gbc_LeggTilVarsel = new GridBagConstraints();
