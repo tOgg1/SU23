@@ -154,12 +154,19 @@ public class DatabaseHandler implements DatabaseFetcherInterface {
 			return null;
 		}
 	}
-	
+	/**
+	 * Returns all calendars associated with the current account, the accounts personal calendar and the calendars from his groups
+	 * @param acc
+	 * @return
+	 */
 	public ArrayList<Calendar> getAllCalendarsToAccount(Account acc) {
 		// TODO: Tormod
 		return null;
 	}
-
+	/**
+	 * Returns all calendars in the system.
+	 * @return
+	 */
 	public ArrayList<Calendar> getAllCalendars() {
 		// TODO: Tormod, skriv denne metoden
 		return null;
