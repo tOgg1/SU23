@@ -17,9 +17,11 @@ public class Hawktest {
 		DatabaseHandler db = new DatabaseHandler();
 		Account a = db.getAccountByEmail("hakon@aamdal.com");
 		Calendar c = db.getCalendar(1);
-		Appointment app1 = new Appointment(Helper.getTime(10, 00), Helper.getTime(11, 00), info, date)
+		System.out.println(Helper.getTime(1,00));
+		System.out.println(Helper.getDate(2013, 3, 15));
+		/*Appointment app1 = new Appointment(Helper.getTime(10, 00), Helper.getTime(11, 00), "Hurr hurr", date);
 		System.out.println(c);
-		db.saveCalendar(c);
+		db.saveCalendar(c);*/
 		
 
 	}

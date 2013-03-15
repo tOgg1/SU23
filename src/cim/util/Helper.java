@@ -1,6 +1,9 @@
 package cim.util;
 
+import java.sql.Date;
 import java.sql.Time;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +33,19 @@ public class Helper
      */
     
     public static Time getTime(int hrs, int mins) {
-    	long seconds = hrs*3600 + mins*60;
-    	return new Time(seconds * 1000);
+    	Calendar c = getEmptyCalendar();
+    	c.set(Calendar.HOUR, hrs);
+    	c.set(Calendar.MINUTE, mins);
+    	return new Time(c.getTimeInMillis());
+    }
+    
+    public static Date getDate(int year, int month, int day) {
+    	Calendar c = getEmptyCalendar();
+    	c.set(year, month-1, day);
+    	return new Date(c.getTimeInMillis());
+    }
+    
+    private static Calendar getEmptyCalendar() {
+    	return new GregorianCalendar(0,0,0,0,0);
     }
 }
