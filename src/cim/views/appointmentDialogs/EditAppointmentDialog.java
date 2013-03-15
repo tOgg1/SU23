@@ -2,16 +2,22 @@ package cim.views.appointmentDialogs;
 
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.Dialog.ModalityType;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import cim.models.Account;
 import cim.models.Appointment;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.BorderLayout;
 
-public class EditAppointmentDialog extends JFrame{
+public class EditAppointmentDialog extends JDialog{
 	// Panels
 	private JPanel mainPanel;
 	private AppointmentDetailsPanel addDetailsPanel;
@@ -28,46 +34,95 @@ public class EditAppointmentDialog extends JFrame{
 	
 //	public EditAppointmentDialog(Account account, Appointment appointment){ //Bytt til denne når GUI er koblet mot resten
 	public EditAppointmentDialog(){
+		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 571);
+		setBounds(100, 100, 690, 713);
 		
 		mainPanel = new JPanel();
 		mainPanel.setAlignmentY(Component.TOP_ALIGNMENT);
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(mainPanel);
-		mainPanel.setLayout(new GridLayout(0, 1, 0, 0));
+		getContentPane().add(mainPanel, BorderLayout.NORTH);
 		
 //		if(account.equals(appointment.getOwner())){ //Bytt til denne når GUI er koblet mot resten
 		
 		if(true){ //Ninjatriks: endre denne til false når man vil jobbe (i Windowbuilder) med det som hentes i 'else'
-		
-		// Møteleder får endre på alt, og kan også avlyse hele shiten
+			GridBagLayout gbl_mainPanel = new GridBagLayout();
+			gbl_mainPanel.columnWidths = new int[] {400, 0, 0, 0, 0, 0, 0, 0, 30, 30};
+			gbl_mainPanel.rowHeights = new int[] {225, 30, 225, 30, 100, 30, 30};
+			gbl_mainPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+			gbl_mainPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+			mainPanel.setLayout(gbl_mainPanel);
 			
-			addDetailsPanel = new AppointmentDetailsPanel();
-			addDetailsPanel.setSize(470, 240);
-			mainPanel.add(addDetailsPanel);
+			// Møteleder får endre på alt, og kan også avlyse hele shiten
+				
+				addDetailsPanel = new AppointmentDetailsPanel();
+				addDetailsPanel.setSize(470, 240);
+				GridBagConstraints gbc_addDetailsPanel = new GridBagConstraints();
+				gbc_addDetailsPanel.gridwidth = 7;
+				gbc_addDetailsPanel.fill = GridBagConstraints.BOTH;
+				gbc_addDetailsPanel.insets = new Insets(0, 0, 5, 5);
+				gbc_addDetailsPanel.gridx = 0;
+				gbc_addDetailsPanel.gridy = 0;
+				mainPanel.add(addDetailsPanel, gbc_addDetailsPanel);
 			
 			chckbxAddParticipants = new JCheckBox("Legg til personer/grupper");
-			mainPanel.add(chckbxAddParticipants);
+			GridBagConstraints gbc_chckbxAddParticipants = new GridBagConstraints();
+			gbc_chckbxAddParticipants.fill = GridBagConstraints.BOTH;
+			gbc_chckbxAddParticipants.insets = new Insets(0, 0, 5, 5);
+			gbc_chckbxAddParticipants.gridx = 0;
+			gbc_chckbxAddParticipants.gridy = 1;
+			mainPanel.add(chckbxAddParticipants, gbc_chckbxAddParticipants);
 			
 			addParticipantsPanel = new ParticipantsPanel();
-			mainPanel.add(addParticipantsPanel);
+			GridBagConstraints gbc_addParticipantsPanel = new GridBagConstraints();
+			gbc_addParticipantsPanel.gridwidth = 7;
+			gbc_addParticipantsPanel.fill = GridBagConstraints.BOTH;
+			gbc_addParticipantsPanel.insets = new Insets(0, 0, 5, 5);
+			gbc_addParticipantsPanel.gridx = 0;
+			gbc_addParticipantsPanel.gridy = 2;
+			mainPanel.add(addParticipantsPanel, gbc_addParticipantsPanel);
 			
 			chckbxLeggTilPersonlig = new JCheckBox("Legg til personlig alarm");
-			mainPanel.add(chckbxLeggTilPersonlig);
+			GridBagConstraints gbc_chckbxLeggTilPersonlig = new GridBagConstraints();
+			gbc_chckbxLeggTilPersonlig.fill = GridBagConstraints.BOTH;
+			gbc_chckbxLeggTilPersonlig.insets = new Insets(0, 0, 5, 5);
+			gbc_chckbxLeggTilPersonlig.gridx = 0;
+			gbc_chckbxLeggTilPersonlig.gridy = 3;
+			mainPanel.add(chckbxLeggTilPersonlig, gbc_chckbxLeggTilPersonlig);
 			
 			addAlarmPanel = new AlarmPanel();
-			mainPanel.add(addAlarmPanel);
+			GridBagConstraints gbc_addAlarmPanel = new GridBagConstraints();
+			gbc_addAlarmPanel.gridwidth = 5;
+			gbc_addAlarmPanel.fill = GridBagConstraints.BOTH;
+			gbc_addAlarmPanel.insets = new Insets(0, 0, 5, 5);
+			gbc_addAlarmPanel.gridx = 0;
+			gbc_addAlarmPanel.gridy = 4;
+			mainPanel.add(addAlarmPanel, gbc_addAlarmPanel);
 			
-			btnCancelDialog = new JButton("Avbryt");
-			mainPanel.add(btnCancelDialog);
+			btnCancelAppointment = new JButton("   Avlys m\u00F8te   ");
+			GridBagConstraints gbc_btnCancelAppointment = new GridBagConstraints();
+			gbc_btnCancelAppointment.insets = new Insets(0, 0, 0, 5);
+			gbc_btnCancelAppointment.fill = GridBagConstraints.BOTH;
+			gbc_btnCancelAppointment.gridx = 1;
+			gbc_btnCancelAppointment.gridy = 6;
+			mainPanel.add(btnCancelAppointment, gbc_btnCancelAppointment);
 			
 			btnSave = new JButton("Lagre endringer");
-			mainPanel.add(btnSave);
+			GridBagConstraints gbc_btnSave = new GridBagConstraints();
+			gbc_btnSave.fill = GridBagConstraints.BOTH;
+			gbc_btnSave.insets = new Insets(0, 0, 0, 5);
+			gbc_btnSave.gridx = 2;
+			gbc_btnSave.gridy = 6;
+			mainPanel.add(btnSave, gbc_btnSave);
 			
-			btnCancelAppointment = new JButton("Avlys møte");
-			mainPanel.add(btnCancelAppointment);
+			btnCancelDialog = new JButton("      Avbryt      ");
+			GridBagConstraints gbc_btnCancelDialog = new GridBagConstraints();
+			gbc_btnCancelDialog.fill = GridBagConstraints.BOTH;
+			gbc_btnCancelDialog.insets = new Insets(0, 0, 0, 5);
+			gbc_btnCancelDialog.gridx = 3;
+			gbc_btnCancelDialog.gridy = 6;
+			mainPanel.add(btnCancelDialog, gbc_btnCancelDialog);
 		
 		}
 		else{ 
