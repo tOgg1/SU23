@@ -154,7 +154,7 @@ public class DatabaseHandler {
 
 		}
 		sql = 
-				"SELECT name, date, start, end , info, place, appointment_id " +
+				"SELECT appointment_id " +
 						"FROM appointment " +
 						"WHERE calendar_id = ";
 		sql += calendar_id;
@@ -163,12 +163,7 @@ public class DatabaseHandler {
 		c.setId(calendar_id);
 		try {
 			while(rs.next()){
-
-				Appointment a = new Appointment(rs.getTime("start"), 
-						rs.getTime("end"),
-						rs.getString("info"),
-						rs.getDate("date"));
-				c.addAppointment(a);
+				c.addAppointment(this.getAppointment(rs.getInt("appointment_id")));
 			}
 			return c;
 
@@ -657,7 +652,17 @@ public class DatabaseHandler {
 					MeetingResponse meeting = new MeetingResponse(getAccount(rs2.getInt("account_user_id")), rs2.getString("status"));
 					meetingResponses.add(meeting);
 				}
-				return m = new Meeting(rs.getString("info"), meetingResponses, getRoom(rs.getInt("meeting_room_id")), rs.getTime("start"), rs.getTime("end"), rs.getDate("date"));				
+				m = new Meeting(
+					rs.getString("name"),
+					rs.getDate("date"),
+					rs.getTime("start"),
+					rs.getTime("end"),
+					this.getAccount(rs.getInt("appointment_owner")),
+					meetingResponses
+				);
+				m.setInfo(rs.getString("info"));
+				m.setPlace(rs.getString("place"));
+				return m;				
 			}
 			return null;
 		} catch (CloakedIronManException |SQLException e) {
@@ -667,22 +672,27 @@ public class DatabaseHandler {
 
 
 	}
-	public Appointment fillAppointment(ResultSet rs)
+	private Appointment fillAppointment(ResultSet rs) throws CloakedIronManException
 	{
 		Appointment a;
 		try {
 			if(rs.next())
 			{
-				a = new Appointment(rs.getTime("start") , rs.getTime("end"), rs.getString("info"), rs.getDate("date"));
-				a.setId(rs.getInt("appointment_id"));
+				a = new Appointment(
+					rs.getString("name"),
+					rs.getDate("date"),
+					rs.getTime("start"),
+					rs.getTime("end"),
+					this.getAccount(rs.getInt("appointment_owner")) 
+				);
+				a.setInfo(rs.getString("info"));
+				a.setPlace(rs.getString("place"));
 				return a;
 			}
-
+			return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new CloakedIronManException("Could not fill appointment", e);
 		}
-		return null;
 	}
 	public Room getRoom(int meeting_room_id) throws SQLException
 	{
