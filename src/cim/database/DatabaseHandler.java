@@ -11,7 +11,7 @@ public class DatabaseHandler {
 	private static String url = cim.util.PersonalSettings.JDBC_URL;
 	private static String user = cim.util.PersonalSettings.MYSQL_USER;
 	private static String password = cim.util.PersonalSettings.MYSQL_PW;
-	private static Connection con;
+	private Connection con;
 
 
 
@@ -114,12 +114,16 @@ public class DatabaseHandler {
 	
 	public Calendar getCalendar2(int id) throws CloakedIronManException {
 		try {
+			
+			Calendar c;
+			
 			PreparedStatement st = this.con.prepareStatement("SELECT owner_attendable_id FROM calendar WHERE calendar_id=?");
 			ResultSet rs = st.executeQuery();
 			rs.close();
 			st.close();
 			if(rs.next()) {
 				int iAttendableID = rs.getInt("owner_attendable_id");
+				c = new Calendar(this.getAttendable(iAttendableID)));
 			}  else {
 				throw new CloakedIronManException("Calendar ID not found in database");
 			}
