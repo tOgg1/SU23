@@ -32,10 +32,10 @@ public class CalendarView extends JPanel {
 	 * Create the panel.
 	 */
 	
-	private final JFrame frame;
-	public CalendarView(JFrame frame) {
+	private final JFrame application;
+	public CalendarView(JFrame application) {
 		
-		this.frame = frame;
+		this.application = application;
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {30, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 30};
@@ -258,7 +258,7 @@ public class CalendarView extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.frame);
+			AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.application);
 			ad.setVisible(true);
 			Appointment a = ad.getAppointment();
 			if(a != null) {

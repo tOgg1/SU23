@@ -14,6 +14,16 @@ import cim.models.Appointment;
 
 import java.awt.Dialog.ModalityType;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 public class AddAppointmentDialog extends JDialog{
 
 	/**
@@ -31,44 +41,93 @@ public class AddAppointmentDialog extends JDialog{
 	private JCheckBox chckbxAddParticipants;
 	private JButton btnSave;
 	private JButton btnCancel;
-	
-	public AddAppointmentDialog(JFrame parent){
-		super(parent);
+	private Appointment appointment;
+
+
+	private final JFrame application;
+
+	public AddAppointmentDialog(JFrame application){
+		super(application);
 		setModalityType(ModalityType.DOCUMENT_MODAL);
+
+		this.application = application;
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 571);
-		
+
 		mainPanel = new JPanel();
 		mainPanel.setAlignmentY(Component.TOP_ALIGNMENT);
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		getContentPane().add(mainPanel);
 		mainPanel.setLayout(new GridLayout(0, 1, 0, 0));
-		
+
 		addDetailsPanel = new AppointmentDetailsPanel();
 		addDetailsPanel.setSize(470, 240);
 		mainPanel.add(addDetailsPanel);
-		
+
 		chckbxAddParticipants = new JCheckBox("Legg til personer/grupper");
+		chckbxAddParticipants.setOpaque(false);
+		chckbxAddParticipants.setToolTipText("Legg til personer/grupper");
+		chckbxAddParticipants.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(chckbxAddParticipants.isSelected())
+				{
+					System.out.println("checked");
+					addParticipantsPanel.setVisible(true);
+				}
+				else
+				{
+					System.out.println("not checked");
+					addParticipantsPanel.setVisible(false);
+				}
+			}
+		});
 		mainPanel.add(chckbxAddParticipants);
-		
+
+
 		addParticipantsPanel = new ParticipantsPanel();
+		addParticipantsPanel.setVisible(false);
 		mainPanel.add(addParticipantsPanel);
-		
+
 		chckbxLeggTilPersonlig = new JCheckBox("Legg til personlig alarm");
+		chckbxLeggTilPersonlig.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(chckbxLeggTilPersonlig.isSelected())
+				{
+					System.out.println("checked");
+					addAlarmPanel.setVisible(true);
+				}
+				else
+				{
+					System.out.println("not checked");
+					addAlarmPanel.setVisible(false);
+				}
+			}
+		});
 		mainPanel.add(chckbxLeggTilPersonlig);
-		
+
 		addAlarmPanel = new AlarmPanel();
+		addAlarmPanel.setVisible(false);
 		mainPanel.add(addAlarmPanel);
 		
+
 		btnCancel = new JButton("Avbryt");
 		mainPanel.add(btnCancel);
-		
+
 		btnSave = new JButton("Legg til i kalender");
+		btnSave.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+			
+			}
+		});
+
 		mainPanel.add(btnSave);
 	}
-	
+
 	public Appointment getAppointment() {
-		return null;
+		return this.appointment;
 	}
+
+
 }
