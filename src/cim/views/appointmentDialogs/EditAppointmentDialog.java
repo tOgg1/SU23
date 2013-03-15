@@ -37,7 +37,7 @@ public class EditAppointmentDialog extends JDialog{
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 690, 704);
+		setBounds(100, 100, 690, 713);
 		
 		mainPanel = new JPanel();
 		mainPanel.setAlignmentY(Component.TOP_ALIGNMENT);
