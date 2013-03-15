@@ -233,7 +233,7 @@ public class DatabaseHandler {
                 throw new CloakedIronManException("Account " + acc.getId() + "  is not registered as an attendable");
             }
             accCalendarId = rs.getInt("calendar_id");
-            calendars.add(getCalendar(accCalendarId));
+            calendars.add(getCalendar2(accCalendarId));
             rs.close();
             st.close();
             for(Group group : groups)
@@ -248,7 +248,7 @@ public class DatabaseHandler {
                 }
 
                 groupCalendarId = rs.getInt("calendar_id");
-                calendars.add(getCalendar(groupCalendarId));
+                calendars.add(getCalendar2(groupCalendarId));
                 st.close();
                 rs.close();
             }
@@ -292,7 +292,7 @@ public class DatabaseHandler {
         {
             while(rs.next())
             {
-                returnCalendars.add(getCalendar(rs.getInt("calendar_id")));
+                returnCalendars.add(getCalendar2(rs.getInt("calendar_id")));
             }
         }
         catch (SQLException e)
