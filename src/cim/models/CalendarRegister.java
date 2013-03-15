@@ -4,7 +4,6 @@ import cim.net.Client;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
-import com.sun.org.apache.xalan.internal.xsltc.dom.ArrayNodeListIterator;
 
 import java.util.ArrayList;
 
@@ -15,7 +14,6 @@ import java.util.ArrayList;
  * The functions flagged with "P.S ONLY CALL WHEN CHANGES OCCUR IN GUI!" are flagged as such
  * because they don't send updates to the GUI. Any external occuring update adding new objects must send this update to the GUI, and will therefore
  * be given another function.
- *
  */
 public class CalendarRegister
 {
@@ -45,7 +43,7 @@ public class CalendarRegister
             Calendar[] data = (Calendar[])res.getData();
             for(Calendar cal : data)
             {
-                calendars.add(cal);
+                this.registerCalendar(cal);
             }
         }
         catch(Exception e)
@@ -64,7 +62,7 @@ public class CalendarRegister
     {
         try
         {
-            calendars.add(cal);
+            this.registerCalendar(cal);
             Request req = new Request("SAVE_CALENDAR", cal);
             Response res = parent.request(req);
             return true;
@@ -87,7 +85,7 @@ public class CalendarRegister
         //TODO: Server support to add new group if this function is needed
         try
         {
-            groups.add(group);
+            this.registerGroup(group);
             Request req = new Request("SAVE_GROUP", group);
             Response res = parent.request(req);
             return true;
@@ -110,10 +108,11 @@ public class CalendarRegister
         //TODO: Save appointment to cal in this function?
         try
         {
-            appointments.add(app);
-            //cal.addAppointment(app);
+            this.registerAppointment(app);
+            //??cal.addAppointment(app);
             Request req = new Request("SAVE_CALENDAR", cal);
             Response res = parent.request(req);
+            return true;
         }
         catch(CloakedIronManException e)
         {
@@ -301,7 +300,7 @@ public class CalendarRegister
      */
     public ArrayList<Account> getAllAccounts()
     {
-        return accounts;
+        return this.accounts;
     }
 
     /**
@@ -310,7 +309,7 @@ public class CalendarRegister
      */
     public ArrayList<Appointment> getAllAppointments()
     {
-        return appointments;
+        return this.appointments;
     }
 
     /**
@@ -319,13 +318,17 @@ public class CalendarRegister
      */
     public ArrayList<Calendar> getAllCalendars()
     {
-        return calendars;
+        return this.calendars;
     }
 
     public ArrayList<Group> getAllGroups()
     {
-        return groups;
+        return this.groups;
     }
+
+    // All functions below should only be used on
+    // initialize() and when fetching new objects
+    // from server
 
     public void registerCalendar(Calendar calendar)
     {
