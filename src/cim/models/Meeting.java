@@ -12,10 +12,10 @@ public class Meeting extends Appointment
     private final static int STATUS_ACCEPTED = 1;
     private final static int STATUS_DECLINED = 2;
 
-	public Meeting(String info, ArrayList<MeetingResponse> response, Room room, Time startDate, Time endDate, Date date)
+	public Meeting(String name, Date date, Time start, Time end, Account owner, ArrayList<MeetingResponse> invitees)
 	{	
-		super(startDate, endDate, info, date);
-		this.invitees = response;		
+		super(name, date, start, end, owner);
+		this.invitees = invitees;		
 	}
 	
 	public String toString(){
