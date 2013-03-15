@@ -42,7 +42,7 @@ public class ApplicationWindow extends JFrame {
 	private final Client client;
 	
 	private ArrayList<Calendar> allCalendars;
-	
+	private ArrayList<Alarm> alarms;
 	private ArrayList<Calendar> myCalendars;
 	
 //	private static JTextField txtMandag;
