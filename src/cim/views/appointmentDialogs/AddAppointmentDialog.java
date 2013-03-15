@@ -32,8 +32,13 @@ public class AddAppointmentDialog extends JDialog{
 	private JButton btnSave;
 	private JButton btnCancel;
 	
-	public AddAppointmentDialog(JFrame parent){
-		super(parent);
+	private final JFrame application;
+	
+	public AddAppointmentDialog(JFrame application){
+		super(application);
+		
+		this.application = application;
+		
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

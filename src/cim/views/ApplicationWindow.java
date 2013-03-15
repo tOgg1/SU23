@@ -109,5 +109,9 @@ public class ApplicationWindow extends JFrame {
 		
 
 	}
+	
+	public Response request(Request req) throws CloakedIronManException {
+		return this.client.request(req);
+	}
 
 }
