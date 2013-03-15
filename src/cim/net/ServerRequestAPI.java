@@ -46,6 +46,9 @@ public class ServerRequestAPI {
 			} else if (method.equals("GET_ACCOUNT")) {
 				return get_account((int)args[0]);
 			}
+			else if (method.equals("GET_MEETINGRESPONSESS_TO_ACCOUNT")){
+				return get_all_meetingResponses_to_account((Account)args[0]);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -53,6 +56,10 @@ public class ServerRequestAPI {
 		return null;
 		
 	}
+	private Response get_all_meetingResponses_to_account(Account account) {
+		return new Response(this.db.getMeetingResponsesToAccount(account));
+	}
+
 	/**
 	 * Returns an account if the user is validated
 	 * @param email

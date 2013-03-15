@@ -862,6 +862,25 @@ public class DatabaseHandler {
 		throw new CloakedIronManException("Could not find attendable id");
 		
 	}
+	
+	public ArrayList<MeetingResponse> getMeetingResponsesToAccount(Account a){
+		PreparedStatement st;
+		try {
+			st = this.con.prepareStatement("SELECT * FROM meeting_response WHERE account_user_id = ?" );
+			st.setInt(1, a.getId());
+			ResultSet rs = st.executeQuery();
+			ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
+			while(rs.next()){
+				MeetingResponse m = new MeetingResponse(a, rs.getString("status"));
+				meetingResponses.add(m);
+			}
+			return meetingResponses;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}		
+	}
 
 
     
