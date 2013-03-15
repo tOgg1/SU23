@@ -27,6 +27,8 @@ import javax.swing.SwingConstants;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AddAppointmentDialog extends JDialog{
 
@@ -47,18 +49,18 @@ public class AddAppointmentDialog extends JDialog{
 	private JButton btnCancel;
 	private Appointment appointment;
 
-	
+
 	private final JFrame application;
-	
+
 	public AddAppointmentDialog(JFrame application){
 		super(application);
 		setModalityType(ModalityType.DOCUMENT_MODAL);
-		
+
 		this.application = application;
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 645, 716);
-		
+
 		mainPanel = new JPanel();
 		mainPanel.setAlignmentY(Component.TOP_ALIGNMENT);
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -69,16 +71,22 @@ public class AddAppointmentDialog extends JDialog{
 		gbl_mainPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_mainPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		mainPanel.setLayout(gbl_mainPanel);
-		
+
 		chckbxAddParticipants = new JCheckBox("Legg til personer/grupper");
 		chckbxAddParticipants.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				
-				
-				
+				if(chckbxAddParticipants.isSelected())
+				{
+					addParticipantsPanel.setVisible(true);
+				}
+				else
+				{
+					addParticipantsPanel.setVisible(false);
+				}
+
 			}
 		});
-		
+
 		addDetailsPanel = new AppointmentDetailsPanel();
 		addDetailsPanel.setSize(470, 240);
 		GridBagConstraints gbc_addDetailsPanel = new GridBagConstraints();
@@ -94,8 +102,8 @@ public class AddAppointmentDialog extends JDialog{
 		gbc_chckbxAddParticipants.gridx = 0;
 		gbc_chckbxAddParticipants.gridy = 1;
 		mainPanel.add(chckbxAddParticipants, gbc_chckbxAddParticipants);
-		
-		
+
+
 		addParticipantsPanel = new ParticipantsPanel();
 		GridBagConstraints gbc_addParticipantsPanel = new GridBagConstraints();
 		gbc_addParticipantsPanel.gridwidth = 5;
@@ -104,15 +112,29 @@ public class AddAppointmentDialog extends JDialog{
 		gbc_addParticipantsPanel.gridx = 0;
 		gbc_addParticipantsPanel.gridy = 2;
 		mainPanel.add(addParticipantsPanel, gbc_addParticipantsPanel);
-		
+		addParticipantsPanel.setVisible(false);
+
 		chckbxLeggTilPersonlig = new JCheckBox("Legg til personlig alarm");
+		chckbxLeggTilPersonlig.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if(chckbxLeggTilPersonlig.isSelected())
+				{
+					addAlarmPanel.setVisible(true);
+				}
+				else
+				{
+					addAlarmPanel.setVisible(false);
+				}
+			}
+		});
+
 		GridBagConstraints gbc_chckbxLeggTilPersonlig = new GridBagConstraints();
 		gbc_chckbxLeggTilPersonlig.fill = GridBagConstraints.BOTH;
 		gbc_chckbxLeggTilPersonlig.insets = new Insets(0, 0, 5, 5);
 		gbc_chckbxLeggTilPersonlig.gridx = 0;
 		gbc_chckbxLeggTilPersonlig.gridy = 3;
 		mainPanel.add(chckbxLeggTilPersonlig, gbc_chckbxLeggTilPersonlig);
-		
+
 		addAlarmPanel = new AlarmPanel();
 		GridBagConstraints gbc_addAlarmPanel = new GridBagConstraints();
 		gbc_addAlarmPanel.gridwidth = 5;
@@ -121,17 +143,34 @@ public class AddAppointmentDialog extends JDialog{
 		gbc_addAlarmPanel.gridx = 0;
 		gbc_addAlarmPanel.gridy = 4;
 		mainPanel.add(addAlarmPanel, gbc_addAlarmPanel);
-		
+		addAlarmPanel.setVisible(false);
+
 		btnSave = new JButton("Legg til i kalender");
-		
+		btnSave.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				AppointmentDetailsPanel appD = new AppointmentDetailsPanel();
+				int i = appD.getDays();
+				System.out.println(i);
+			
+			}
+		});
+
+
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
 		gbc_btnSave.insets = new Insets(0, 0, 0, 5);
 		gbc_btnSave.fill = GridBagConstraints.VERTICAL;
 		gbc_btnSave.gridx = 2;
 		gbc_btnSave.gridy = 6;
 		mainPanel.add(btnSave, gbc_btnSave);
-		
+
 		btnCancel = new JButton("      Avbryt      ");
+		btnCancel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				disposeFrame();
+			}
+		});
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.insets = new Insets(0, 0, 0, 5);
 		gbc_btnCancel.fill = GridBagConstraints.VERTICAL;
@@ -139,10 +178,13 @@ public class AddAppointmentDialog extends JDialog{
 		gbc_btnCancel.gridy = 6;
 		mainPanel.add(btnCancel, gbc_btnCancel);
 	}
-	
+
 	public Appointment getAppointment() {
 		return this.appointment;
 	}
-	
-	
+	public void disposeFrame()
+	{
+		this.dispose();
+	}
+
 }

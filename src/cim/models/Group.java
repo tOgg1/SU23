@@ -27,6 +27,11 @@ public class Group extends CalendarObject implements Attendable, Serializable
 			this.members.remove(member);
 		}
 	}
+
+    public boolean isMember(Attendable att)
+    {
+        return members.contains(att);
+    }
 	
 	public void receiveInvite(Meeting meeting) {
 	

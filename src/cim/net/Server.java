@@ -1,7 +1,12 @@
 package cim.net;
 
+import cim.net.packet.Event;
+import cim.net.packet.Request;
+import cim.net.packet.Response;
+import cim.util.CloakedIronManException;
+import cim.util.Log;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,12 +15,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.UUID;
 import java.util.Vector;
-
-import cim.net.packet.Event;
-import cim.net.packet.Request;
-import cim.net.packet.Response;
-import cim.util.CloakedIronManException;
-import cim.util.Log;
 
 public class Server {
 	
@@ -80,7 +79,7 @@ public class Server {
 					} catch (IOException e) {
 						Log.e(tag, "Connection event accept error");
 					}
-					
+
 				}
 			}
 		};
