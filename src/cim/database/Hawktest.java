@@ -17,7 +17,7 @@ public class Hawktest {
 	public static void main(String[] args) throws CloakedIronManException {
 		DatabaseHandler db = new DatabaseHandler();
 		Account a = db.getAccountByEmail("hakon@aamdal.com");
-		System.out.println(db.getAllCalendars());
+		System.out.println(db.getAllCalendarsToAccount(a));
 	}
 
 }

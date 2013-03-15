@@ -239,6 +239,7 @@ public class DatabaseHandler {
             for(Group group : groups)
             {
                 st = this.con.prepareStatement("SELECT calendar_id FROM calendar where owner_attendable_id = ?");
+                System.out.println(this.getAttendableId(group));
                 st.setInt(1, getAttendableId(group));
                 rs = st.executeQuery();
 
@@ -851,7 +852,7 @@ public class DatabaseHandler {
 			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE user_id=?");
 		} else{
 			//Its a group
-			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE gruop_id=?");
+			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE group_id=?");
 		}
 		st.setInt(1, a.getId());
 		ResultSet rs = st.executeQuery();
