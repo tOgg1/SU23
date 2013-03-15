@@ -1,19 +1,5 @@
 package cim.net;
 
-import java.io.File;
-
-//import cim.models.CalendarRegister;
-import cim.util.Settings;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.SocketException;
-import java.sql.SQLException;
-import java.util.Scanner;
-
 import cim.database.DatabaseHandler;
 import cim.models.Account;
 import cim.net.packet.Event;
@@ -22,8 +8,17 @@ import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
 import cim.util.PersonalSettings;
+import cim.util.Settings;
 import cim.views.ApplicationWindow;
-import cim.views.AuthenticateView;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.SocketException;
+
+//import cim.models.CalendarRegister;
 
 public class Client {
 	private Socket eventSocket;
