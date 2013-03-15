@@ -8,11 +8,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import cim.models.Appointment;
 import cim.views.appointmentDialogs.AddAppointmentDialog;
@@ -29,7 +31,11 @@ public class CalendarView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CalendarView() {
+	
+	private final JFrame frame;
+	public CalendarView(JFrame frame) {
+		
+		this.frame = frame;
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {30, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 30};
@@ -252,7 +258,7 @@ public class CalendarView extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			AddAppointmentDialog ad = new AddAppointmentDialog();
+			AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.frame);
 			ad.setVisible(true);
 			Appointment a = ad.getAppointment();
 			if(a != null) {

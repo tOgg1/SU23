@@ -16,6 +16,10 @@ import java.awt.Dialog.ModalityType;
 
 public class AddAppointmentDialog extends JDialog{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7800782603404937292L;
 	// Panels
 	private JPanel mainPanel;
 	private AppointmentDetailsPanel addDetailsPanel;
@@ -28,7 +32,8 @@ public class AddAppointmentDialog extends JDialog{
 	private JButton btnSave;
 	private JButton btnCancel;
 	
-	public AddAppointmentDialog(){
+	public AddAppointmentDialog(JFrame parent){
+		super(parent);
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
