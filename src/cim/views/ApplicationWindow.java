@@ -45,7 +45,7 @@ public class ApplicationWindow extends JFrame {
 	private final Client client;
 	
 	private ArrayList<Calendar> allCalendars;
-	private ArrayList<Alert> alarms;
+	private ArrayList<Alert> alerts;
 	private ArrayList<Calendar> myCalendars;
 	
 //	private static JTextField txtMandag;
