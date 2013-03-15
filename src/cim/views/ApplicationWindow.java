@@ -37,6 +37,7 @@ public class ApplicationWindow extends JFrame {
 	
 	private JTabbedPane tabbedPane;
 	private CalendarView calendarView;
+//	private Inc
 	
 	private final Account account;
 	private final Client client;

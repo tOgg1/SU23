@@ -75,7 +75,7 @@ public class AddAppointmentDialog extends JDialog{
 		btnSave = new JButton("Legg til i kalender");
 		
 		mainPanel.add(btnSave);
-		pack();
+//		pack();
 	}
 	
 	public Appointment getAppointment() {
