@@ -1,31 +1,15 @@
 package cim.views;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-
-import cim.models.*;
-import cim.net.packet.Response;
-
 import cim.models.Account;
+import cim.models.Calendar;
 import cim.net.Client;
 import cim.net.packet.Request;
+import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
 
-import javax.swing.JTabbedPane;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class ApplicationWindow extends JFrame {
 
@@ -106,8 +90,5 @@ public class ApplicationWindow extends JFrame {
 		
 		this.setResizable(false);
 		this.pack();
-		
-
 	}
-
 }
