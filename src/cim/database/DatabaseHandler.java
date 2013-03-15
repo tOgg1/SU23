@@ -881,7 +881,45 @@ public class DatabaseHandler {
 			return null;
 		}		
 	}
-
+	
+	public ArrayList<Alert> getAllUnseenAlertsToAccount(Account a){
+		PreparedStatement st;
+		try{
+			st = this.con.prepareStatement("SELECT * FROM alarm WHERE user_id = ? AND is_seen = 0");
+			st.setInt(1, a.getId());
+			ResultSet rs = st.executeQuery();
+			ArrayList<Alert> alerts = new ArrayList<Alert>();
+			while(rs.next()){
+				Alert alert = new Alert(rs.getDate("when"));
+				alert.setId(rs.getInt("alarm_id"));
+				alerts.add(alert);
+				
+			}
+			return alerts;
+		}catch(SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public boolean seenAlert(Alert a){
+		PreparedStatement st;
+		try{
+			st = this.con.prepareStatement("INSERT INTO cim.group " +
+					"(is_seen)" +
+					"VALUES (?) WHERE alarm_id = ? ");
+			st.setBoolean(1, true);
+			st.setInt(2, a.getId());
+			st.executeQuery();
+			return true;
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+			return false;
+		}
+		
+		
+	}
 
     
 

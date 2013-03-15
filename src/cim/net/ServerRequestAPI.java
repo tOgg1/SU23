@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import cim.database.DatabaseHandler;
 import cim.models.Account;
+import cim.models.Alert;
 import cim.models.Calendar;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
@@ -50,12 +51,23 @@ public class ServerRequestAPI {
 				return get_all_meetingResponses_to_account((Account)args[0]);
 			}
 			
+			else if (method.equals("GET_ALL_UNSEEN_ALERTS_TO_ACCOUNT")){
+				return get_all_unseen_alerts_to_account((Account) args[0]);
+			}
+			else if (method.equals("SEEN_ALERT")){
+				return seen_alert((Alert) args[0]);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 		
 	}
+	private Response seen_alert(Alert alert) {
+		return new Response(this.db.seenAlert(alert));
+	}
+
 	private Response get_all_meetingResponses_to_account(Account account) {
 		return new Response(this.db.getMeetingResponsesToAccount(account));
 	}
@@ -99,6 +111,9 @@ public class ServerRequestAPI {
 		return new Response(this.db.getAccount(id));
 	}
 	
+	private Response get_all_unseen_alerts_to_account(Account acc) throws CloakedIronManException{
+		return new Response(this.db.getAllUnseenAlertsToAccount(acc));
+	}
 	
 	
 }
