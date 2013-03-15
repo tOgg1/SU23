@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Calendar extends CalendarObject
 {
-	private Account owner;
+	private Attendable owner;
 	private ArrayList<Appointment> appointments;
 	private ArrayList<Attendable> hasAccess;
 	
-	public Calendar(Account owner)
+	public Calendar(Attendable owner)
 	{
 		super();
 		this.appointments = new ArrayList<Appointment>();
@@ -30,15 +30,18 @@ public class Calendar extends CalendarObject
 		return l;
 	}
 	
+	public String toString() {
+		return "Calendar (" + this.getId() +") (" + this.owner.getName() + ")";
+	}
+	
 	public Attendable getOwner()
 	{
 		return this.owner;
 	}
 	public void setOwner(Attendable owner)
 	{
-		Account oldValue = this.owner;
-		this.owner = (Account)owner;
-		pcs.firePropertyChange("owner", oldValue, this.owner);
+		this.pcs.firePropertyChange("owner", this.owner, owner);
+		this.owner = owner;
 
 	}
 	

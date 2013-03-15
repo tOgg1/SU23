@@ -90,7 +90,7 @@ public class ApplicationWindow extends JFrame {
 		tabbedPane.setVisible(true);
 		this.setContentPane(tabbedPane);
 		
-		calendarView = new CalendarView();
+		calendarView = new CalendarView(this);
 		tabbedPane.addTab("Kalender", null, calendarView, null);
 		
 		Response response = client.request(new Request("GET_ALL_CALENDARS"));
@@ -108,6 +108,10 @@ public class ApplicationWindow extends JFrame {
 		this.pack();
 		
 
+	}
+	
+	public Response request(Request req) throws CloakedIronManException {
+		return this.client.request(req);
 	}
 
 }

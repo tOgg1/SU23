@@ -1,7 +1,7 @@
 *.class
 .metadata
 serverlog.txt
-src/util/PersonalSettings.java
+src/cim/util/PersonalSettings.java
 .idea/*
 .idea/contents/*
 .idea/scopes/*

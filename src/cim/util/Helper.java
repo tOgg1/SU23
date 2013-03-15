@@ -1,5 +1,12 @@
 package cim.util;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Mayacat
@@ -26,4 +33,35 @@ public class Helper
      * @param str
      * @return
      */
+    
+    public static Time getTime(int hrs, int mins) {
+    	Calendar c = getEmptyCalendar();
+    	c.set(Calendar.HOUR, hrs);
+    	c.set(Calendar.MINUTE, mins);
+    	return new Time(c.getTimeInMillis());
+    }
+    
+    public static Date getDate(int year, int month, int day) {
+    	Calendar c = getEmptyCalendar();
+    	c.set(year, month-1, day);
+    	return new Date(c.getTimeInMillis());
+    }
+    
+    public static String join(Collection<?> s, String delimiter) {
+        StringBuilder builder = new StringBuilder();
+        Iterator iter = s.iterator();
+        while (iter.hasNext()) {
+            builder.append(iter.next());
+            if (!iter.hasNext()) {
+              break;                  
+            }
+            builder.append(delimiter);
+        }
+        return builder.toString();
+    }
+    
+    private static Calendar getEmptyCalendar() {
+    	return new GregorianCalendar(0,0,0,0,0);
+    }
+    
 }
