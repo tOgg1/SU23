@@ -32,7 +32,9 @@ public class Appointment extends CalendarObject
 		this.owner = owner;
 	}
 
-
+	public String toString() {
+		return "Appointment: " + this.name;
+	}
 
 	public String getName() {
 		return name;

@@ -84,8 +84,8 @@ public class ServerRequestAPI {
 	}
 	
 	private Response save_calendar(Calendar c) throws CloakedIronManException {
-		int iID = this.db.saveCalendar(c);
-		return new Response(iID);
+		Calendar c2 = this.db.saveCalendar(c);
+		return new Response(c2);
 	}
 	
 	private Response get_account(int id) throws CloakedIronManException {

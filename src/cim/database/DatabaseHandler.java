@@ -2,6 +2,7 @@ package cim.database;
 
 import cim.models.*;
 import cim.util.CloakedIronManException;
+import cim.util.Helper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -137,7 +138,7 @@ public class DatabaseHandler {
 			st.setInt(1, c.getId());
 			rs = st.executeQuery();
 			while(rs.next()) {
-				c.addAppointment(this.getAppointment(rs.getInt("appointment_id")));
+				c.addAppointment(this.getAppointment2(rs.getInt("appointment_id")));
 			}
 			
 			return c;
@@ -313,7 +314,7 @@ public class DatabaseHandler {
 	 * @return The new id.
 	 * @throws CloakedIronManException
 	 */
-	public int saveCalendar(Calendar c) throws CloakedIronManException {
+	public Calendar saveCalendar(Calendar c) throws CloakedIronManException {
 		try {
 			if(c.getId() == -1) {
 				c.setId(this.getNextAutoIncrease("calendar", "calendar_id"));
@@ -334,17 +335,21 @@ public class DatabaseHandler {
 			st.setInt(2, iAttendableId);
 			st.setInt(3, iAttendableId);
 			st.executeUpdate();
+			st.close();
 			
 			// Delete all appointments not in the calendars list
+			
 			ArrayList<Integer> ids = c.getAllAppointmentIds();
-			String[] str = new String[ids.size()];
-			for(int i = 0;i<ids.size();i++) {
-				str[i] = ids.get(i).toString();
+			String joinedString = Helper.join(ids, ",");
+			st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id NOT IN (" + joinedString + ")");
+			st.executeUpdate();
+			
+			
+			for(Appointment a : c.getAppointments()) {
+				this.saveAppointment(a, c);
 			}
-			System.out.println(str);
 			
-			
-			return c.getId();
+			return c;
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
@@ -413,7 +418,7 @@ public class DatabaseHandler {
 			
 			// If meeting
 			if(a instanceof Meeting) {
-				st = this.con.prepareStatement("INSERT INTO meeting (appointment_id) VALUES (?)");
+				st = this.con.prepareStatement("INSERT IGNORE INTO meeting (appointment_id) VALUES (?)");
 				st.setInt(1, a.getId());
 				st.execute();
 				st.close();
@@ -480,6 +485,27 @@ public class DatabaseHandler {
 			throw new CloakedIronManException("Unable to process query.", e);
 		}
 		
+	}
+	
+	private Appointment getAppointment2(int id) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM appointment LEFT JOIN meeting ON appointment.appointment_id=meeting.appointment_id WHERE appointment.appointment_id=?");
+			st.setInt(1,id);
+			ResultSet rs = st.executeQuery();
+			if (!rs.next()) {
+				throw new CloakedIronManException("Could not find appointment.");
+			}
+			if(rs.getObject("meeting.appointment_id")== null) {
+				// It's not a meeting
+				return fillAppointment2(rs);
+			} else {
+				return fillMeeting2(rs);
+			}
+			
+			
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not get appointment.", e);
+		}
 	}
 
 	public Appointment getAppointment(int appointment_id) throws CloakedIronManException
@@ -676,6 +702,7 @@ public class DatabaseHandler {
 					rs.getTime("start"),
 					rs.getTime("end"),
 					this.getAccount(rs.getInt("appointment_owner")),
+					rs.getBoolean("is_cancelled"),
 					meetingResponses
 				);
 				m.setInfo(rs.getString("info"));
@@ -690,6 +717,32 @@ public class DatabaseHandler {
 
 
 	}
+	
+	/**
+	 * ResultSet should be a joined query of appintment and meeting. RS pointer should be at the correct position.
+	 * @param rs
+	 * @return
+	 * @throws CloakedIronManException
+	 */
+	private Meeting fillMeeting2(ResultSet rs) throws CloakedIronManException {
+		try {
+			Meeting m = new Meeting(
+				rs.getString("name"),
+				rs.getDate("date"),
+				rs.getTime("start"),
+				rs.getTime("end"),
+				this.getAccount(rs.getInt("appointment_owner")),
+				rs.getBoolean("is_cancelled")
+			);
+			m.setId(rs.getInt("appointment_id"));
+			m.setInfo(rs.getString("info"));
+			m.setPlace(rs.getString("place"));
+			return m;
+		} catch (CloakedIronManException |SQLException e) {
+			throw new CloakedIronManException("Could not fill meeting.", e);
+		}
+	}
+	
 	private Appointment fillAppointment(ResultSet rs) throws CloakedIronManException
 	{
 		Appointment a;
@@ -708,6 +761,30 @@ public class DatabaseHandler {
 				return a;
 			}
 			return null;
+		} catch (SQLException e) {
+			throw new CloakedIronManException("Could not fill appointment", e);
+		}
+	}
+	/**
+	 * Fills an appointment with data. Should be a joined query of appointment and meeting.
+	 * RS pointer should be at the correct position
+	 * @param rs
+	 * @return
+	 * @throws CloakedIronManException
+	 */
+	private Appointment fillAppointment2(ResultSet rs) throws CloakedIronManException {
+		try {
+			Appointment a = new Appointment(
+				rs.getString("name"),
+				rs.getDate("date"),
+				rs.getTime("start"),
+				rs.getTime("end"),
+				this.getAccount(rs.getInt("appointment_owner"))
+			);
+			a.setId(rs.getInt("appointment_id"));
+			a.setInfo(rs.getString("info"));
+			a.setPlace(rs.getString("place"));
+			return a;
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not fill appointment", e);
 		}

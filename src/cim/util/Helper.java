@@ -3,7 +3,9 @@ package cim.util;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,7 +47,21 @@ public class Helper
     	return new Date(c.getTimeInMillis());
     }
     
+    public static String join(Collection<?> s, String delimiter) {
+        StringBuilder builder = new StringBuilder();
+        Iterator iter = s.iterator();
+        while (iter.hasNext()) {
+            builder.append(iter.next());
+            if (!iter.hasNext()) {
+              break;                  
+            }
+            builder.append(delimiter);
+        }
+        return builder.toString();
+    }
+    
     private static Calendar getEmptyCalendar() {
     	return new GregorianCalendar(0,0,0,0,0);
     }
+    
 }
