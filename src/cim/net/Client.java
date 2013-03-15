@@ -2,6 +2,7 @@ package cim.net;
 
 import cim.database.DatabaseHandler;
 import cim.models.Account;
+import cim.models.CalendarRegister;
 import cim.net.packet.Event;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
@@ -21,6 +22,8 @@ import java.net.SocketException;
 //import cim.models.CalendarRegister;
 
 public class Client {
+    private static CalendarRegister register;
+
 	private Socket eventSocket;
 	private Socket requestSocket;
 
@@ -67,7 +70,10 @@ public class Client {
 			throw new CloakedIronManException("Streams could not be created.", e);
 			
 		}
-		
+
+        //Creating register
+        register = new CalendarRegister(this);
+
 		// Creating authenticator instance
 		this.evt = new ClientEventHandler();
 		
@@ -79,8 +85,6 @@ public class Client {
 		// Creating server event listener
 		EventListenerThread e = new EventListenerThread();
 		e.start();
-		
-		
 		
 		// Spawning authenticate window
 		/*AuthenticateView auth = new AuthenticateView(this);
@@ -119,6 +123,9 @@ public class Client {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}*/
+
+        //Starting up register
+        register.initialize();
 	}
 	
 	public Response request(Request req) throws CloakedIronManException {
