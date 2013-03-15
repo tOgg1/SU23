@@ -21,17 +21,12 @@ import javax.swing.event.ChangeEvent;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-<<<<<<< HEAD
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.BorderLayout;
-=======
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
->>>>>>> b156f0d204dc5e831d51a0532ae1f30b4dc5d164
 
 public class AddAppointmentDialog extends JDialog{
 
@@ -52,13 +47,13 @@ public class AddAppointmentDialog extends JDialog{
 	private JButton btnCancel;
 	private Appointment appointment;
 
-
+	
 	private final JFrame application;
-
+	
 	public AddAppointmentDialog(JFrame application){
 		super(application);
 		setModalityType(ModalityType.DOCUMENT_MODAL);
-
+		
 		this.application = application;
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -74,7 +69,6 @@ public class AddAppointmentDialog extends JDialog{
 		gbl_mainPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_mainPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		mainPanel.setLayout(gbl_mainPanel);
-		
 		setBounds(100, 100, 800, 571);
 
 		mainPanel = new JPanel();
@@ -87,21 +81,13 @@ public class AddAppointmentDialog extends JDialog{
 		addDetailsPanel.setSize(470, 240);
 		mainPanel.add(addDetailsPanel);
 
+
 		chckbxAddParticipants = new JCheckBox("Legg til personer/grupper");
-		chckbxAddParticipants.setOpaque(false);
-		chckbxAddParticipants.setToolTipText("Legg til personer/grupper");
-		chckbxAddParticipants.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(chckbxAddParticipants.isSelected())
-				{
-					System.out.println("checked");
-					addParticipantsPanel.setVisible(true);
-				}
-				else
-				{
-					System.out.println("not checked");
-					addParticipantsPanel.setVisible(false);
-				}
+		chckbxAddParticipants.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				
+				
+				
 			}
 		});
 		
@@ -147,6 +133,7 @@ public class AddAppointmentDialog extends JDialog{
 		gbc_addAlarmPanel.gridx = 0;
 		gbc_addAlarmPanel.gridy = 4;
 		mainPanel.add(addAlarmPanel, gbc_addAlarmPanel);
+
 		mainPanel.add(chckbxAddParticipants);
 
 
@@ -182,10 +169,8 @@ public class AddAppointmentDialog extends JDialog{
 				disposeFrame();
 			}
 		});
+
 		
-		mainPanel.add(btnCancel);
-
-
 		btnSave = new JButton("Legg til i kalender");
 		
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
@@ -202,6 +187,7 @@ public class AddAppointmentDialog extends JDialog{
 		gbc_btnCancel.gridx = 3;
 		gbc_btnCancel.gridy = 6;
 		mainPanel.add(btnCancel, gbc_btnCancel);
+
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -211,14 +197,12 @@ public class AddAppointmentDialog extends JDialog{
 
 		mainPanel.add(btnSave);
 //		pack();
-	}
 
+	}
+	
 	public Appointment getAppointment() {
 		return this.appointment;
 	}
-	public void disposeFrame()
-	{
-		this.dispose();
-	}
+	
 	
 }
