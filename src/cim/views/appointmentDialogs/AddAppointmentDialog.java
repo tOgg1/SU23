@@ -55,5 +55,6 @@ public class AddAppointmentDialog extends JFrame{
 		
 		btnSave = new JButton("Legg til i kalender");
 		mainPanel.add(btnSave);
+		pack();
 	}
 }
