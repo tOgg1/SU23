@@ -13,10 +13,14 @@ import javax.swing.JButton;
 import cim.models.Appointment;
 
 import java.awt.Dialog.ModalityType;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AddAppointmentDialog extends JDialog{
 
@@ -36,10 +40,15 @@ public class AddAppointmentDialog extends JDialog{
 	private JButton btnSave;
 	private JButton btnCancel;
 	private Appointment appointment;
+
 	
-	public AddAppointmentDialog(JFrame parent){
-		super(parent);
+	private final JFrame application;
+	
+	public AddAppointmentDialog(JFrame application){
+		super(application);
 		setModalityType(ModalityType.DOCUMENT_MODAL);
+		
+		this.application = application;
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 571);
@@ -78,6 +87,7 @@ public class AddAppointmentDialog extends JDialog{
 		mainPanel.add(btnCancel);
 		
 		btnSave = new JButton("Legg til i kalender");
+		
 		mainPanel.add(btnSave);
 	}
 	
