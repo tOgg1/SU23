@@ -13,6 +13,10 @@ import javax.swing.JButton;
 import cim.models.Appointment;
 
 import java.awt.Dialog.ModalityType;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class AddAppointmentDialog extends JDialog{
 
@@ -31,6 +35,7 @@ public class AddAppointmentDialog extends JDialog{
 	private JCheckBox chckbxAddParticipants;
 	private JButton btnSave;
 	private JButton btnCancel;
+	private Appointment appointment;
 	
 	public AddAppointmentDialog(JFrame parent){
 		super(parent);
@@ -50,7 +55,15 @@ public class AddAppointmentDialog extends JDialog{
 		mainPanel.add(addDetailsPanel);
 		
 		chckbxAddParticipants = new JCheckBox("Legg til personer/grupper");
+		chckbxAddParticipants.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				
+				
+				
+			}
+		});
 		mainPanel.add(chckbxAddParticipants);
+		
 		
 		addParticipantsPanel = new ParticipantsPanel();
 		mainPanel.add(addParticipantsPanel);
@@ -69,6 +82,8 @@ public class AddAppointmentDialog extends JDialog{
 	}
 	
 	public Appointment getAppointment() {
-		return null;
+		return this.appointment;
 	}
+	
+	
 }
