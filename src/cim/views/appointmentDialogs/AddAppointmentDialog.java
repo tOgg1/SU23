@@ -109,16 +109,23 @@ public class AddAppointmentDialog extends JDialog{
 		addAlarmPanel = new AlarmPanel();
 		addAlarmPanel.setVisible(false);
 		mainPanel.add(addAlarmPanel);
-		
+
 
 		btnCancel = new JButton("Avbryt");
+		btnCancel.addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent arg0) {
+				disposeFrame();
+			}
+		});
+		
 		mainPanel.add(btnCancel);
+
 
 		btnSave = new JButton("Legg til i kalender");
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-			
+
 			}
 		});
 
@@ -128,6 +135,9 @@ public class AddAppointmentDialog extends JDialog{
 	public Appointment getAppointment() {
 		return this.appointment;
 	}
-
-
+	public void disposeFrame()
+	{
+		this.dispose();
+	}
+	
 }
