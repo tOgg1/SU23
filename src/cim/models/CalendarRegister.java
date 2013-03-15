@@ -4,16 +4,27 @@ import cim.net.Client;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
+import com.sun.org.apache.xalan.internal.xsltc.dom.ArrayNodeListIterator;
 
 import java.util.ArrayList;
 
+/**
+ * A register containing all information currently in use by the client.
+ * Contains a lot of functions for storing and retreiving data. This class also takes cares
+ * of relaying information between a client and gui.
+ * The functions flagged with "P.S ONLY CALL WHEN CHANGES OCCUR IN GUI!" are flagged as such
+ * because they don't send updates to the GUI. Any external occuring update adding new objects must send this update to the GUI, and will therefore
+ * be given another function.
+ *
+ */
 public class CalendarRegister
 {
-
 	ArrayList<Calendar> calendars;
     ArrayList<Group> groups;
     ArrayList<Appointment> appointments;
     ArrayList<Account> accounts;
+    // Trenger vi denne her?
+    ArrayList<Room> rooms;
     Client parent;
 
     public CalendarRegister(Client parent)
@@ -43,7 +54,13 @@ public class CalendarRegister
         }
     }
 
-    public boolean addFromGUICalendar(Calendar cal)
+    /**
+     * Adds a calendar to the register and sends it to the server.
+     * P.S ONLY CALL WHEN CHANGES OCCUR IN GUI!
+     * @param cal
+     * @return
+     */
+    public boolean addCalendarFromGUI(Calendar cal)
     {
         try
         {
@@ -58,10 +75,16 @@ public class CalendarRegister
         }
     }
 
-
+    /**
+     * Adds a group to the register and sends it to the server.
+     * P.S ONLY CALL WHEN CHANGES OCCUR IN GUI! I AM SUPER SERIAL
+     * @param group
+     * @return
+     */
     // Is this needed?
-    public boolean addFromGUIGroup(Group group)
+    public boolean addGroupFromGUI(Group group)
     {
+        //TODO: Server support to add new group if this function is needed
         try
         {
             groups.add(group);
@@ -75,9 +98,37 @@ public class CalendarRegister
         }
     }
 
+    /**
+     * Adds an appointment to the register and send the parent-calendar update to the server
+     * P.S ONLY CALL WHEN CHANGES OCCUR IN GUI!
+     * @param app
+     * @param cal
+     * @return
+     */
+    public boolean addAppointmentFromGUI(Appointment app, Calendar cal)
+    {
+        //TODO: Save appointment to cal in this function?
+        try
+        {
+            appointments.add(app);
+            //cal.addAppointment(app);
+            Request req = new Request("SAVE_CALENDAR", cal);
+            Response res = parent.request(req);
+        }
+        catch(CloakedIronManException e)
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Takes an id and returns the corresponding calendar
+     * @param calendarId
+     * @return
+     */
     public Calendar getCalendarById(int calendarId)
     {
-        for(Calendar cal : calendars)
+        for(Calendar cal : this.calendars)
         {
             if(calendarId == cal.getId())
             {
@@ -95,7 +146,7 @@ public class CalendarRegister
     public Calendar getCalendarByGroup(Group group)
     {
         // Can a group have several calendars?
-        for(Calendar cal : calendars)
+        for(Calendar cal : this.calendars)
         {
             if(cal.getOwner() == group)
             {
@@ -113,7 +164,7 @@ public class CalendarRegister
     public Calendar getCalendarByAccount(Account acc)
     {
         // Can an account have several calendars?
-        for(Calendar cal : calendars)
+        for(Calendar cal : this.calendars)
         {
             if(cal.getOwner() == acc)
             {
@@ -130,13 +181,25 @@ public class CalendarRegister
      */
     public ArrayList<Group> getAllAttendingGroups(Account acc)
     {
-
+        ArrayList<Group> tempGroups = new ArrayList<Group>();
+        for(Group group : this.groups)
+        {
+            if(group.isMember(acc))
+            {
+                tempGroups.add(group);
+            }
+        }
+        return tempGroups;
     }
 
-
+    /**
+     * Takes a groupId and returns the corresponding group
+     * @param groupId
+     * @return
+     */
     public Group getGroupById(int groupId)
     {
-        for(Group group : groups)
+        for(Group group : this.groups)
         {
             if(groupId == group.getId())
             {
@@ -149,7 +212,7 @@ public class CalendarRegister
     //Useless?
     public Appointment getAppointmentById(int appId)
     {
-        for(Appointment app : appointments)
+        for(Appointment app : this.appointments)
         {
             if(appId == app.getId())
             {
@@ -159,9 +222,14 @@ public class CalendarRegister
         return null;
     }
 
+    /**
+     * Takes an accountid and returns the corresponding account
+     * @param accId
+     * @return
+     */
     public Account getAccountById(int accId)
     {
-        for(Account acc : accounts)
+        for(Account acc : this.accounts)
         {
             if(accId == acc.getId())
             {
@@ -182,7 +250,7 @@ public class CalendarRegister
         ArrayList<Group> tempGroups = new ArrayList<Group>();
 
         //Add all groups being managed by acc to tempGroups
-        for(Group group : groups)
+        for(Group group : this.groups)
         {
             if(group.getOwner() == acc)
             {
@@ -190,7 +258,7 @@ public class CalendarRegister
             }
         }
 
-        for(Calendar cal : calendars)
+        for(Calendar cal : this.calendars)
         {
             if(cal.getOwner() == acc)
             {
@@ -217,7 +285,7 @@ public class CalendarRegister
     {
         ArrayList<Group> tempGroups = new ArrayList<Group>();
 
-        for(Group group : groups)
+        for(Group group : this.groups)
         {
             if(group.getOwner() == acc)
             {
@@ -227,23 +295,34 @@ public class CalendarRegister
         return tempGroups;
     }
 
-
-    public ArrayList<Account> getAccounts()
+    /**
+     * Returns all accounts in register
+     * @return
+     */
+    public ArrayList<Account> getAllAccounts()
     {
         return accounts;
     }
 
-    public ArrayList<Appointment> getAppointments()
+    /**
+     * Returns all appointments in register
+     * @return
+     */
+    public ArrayList<Appointment> getAllAppointments()
     {
         return appointments;
     }
 
-    public ArrayList<Calendar> getCalendars()
+    /**
+     * Returns all accounts in register
+     * @return
+     */
+    public ArrayList<Calendar> getAllCalendars()
     {
         return calendars;
     }
 
-    public ArrayList<Group> getGroups()
+    public ArrayList<Group> getAllGroups()
     {
         return groups;
     }
