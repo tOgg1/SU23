@@ -1,7 +1,12 @@
 package cim.models;
 
-public class MeetingResponse {
+import java.io.Serializable;
+
+public class MeetingResponse extends CalendarObject {
 	
+	/**
+	 * 
+	 */
 	public Account account;
 	public Response response;
 	
