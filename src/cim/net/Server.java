@@ -120,7 +120,7 @@ public class Server {
 	
 	/**
 	 * Abstract class for managing connetions in separate threads
-	 * @author Håkon
+	 * @author Hï¿½kon
 	 *
 	 */
 	private abstract class ConnectionThread extends Thread implements Runnable {
@@ -150,7 +150,7 @@ public class Server {
 	
 	/**
 	 * This class manages request coming from the clients
-	 * @author Håkon
+	 * @author Hï¿½kon
 	 *
 	 */	
 	private class RequestThread extends ConnectionThread {
@@ -185,7 +185,7 @@ public class Server {
 	}
 	/**
 	 * This calss manages events to be sent out to clients
-	 * @author Håkon
+	 * @author Hï¿½kon
 	 *
 	 */
 	private class EventThread extends ConnectionThread {
