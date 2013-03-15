@@ -3,14 +3,23 @@ package cim.views.appointmentDialogs;
 import javax.swing.JFrame;
 import java.awt.GridBagLayout;
 import javax.swing.BoxLayout;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.Component;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 
-public class AddAppointmentDialog extends JFrame{
+import cim.models.Appointment;
 
+import java.awt.Dialog.ModalityType;
+
+public class AddAppointmentDialog extends JDialog{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7800782603404937292L;
 	// Panels
 	private JPanel mainPanel;
 	private AppointmentDetailsPanel addDetailsPanel;
@@ -23,15 +32,17 @@ public class AddAppointmentDialog extends JFrame{
 	private JButton btnSave;
 	private JButton btnCancel;
 	
-	public AddAppointmentDialog(){
+	public AddAppointmentDialog(JFrame parent){
+		super(parent);
+		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Ny avtale");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 571);
 		
 		mainPanel = new JPanel();
 		mainPanel.setAlignmentY(Component.TOP_ALIGNMENT);
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(mainPanel);
+		getContentPane().add(mainPanel);
 		mainPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		addDetailsPanel = new AppointmentDetailsPanel();
@@ -55,5 +66,9 @@ public class AddAppointmentDialog extends JFrame{
 		
 		btnSave = new JButton("Legg til i kalender");
 		mainPanel.add(btnSave);
+	}
+	
+	public Appointment getAppointment() {
+		return null;
 	}
 }

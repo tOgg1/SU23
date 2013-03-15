@@ -3,14 +3,21 @@ package cim.views;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
+import cim.models.Appointment;
+import cim.views.appointmentDialogs.AddAppointmentDialog;
 
 public class CalendarView extends JPanel {
 	private static JTextField txtMandag;
@@ -24,7 +31,11 @@ public class CalendarView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CalendarView() {
+	
+	private final JFrame frame;
+	public CalendarView(JFrame frame) {
+		
+		this.frame = frame;
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {30, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 30};
@@ -76,6 +87,7 @@ public class CalendarView extends JPanel {
 		this.add(comboBox, gbc_comboBox);
 		
 		JButton btnNyAvtale = new JButton("Ny avtale");
+		btnNyAvtale.addActionListener(new AddAppointmentListener());
 		GridBagConstraints gbc_btnNyAvtale = new GridBagConstraints();
 		gbc_btnNyAvtale.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNyAvtale.gridx = 12;
@@ -240,6 +252,23 @@ public class CalendarView extends JPanel {
 		gbc_sondag.gridx = 11;
 		gbc_sondag.gridy = 5;
 		this.add(sondag, gbc_sondag);
+	}
+	
+	private class AddAppointmentListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.frame);
+			ad.setVisible(true);
+			Appointment a = ad.getAppointment();
+			if(a != null) {
+				System.out.println("Appointment set in dialog.");
+			} else {
+				System.out.println("Appointment not set in dialog.");
+			}
+		
+		}
+		
 	}
 
 }
