@@ -88,10 +88,8 @@ public class DatabaseHandler {
             ResultSet rs = st.executeQuery();
             if(!rs.next())
             {
-                throw new CloakedIronManException("Can't find attendable");
+                throw new CloakedIronManException("Can't find attendable_id in the database");
             }
-
-            st.close();
            
             int groupId = rs.getInt("group_id");
             if (rs.wasNull()) {
@@ -117,16 +115,33 @@ public class DatabaseHandler {
 			
 			Calendar c;
 			
-			PreparedStatement st = this.con.prepareStatement("SELECT owner_attendable_id FROM calendar WHERE calendar_id=?");
+			/*
+			 * Calendar info and owner
+			 */
+			PreparedStatement st = this.con.prepareStatement("SELECT calendar_id, owner_attendable_id FROM calendar WHERE calendar_id=?");
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
-			if(rs.next()) {
-				int iAttendableID = rs.getInt("owner_attendable_id");
-				c = new Calendar(this.getAttendable(iAttendableID));
-				return c;
-			}  else {
+			if (!rs.next()) {
 				throw new CloakedIronManException("Calendar ID not found in database");
 			}
+			int iAttendableID = rs.getInt("owner_attendable_id");
+			c = new Calendar(this.getAttendable(iAttendableID));
+			c.setId(rs.getInt("calendar_id"));
+			st.close();
+			rs.close();
+			
+			/*
+			 * Fill up appointments
+			 */
+			st = this.con.prepareStatement("SELECT appointment_id FROM appointment WHERE calendar_id=?");
+			st.setInt(1, c.getId());
+			rs = st.executeQuery();
+			while(rs.next()) {
+				c.addAppointment(this.getAppointment(rs.getInt("appointment_id")));
+			}
+			
+			return c;
+			
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not execute query.", e);
 		}

@@ -30,6 +30,10 @@ public class Calendar extends CalendarObject
 		return l;
 	}
 	
+	public String toString() {
+		return "Calendar (" + this.getId() +") (" + this.owner.getName() + ")";
+	}
+	
 	public Attendable getOwner()
 	{
 		return this.owner;

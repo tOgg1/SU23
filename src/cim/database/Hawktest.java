@@ -22,7 +22,7 @@ public class Hawktest {
 		Appointment app1 = new Appointment("Min superavtale",Helper.getDate(2013, 3, 15), Helper.getTime(10, 00), Helper.getTime(11, 00), a);
 		c.addAppointment(app1);
 		System.out.println(c);
-		db.saveCalendar(c);
+		//db.saveCalendar(c);
 		
 
 	}
