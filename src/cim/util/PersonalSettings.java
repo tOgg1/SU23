@@ -1,0 +1,11 @@
+package cim.util;
+
+public class PersonalSettings {
+	public static final String JDBC_URL = "jdbc:mysql://127.0.0.1:3306/cim";
+	public static final String MYSQL_USER = "cim";
+	public static final String MYSQL_PW  = "cim";
+	public static final String SERVER_IP = "129.241.163.113";
+	public static final int DEFAULT_ACCOUNT_ID = 2;
+
+
+}
