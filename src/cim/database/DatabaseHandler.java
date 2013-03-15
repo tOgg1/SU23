@@ -118,19 +118,18 @@ public class DatabaseHandler {
 			Calendar c;
 			
 			PreparedStatement st = this.con.prepareStatement("SELECT owner_attendable_id FROM calendar WHERE calendar_id=?");
+			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
-			rs.close();
-			st.close();
 			if(rs.next()) {
 				int iAttendableID = rs.getInt("owner_attendable_id");
-				c = new Calendar(this.getAttendable(iAttendableID)));
+				c = new Calendar(this.getAttendable(iAttendableID));
+				return c;
 			}  else {
 				throw new CloakedIronManException("Calendar ID not found in database");
 			}
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not execute query.", e);
 		}
-		return null;
 		
 		
 	}
