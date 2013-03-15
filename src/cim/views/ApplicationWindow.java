@@ -42,7 +42,7 @@ public class ApplicationWindow extends JFrame {
 	private final Client client;
 	
 	private ArrayList<Calendar> allCalendars;
-	
+	private ArrayList<Alert> alarms;
 	private ArrayList<Calendar> myCalendars;
 	
 //	private static JTextField txtMandag;
@@ -99,6 +99,8 @@ public class ApplicationWindow extends JFrame {
 		response = client.request(new Request("GET_ALL_CALENDARS_TO_ACCOUNT", account));
 				
 		myCalendars = (ArrayList<Calendar>) response.getData()[0];
+		
+		response = client.request(new Request("GET_ALL_ALARMS_TO_ACCOUNT", account));
 		
 		System.out.println(myCalendars.size());
 		
