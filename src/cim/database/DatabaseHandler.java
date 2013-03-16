@@ -879,7 +879,7 @@ public class DatabaseHandler {
 			while(rs.next()) {
 				m = new MeetingResponse(
 					a,
-					(Meeting)this.getAppointment(rs.getInt("meeting_appointment_id")),
+					(Meeting)this.getAppointment2(rs.getInt("meeting_appointment_id")),
 					rs.getString("status")
 				);
 				meetingResponses.add(m);

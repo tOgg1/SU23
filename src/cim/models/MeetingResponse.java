@@ -30,8 +30,18 @@ public class MeetingResponse extends CalendarObject {
 		this.response = handleResponse(resp);
 	}
 	
-	
-	
+	public Account getAccount() {
+		return account;
+	}
+
+	public Meeting getMeeting() {
+		return meeting;
+	}
+
+	public Response getResponse() {
+		return response;
+	}
+
 	public Response handleResponse(String a){
 		if (a.equals("not_seen")){
 			return Response.NOT_SEEN;

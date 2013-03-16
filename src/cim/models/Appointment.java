@@ -65,7 +65,10 @@ public class Appointment extends CalendarObject
 	public Time getStart() {
 		return start;
 	}
-
+	
+	public String getStartFormatted() {
+		return this.formatTime(this.start);
+	}
 
 
 	public void setStart(Time start) {
@@ -77,6 +80,10 @@ public class Appointment extends CalendarObject
 
 	public Time getEnd() {
 		return end;
+	}
+	
+	public String getEndFormatted() {
+		return this.formatTime(this.end);
 	}
 
 
@@ -136,6 +143,10 @@ public class Appointment extends CalendarObject
 	public void setRoom(Room room) {
 		this.pcs.firePropertyChange("room",this.room, room);
 		this.room = room;
+	}
+	
+	private String formatTime(Time t) {
+		return t.getHours() + ":" + t.getMinutes();
 	}
 	
 }
