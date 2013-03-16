@@ -43,6 +43,9 @@ public abstract class CalendarObject implements Serializable
             return true;
         if (obj.getClass() != getClass())
             return false;
+        if (this.getId() == -1) {
+        	return false;
+        }
         return this.getId() == ((CalendarObject)obj).getId();
     }
 }

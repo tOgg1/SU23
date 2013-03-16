@@ -392,4 +392,13 @@ public class CalendarRegister
         }
         return false;
     }
+    /**
+     * Returns all meeting response objects to the currently logged in user
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException {
+    	Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
+    	return (ArrayList<MeetingResponse>)r.getData()[0];
+    }
 }

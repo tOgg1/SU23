@@ -341,9 +341,12 @@ public class DatabaseHandler {
 			// Delete all appointments not in the calendars list
 			
 			ArrayList<Integer> ids = c.getAllAppointmentIds();
-			String joinedString = Helper.join(ids, ",");
-			st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id NOT IN (" + joinedString + ")");
-			st.executeUpdate();
+			if (ids.size() > 0) {
+				String joinedString = Helper.join(ids, ",");
+				st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id NOT IN (" + joinedString + ")");
+				st.executeUpdate();
+			}
+			
 			
 			
 			for(Appointment a : c.getAppointments()) {
@@ -863,23 +866,28 @@ public class DatabaseHandler {
 		
 	}
 	
-	public ArrayList<MeetingResponse> getMeetingResponsesToAccount(Account a){
-		PreparedStatement st;
+	public ArrayList<MeetingResponse> getMeetingResponsesToAccount(Account a) throws CloakedIronManException {
 		try {
-			st = this.con.prepareStatement("SELECT * FROM meeting_response WHERE account_user_id = ?" );
+			if(a.getId() == -1) {
+				throw new CloakedIronManException("Account ID not set, Account not saved in database?");
+			}
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting_response WHERE account_user_id = ?" );
 			st.setInt(1, a.getId());
 			ResultSet rs = st.executeQuery();
 			ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
-			while(rs.next()){
-				MeetingResponse m = new MeetingResponse(a, rs.getString("status"));
+			MeetingResponse m;
+			while(rs.next()) {
+				m = new MeetingResponse(
+					a,
+					(Meeting)this.getAppointment(rs.getInt("meeting_appointment_id")),
+					rs.getString("status")
+				);
 				meetingResponses.add(m);
 			}
 			return meetingResponses;
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}		
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get meeting response", e);
+		}
 	}
 	
 	public ArrayList<Alert> getAllUnseenAlertsToAccount(Account a){

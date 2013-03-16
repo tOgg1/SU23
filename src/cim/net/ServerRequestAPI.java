@@ -69,7 +69,7 @@ public class ServerRequestAPI {
 		return new Response(this.db.seenAlert(alert));
 	}
 
-	private Response get_all_meetingResponses_to_account(Account account) {
+	private Response get_all_meetingResponses_to_account(Account account) throws CloakedIronManException {
 		return new Response(this.db.getMeetingResponsesToAccount(account));
 	}
 
