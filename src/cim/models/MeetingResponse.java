@@ -7,27 +7,40 @@ public class MeetingResponse extends CalendarObject {
 	/**
 	 * 
 	 */
-	public Account account;
-	public Response response;
+	
+	public enum Response{
+		NOT_SEEN,
+		NOT_ATTENDING,
+		ATTENDING;
+	}
+	
+	
+	private Account account;
+	private Meeting meeting;
+	private Response response;
+	
+	public MeetingResponse(Account a, Meeting m, String r) {
+		this.account = a;
+		this.meeting = m;
+		this.response = this.handleResponse(r);
+	}
 	
 	public MeetingResponse(Account a, String resp){
 		this.account = a;
 		this.response = handleResponse(resp);
 	}
 	
-	public enum Response{
-		not_seen, not_attending, attending;
-	}
+	
 	
 	public Response handleResponse(String a){
 		if (a.equals("not_seen")){
-			return Response.not_seen;
+			return Response.NOT_SEEN;
 		}
 		else if (a.equals("attending")){
-			return Response.attending;
+			return Response.ATTENDING;
 		}
 		else if (a.equals("not_attending")){
-			return Response.not_attending;
+			return Response.NOT_ATTENDING;
 		}
 		return null;
 	}

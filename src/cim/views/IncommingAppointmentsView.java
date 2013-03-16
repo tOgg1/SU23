@@ -1,26 +1,34 @@
 package cim.views;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+
+import cim.models.MeetingResponse;
+
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 public class IncommingAppointmentsView extends JPanel{
 	
-	// Det eksisterer en plan i hodet til Beate på hvordan den her kan bygges. 
+	// Det eksisterer en plan i hodet til Beate på hvordan den her kan bygges.
+	// Håkon har også lyst til å prøve
 	
-	private int appointments;
+	
+	private ArrayList<MeetingResponse> model;
+	
 	
 	public IncommingAppointmentsView() {
-		appointments = getIncommingAppointments();
-		setLayout(new GridLayout(appointments, 0, 0, 0));
-		
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 	}
 	
-	private int getIncommingAppointments(){
+	public int getIncommingAppointments(){
 	
 		//TODO: Hente ut antall avtaler som ligger på vent.
 		// Dette tallet vil brukes til å lage griddet stort nok.
 	
 		return 10;
 	}
+	
+	
 }
