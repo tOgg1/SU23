@@ -82,12 +82,16 @@ public class Client {
 		EventListenerThread e = new EventListenerThread();
 		e.start();
 		
+		//Starting up register
+        register.initialize();
+		
 		// Spawning authenticate window
 		/*AuthenticateView auth = new AuthenticateView(this);
 		auth.setVisible(true);
 		Account acc = auth.getAccount();*/
-		Response resp = this.request(new Request("GET_ACCOUNT2", PersonalSettings.DEFAULT_ACCOUNT_ID));
+		Response resp = this.request(new Request("GET_ACCOUNT", PersonalSettings.DEFAULT_ACCOUNT_ID));
 		Account acc = (Account) resp.getData()[0];
+		
 		if (acc != null) {
 			// User managed to log in
 			// Create new calendar gui.
@@ -96,32 +100,7 @@ public class Client {
 		} else {
 			this.exit();
 		}
-		
-		/*
-		// Must log in first
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Skriv inn brukernavn: ");
-		//String username = sc.nextLine();
-		//String pw = sc.nextLine();
-		String username = "hakon@aamdal.com";
-		String pw = "123";
-		this.auth.authenticate(username, pw);
-		if(!this.auth.isAuthenticated()) {
-			Log.d("Client", "Invalid username and password");
-			return;
-		} else {
-			Log.d("Client", "User logged in " + this.auth.getSelf().toString());
-		}
-		
-		/*
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
-
-        //Starting up register
-        register.initialize();
+        
 	}
 	
 	public Response request(Request req) throws CloakedIronManException {
