@@ -90,7 +90,7 @@ public class Client {
 		/*AuthenticateView auth = new AuthenticateView(this);
 		auth.setVisible(true);
 		Account acc = auth.getAccount();*/
-		Response resp = this.request(new Request("GET_ACCOUNT", PersonalSettings.DEFAULT_ACCOUNT_ID));
+		Response resp = this.request(new Request("GET_ACCOUNT2", PersonalSettings.DEFAULT_ACCOUNT_ID));
 		Account acc = (Account) resp.getData()[0];
 		if (acc != null) {
 			// User managed to log in
@@ -132,9 +132,15 @@ public class Client {
 		Response r = null;
 		try {
 			this.requestOutput.writeObject(req);
-			r = (Response)this.requestInput.readObject();	
+			r = (Response)this.requestInput.readObject();
+			Object [] data = r.getData();
+			if(data.length > 0) {
+				if (data[0] instanceof Exception) {
+					throw (Exception)data[0];
+				}
+			}
 			return r;
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (Exception e) {
 			throw new CloakedIronManException("Invalid response from server.", e);
 		} 
 	}

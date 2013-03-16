@@ -3,6 +3,7 @@ package cim.net;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 import cim.database.DatabaseHandler;
 import cim.models.Account;
 import cim.models.Alert;
@@ -57,11 +58,11 @@ public class ServerRequestAPI {
 			else if (method.equals("SEEN_ALERT")){
 				return seen_alert((Alert) args[0]);
 			}
-			
+			return new Response(new CloakedIronManException("No server API call named '" + method + "'"));
 		} catch (Exception e) {
-			e.printStackTrace();
+			return new Response(e);
 		}
-		return null;
+		
 		
 	}
 	private Response seen_alert(Alert alert) {
