@@ -34,8 +34,6 @@ public class Client {
 	
 	private ClientEventHandler evt;
 	
-	private DatabaseHandler db;
-	
 	public Client(String ip) throws CloakedIronManException {
 		
 		// Configuring Log file
@@ -77,8 +75,6 @@ public class Client {
 		// Creating authenticator instance
 		this.evt = new ClientEventHandler();
 		
-		// Database
-		this.db = new DatabaseHandler();
 	}
 	
 	public void run() throws CloakedIronManException {

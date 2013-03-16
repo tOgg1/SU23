@@ -38,7 +38,7 @@ public class CalendarRegister
     {
         try
         {
-            Request req = new Request("GET_ALL_CALENDARS", null);
+            Request req = new Request("GET_ALL_CALENDARS");
             Response res = parent.request(req);
             Calendar[] data = (Calendar[])res.getData();
             for(Calendar cal : data)
