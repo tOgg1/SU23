@@ -22,6 +22,12 @@ public class IncommingAppointmentsView extends JPanel{
 
 	}
 	
+	public void setModel(ArrayList<MeetingResponse> m) {
+		this.model = m;
+		this.refresh();
+	}
+	
+	
 	public int getIncommingAppointments(){
 	
 		//TODO: Hente ut antall avtaler som ligger på vent.
@@ -29,6 +35,13 @@ public class IncommingAppointmentsView extends JPanel{
 	
 		return 10;
 	}
-	
+	private void refresh() {
+		this.removeAll();
+		for(MeetingResponse m: this.model) {
+			MeetingResponsePanel mp = new MeetingResponsePanel();
+			mp.setModel(m);
+			this.add(mp);
+		}
+	}
 	
 }

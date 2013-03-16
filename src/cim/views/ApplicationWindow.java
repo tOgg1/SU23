@@ -45,6 +45,8 @@ public class ApplicationWindow extends JFrame {
 	private ArrayList<Alert> alerts;
 	private ArrayList<Calendar> myCalendars;
 	
+	private ArrayList<MeetingResponse> meetingResponses;
+	
 //	private static JTextField txtMandag;
 //	private static JTextField txtTirsdag;
 //	private static JTextField txtOnsdag;
@@ -78,6 +80,10 @@ public class ApplicationWindow extends JFrame {
 //	public ApplicationWindow() {
 		
 		/*
+		 * Fetch references
+		 */
+		
+		/*
 		 * CREATE LAYOUT
 		 */
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,6 +98,7 @@ public class ApplicationWindow extends JFrame {
 		tabbedPane.addTab("Kalender", null, calendarView, null);
 		
 		incommingAppointmentsView = new IncommingAppointmentsView();
+		incommingAppointmentsView.setModel(Client.register.getMeetingResponses());
 		// Møter til godkjenning burde ha en hjelpeklasse som bygger strengen og 
 		// legger til eventuelle "(n)" som kan representere ant. ubehandlede innkallelser.
 		tabbedPane.addTab("Møter til godkjenning", null, incommingAppointmentsView, null);

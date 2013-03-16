@@ -22,7 +22,7 @@ import java.net.SocketException;
 //import cim.models.CalendarRegister;
 
 public class Client {
-    private static CalendarRegister register;
+    public static CalendarRegister register;
 
 	private Socket eventSocket;
 	private Socket requestSocket;
