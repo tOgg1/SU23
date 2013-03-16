@@ -41,9 +41,6 @@ public class ApplicationWindow extends JFrame {
 	private AlertsView alertsView;
 	private ManageCalendarsView manageCalendarsView;
 	
-	private final Account account;
-	private final Client client;
-	
 	private ArrayList<Calendar> allCalendars;
 	private ArrayList<Alert> alerts;
 	private ArrayList<Calendar> myCalendars;
@@ -77,10 +74,8 @@ public class ApplicationWindow extends JFrame {
 	 * Create the frame.
 	 * @throws CloakedIronManException 
 	 */
-	public ApplicationWindow(Client c, Account a) throws CloakedIronManException {
+	public ApplicationWindow() throws CloakedIronManException {
 //	public ApplicationWindow() {
-		this.client = c;
-		this.account = a;
 		
 		/*
 		 * CREATE LAYOUT
@@ -107,6 +102,7 @@ public class ApplicationWindow extends JFrame {
 		manageCalendarsView = new ManageCalendarsView();
 		tabbedPane.addTab("Administrer kalendere", null, manageCalendarsView, null);
 		
+		/*
 		Response response = client.request(new Request("GET_ALL_CALENDARS"));
 		allCalendars = (ArrayList<Calendar>) response.getData()[0];
 		
@@ -118,16 +114,12 @@ public class ApplicationWindow extends JFrame {
 		
 		System.out.println(myCalendars.size());
 		
-		System.out.println(allCalendars);
+		System.out.println(allCalendars); */
 		
 		this.setResizable(false);
 		this.pack();
 		
 
-	}
-	
-	public Response request(Request req) throws CloakedIronManException {
-		return this.client.request(req);
 	}
 
 }

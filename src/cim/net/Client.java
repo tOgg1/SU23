@@ -82,8 +82,7 @@ public class Client {
 		EventListenerThread e = new EventListenerThread();
 		e.start();
 		
-		//Starting up register
-        register.initialize();
+		
 		
 		// Spawning authenticate window
 		/*AuthenticateView auth = new AuthenticateView(this);
@@ -91,11 +90,12 @@ public class Client {
 		Account acc = auth.getAccount();*/
 		Response resp = this.request(new Request("GET_ACCOUNT", PersonalSettings.DEFAULT_ACCOUNT_ID));
 		Account acc = (Account) resp.getData()[0];
-		
+		//Starting up register
+        register.initialize(acc);
 		if (acc != null) {
 			// User managed to log in
 			// Create new calendar gui.
-			ApplicationWindow cv = new ApplicationWindow(this, acc);
+			ApplicationWindow cv = new ApplicationWindow();
 			cv.setVisible(true);
 		} else {
 			this.exit();

@@ -24,6 +24,11 @@ public class CalendarRegister
     // Trenger vi denne her?
     ArrayList<Room> rooms;
     Client parent;
+    
+    /**
+     * The currently logged in account.
+     */
+    private Account account; 
 
     public CalendarRegister(Client parent)
     {
@@ -34,22 +39,9 @@ public class CalendarRegister
         accounts = new ArrayList<Account>();
     }
 
-    public void initialize() throws CloakedIronManException
+    public void initialize(Account acc) throws CloakedIronManException
     {
-        try
-        {
-            Request req = new Request("GET_ALL_CALENDARS");
-            Response res = parent.request(req);
-            Calendar[] data = (Calendar[])res.getData();
-            for(Calendar cal : data)
-            {
-                this.registerCalendar(cal);
-            }
-        }
-        catch(Exception e)
-        {
-            throw new CloakedIronManException("Error initializing calendar register", e);
-        }
+    	this.account = acc;
     }
 
     /**
@@ -316,8 +308,20 @@ public class CalendarRegister
      * Returns all accounts in register
      * @return
      */
-    public ArrayList<Calendar> getAllCalendars()
+    public ArrayList<Calendar> getAllCalendars() throws CloakedIronManException
     {
+    	if (this.calendars == null) {
+    		try
+            {
+                Request req = new Request("GET_ALL_CALENDARS");
+                Response res = parent.request(req);
+                this.calendars = (ArrayList<Calendar>)res.getData()[0];
+            }
+            catch(Exception e)
+            {
+                throw new CloakedIronManException("Error initializing calendar register", e);
+            }
+    	}
         return this.calendars;
     }
 
