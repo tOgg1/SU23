@@ -126,7 +126,8 @@ public class DatabaseHandler {
 				throw new CloakedIronManException("Calendar ID not found in database");
 			}
 			int iAttendableID = rs.getInt("owner_attendable_id");
-			c = new Calendar(this.getAttendable(iAttendableID));
+			Attendable a = this.getAttendable(iAttendableID);
+			c = new Calendar(a);
 			c.setId(rs.getInt("calendar_id"));
 			st.close();
 			rs.close();
@@ -140,6 +141,19 @@ public class DatabaseHandler {
 			while(rs.next()) {
 				c.addAppointment(this.getAppointment2(rs.getInt("appointment_id")));
 			}
+			st.close();
+			rs.close();
+			/*
+			 *  Add oppointments where the user has said yes 
+			 */
+			if(a instanceof Account) {
+				st = this.con.prepareStatement("SELECT meeting_appointment_id FROM meeting_response WHERE account_user_id=? AND status='attending'");
+				rs = st.executeQuery();
+				while(rs.next()) {
+					c.addAppointment(this.getAppointment2(rs.getInt("meeting_appointment_id")));
+				}
+			}
+			
 			
 			return c;
 			
