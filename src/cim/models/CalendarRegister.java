@@ -401,4 +401,13 @@ public class CalendarRegister
     	Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
     	return (ArrayList<MeetingResponse>)r.getData()[0];
     }
+    /**
+     * Saves the given meeting response to the database.
+     * @param mr
+     * @throws CloakedIronManException
+     */
+    public void saveMeetingResponse(MeetingResponse mr) throws CloakedIronManException {
+    	// TODO: Fix
+    	return;
+    }
 }
