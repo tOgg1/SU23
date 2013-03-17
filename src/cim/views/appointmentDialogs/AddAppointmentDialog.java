@@ -11,11 +11,16 @@ import javax.swing.JCheckBox;
 import javax.swing.JButton;
 
 import cim.models.Appointment;
+import cim.net.Client;
+import cim.util.Helper;
 
 import java.awt.Dialog.ModalityType;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.sql.Date;
+import java.sql.Time;
+
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
@@ -149,9 +154,21 @@ public class AddAppointmentDialog extends JDialog{
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				AppointmentDetailsPanel appD = new AppointmentDetailsPanel();
-				int i = appD.getDays();
-				System.out.println(i);
+				
+				
+				int i = addDetailsPanel.getDays();
+				int j = addDetailsPanel.getMonths();
+				int k = addDetailsPanel.getYears();
+				Date date = Helper.getDate(k,j,i);
+				int a = addDetailsPanel.getHours();
+				int b = addDetailsPanel.getMinutes();
+				Time startTid = Helper.getTime(a,b);
+				int c = addDetailsPanel.getEndHours();
+				int d = addDetailsPanel.getEndMinutes();
+				Time sluttTid = Helper.getTime(c,d);
+				String info = addDetailsPanel.getDescription(); 
+				Appointment app = new Appointment(info,date,startTid,sluttTid,Client.register.getAccount());
+				setAppointment(app);
 			
 			}
 		});
@@ -177,6 +194,12 @@ public class AddAppointmentDialog extends JDialog{
 		gbc_btnCancel.gridx = 3;
 		gbc_btnCancel.gridy = 6;
 		mainPanel.add(btnCancel, gbc_btnCancel);
+	}
+
+	protected void setAppointment(Appointment app) {
+		this.appointment = app;
+		disposeFrame();
+		
 	}
 
 	public Appointment getAppointment() {

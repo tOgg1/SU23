@@ -409,4 +409,9 @@ public class CalendarRegister
     public void saveMeetingResponse(MeetingResponse mr) throws CloakedIronManException {
     	this.parent.request(new Request("SAVE_MEETING_RESPONSE", mr));
     }
+    public Account getAccount()
+    {
+    	return this.account;
+    }
+
 }
