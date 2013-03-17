@@ -398,12 +398,13 @@ public class DatabaseHandler {
 			
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO meeting_response (meeting_appointment_id, account_user_id, status) " +
 					"VALUES (?,?,?) " +
-					"ON DUPLICATE KEY UPDATE" +
+					"ON DUPLICATE KEY UPDATE " +
 					"status=?");
 			st.setInt(1, m.getId());
 			st.setInt(2, a.getId());
 			st.setString(3, mr.getResponseString());
 			st.setString(4, mr.getResponseString());
+			System.out.println(mr.getResponseString());
 			st.execute();
 			return mr;
 		} catch (Exception e) {
@@ -614,6 +615,8 @@ public class DatabaseHandler {
 			return null;
 		}
 	}*/
+	
+	
 	
 
 

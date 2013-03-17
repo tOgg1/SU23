@@ -37,6 +37,12 @@ public class MeetingResponse extends CalendarObject {
 	public Meeting getMeeting() {
 		return meeting;
 	}
+	
+	public void setResponse(Response r) {
+		Response old = this.response;
+		this.response = r;
+		this.pcs.firePropertyChange("response", old, r);
+	}
 
 	public Response getResponse() {
 		return response;

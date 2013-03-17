@@ -35,7 +35,7 @@ public class EditAppointmentDialog extends JDialog{
 	private JButton btnCancelAppointment;
 	
 //	public EditAppointmentDialog(Account account, Appointment appointment){ //Bytt til denne når GUI er koblet mot resten
-	public EditAppointmentDialog() throws CloakedIronManException{
+	public EditAppointmentDialog() throws CloakedIronManException {
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

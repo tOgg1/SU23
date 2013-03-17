@@ -116,12 +116,13 @@ public class MeetingResponsePanel extends JPanel {
 	
 	private class AcceptListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			MeetingResponsePanel.this.model.setResponse(Response.ATTENDING);
 		}
 	}
 	
 	private class DeclineListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			MeetingResponsePanel.this.model.setResponse(Response.NOT_ATTENDING);
 			
 		}
 	}
