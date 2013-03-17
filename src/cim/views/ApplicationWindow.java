@@ -1,31 +1,14 @@
 package cim.views;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-
-import cim.models.*;
-import cim.net.packet.Response;
-
-import cim.models.Account;
+import cim.models.Alert;
+import cim.models.Calendar;
+import cim.models.MeetingResponse;
 import cim.net.Client;
-import cim.net.packet.Request;
 import cim.util.CloakedIronManException;
 
-import javax.swing.JTabbedPane;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class ApplicationWindow extends JFrame {
 
@@ -99,14 +82,14 @@ public class ApplicationWindow extends JFrame {
 		
 		incomingAppointmentsView = new IncomingAppointmentsView();
 		incomingAppointmentsView.setModel(Client.register.getMeetingResponses());
-		// Møter til godkjenning burde ha en hjelpeklasse som bygger strengen og 
+		// Mï¿½ter til godkjenning burde ha en hjelpeklasse som bygger strengen og 
 		// legger til eventuelle "(n)" som kan representere ant. ubehandlede innkallelser.
-		tabbedPane.addTab("Møter til godkjenning", null, incomingAppointmentsView, null);
+		tabbedPane.addTab("Mï¿½ter til godkjenning", null, incomingAppointmentsView, null);
 		
 		alertsView = new AlertsView();
 		tabbedPane.addTab("Varsler", null, alertsView, null);
 		
-		manageCalendarsView = new ManageCalendarsView();
+		manageCalendarsView = new ManageCalendarsView(Client.register.getAllCalendarsToCurrentUser(),this);
 		tabbedPane.addTab("Administrer kalendere", null, manageCalendarsView, null);
 		
 		/*
