@@ -4,6 +4,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import cim.models.MeetingResponse;
+import cim.net.packet.Response;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -42,6 +43,9 @@ public class IncommingAppointmentsView extends JPanel{
 		c.insets = new Insets(5,5,5,5);
 		c.gridy = 0;
 		for(MeetingResponse m: this.model) {
+			if(m.getResponse() != MeetingResponse.Response.NOT_SEEN) {
+				continue;
+			}
 			MeetingResponsePanel mp = new MeetingResponsePanel();
 			mp.setModel(m);
 			this.add(mp, c);
