@@ -37,7 +37,7 @@ public class ApplicationWindow extends JFrame {
 	
 	private JTabbedPane tabbedPane;
 	private CalendarView calendarView;
-	private MeetingResponsesFlowPanel incommingAppointmentsView;
+	private IncomingAppointmentsView incomingAppointmentsView;
 	private AlertsView alertsView;
 	private ManageCalendarsView manageCalendarsView;
 	
@@ -97,11 +97,11 @@ public class ApplicationWindow extends JFrame {
 		calendarView = new CalendarView(this);
 		tabbedPane.addTab("Kalender", null, calendarView, null);
 		
-		incommingAppointmentsView = new MeetingResponsesFlowPanel();
-		incommingAppointmentsView.setModel(Client.register.getMeetingResponses());
+		incomingAppointmentsView = new IncomingAppointmentsView();
+		incomingAppointmentsView.setModel(Client.register.getMeetingResponses());
 		// Møter til godkjenning burde ha en hjelpeklasse som bygger strengen og 
 		// legger til eventuelle "(n)" som kan representere ant. ubehandlede innkallelser.
-		tabbedPane.addTab("Møter til godkjenning", null, incommingAppointmentsView, null);
+		tabbedPane.addTab("Møter til godkjenning", null, incomingAppointmentsView, null);
 		
 		alertsView = new AlertsView();
 		tabbedPane.addTab("Varsler", null, alertsView, null);
