@@ -1004,7 +1004,24 @@ public class DatabaseHandler {
 		
 		
 	}
-
+	public ArrayList<Account> getAllUsers() throws CloakedIronManException
+	{
+		ArrayList<Account> allUsers = new ArrayList<Account>();
+		try {
+			
+			PreparedStatement st = this.con.prepareStatement("SELECT user_id FROM account");
+			ResultSet rs = st.executeQuery();
+			while(rs.next())
+			{
+				allUsers.add(getAccount(rs.getInt("user_id")));
+			}
+			return allUsers;
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
     
 
 

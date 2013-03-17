@@ -12,6 +12,7 @@ import javax.swing.JButton;
 
 import cim.models.Appointment;
 import cim.net.Client;
+import cim.util.CloakedIronManException;
 import cim.util.Helper;
 
 import java.awt.Dialog.ModalityType;
@@ -57,7 +58,7 @@ public class AddAppointmentDialog extends JDialog{
 
 	private final JFrame application;
 
-	public AddAppointmentDialog(JFrame application){
+	public AddAppointmentDialog(JFrame application) throws CloakedIronManException{
 		super(application);
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 
