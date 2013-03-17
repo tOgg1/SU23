@@ -3,6 +3,8 @@ package cim.models;
 import java.sql.Date;
 import java.sql.Time;
 
+import cim.util.Helper;
+
 public class Appointment extends CalendarObject 
 {
 	/*
@@ -66,8 +68,10 @@ public class Appointment extends CalendarObject
 		return start;
 	}
 	
+	
+	
 	public String getStartFormatted() {
-		return this.formatTime(this.start);
+		return Helper.formatTime(this.start);
 	}
 
 
@@ -83,7 +87,7 @@ public class Appointment extends CalendarObject
 	}
 	
 	public String getEndFormatted() {
-		return this.formatTime(this.end);
+		return Helper.formatTime(this.end);
 	}
 
 
@@ -145,8 +149,5 @@ public class Appointment extends CalendarObject
 		this.room = room;
 	}
 	
-	private String formatTime(Time t) {
-		return t.getHours() + ":" + t.getMinutes();
-	}
 	
 }

@@ -2,6 +2,7 @@ package cim.util;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
@@ -59,6 +60,12 @@ public class Helper
         }
         return builder.toString();
     }
+	public static String formatTime(Time t) {
+		Calendar c = getEmptyCalendar();
+		c.setTimeInMillis(t.getTime());
+		DateFormat df = DateFormat.getDateInstance();
+		return df.format(t);
+	}
     
     private static Calendar getEmptyCalendar() {
     	return new GregorianCalendar(0,0,0,0,0);
