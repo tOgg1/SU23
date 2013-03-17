@@ -141,7 +141,7 @@ public class DatabaseHandler {
 			while(rs.next()) {
 				c.addAppointment(this.getAppointment2(rs.getInt("appointment_id")));
 			}
-			st.close()
+			st.close();
 			rs.close();
 			/*
 			 *  Add oppointments where the user has said yes 
@@ -150,7 +150,7 @@ public class DatabaseHandler {
 				st = this.con.prepareStatement("SELECT meeting_appointment_id FROM meeting_response WHERE account_user_id=? AND status='attending'");
 				rs = st.executeQuery();
 				while(rs.next()) {
-					c.addAppointment(this.getAppointment2())
+					c.addAppointment(this.getAppointment2(rs.getInt("meeting_appointment_id")));
 				}
 			}
 			
