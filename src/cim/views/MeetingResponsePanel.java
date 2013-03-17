@@ -6,16 +6,22 @@ import cim.models.Meeting;
 import cim.models.MeetingResponse;
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MeetingResponsePanel extends JPanel {
 
 	private MeetingResponse model;
-	
+	private ModelListener ml = new ModelListener();
 	private JLabel lblDate;
 	private JLabel lblWhen;
 	private JLabel lblWhat;
 	private JLabel lblWhere;
 	private JLabel lblFrom;
+	private JButton btnDecline;
 	
 	public MeetingResponsePanel() {
 		setBackground(Color.RED);
@@ -41,10 +47,23 @@ public class MeetingResponsePanel extends JPanel {
 		lblFrom.setBounds(448, 11, 148, 14);
 		add(lblFrom);
 		
+		JButton btnAccept = new JButton("Godta");
+		btnAccept.addActionListener(new AcceptListener());
+		btnAccept.setBounds(666, 7, 89, 23);
+		add(btnAccept);
+		
+		btnDecline = new JButton("Forkast");
+		btnDecline.setBounds(765, 7, 89, 23);
+		add(btnDecline);
+		
 	}
 	
 	public void setModel(MeetingResponse model) {
+		if(this.model != null) {
+			this.model.removePropertyChangeListener(ml);
+		}
 		this.model = model;
+		this.model.addPropertyChangeListener(ml);
 		this.refresh();
 		
 	}
@@ -57,5 +76,21 @@ public class MeetingResponsePanel extends JPanel {
 		this.lblWhere.setText(m.getWhere());
 		this.lblWhat.setText(m.getName());
 		this.lblFrom.setText(m.getOwner().getName());
+	}
+	
+	private class ModelListener implements PropertyChangeListener {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			MeetingResponsePanel.this.refresh();
+			
+		}
+		
+	}
+	
+	private class AcceptListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
 	}
 }
