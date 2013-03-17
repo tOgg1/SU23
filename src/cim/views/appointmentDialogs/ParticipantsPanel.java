@@ -38,9 +38,9 @@ public class ParticipantsPanel extends JPanel{
 		
 		JList listSearchResult = new JList();
 		ArrayList<Account> accountList = db.getAllUsers();
-		DefaultListModel<String> model = new DefaultListModel<String>();
-	    for(Account a : accountList ){
-	        model.addElement(a.toString());
+		DefaultListModel<Account> model = new DefaultListModel<Account>();
+	    for(Account a : accountList){
+	        model.addElement(a);
 	    }
 	    listSearchResult.setModel(model);
 	    listSearchResult.setSelectedIndex(0);
