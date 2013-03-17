@@ -171,4 +171,28 @@ public class AppointmentDetailsPanel extends JPanel {
 	{
 		return (int)comBoxDays.getSelectedItem();
 	}
+	public int getHours()
+	{
+		return (int)comBoxHours.getSelectedItem();
+	}
+	public int getYears()
+	{
+		return (int)comBoxYear.getSelectedItem();
+	}
+	public int getMinutes()
+	{
+		return (int)comBoxMinutes.getSelectedItem();
+	}
+	public int getEndHours()
+	{
+		return (int)comBoxEndHours.getSelectedItem();
+	}
+	public int getEndMinutes()
+	{
+		return (int)comBoxEndMinutes.getSelectedItem();
+	}
+	public int getMonths()
+	{
+		return (int)comBoxMonth.getSelectedItem();
+	}
 }

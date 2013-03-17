@@ -9,47 +9,39 @@ import java.awt.Insets;
 import javax.swing.JTextField;
 
 public class AlarmPanel extends JPanel{
-	private JTextField txtAlarmYear;
-	private JTextField txtAlarmDay;
 	public AlarmPanel() {
 		setLayout(null);
 		
 		JLabel lblAlarmDato = new JLabel("Dato");
-		lblAlarmDato.setBounds(42, 32, 23, 14);
+		lblAlarmDato.setBounds(10, 32, 55, 14);
 		add(lblAlarmDato);
 		
-		txtAlarmDay = new JTextField();
-		txtAlarmDay.setBounds(90, 29, 45, 20);
-		txtAlarmDay.setText("DD");
-		add(txtAlarmDay);
-		txtAlarmDay.setColumns(2);
-		
-		JComboBox comBoxAlarmMonth = new JComboBox();
-		comBoxAlarmMonth.setBounds(140, 29, 45, 20);
-		add(comBoxAlarmMonth);
-		
-		txtAlarmYear = new JTextField();
-		txtAlarmYear.setBounds(190, 29, 45, 20);
-		txtAlarmYear.setText("YYYY");
-		add(txtAlarmYear);
-		txtAlarmYear.setColumns(4);
+		JComboBox comboBoxAlarmMonth = new JComboBox();
+		comboBoxAlarmMonth.setBounds(140, 29, 45, 20);
+		add(comboBoxAlarmMonth);
 		
 		JLabel lblAlarmTime = new JLabel("Tid for varsel");
-		lblAlarmTime.setBounds(22, 57, 63, 14);
+		lblAlarmTime.setBounds(10, 57, 75, 14);
 		add(lblAlarmTime);
 		
-		JComboBox comBoxAlarmHH = new JComboBox();
-		comBoxAlarmHH.setBounds(90, 54, 45, 20);
-		add(comBoxAlarmHH);
+		JComboBox comboBoxAlarmHours = new JComboBox();
+		comboBoxAlarmHours.setBounds(90, 54, 45, 20);
+		add(comboBoxAlarmHours);
 		
 		JLabel lblColon = new JLabel(":");
 		lblColon.setBounds(160, 57, 4, 14);
 		add(lblColon);
 		
-		JComboBox comBoxAlarmMM = new JComboBox();
-		comBoxAlarmMM.setBounds(190, 54, 45, 20);
-		add(comBoxAlarmMM);
+		JComboBox comboBoxAlarmMinutes = new JComboBox();
+		comboBoxAlarmMinutes.setBounds(190, 54, 45, 20);
+		add(comboBoxAlarmMinutes);
+		
+		JComboBox comboBoxAlarmDays = new JComboBox();
+		comboBoxAlarmDays.setBounds(90, 29, 45, 20);
+		add(comboBoxAlarmDays);
+		
+		JComboBox comboBoxAlarmYear = new JComboBox();
+		comboBoxAlarmYear.setBounds(190, 29, 45, 20);
+		add(comboBoxAlarmYear);
 	}
-// Felter for å lege til alarm. Bruk absolute layout
-// Panelet er allerede "montert" i AddAppointmentDialog
 }
