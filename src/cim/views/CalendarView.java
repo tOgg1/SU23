@@ -317,14 +317,19 @@ public class CalendarView extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.application);
-			ad.setVisible(true);
-			Appointment a = ad.getAppointment();
-			if(a != null) {
-				System.out.println("Appointment set in dialog.");
-			} else {
-				System.out.println("Appointment not set in dialog.");
+			try {
+				AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.application);
+				ad.setVisible(true);
+				Appointment a = ad.getAppointment();
+				if(a != null) {
+					System.out.println("Appointment set in dialog.");
+				} else {
+					System.out.println("Appointment not set in dialog.");
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
 			}
+			
 		
 		}
 	}
