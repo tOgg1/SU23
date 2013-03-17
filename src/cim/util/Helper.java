@@ -3,6 +3,7 @@ package cim.util;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
@@ -60,11 +61,18 @@ public class Helper
         }
         return builder.toString();
     }
-	public static String formatTime(Time t) {
+	public static String formatTime(Time t, String format) {
 		Calendar c = getEmptyCalendar();
 		c.setTimeInMillis(t.getTime());
-		DateFormat df = DateFormat.getDateInstance();
+		DateFormat df = new SimpleDateFormat(format);
 		return df.format(t);
+	}
+	
+	public static String formatDate(Date d, String format) {
+		Calendar c = getEmptyCalendar();
+		c.setTimeInMillis(d.getTime());
+		DateFormat df = new SimpleDateFormat(format);
+		return df.format(d);
 	}
     
     private static Calendar getEmptyCalendar() {

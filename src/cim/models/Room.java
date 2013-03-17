@@ -4,26 +4,22 @@ import java.util.Date;
 
 public class Room extends CalendarObject
 {
-    private int id;
 	private String name;
+	
 	private int size;
 	private String info;
-	private Date bookedTime;
 	private boolean isBooked;
 	
 	
-	public Room(int id, int size)
+	public Room(int size)
 	{
-		this.id = id;
 		this.size = size;
 	}
 	
-	public Room(int id, String name, int size)
+	public Room(String name, int size)
 	{
-		this.id = id;
 		this.name = name;
 		this.size = size;
-		this.info = info;
 		this.isBooked = false;
 	}
 	public boolean isAvailiable()
@@ -38,13 +34,12 @@ public class Room extends CalendarObject
 
 
 	}
-    @Override
-    public int getId()
-    {
-        return id;
-    }
     public String toString()
     {
     	return "Navn: " + this.name + "\nStorrelse: " + this.size + "\nInfo: " + this.info;
     }
+    
+    public String getName() {
+		return name;
+	}
 }

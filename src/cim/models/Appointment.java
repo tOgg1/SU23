@@ -54,7 +54,14 @@ public class Appointment extends CalendarObject
 	public Date getDate() {
 		return date;
 	}
-
+	
+	public String getDateFormatted(String format) {
+		return Helper.formatDate(this.date, format);
+	}
+	
+	public String getDateFormatted() {
+		return this.getDateFormatted("d/M-yy");
+	}
 
 
 	public void setDate(Date date) {
@@ -71,7 +78,11 @@ public class Appointment extends CalendarObject
 	
 	
 	public String getStartFormatted() {
-		return Helper.formatTime(this.start);
+		return this.getStartFormatted("HH:mm");
+	}
+	
+	public String getStartFormatted(String format) {
+		return Helper.formatTime(this.start, format);
 	}
 
 
@@ -86,8 +97,12 @@ public class Appointment extends CalendarObject
 		return end;
 	}
 	
+	public String getEndFormatted(String format) {
+		return Helper.formatTime(this.end, format);
+	}
+	
 	public String getEndFormatted() {
-		return Helper.formatTime(this.end);
+		return this.getEndFormatted("HH:mm");
 	}
 
 
@@ -149,5 +164,12 @@ public class Appointment extends CalendarObject
 		this.room = room;
 	}
 	
+	/**
+	 * Returns the room name if that is set, returns place if not;
+	 * @return
+	 */
+	public String getWhere() {
+		
+	}
 	
 }
