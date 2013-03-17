@@ -143,15 +143,15 @@ public class AppointmentDetailsPanel extends JPanel {
 		lblAvailableRooms.setBounds(278, 104, 160, 14);
 		add(lblAvailableRooms);
 		
-		JComboBox comBoxDay = new JComboBox();
+		comBoxDays = new JComboBox();
 		int[] days = new int[31];
 		for(int i = 0; i < 31; i++)
 		{
 			days[i] = i;
-			comBoxDay.addItem(days[i]+1);
+			comBoxDays.addItem(days[i]+1);
 		}
-		comBoxDay.setBounds(71, 49, 48, 20);
-		add(comBoxDay);
+		comBoxDays.setBounds(71, 49, 48, 20);
+		add(comBoxDays);
 		
 		comBoxYear = new JComboBox();
 		int[] years = new int[10];
@@ -162,7 +162,6 @@ public class AppointmentDetailsPanel extends JPanel {
 		}
 		comBoxYear.setBounds(210, 49, 54, 20);
 		add(comBoxYear);
-		
 
 		
 		
@@ -170,5 +169,33 @@ public class AppointmentDetailsPanel extends JPanel {
 	public int getDays()
 	{
 		return (int)comBoxDays.getSelectedItem();
+	}
+	public int getHours()
+	{
+		return (int)comBoxHours.getSelectedItem();
+	}
+	public int getYears()
+	{
+		return (int)comBoxYear.getSelectedItem();
+	}
+	public int getMinutes()
+	{
+		return (int)comBoxMinutes.getSelectedItem();
+	}
+	public int getEndHours()
+	{
+		return (int)comBoxEndHours.getSelectedItem();
+	}
+	public int getEndMinutes()
+	{
+		return (int)comBoxEndMinutes.getSelectedItem();
+	}
+	public int getMonths()
+	{
+		return (int)comBoxMonth.getSelectedItem();
+	}
+	public String getDescription()
+	{
+		return txtDescription.getText();
 	}
 }
