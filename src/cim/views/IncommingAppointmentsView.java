@@ -13,13 +13,19 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class IncommingAppointmentsView extends JPanel{
+public class IncommingAppointmentsView extends JPanel {
 	
 	// Det eksisterer en plan i hodet til Beate på hvordan den her kan bygges.
 	// Håkon har også lyst til å prøve
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2690042605018985496L;
 	private ArrayList<MeetingResponse> model;
 	
 	
@@ -32,6 +38,9 @@ public class IncommingAppointmentsView extends JPanel{
 	
 	public void setModel(ArrayList<MeetingResponse> m) {
 		this.model = m;
+		for(MeetingResponse mr : this.model) {
+			mr.addPropertyChangeListener(new MeetingResponseListener(mr));
+		}
 		this.refresh();
 	}
 	
@@ -53,5 +62,17 @@ public class IncommingAppointmentsView extends JPanel{
 			++c.gridy;
 		}
 	}
-	
+
+	private class MeetingResponseListener implements PropertyChangeListener {
+		private MeetingResponse mr;
+		public MeetingResponseListener(MeetingResponse mr) {
+			this.mr = mr;
+		}
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			// The current response has been modified
+			System.out.println(mr.getMeeting().getName() + " has been modified");
+		}
+		
+	}
 }
