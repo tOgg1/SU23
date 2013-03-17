@@ -192,23 +192,22 @@ public class DatabaseHandler {
 		return null;
 
 	}
-
-	public ArrayList<Room> getAllRooms()
-	{
-		ArrayList<Room> rom = new ArrayList<Room>();
-		String sql = "SELECT *" +
-				"FROM meeting_room;";
-		ResultSet rs = executeQuery(sql);
+	/**
+	 * Returns all meeting rooms
+	 * @return
+	 * @throws CloakedIronManException
+	 */
+	public ArrayList<Room> getAllRooms() throws CloakedIronManException {
 		try {
-			while(rs.next())
-			{
-				rom.add(new Room(rs.getInt("meeting_room_id"), rs.getString("name"), rs.getInt("size")));
+			ArrayList<Room> rooms = new ArrayList<Room>();
+			PreparedStatement st = this.con.prepareStatement("SELECT meeting_room_id FROM meeting_room");
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				rooms.add(this.getRoom(rs.getInt("meeting_room_id")));
 			}
-			return rom;
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-			return null;
+			return rooms;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get all rooms", e);
 		}
 	}
 	/**
@@ -793,6 +792,23 @@ public class DatabaseHandler {
 			throw new CloakedIronManException("Could not fill appointment", e);
 		}
 	}
+	
+	private Room getRoom(int id) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting_room WHERE meeting_room_id=?");
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			if(!rs.next()) {
+				throw new CloakedIronManException("Room id not found in database");
+			}
+			Room r = new Room(rs.getString("name"), rs.getInt("size"));
+			r.setId(rs.getInt("meeting_room_id"));
+			return r;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not fetch room.", e);
+		}
+	}
+	/*
 	public Room getRoom(int meeting_room_id) throws SQLException
 	{
 		PreparedStatement st;
@@ -808,7 +824,7 @@ public class DatabaseHandler {
 			return new Room(rs.getInt("meeting_room_id"),rs.getInt("size"));
 		}
 		return null;
-	}
+	}*/
 	
 	public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end) throws CloakedIronManException{
 		try{

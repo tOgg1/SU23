@@ -169,7 +169,11 @@ public class Appointment extends CalendarObject
 	 * @return
 	 */
 	public String getWhere() {
-		
+		if(this.room != null) {
+			return this.room.getName();
+		}
+		// Set or not, returning place
+		return this.place;
 	}
 	
 }
