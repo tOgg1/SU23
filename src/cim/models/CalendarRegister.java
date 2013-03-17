@@ -46,7 +46,7 @@ public class CalendarRegister
     	return this.calendars;
     	}catch(Exception e){
     		System.out.println("hello");
-    		return null;
+    		return new ArrayList<Calendar>();
     	}
     }
 
