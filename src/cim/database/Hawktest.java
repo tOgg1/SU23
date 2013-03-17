@@ -16,11 +16,11 @@ public class Hawktest {
 	 */
 	public static void main(String[] args) throws CloakedIronManException {
 		DatabaseHandler db = new DatabaseHandler();
-		Account a = db.getAccountByEmail("hakon@aamdal.com");
-		Calendar c = db.getCalendar2(2);
-		c.addAppointment(new Meeting("Møte1", Helper.getDate(2013, 3, 16), Helper.getTime(16, 00), Helper.getTime(17,00), a));
-		c.addAppointment(new Meeting("Møte2", Helper.getDate(2013, 3, 16), Helper.getTime(18, 00), Helper.getTime(18,15), a));
-		c.addAppointment(new Meeting("Møte3", Helper.getDate(2013, 3, 17), Helper.getTime(16, 00), Helper.getTime(17,00), a));
+		Account a = db.getAccountByEmail("rÃ¸mme@grÃ¸tesen.no");
+		Calendar c = db.getCalendar2(54);
+		c.addAppointment(new Meeting("Mï¿½te1", Helper.getDate(2013, 3, 16), Helper.getTime(16, 00), Helper.getTime(17,00), a));
+		c.addAppointment(new Meeting("Mï¿½te2", Helper.getDate(2013, 3, 16), Helper.getTime(18, 00), Helper.getTime(18,15), a));
+		c.addAppointment(new Meeting("Mï¿½te3", Helper.getDate(2013, 3, 17), Helper.getTime(16, 00), Helper.getTime(17,00), a));
 		db.saveCalendar(c);
 	}
 

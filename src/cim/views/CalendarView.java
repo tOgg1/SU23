@@ -5,6 +5,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,6 +20,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import cim.models.Appointment;
+import cim.models.Calendar;
+import cim.net.Client;
 import cim.views.appointmentDialogs.AddAppointmentDialog;
 
 public class CalendarView extends JPanel {
@@ -28,6 +33,26 @@ public class CalendarView extends JPanel {
 	private static JTextField txtLrdag;
 	private static JTextField txtSndag;
 	private static JTextField txtUke;
+	
+	private ArrayList<Calendar> myCalendars;
+	
+	private DayList mandag;
+	private DayList tirsdag;
+	private DayList onsdag;
+	private DayList torsdag;
+	private DayList fredag;
+	private DayList lordag;
+	private DayList sondag;
+	
+	private int weekNumber = 11;
+	private int yearNumber = 2013;
+	
+	
+	private GregorianCalendar gregCal;
+
+
+
+	
 	/**
 	 * Create the panel.
 	 */
@@ -172,7 +197,7 @@ public class CalendarView extends JPanel {
 		this.add(txtLrdag, gbc_txtLrdag);
 		txtLrdag.setColumns(10);
 		
-		JList mandag = new JList();
+		mandag = new DayList();
 		GridBagConstraints gbc_mandag = new GridBagConstraints();
 		gbc_mandag.gridheight = 3;
 		gbc_mandag.gridwidth = 2;
@@ -182,7 +207,7 @@ public class CalendarView extends JPanel {
 		gbc_mandag.gridy = 3;
 		this.add(mandag, gbc_mandag);
 		
-		JList tirsdag = new JList();
+		tirsdag = new DayList();
 		GridBagConstraints gbc_tirsdag = new GridBagConstraints();
 		gbc_tirsdag.gridheight = 3;
 		gbc_tirsdag.gridwidth = 2;
@@ -192,7 +217,7 @@ public class CalendarView extends JPanel {
 		gbc_tirsdag.gridy = 3;
 		this.add(tirsdag, gbc_tirsdag);
 		
-		JList onsdag = new JList();
+		onsdag = new DayList();
 		GridBagConstraints gbc_onsdag = new GridBagConstraints();
 		gbc_onsdag.gridheight = 3;
 		gbc_onsdag.gridwidth = 2;
@@ -202,7 +227,7 @@ public class CalendarView extends JPanel {
 		gbc_onsdag.gridy = 3;
 		this.add(onsdag, gbc_onsdag);
 		
-		JList torsdag = new JList();
+		torsdag = new DayList();
 		GridBagConstraints gbc_torsdag = new GridBagConstraints();
 		gbc_torsdag.gridheight = 3;
 		gbc_torsdag.gridwidth = 2;
@@ -212,7 +237,7 @@ public class CalendarView extends JPanel {
 		gbc_torsdag.gridy = 3;
 		this.add(torsdag, gbc_torsdag);
 		
-		JList fredag = new JList();
+		fredag = new DayList();
 		GridBagConstraints gbc_fredag = new GridBagConstraints();
 		gbc_fredag.gridheight = 3;
 		gbc_fredag.gridwidth = 2;
@@ -222,7 +247,7 @@ public class CalendarView extends JPanel {
 		gbc_fredag.gridy = 3;
 		this.add(fredag, gbc_fredag);
 		
-		JList lordag = new JList();
+		lordag = new DayList();
 		GridBagConstraints gbc_lordag = new GridBagConstraints();
 		gbc_lordag.gridwidth = 2;
 		gbc_lordag.insets = new Insets(0, 0, 5, 5);
@@ -244,14 +269,48 @@ public class CalendarView extends JPanel {
 		this.add(txtSndag, gbc_txtSndag);
 		txtSndag.setColumns(10);
 		
-		JList sondag = new JList();
+		sondag = new DayList();
 		GridBagConstraints gbc_sondag = new GridBagConstraints();
 		gbc_sondag.insets = new Insets(0, 0, 5, 5);
 		gbc_sondag.gridwidth = 2;
 		gbc_sondag.fill = GridBagConstraints.BOTH;
 		gbc_sondag.gridx = 11;
 		gbc_sondag.gridy = 5;
+		
+		myCalendars = Client.register.getAllCalendarsToCurrentUser();
 		this.add(sondag, gbc_sondag);
+		
+		renderCalendars();
+	}
+	
+	
+	
+	
+	private void renderCalendars(){
+		DayList[] dayList = {sondag, mandag, tirsdag, onsdag, torsdag, fredag, lordag};
+		for (int i = 0; i < myCalendars.size(); i++){
+			for (int j = 0; j < myCalendars.get(i).getAppointments().size(); j++){
+				
+				gregCal = new GregorianCalendar();
+				Appointment tempAppointment = myCalendars.get(i).getAppointments().get(j);
+				
+				Date tempDate = tempAppointment.getDate();
+				gregCal.setTimeInMillis(tempDate.getTime());								
+				
+				
+				if ((gregCal.get(java.util.Calendar.WEEK_OF_YEAR) == weekNumber) && (gregCal.get(java.util.Calendar.YEAR)) == yearNumber){
+					DayList day = dayList[gregCal.get(java.util.Calendar.DAY_OF_WEEK) - 1];
+					day.add(new AppointmentPanel(tempAppointment));
+					
+				}
+				
+				
+			}
+			
+			
+			
+		}
+		
 	}
 	
 	private class AddAppointmentListener implements ActionListener {
@@ -268,7 +327,6 @@ public class CalendarView extends JPanel {
 			}
 		
 		}
-		
 	}
 
 }

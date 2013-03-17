@@ -38,6 +38,17 @@ public class CalendarRegister
         appointments = new ArrayList<Appointment>();
         accounts = new ArrayList<Account>();
     }
+    
+    public ArrayList<Calendar> getAllCalendarsToCurrentUser(){
+    	try{
+    	Response res = parent.request(new Request("GET_ALL_CALENDARS_TO_ACCOUNT", account));
+    	this.calendars = (ArrayList<Calendar>) res.getData()[0];
+    	return this.calendars;
+    	}catch(Exception e){
+    		System.out.println("hello");
+    		return null;
+    	}
+    }
 
     public void initialize(Account acc) throws CloakedIronManException
     {
