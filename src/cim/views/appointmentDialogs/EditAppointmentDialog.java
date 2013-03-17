@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 
 import cim.models.Account;
 import cim.models.Appointment;
+import cim.util.CloakedIronManException;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -33,7 +35,7 @@ public class EditAppointmentDialog extends JDialog{
 	private JButton btnCancelAppointment;
 	
 //	public EditAppointmentDialog(Account account, Appointment appointment){ //Bytt til denne når GUI er koblet mot resten
-	public EditAppointmentDialog(){
+	public EditAppointmentDialog() throws CloakedIronManException{
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,5 +1,12 @@
 package cim.views.appointmentDialogs;
 
+import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
+import cim.database.DatabaseHandler;
+import cim.models.Account;
+import cim.util.CloakedIronManException;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -7,8 +14,9 @@ import javax.swing.JButton;
 import javax.swing.JList;
 
 public class ParticipantsPanel extends JPanel{
+	private DatabaseHandler db;
 	private JTextField txtSearch;
-	public ParticipantsPanel() {
+	public ParticipantsPanel() throws CloakedIronManException {
 		setLayout(null);
 		
 		JLabel lblSearch = new JLabel("Navn p\u00E5 person eller gruppe");
@@ -29,6 +37,13 @@ public class ParticipantsPanel extends JPanel{
 		add(lblSketreff);
 		
 		JList listSearchResult = new JList();
+		ArrayList<Account> accountList = db.getAllUsers();
+		DefaultListModel<String> model = new DefaultListModel<String>();
+	    for(Account a : accountList ){
+	        model.addElement(a.toString());
+	    }
+	    listSearchResult.setModel(model);
+	    listSearchResult.setSelectedIndex(0);
 		listSearchResult.setBounds(10, 97, 162, 103);
 		add(listSearchResult);
 		
