@@ -357,6 +357,46 @@ public class DatabaseHandler {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
 	}
+	
+	/**
+	 * Saves a meeting response to the database
+	 * @param mr
+	 * @return
+	 * @throws CloakedIronManException
+	 */
+	
+	public MeetingResponse saveMeetingResponse(MeetingResponse mr) throws CloakedIronManException {
+		try {
+			Meeting m = mr.getMeeting();
+			Account a = mr.getAccount();
+			if (a == null) {
+				throw new CloakedIronManException("Meeting Response account not set.");
+			}
+			if (m == null) {
+				throw new CloakedIronManException("Meeting response meeting not set.");
+			}
+			if(a.getId() == -1) {
+				throw new CloakedIronManException("Account not saved in database.");
+			}
+			if (m.getId() == -1) {
+				throw new CloakedIronManException("Meeting not saved in database.");
+			}
+			
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO meeting_response (meeting_appointment_id, account_user_id, status) " +
+					"VALUES (?,?,?) " +
+					"ON DUPLICATE KEY UPDATE" +
+					"status=?");
+			st.setInt(1, m.getId());
+			st.setInt(2, a.getId());
+			st.setString(3, mr.getResponseString());
+			st.setString(4, mr.getResponseString());
+			st.execute();
+			return mr;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not save meeting response", e);
+		}
+		
+	}
 	/**
 	 *  Saven the appointment and returns the saved version
 	 * @param a

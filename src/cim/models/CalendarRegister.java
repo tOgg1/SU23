@@ -407,7 +407,6 @@ public class CalendarRegister
      * @throws CloakedIronManException
      */
     public void saveMeetingResponse(MeetingResponse mr) throws CloakedIronManException {
-    	// TODO: Fix
-    	return;
+    	this.parent.request(new Request("SAVE_MEETING_RESPONSE", mr));
     }
 }

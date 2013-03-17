@@ -8,6 +8,7 @@ import cim.database.DatabaseHandler;
 import cim.models.Account;
 import cim.models.Alert;
 import cim.models.Calendar;
+import cim.models.MeetingResponse;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
@@ -57,6 +58,10 @@ public class ServerRequestAPI {
 			}
 			else if (method.equals("SEEN_ALERT")){
 				return seen_alert((Alert) args[0]);
+			} 
+			
+			else if(method.equals("SAVE_MEETING_RESPONSE")){
+				return save_meeting_response((MeetingResponse)args[0]);
 			}
 			return new Response(new CloakedIronManException("No server API call named '" + method + "'"));
 		} catch (Exception e) {
@@ -116,5 +121,9 @@ public class ServerRequestAPI {
 		return new Response(this.db.getAllUnseenAlertsToAccount(acc));
 	}
 	
+	private Response save_meeting_response(MeetingResponse mr) throws CloakedIronManException {
+		this.db.saveMeetingResponse(mr);
+		return new Response();
+	}
 	
 }

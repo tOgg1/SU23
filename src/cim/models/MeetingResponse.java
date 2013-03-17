@@ -41,6 +41,10 @@ public class MeetingResponse extends CalendarObject {
 	public Response getResponse() {
 		return response;
 	}
+	
+	public String getResponseString() {
+		return this.response.toString().toLowerCase();
+	}
 
 	public Response handleResponse(String a){
 		if (a.equals("not_seen")){
