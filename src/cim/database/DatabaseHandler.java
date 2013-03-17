@@ -147,7 +147,9 @@ public class DatabaseHandler {
 			 *  Add oppointments where the user has said yes 
 			 */
 			if(a instanceof Account) {
+				
 				st = this.con.prepareStatement("SELECT meeting_appointment_id FROM meeting_response WHERE account_user_id=? AND status='attending'");
+				st.setInt(1, a.getId());
 				rs = st.executeQuery();
 				while(rs.next()) {
 					c.addAppointment(this.getAppointment2(rs.getInt("meeting_appointment_id")));
