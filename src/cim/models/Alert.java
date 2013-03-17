@@ -8,7 +8,10 @@ public class Alert extends CalendarObject {
 	Date when;
 	Appointment appointment;
 	
-	
+	public Alert(Date date)
+	{
+		this.when = date;
+	}
 	public Alert(Date date, Appointment appointment, Account owner){
 		this.appointment = appointment;
 		this.owner = owner;
