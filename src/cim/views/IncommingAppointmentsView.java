@@ -4,7 +4,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import cim.models.MeetingResponse;
+import cim.net.Client;
 import cim.net.packet.Response;
+import cim.util.CloakedIronManException;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -70,8 +72,15 @@ public class IncommingAppointmentsView extends JPanel {
 		}
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			// The current response has been modified
-			System.out.println(mr.getMeeting().getName() + " has been modified");
+			try {
+				Client.register.saveMeetingResponse(this.mr);
+				IncommingAppointmentsView.this.refresh();
+				// The current response has been modified
+				System.out.println(mr.getMeeting().getName() + " has been modified");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		
 	}
