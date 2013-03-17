@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.net.Client;
+import cim.util.CloakedIronManException;
 import cim.views.appointmentDialogs.AddAppointmentDialog;
 
 public class CalendarView extends JPanel {
@@ -298,7 +299,8 @@ public class CalendarView extends JPanel {
 				gregCal.setTimeInMillis(tempDate.getTime());								
 				
 				
-				if ((gregCal.get(java.util.Calendar.WEEK_OF_YEAR) == weekNumber) && (gregCal.get(java.util.Calendar.YEAR)) == yearNumber){
+				if ((gregCal.get(java.util.Calendar.WEEK_OF_YEAR) == weekNumber) && (gregCal.get(java.util.Calendar.YEAR)) == yearNumber)
+				{
 					DayList day = dayList[gregCal.get(java.util.Calendar.DAY_OF_WEEK) - 1];
 					day.add(new AppointmentPanel(tempAppointment));
 					
@@ -317,14 +319,22 @@ public class CalendarView extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.application);
-			ad.setVisible(true);
-			Appointment a = ad.getAppointment();
-			if(a != null) {
-				System.out.println("Appointment set in dialog.");
-			} else {
-				System.out.println("Appointment not set in dialog.");
+			AddAppointmentDialog ad;
+			try {
+				
+				ad = new AddAppointmentDialog(CalendarView.this.application);
+				ad.setVisible(true);
+				Appointment a = ad.getAppointment();
+				if(a != null) {
+					System.out.println("Appointment set in dialog.");
+				} else {
+					System.out.println("Appointment not set in dialog.");
+				}
+			} catch (CloakedIronManException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
+			
 		
 		}
 	}
