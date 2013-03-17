@@ -9,6 +9,9 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.awt.FlowLayout;
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 public class IncommingAppointmentsView extends JPanel{
 	
@@ -21,7 +24,8 @@ public class IncommingAppointmentsView extends JPanel{
 	
 	public IncommingAppointmentsView() {
 		setBackground(Color.YELLOW);
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new GridBagLayout());
+		
 
 	}
 	
@@ -40,10 +44,17 @@ public class IncommingAppointmentsView extends JPanel{
 	}
 	private void refresh() {
 		this.removeAll();
+		GridBagConstraints c = new GridBagConstraints();
+		c.ipadx = 5;
+		c.ipady = 5;
+		c.insets = new Insets(5,5,5,5);
+		c.gridy = 0;
 		for(MeetingResponse m: this.model) {
 			MeetingResponsePanel mp = new MeetingResponsePanel();
 			mp.setModel(m);
-			this.add(mp);
+			this.add(mp, c);
+			System.out.println(c.gridy);
+			++c.gridy;
 		}
 	}
 	

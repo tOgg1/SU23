@@ -1,9 +1,12 @@
 package cim.views;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 
 import cim.models.Meeting;
 import cim.models.MeetingResponse;
+import cim.models.MeetingResponse.Response;
+
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
@@ -14,6 +17,12 @@ import java.awt.event.ActionEvent;
 
 public class MeetingResponsePanel extends JPanel {
 
+	/**
+	 * Needed for somewhat reason
+	 */
+	private static final long serialVersionUID = -3583894885082933803L;
+	
+	
 	private MeetingResponse model;
 	private ModelListener ml = new ModelListener();
 	private JLabel lblDate;
@@ -22,6 +31,8 @@ public class MeetingResponsePanel extends JPanel {
 	private JLabel lblWhere;
 	private JLabel lblFrom;
 	private JButton btnDecline;
+	private JButton btnAccept;
+	private ButtonGroup buttonGroup;
 	
 	public MeetingResponsePanel() {
 		setBackground(Color.RED);
@@ -47,13 +58,18 @@ public class MeetingResponsePanel extends JPanel {
 		lblFrom.setBounds(448, 11, 148, 14);
 		add(lblFrom);
 		
-		JButton btnAccept = new JButton("Godta");
+		this.buttonGroup = new ButtonGroup();
+		
+		btnAccept = new JButton("Godta");
 		btnAccept.addActionListener(new AcceptListener());
 		btnAccept.setBounds(666, 7, 89, 23);
+		buttonGroup.add(btnAccept);
 		add(btnAccept);
 		
 		btnDecline = new JButton("Forkast");
+		btnDecline.addActionListener(new DeclineListener());
 		btnDecline.setBounds(765, 7, 89, 23);
+		buttonGroup.add(btnDecline);
 		add(btnDecline);
 		
 	}
@@ -76,6 +92,14 @@ public class MeetingResponsePanel extends JPanel {
 		this.lblWhere.setText(m.getWhere());
 		this.lblWhat.setText(m.getName());
 		this.lblFrom.setText(m.getOwner().getName());
+		if(this.model.getResponse() == Response.ATTENDING) {
+			this.buttonGroup.setSelected(this.btnAccept.getModel(), true);
+			this.buttonGroup.setSelected(this.btnDecline.getModel(), false);
+		} else {
+
+			this.buttonGroup.setSelected(this.btnAccept.getModel(), false);
+			this.buttonGroup.setSelected(this.btnDecline.getModel(), true);
+		}
 	}
 	
 	private class ModelListener implements PropertyChangeListener {
@@ -89,6 +113,12 @@ public class MeetingResponsePanel extends JPanel {
 	}
 	
 	private class AcceptListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	
+	private class DeclineListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			
 		}
