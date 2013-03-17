@@ -72,7 +72,7 @@ public class MeetingResponsePanel extends JPanel {
 		btnDecline.setBounds(765, 7, 89, 23);
 		buttonGroup.add(btnDecline);
 		add(btnDecline);
-		setPreferredSize(new Dimension(873, 41));
+		setPreferredSize(new Dimension(967, 35));
 		
 	}
 	

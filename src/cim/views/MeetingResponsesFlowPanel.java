@@ -51,9 +51,6 @@ public class MeetingResponsesFlowPanel extends JPanel {
 	private void refresh() {
 		this.removeAll();
 		GridBagConstraints c = new GridBagConstraints();
-		c.ipadx = 5;
-		c.ipady = 5;
-		c.insets = new Insets(5,5,5,5);
 		c.gridy = 0;
 		for(MeetingResponse m: this.model) {
 			if(m.getResponse() != MeetingResponse.Response.NOT_SEEN) {

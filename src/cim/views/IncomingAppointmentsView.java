@@ -10,19 +10,24 @@ import cim.models.MeetingResponse;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.awt.Component;
-import javax.swing.Box;
 import javax.swing.JSeparator;
 
 public class IncomingAppointmentsView extends JPanel {
 
 	/**
+	 * Needed for somewhat reason
+	 */
+	private static final long serialVersionUID = 6617273164387983209L;
+	/**
 	 * Create the panel.
 	 */
+	
+	MeetingResponsesFlowPanel flowpanel;
+	
 	public IncomingAppointmentsView() {
 		setBackground(SystemColor.activeCaption);
 		setLayout(null);
-		setPreferredSize(new Dimension(866, 456));
+		setPreferredSize(new Dimension(1039, 456));
 		
 		JLabel lblMeetings = new JLabel("M\u00F8ter til godkjenning");
 		lblMeetings.setFont(new Font("Comic Sans MS", Font.PLAIN, 22));
@@ -45,27 +50,31 @@ public class IncomingAppointmentsView extends JPanel {
 		add(lblWhat);
 		
 		JLabel lblWhere = new JLabel("Hvor");
-		lblWhere.setBounds(390, 54, 46, 14);
+		lblWhere.setBounds(425, 54, 46, 14);
 		lblWhere.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		add(lblWhere);
 		
 		JLabel lblFrom = new JLabel("Avsender");
-		lblFrom.setBounds(542, 54, 46, 14);
+		lblFrom.setBounds(612, 54, 68, 14);
 		lblFrom.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		add(lblFrom);
 		
 		JLabel lblRSVP = new JLabel("RSVP");
-		lblRSVP.setBounds(745, 54, 46, 14);
+		lblRSVP.setBounds(907, 54, 46, 14);
 		lblRSVP.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		add(lblRSVP);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(31, 69, 811, 21);
+		separator.setBounds(31, 69, 998, 21);
 		add(separator);
+		
+		flowpanel = new MeetingResponsesFlowPanel();
+		flowpanel.setBounds(31,79,998,366);
+		add(flowpanel);
 
 	}
 	
 	public void setModel(ArrayList<MeetingResponse> m) {
-		
+		flowpanel.setModel(m);
 	}
 }
