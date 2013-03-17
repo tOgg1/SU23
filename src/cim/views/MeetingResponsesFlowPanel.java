@@ -10,6 +10,7 @@ import cim.util.CloakedIronManException;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -18,7 +19,7 @@ import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class IncommingAppointmentsView extends JPanel {
+public class MeetingResponsesFlowPanel extends JPanel {
 	
 	// Det eksisterer en plan i hodet til Beate på hvordan den her kan bygges.
 	// Håkon har også lyst til å prøve
@@ -31,9 +32,10 @@ public class IncommingAppointmentsView extends JPanel {
 	private ArrayList<MeetingResponse> model;
 	
 	
-	public IncommingAppointmentsView() {
+	public MeetingResponsesFlowPanel() {
 		setBackground(Color.YELLOW);
 		setLayout(new GridBagLayout());
+		setPreferredSize(new Dimension(715, 403));
 		
 
 	}
@@ -74,7 +76,7 @@ public class IncommingAppointmentsView extends JPanel {
 		public void propertyChange(PropertyChangeEvent evt) {
 			try {
 				Client.register.saveMeetingResponse(this.mr);
-				IncommingAppointmentsView.this.refresh();
+				MeetingResponsesFlowPanel.this.refresh();
 				// The current response has been modified
 				System.out.println(mr.getMeeting().getName() + " has been modified");
 			} catch (Exception e) {
