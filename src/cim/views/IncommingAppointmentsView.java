@@ -34,14 +34,6 @@ public class IncommingAppointmentsView extends JPanel{
 		this.refresh();
 	}
 	
-	
-	public int getIncommingAppointments(){
-	
-		//TODO: Hente ut antall avtaler som ligger på vent.
-		// Dette tallet vil brukes til å lage griddet stort nok.
-	
-		return 10;
-	}
 	private void refresh() {
 		this.removeAll();
 		GridBagConstraints c = new GridBagConstraints();

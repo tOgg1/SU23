@@ -9,6 +9,7 @@ import cim.models.MeetingResponse.Response;
 
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JButton;
@@ -71,6 +72,7 @@ public class MeetingResponsePanel extends JPanel {
 		btnDecline.setBounds(765, 7, 89, 23);
 		buttonGroup.add(btnDecline);
 		add(btnDecline);
+		setPreferredSize(new Dimension(873, 41));
 		
 	}
 	
