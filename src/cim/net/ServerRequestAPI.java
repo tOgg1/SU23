@@ -49,6 +49,10 @@ public class ServerRequestAPI {
 			} else if (method.equals("GET_ACCOUNT")) {
 				return get_account((int)args[0]);
 			}
+			else if (method.equals("GET_ALL_USERS"))
+			{
+				return get_all_users();
+			}
 			else if (method.equals("GET_MEETINGRESPONSESS_TO_ACCOUNT")){
 				return get_all_meetingResponses_to_account((Account)args[0]);
 			}
@@ -99,6 +103,10 @@ public class ServerRequestAPI {
 	 * @return
 	 * @throws SQLException
 	 */
+	private Response get_all_users() throws CloakedIronManException
+	{
+		return new Response(this.db.getAllUsers());
+	}
 	private Response get_all_calendars() throws CloakedIronManException {
 		//return new Response(new ArrayList());	
 		return new Response(this.db.getAllCalendars());

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import cim.database.DatabaseHandler;
 import cim.models.Account;
+import cim.net.Client;
 import cim.util.CloakedIronManException;
 
 import javax.swing.JLabel;
@@ -37,7 +38,7 @@ public class ParticipantsPanel extends JPanel{
 		add(lblSketreff);
 		
 		JList listSearchResult = new JList();
-		ArrayList<Account> accountList = db.getAllUsers();
+		ArrayList<Account> accountList = Client.register.getAllUsers();
 		DefaultListModel<Account> model = new DefaultListModel<Account>();
 	    for(Account a : accountList){
 	        model.addElement(a);
