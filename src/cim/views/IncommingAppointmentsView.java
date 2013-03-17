@@ -8,6 +8,7 @@ import cim.models.MeetingResponse;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.awt.FlowLayout;
+import java.awt.Color;
 
 public class IncommingAppointmentsView extends JPanel{
 	
@@ -19,7 +20,8 @@ public class IncommingAppointmentsView extends JPanel{
 	
 	
 	public IncommingAppointmentsView() {
-		setLayout(new GridLayout(1, 0, 0, 0));
+		setBackground(Color.YELLOW);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 	}
 	

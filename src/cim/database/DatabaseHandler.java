@@ -498,13 +498,19 @@ public class DatabaseHandler {
 			if (!rs.next()) {
 				throw new CloakedIronManException("Could not find appointment.");
 			}
+			Appointment a;
 			if(rs.getObject("meeting.appointment_id")== null) {
 				// It's not a meeting
-				return fillAppointment2(rs);
+				a = fillAppointment2(rs);
 			} else {
-				return fillMeeting2(rs);
+				a = fillMeeting2(rs);
 			}
-			
+			// Appointment/meeting saved, now load room
+			int roomId = rs.getInt("meeting_room_id");
+			if(!rs.wasNull()) {
+				a.setRoom(this.getRoom(roomId));
+			}
+			return a;
 			
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not get appointment.", e);

@@ -172,8 +172,10 @@ public class Appointment extends CalendarObject
 		if(this.room != null) {
 			return this.room.getName();
 		}
-		// Set or not, returning place
-		return this.place;
+		if (this.place != null) {
+			return this.place;
+		}
+		return "Ukjent";
 	}
 	
 }
