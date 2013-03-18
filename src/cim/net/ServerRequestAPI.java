@@ -70,9 +70,8 @@ public class ServerRequestAPI {
 			}
 			
 			else if (method.equals("CANCEL_APPOINTMENT")){
-				System.out.println("hello");
 				cancel_appointment((Appointment)args[0]);
-				return new Response(null);
+				return new Response();
 			}
 			
 			return new Response(new CloakedIronManException("No server API call named '" + method + "'"));

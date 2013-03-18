@@ -7,6 +7,8 @@ import cim.util.CloakedIronManException;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +20,7 @@ import java.awt.event.MouseEvent;
 public class AppointmentPanel extends JPanel implements Comparable
 {
     private Appointment base;
-
+    private PropertyChangeSupport pcs;
     public AppointmentPanel(Appointment base)
     {
         this.base = base;
@@ -30,6 +32,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         textPane.addMouseListener(new deleteListener());
         textPane.setText("x");
         add(textPane);
+        pcs = new PropertyChangeSupport(this);
     }
 
     public Appointment getBase() {
@@ -53,12 +56,17 @@ public class AppointmentPanel extends JPanel implements Comparable
         return getBase().getStart().compareTo(other.getBase().getStart());
     }
     
+    public void addPropertyChangeListener (PropertyChangeListener listener){
+    	this.pcs.addPropertyChangeListener(listener);
+    }
+    
     public class deleteListener extends MouseAdapter{
     	public void mouseReleased(MouseEvent e) {
     		try {
 				Client.register.cancelAppointment(base);
+				pcs.firePropertyChange("delbase", base, null);
+				base = null;
 			} catch (CloakedIronManException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
     	}

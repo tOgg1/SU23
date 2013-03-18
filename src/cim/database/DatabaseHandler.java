@@ -943,6 +943,7 @@ public class DatabaseHandler {
 					rs.getTime("end"),
 					this.getAccount(rs.getInt("appointment_owner")) 
 				);
+				a.setId(rs.getInt("appointment_id"));
 				a.setInfo(rs.getString("info"));
 				a.setPlace(rs.getString("place"));
 				return a;
@@ -1149,12 +1150,12 @@ public class DatabaseHandler {
 	
 	public void cancelAppointment(Appointment ap) throws CloakedIronManException{
 		PreparedStatement st;
-
 		try {
 			if (ap instanceof Appointment){
-				st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id  = ?");
+				st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id = ?");
+				System.out.println(ap.getId());
 				st.setInt(1, ap.getId());
-				st.executeQuery();
+				st.executeUpdate();
 			}
 		
 		else if (ap instanceof Meeting){

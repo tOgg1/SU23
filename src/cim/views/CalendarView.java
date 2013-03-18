@@ -27,8 +27,10 @@ import cim.net.Client;
 import cim.views.appointmentDialogs.AddAppointmentDialog;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class CalendarView extends JPanel {
+public class CalendarView extends JPanel implements PropertyChangeListener {
 	private static JTextField txtMandag;
 	private static JTextField txtTirsdag;
 	private static JTextField txtOnsdag;
@@ -324,7 +326,9 @@ public class CalendarView extends JPanel {
 				
 				if ((gregCal.get(java.util.Calendar.WEEK_OF_YEAR) == weekNumber) && (gregCal.get(java.util.Calendar.YEAR)) == yearNumber){
 					DayList day = dayList[gregCal.get(java.util.Calendar.DAY_OF_WEEK) - 1];
-					day.add(new AppointmentPanel(tempAppointment));
+					AppointmentPanel panel = new AppointmentPanel(tempAppointment);
+					panel.addPropertyChangeListener(this);
+					day.add(panel);
 					
 				}
 			}
@@ -374,6 +378,28 @@ public class CalendarView extends JPanel {
 			
 		
 		}
+	}
+
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals("delbase")){
+			for (Calendar cal : myCalendars){
+				cal.removeAppointment((Appointment) evt.getOldValue());
+			}
+		}
+		renderCalendars();
+	}
+	
+	
+	public void addCalendar(Calendar cal){
+		if (!this.myCalendars.contains(cal)){
+			this.myCalendars.add(cal);
+		}
+	}
+	
+	public void removeCalendar(Calendar cal){
+		this.myCalendars.remove(cal);
 	}
 
 }
