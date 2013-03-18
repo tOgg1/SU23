@@ -429,11 +429,13 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	public void addCalendar(Calendar cal){
 		if (!this.myCalendars.contains(cal)){
 			this.myCalendars.add(cal);
+			renderCalendars();
 		}
 	}
 	
 	public void removeCalendar(Calendar cal){
 		this.myCalendars.remove(cal);
+		renderCalendars();
 	}
 
 }

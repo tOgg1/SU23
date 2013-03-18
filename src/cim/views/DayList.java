@@ -30,7 +30,6 @@ public class DayList extends JPanel
     {
         this.children = new PriorityQueue<AppointmentPanel>();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        this.setPreferredSize(new Dimension(20,20));
     }
 
     public boolean add(AppointmentPanel appointment)
