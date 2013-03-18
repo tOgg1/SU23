@@ -43,9 +43,6 @@ public class Meeting extends Appointment
 			returnString += r.account + "\n" + r.response + "\n";
 		}
 		return returnString;*/
-		
-		
-		
 	}
 
 	public boolean isCancelled() {
@@ -56,10 +53,14 @@ public class Meeting extends Appointment
 		this.pcs.firePropertyChange("cancelled", this.isCancelled, isCancelled);
 		this.isCancelled = isCancelled;
 	}
-	
-	
 
-	
-	
+    public void setInvitees(ArrayList<MeetingResponse> invitees)
+    {
+        this.invitees = invitees;
+    }
 
+    public ArrayList<MeetingResponse> getInvitees()
+    {
+        return invitees;
+    }
 }

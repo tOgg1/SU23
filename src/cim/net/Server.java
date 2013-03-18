@@ -161,7 +161,7 @@ public class Server {
 			while(Server.this.running) {
 				try {
 					Request request = (Request) this.input.readObject();
-					Response r = Server.this.api.getResponse(request);
+                    Response r = Server.this.api.getResponse(request);
 					this.output.writeObject(r);
 				} catch (ClassNotFoundException e) {
 					e("Error receiving object: " + e.getMessage());

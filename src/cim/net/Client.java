@@ -1,6 +1,5 @@
 package cim.net;
 
-import cim.database.DatabaseHandler;
 import cim.models.Account;
 import cim.models.CalendarRegister;
 import cim.net.packet.Event;
@@ -116,7 +115,7 @@ public class Client {
 			}
 			return r;
 		} catch (Exception e) {
-			throw new CloakedIronManException("Invalid response from server.", e);
+			throw new CloakedIronManException("Invalid response from server: " + e.getMessage(), e);
 		} 
 	}
 	

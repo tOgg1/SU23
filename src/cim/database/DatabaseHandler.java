@@ -379,9 +379,16 @@ public class DatabaseHandler {
 				st.executeUpdate();
 			}
 			
-			
-			
+
 			for(Appointment a : c.getAppointments()) {
+                if(a instanceof Meeting)
+                {
+                    //TODO: Stopping here for some reason!
+                    for(MeetingResponse response : ((Meeting)a).getInvitees())
+                    {
+                        this.saveMeetingResponse(response);
+                    }
+                }
 				this.saveAppointment(a, c);
 			}
 			
@@ -399,7 +406,8 @@ public class DatabaseHandler {
 	 */
 	
 	public MeetingResponse saveMeetingResponse(MeetingResponse mr) throws CloakedIronManException {
-		try {
+        System.out.println("IM here too!");
+        try {
 			Meeting m = mr.getMeeting();
 			Account a = mr.getAccount();
 			if (a == null) {

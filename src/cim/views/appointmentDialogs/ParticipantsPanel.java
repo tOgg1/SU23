@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 public class ParticipantsPanel extends JPanel implements ActionListener{
 	private DatabaseHandler db;
@@ -78,7 +79,14 @@ public class ParticipantsPanel extends JPanel implements ActionListener{
 
     public ArrayList<Attendable> getInvitees()
     {
-        return (ArrayList<Attendable>) modelAttending.elements();
+        ArrayList<Attendable> attendables = new ArrayList<Attendable>();
+        Enumeration<Attendable> modelContent = modelAttending.elements();
+        while(modelContent.hasMoreElements())
+        {
+            attendables.add(modelContent.nextElement());
+        }
+        System.out.println(attendables.size());
+        return attendables;
     }
 
     @Override

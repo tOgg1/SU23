@@ -35,7 +35,7 @@ public class ServerRequestAPI {
 		try {
 			String method = req.getMethod().toUpperCase();
 			Object[] args = req.getArgs();
-			//	Big fat-ass if
+            //	Big fat-ass if
 			if(method.equals("AUTHENTICATE")) {
 				return authenticate((String)args[0], (String)args[1]);
 			} else if (method.equals("GET_ALL_CALENDARS")) {
@@ -64,7 +64,6 @@ public class ServerRequestAPI {
 			else if(method.equals("SAVE_MEETING_RESPONSE")){
 				return save_meeting_response((MeetingResponse)args[0]);
 			}
-			
 			else if (method.equals("CANCEL_APPOINTMENT")){
 				cancel_appointment((Appointment)args[0]);
 				return new Response();
@@ -116,7 +115,6 @@ public class ServerRequestAPI {
 	}
 	private Response get_all_calendars() throws CloakedIronManException {
 		//return new Response(new ArrayList());
-        System.out.println("Im here!");
 		return new Response(this.db.getAllCalendars());
 	}
 	

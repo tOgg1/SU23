@@ -397,10 +397,9 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 					Client.register.addAppointmentFromGUI((Appointment) evt.getNewValue(), cal);
 					break;
 				}
-					
 			}
-			
 		}
+
 		renderCalendars();
 	}
 	

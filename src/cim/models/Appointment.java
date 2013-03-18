@@ -1,9 +1,10 @@
 package cim.models;
 
+import cim.util.Helper;
+
 import java.sql.Date;
 import java.sql.Time;
-
-import cim.util.Helper;
+import java.util.ArrayList;
 
 public class Appointment extends CalendarObject 
 {
@@ -177,5 +178,20 @@ public class Appointment extends CalendarObject
 		}
 		return "Ukjent";
 	}
-	
+
+    public Meeting toMeeting()
+    {
+        return new Meeting(getName(), getDate(), getStart(), getEnd(), getOwner());
+    }
+
+    public Meeting toMeeting(ArrayList<Attendable> invitees)
+    {
+        Meeting meeting = this.toMeeting();
+        ArrayList<MeetingResponse> responses = new ArrayList<MeetingResponse>();
+        for(Attendable invitee : invitees)
+        {
+            responses.add(new MeetingResponse((Account)invitee,meeting,"not_seen"));
+        }
+        return meeting;
+    }
 }
