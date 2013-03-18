@@ -74,6 +74,11 @@ public class Helper
 		DateFormat df = new SimpleDateFormat(format);
 		return df.format(d);
 	}
+	
+	public static Date getNow() {
+		Calendar c = Calendar.getInstance();
+		return new Date(c.getTimeInMillis());
+	}
     
     private static Calendar getEmptyCalendar() {
     	return new GregorianCalendar(0,0,0,0,0);
