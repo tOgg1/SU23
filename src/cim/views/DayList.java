@@ -30,6 +30,11 @@ public class DayList extends JPanel
     {
         this.children = new PriorityQueue<AppointmentPanel>();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        add(scrollPane);
+        
     }
 
     public boolean add(AppointmentPanel appointment)
@@ -92,7 +97,7 @@ public class DayList extends JPanel
         log(list.add(panel3));
         //log(list.remove(panel2));
 
-        frame.add(list);
+        frame.getContentPane().add(list);
         frame.pack();
         frame.setVisible(true);
     }
