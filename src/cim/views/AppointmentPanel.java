@@ -62,16 +62,10 @@ public class AppointmentPanel extends JPanel implements Comparable
     
     public class deleteListener extends MouseAdapter{
     	public void mouseReleased(MouseEvent e) {
-    		try {
-				Client.register.cancelAppointment(base);
 				pcs.firePropertyChange("delbase", base, null);
-				base = null;
-			} catch (CloakedIronManException e1) {
-				e1.printStackTrace();
-			}
+				base = null;}
     	}
-    }
+	}
     
     
-    
-}
+

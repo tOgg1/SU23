@@ -471,8 +471,8 @@ public class CalendarRegister
 		this.pcs.firePropertyChange("meetingResponses", null, this.meetingResponses);
 	}
 		
-	public void cancelAppointment(Appointment app) throws CloakedIronManException{
-		this.parent.request(new Request("CANCEL_APPOINTMENT", app));
+	public void cancelAppointment(Appointment appointment) throws CloakedIronManException{
+		this.parent.request(new Request("CANCEL_APPOINTMENT", appointment));
 
 	}
 

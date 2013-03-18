@@ -24,6 +24,7 @@ import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.models.MeetingResponse;
 import cim.net.Client;
+import cim.util.CloakedIronManException;
 import cim.views.appointmentDialogs.AddAppointmentDialog;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -384,6 +385,12 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals("delbase")){
+			try {
+				Client.register.cancelAppointment(((Appointment)evt.getOldValue()));
+			} catch (CloakedIronManException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			for (Calendar cal : myCalendars){
 				cal.removeAppointment((Appointment) evt.getOldValue());
 			}
