@@ -1,6 +1,7 @@
 package cim.database;
 
 import cim.models.*;
+import cim.models.MeetingResponse.Response;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
 
@@ -408,11 +409,129 @@ public class DatabaseHandler {
 			st.setString(4, mr.getResponseString());
 			System.out.println(mr.getResponseString());
 			st.execute();
+			
+			/*
+			 * If the meeting response is rejected, we need to add it to reject Message
+			 */
+			if(mr.getResponse() == Response.NOT_ATTENDING) {
+				this.createRejectMessages(m,a);
+			}
+			
+			
 			return mr;
 		} catch (Exception e) {
 			throw new CloakedIronManException("Could not save meeting response", e);
 		}
 		
+	}
+	/**
+	 * This method adds reject messages to the current meeting from the account who rejected
+	 * @param m The meeting that was rejected
+	 * @param a The account that rejected
+	 */
+	private void createRejectMessages(Meeting m, Account a) throws CloakedIronManException {
+		try {
+			ArrayList<Account> accounts = this.getAccountsToMeeting(m);
+			for (Account accountTo : accounts) {
+				if (accountTo.equals(a)) {
+					continue; // No need to send message to oneself
+				}
+				RejectMessage rm = new RejectMessage(accountTo, m);
+				rm.setWhoRejected(a);
+				this.saveRejectMessage(rm);
+			}
+			
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not create reject messages", e);
+		}
+		
+	}
+	
+	private RejectMessage saveRejectMessage(RejectMessage rm) throws CloakedIronManException {
+		try {
+			if(rm.getId() == -1) {
+				rm.setId(this.getNextAutoIncrease("reject_message", "reject_message_id"));
+			}
+			if(rm.getMeeting() == null) {
+				throw new CloakedIronManException("Reject Message meeting not set.");
+			}
+			if(rm.getMeeting().getId() == -1) {
+				throw new CloakedIronManException("Reject Message meeing id not set, meeting not saved in database");
+			}
+			
+			if(rm.getRecipient() == null) {
+				throw new CloakedIronManException("Reject Message recipient not set");
+			}
+			
+			if(rm.getRecipient().getId() == -1) {
+				throw new CloakedIronManException("Reject Message recipient id not set, recipient not saved in database");
+			}
+			if (rm.getWhoRejected() != null) {
+				if(rm.getWhoRejected().getId() == -1) {
+					throw new CloakedIronManException("Who Rejected is set, but its id is not set. Save the WhoRejected account to database first.");
+				}
+			};
+			
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO reject_message " +
+					"(reject_message_id, date, to_account, who_rejected, meeting_id) " +
+					"VALUES " +
+					"(?,?,?,?,?) " +
+					"ON DUPLICATE KEY UPDATE " +
+					"date=?," +
+					"to_account=?," +
+					"who_rejected=?," +
+					"meeting_id=?");
+			st.setInt(1, rm.getId());
+			st.setTimestamp(2, rm.getDate());
+			st.setInt(3, rm.getRecipient().getId());
+			if(rm.getWhoRejected() != null) {
+				st.setInt(4, rm.getWhoRejected().getId());
+			} else {
+				st.setNull(4, Types.INTEGER);
+			}
+			st.setInt(5, rm.getMeeting().getId());
+			
+			st.setTimestamp(6, rm.getDate());
+			st.setInt(7, rm.getRecipient().getId());
+			if(rm.getWhoRejected() != null) {
+				st.setInt(8, rm.getWhoRejected().getId());
+			} else {
+				st.setNull(8, Types.INTEGER);
+			}
+			st.setInt(9, rm.getMeeting().getId());
+			
+			st.executeUpdate();
+			
+			return rm;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not save reject message.", e);
+		}
+	}
+	
+	/**
+	 * Returns all accounts associated with a meeting
+	 * @param m
+	 * @return
+	 */
+	private ArrayList<Account> getAccountsToMeeting(Meeting m) throws CloakedIronManException {
+		try {
+			ArrayList<Account> accounts = new ArrayList<Account>();
+			int id = m.getId();
+			if(id == -1) {
+				throw new CloakedIronManException("Meeting ID not set, meeting not saved in database.");
+			}
+			
+			PreparedStatement st = this.con.prepareStatement("SELECT account_user_id FROM meeting_response WHERE meeting_appointment_id=?");
+			st.setInt(1, id);
+			
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				accounts.add(this.getAccount(rs.getInt("account_user_id")));
+			}
+			return accounts;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get all accounts to meeting.", e);
+		}
 	}
 	/**
 	 *  Saven the appointment and returns the saved version

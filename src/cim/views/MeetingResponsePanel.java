@@ -17,6 +17,8 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.SystemColor;
+import java.awt.Font;
 
 public class MeetingResponsePanel extends JPanel {
 
@@ -39,26 +41,31 @@ public class MeetingResponsePanel extends JPanel {
 	
 	public MeetingResponsePanel() throws CloakedIronManException {
 		try {
-			setBackground(Color.RED);
+			setBackground(SystemColor.control);
 			setLayout(null);
 			
 			lblDate = new JLabel("time");
-			lblDate.setBounds(0, 11, 87, 14);
+			lblDate.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+			lblDate.setBounds(0, 11, 101, 14);
 			add(lblDate);
 			
 			lblWhen = new JLabel("when");
-			lblWhen.setBounds(111, 11, 111, 14);
+			lblWhen.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+			lblWhen.setBounds(111, 11, 124, 14);
 			add(lblWhen);
 			
 			lblWhat = new JLabel("what");
-			lblWhat.setBounds(245, 11, 46, 14);
+			lblWhat.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+			lblWhat.setBounds(245, 11, 139, 14);
 			add(lblWhat);
 			
 			lblWhere = new JLabel("where");
-			lblWhere.setBounds(394, 11, 110, 14);
+			lblWhere.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+			lblWhere.setBounds(394, 11, 174, 14);
 			add(lblWhere);
 			
 			lblFrom = new JLabel("from");
+			lblFrom.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 			lblFrom.setBounds(578, 11, 344, 14);
 			add(lblFrom);
 			

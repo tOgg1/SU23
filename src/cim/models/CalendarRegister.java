@@ -5,6 +5,8 @@ import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 /**
@@ -17,28 +19,70 @@ import java.util.ArrayList;
  */
 public class CalendarRegister
 {
-	ArrayList<Calendar> calendars;
-	ArrayList<Group> groups;
-	ArrayList<Appointment> appointments;
-	ArrayList<Account> accounts;
+	/**
+	 * Reference to all calendars
+	 */
+	private ArrayList<Calendar> calendars;
+	
+	/**
+	 * Reference to all active calendars
+	 */
+	private ArrayList<Calendar> activeCalendars;
+	
+	/**
+	 * reference to all groups
+	 */
+	private ArrayList<Group> groups;
+	/**
+	 * Reference to all accounts
+	 */
+	private ArrayList<Account> accounts;
 	// Trenger vi denne her?
-	ArrayList<Room> rooms;
+	/**
+	 * Reference to all rooms
+	 */
+	
+	/**
+	 * Reference to all Meeting responses to the current users
+	 */
+	private ArrayList<MeetingResponse> meetingResponses;
+	
+	
+	private ArrayList<Room> rooms;
 	Client parent;
 
 	/**
 	 * The currently logged in account.
 	 */
 	private Account account; 
-
+	
+	/**
+	 * Property change support
+	 */
+	private PropertyChangeSupport pcs;
+	
 	public CalendarRegister(Client parent)
 	{
+		this.pcs = new PropertyChangeSupport(this);
 		this.parent = parent;
 		calendars = new ArrayList<Calendar>();
 		groups = new ArrayList<Group>();
-		appointments = new ArrayList<Appointment>();
 		accounts = new ArrayList<Account>();
+		this.activeCalendars = new ArrayList<Calendar>();
+		this.meetingResponses = new ArrayList<MeetingResponse>();
+		
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener)
+	{
+		this.pcs.addPropertyChangeListener(listener);
+	}
+	public void removePropertyChangeListener(PropertyChangeListener listener)
+	{
+		this.pcs.removePropertyChangeListener(listener);
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Calendar> getAllCalendarsToCurrentUser(){
 		try{
 			Response res = parent.request(new Request("GET_ALL_CALENDARS_TO_ACCOUNT", account));
@@ -111,7 +155,6 @@ public class CalendarRegister
 		//TODO: Save appointment to cal in this function?
 		try
 		{
-			this.registerAppointment(app);
 			//??cal.addAppointment(app);
 			Request req = new Request("SAVE_CALENDAR", cal);
 			Response res = parent.request(req);
@@ -211,18 +254,6 @@ public class CalendarRegister
 		return null;
 	}
 
-	//Useless?
-	public Appointment getAppointmentById(int appId)
-	{
-		for(Appointment app : this.appointments)
-		{
-			if(appId == app.getId())
-			{
-				return app;
-			}
-		}
-		return null;
-	}
 
 	/**
 	 * Takes an accountid and returns the corresponding account
@@ -306,14 +337,6 @@ public class CalendarRegister
 		return this.accounts;
 	}
 
-	/**
-	 * Returns all appointments in register
-	 * @return
-	 */
-	public ArrayList<Appointment> getAllAppointments()
-	{
-		return this.appointments;
-	}
 
 	/**
 	 * Returns all accounts in register
@@ -372,11 +395,6 @@ public class CalendarRegister
 			groups.add(group);
 	}
 
-	public void registerAppointment(Appointment appointment)
-	{
-		if(!containsById(appointments, appointment))
-			appointments.add(appointment);
-	}
 
 	public void registerAccount(Account account)
 	{
@@ -396,11 +414,6 @@ public class CalendarRegister
 			groups.remove(group);
 	}
 
-	public void unRegisterAppointment(Appointment appointment)
-	{
-		if(containsById(appointments, appointment))
-			appointments.add(appointment);
-	}
 
 	public void unRegisterAccount(Account account)
 	{
@@ -422,11 +435,7 @@ public class CalendarRegister
 	 * Returns all meeting response objects to the currently logged in user
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException {
-		Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
-		return (ArrayList<MeetingResponse>)r.getData()[0];
-	}
+	
 	/**
 	 * Saves the given meeting response to the database.
 	 * @param mr
@@ -438,6 +447,20 @@ public class CalendarRegister
 	public Account getAccount()
 	{
 		return this.account;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException{
+		if(this.meetingResponses == null) {
+			Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
+			this.setMeetingResponses((ArrayList<MeetingResponse>)r.getData()[0]);
+		}
+		return this.meetingResponses;
+	}
+	
+	public void setMeetingResponses(ArrayList<MeetingResponse> list) {
+		this.meetingResponses = list;
+		this.pcs.firePropertyChange("meetingResponses", null, list);
 	}
 
 }
