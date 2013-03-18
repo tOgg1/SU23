@@ -403,6 +403,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 			for (Calendar cal : myCalendars){
 				if (Client.register.getAccount().equals(cal.getOwner())){
 					cal.addAppointment((Appointment) evt.getNewValue());
+					Client.register.addAppointmentFromGUI((Appointment)evt.getNewValue(), cal);
 					break;
 				}
 					
