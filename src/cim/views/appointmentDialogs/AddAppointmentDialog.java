@@ -10,7 +10,9 @@ import java.awt.Component;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 
+import cim.models.Alert;
 import cim.models.Appointment;
+import cim.models.MeetingResponse;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
@@ -21,6 +23,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -53,7 +56,12 @@ public class AddAppointmentDialog extends JDialog{
 	private JCheckBox chckbxAddParticipants;
 	private JButton btnSave;
 	private JButton btnCancel;
+	
+	
 	private Appointment appointment;
+	private ArrayList<MeetingResponse> meetingResponses;
+	private Alert alert;
+	
 
 
 	private final JFrame application;
@@ -206,6 +214,15 @@ public class AddAppointmentDialog extends JDialog{
 	public Appointment getAppointment() {
 		return this.appointment;
 	}
+	
+	public Alert getAlert() {
+		return this.alert;
+	}
+	
+	public ArrayList<MeetingResponse> getMeetingResponses() {
+		return this.meetingResponses;
+	}
+	
 	public void disposeFrame()
 	{
 		this.dispose();

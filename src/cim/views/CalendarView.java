@@ -19,8 +19,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import cim.models.Alert;
 import cim.models.Appointment;
 import cim.models.Calendar;
+import cim.models.MeetingResponse;
 import cim.net.Client;
 import cim.views.appointmentDialogs.AddAppointmentDialog;
 
@@ -321,6 +323,8 @@ public class CalendarView extends JPanel {
 				AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.application);
 				ad.setVisible(true);
 				Appointment a = ad.getAppointment();
+				Alert alert = ad.getAlert();
+				ArrayList<MeetingResponse> meetingResponses = ad.getMeetingResponses();
 				if(a != null) {
 					System.out.println("Appointment set in dialog.");
 				} else {

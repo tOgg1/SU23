@@ -5,6 +5,8 @@ import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 /**
@@ -53,9 +55,15 @@ public class CalendarRegister
 	 * The currently logged in account.
 	 */
 	private Account account; 
-
+	
+	/**
+	 * Property change support
+	 */
+	private PropertyChangeSupport pcs;
+	
 	public CalendarRegister(Client parent)
 	{
+		this.pcs = new PropertyChangeSupport(this);
 		this.parent = parent;
 		calendars = new ArrayList<Calendar>();
 		groups = new ArrayList<Group>();
@@ -63,6 +71,15 @@ public class CalendarRegister
 		this.activeCalendars = new ArrayList<Calendar>();
 		this.meetingResponses = new ArrayList<MeetingResponse>();
 		
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener)
+	{
+		this.pcs.addPropertyChangeListener(listener);
+	}
+	public void removePropertyChangeListener(PropertyChangeListener listener)
+	{
+		this.pcs.removePropertyChangeListener(listener);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -436,9 +453,14 @@ public class CalendarRegister
 	public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException{
 		if(this.meetingResponses == null) {
 			Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
-			this.meetingResponses =  (ArrayList<MeetingResponse>)r.getData()[0];
+			this.setMeetingResponses((ArrayList<MeetingResponse>)r.getData()[0]);
 		}
 		return this.meetingResponses;
+	}
+	
+	public void setMeetingResponses(ArrayList<MeetingResponse> list) {
+		this.meetingResponses = list;
+		this.pcs.firePropertyChange("meetingResponses", null, list);
 	}
 
 }

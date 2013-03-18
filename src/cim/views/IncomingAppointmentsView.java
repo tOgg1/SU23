@@ -15,7 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import javax.swing.JSeparator;
 
-public class IncomingAppointmentsView extends JPanel {
+public class IncomingAppointmentsView extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * Needed for somewhat reason
@@ -97,6 +97,15 @@ public class IncomingAppointmentsView extends JPanel {
 		public void propertyChange(PropertyChangeEvent evt) {
 			// Throwing right out
 			firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+		}
+		
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		String prop = evt.getPropertyName();
+		if(prop.equals("meetingResponse")) {
+			this.setModel((ArrayList<MeetingResponse>)evt.getNewValue());
 		}
 		
 	}
