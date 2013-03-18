@@ -1,6 +1,7 @@
 package cim.database;
 
 import cim.models.*;
+import cim.models.MeetingResponse.Response;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
 
@@ -408,11 +409,59 @@ public class DatabaseHandler {
 			st.setString(4, mr.getResponseString());
 			System.out.println(mr.getResponseString());
 			st.execute();
+			
+			/*
+			 * If the meeting response is rejected, we need to add it to reject Message
+			 */
+			if(mr.getResponse() == Response.NOT_ATTENDING) {
+				this.createRejectMessages(m,a);
+			}
+			
+			
 			return mr;
 		} catch (Exception e) {
 			throw new CloakedIronManException("Could not save meeting response", e);
 		}
 		
+	}
+	/**
+	 * This method adds reject messages to the current meeting from the account who rejected
+	 * @param m
+	 * @param a
+	 */
+	private void createRejectMessages(Meeting m, Account a) throws CloakedIronManException {
+		try {
+			ArrayList<Account> accounts = this.getAccountsToMeeting(m);
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not create reject messages", e);
+		}
+		
+	}
+	
+	/**
+	 * Returns all accounts associated with a meeting
+	 * @param m
+	 * @return
+	 */
+	private ArrayList<Account> getAccountsToMeeting(Meeting m) throws CloakedIronManException {
+		try {
+			ArrayList<Account> accounts = new ArrayList<Account>();
+			int id = m.getId();
+			if(id == -1) {
+				throw new CloakedIronManException("Meeting ID not set, meeting not saved in database.");
+			}
+			
+			PreparedStatement st = this.con.prepareStatement("SELECT account_user_id FROM meeting_response WHERE meeting_appointment_id=?");
+			st.setInt(1, id);
+			
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				accounts.add(this.getAccount(rs.getInt("account_user_id")));
+			}
+			return accounts;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get all accounts to meeting.", e);
+		}
 	}
 	/**
 	 *  Saven the appointment and returns the saved version
