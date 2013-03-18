@@ -139,6 +139,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		
 		JButton btnNyAvtale = new JButton("Ny avtale");
 		btnNyAvtale.addActionListener(new AddAppointmentListener());
+		
 		GridBagConstraints gbc_btnNyAvtale = new GridBagConstraints();
 		gbc_btnNyAvtale.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNyAvtale.gridx = 12;
@@ -353,6 +354,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.application);
+				ad.addPropertyChangeListener(CalendarView.this);
 				ad.setVisible(true);
 				Appointment a = ad.getAppointment();
 				Alert alert = ad.getAlert();
@@ -394,6 +396,18 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 			for (Calendar cal : myCalendars){
 				cal.removeAppointment((Appointment) evt.getOldValue());
 			}
+			//Client.register. trenger saveCalendar
+		}
+		
+		if (evt.getPropertyName().equals("createApp")){
+			for (Calendar cal : myCalendars){
+				if (Client.register.getAccount().equals(cal.getOwner())){
+					cal.addAppointment((Appointment) evt.getNewValue());
+					break;
+				}
+					
+			}
+			
 		}
 		renderCalendars();
 	}

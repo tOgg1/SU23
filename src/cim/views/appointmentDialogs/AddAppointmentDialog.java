@@ -21,6 +21,7 @@ import java.awt.Dialog.ModalityType;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeSupport;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class AddAppointmentDialog extends JDialog{
 	private Appointment appointment;
 	private ArrayList<MeetingResponse> meetingResponses;
 	private Alert alert;
-	
+	private PropertyChangeSupport pcs;
 
 
 	private final JFrame application;
@@ -177,7 +178,9 @@ public class AddAppointmentDialog extends JDialog{
 				Time sluttTid = Helper.getTime(c,d);
 				String info = addDetailsPanel.getDescription(); 
 				Appointment app = new Appointment(info,date,startTid,sluttTid,Client.register.getAccount());
+				app.setOwner(Client.register.getAccount());
 				setAppointment(app);
+				pcs.firePropertyChange("createApp", null, app);
 			
 			}
 		});
@@ -203,6 +206,7 @@ public class AddAppointmentDialog extends JDialog{
 		gbc_btnCancel.gridx = 3;
 		gbc_btnCancel.gridy = 6;
 		mainPanel.add(btnCancel, gbc_btnCancel);
+		pcs = new PropertyChangeSupport(this);
 	}
 
 	protected void setAppointment(Appointment app) {
@@ -226,6 +230,10 @@ public class AddAppointmentDialog extends JDialog{
 	public void disposeFrame()
 	{
 		this.dispose();
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener){
+		this.pcs.addPropertyChangeListener(listener);
 	}
 
 }
