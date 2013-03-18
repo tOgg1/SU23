@@ -23,6 +23,8 @@ import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.net.Client;
 import cim.views.appointmentDialogs.AddAppointmentDialog;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class CalendarView extends JPanel {
 	private static JTextField txtMandag;
@@ -44,12 +46,12 @@ public class CalendarView extends JPanel {
 	private DayList lordag;
 	private DayList sondag;
 	
-	private int weekNumber = 11;
-	private int yearNumber = 2013;
+	private int weekNumber;
+	private int yearNumber;
 	
 	
 	private GregorianCalendar gregCal;
-
+	private GregorianCalendar cal;
 
 
 	
@@ -59,6 +61,10 @@ public class CalendarView extends JPanel {
 	
 	private final JFrame application;
 	public CalendarView(JFrame application) {
+		cal = new GregorianCalendar();
+		
+		weekNumber = cal.get(java.util.Calendar.WEEK_OF_YEAR);
+		yearNumber = cal.get(java.util.Calendar.YEAR);
 		
 		this.application = application;
 
@@ -70,6 +76,14 @@ public class CalendarView extends JPanel {
 		this.setLayout(gridBagLayout);
 		
 		JButton btnForrigeUke = new JButton("Forrige uke");
+		btnForrigeUke.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				weekNumber--;
+				txtUke.setText("Uke " + weekNumber);
+				renderCalendars();
+			}
+		});
 		GridBagConstraints gbc_btnForrigeUke = new GridBagConstraints();
 		gbc_btnForrigeUke.insets = new Insets(0, 0, 5, 5);
 		gbc_btnForrigeUke.gridx = 1;
@@ -79,7 +93,7 @@ public class CalendarView extends JPanel {
 		txtUke = new JTextField();
 		txtUke.setHorizontalAlignment(SwingConstants.CENTER);
 		txtUke.setEditable(false);
-		txtUke.setText("Uke 10");
+		txtUke.setText("Uke " + weekNumber);
 		GridBagConstraints gbc_txtUke = new GridBagConstraints();
 		gbc_txtUke.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtUke.insets = new Insets(0, 0, 5, 5);
@@ -89,6 +103,13 @@ public class CalendarView extends JPanel {
 		txtUke.setColumns(10);
 		
 		JButton btnNesteUke = new JButton("Neste uke");
+		btnNesteUke.addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				weekNumber++;
+				txtUke.setText("Uke " + weekNumber);
+				renderCalendars();
+			}
+		});
 		GridBagConstraints gbc_btnNesteUke = new GridBagConstraints();
 		gbc_btnNesteUke.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNesteUke.gridx = 3;
@@ -287,6 +308,7 @@ public class CalendarView extends JPanel {
 	
 	
 	private void renderCalendars(){
+		resetCalendar();
 		DayList[] dayList = {sondag, mandag, tirsdag, onsdag, torsdag, fredag, lordag};
 		for (int i = 0; i < myCalendars.size(); i++){
 			for (int j = 0; j < myCalendars.get(i).getAppointments().size(); j++){
@@ -303,19 +325,24 @@ public class CalendarView extends JPanel {
 					day.add(new AppointmentPanel(tempAppointment));
 					
 				}
-				
-				
 			}
-			
-			
-			
+		}
+		this.revalidate();
+		this.repaint();
+	}
+	
+	private void resetCalendar(){
+		DayList[] dayList = {sondag, mandag, tirsdag, onsdag, torsdag, fredag, lordag};
+		
+		for(int i = 0; i < dayList.length; i++){
+			dayList[i].clear();
 		}
 		
 	}
 	
+	
 	private class AddAppointmentListener implements ActionListener {
 
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
 				AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.application);

@@ -1,8 +1,11 @@
 package cim.views;
 
 import cim.models.Appointment;
+import cim.net.Client;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,10 +24,24 @@ public class AppointmentPanel extends JPanel implements Comparable
         JTextField text = new JTextField(base.getName());
         text.setEditable(false);
         this.add(text);
+        
+        JTextPane textPane = new JTextPane();
+        textPane.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseReleased(MouseEvent e) {
+        		System.out.println(getBaseId());
+        	}
+        });
+        textPane.setText("x");
+        add(textPane);
     }
 
     public Appointment getBase() {
         return base;
+    }
+    
+    public int getBaseId(){
+    	return this.base.getId();
     }
 
     /**

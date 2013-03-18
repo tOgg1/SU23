@@ -50,6 +50,11 @@ public class DayList extends JPanel
         super.add(appointment, index);
         return true;
     }
+    
+    public void clear(){
+    	this.children.clear();
+    	this.removeAll();
+    }
 
     public boolean remove(AppointmentPanel appointment)
     {
@@ -62,6 +67,8 @@ public class DayList extends JPanel
         super.remove(appointment);
         return children.remove(appointment);
     }
+    
+    
 
     //For testing
     public static void main(String[] args)

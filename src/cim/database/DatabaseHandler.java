@@ -1027,6 +1027,17 @@ public class DatabaseHandler {
 			return null;
 		}
 	}
+	
+	public void cancelAppointment(Appointment ap){
+		if (ap instanceof Appointment){
+			
+		}
+		else if (ap instanceof Meeting){
+			
+			
+		}
+		
+	}
     
 
 
