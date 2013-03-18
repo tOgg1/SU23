@@ -2,6 +2,7 @@ package cim.views;
 
 import cim.models.Appointment;
 import cim.net.Client;
+import cim.util.CloakedIronManException;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -26,12 +27,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         this.add(text);
         
         JTextPane textPane = new JTextPane();
-        textPane.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseReleased(MouseEvent e) {
-        		System.out.println(getBaseId());
-        	}
-        });
+        textPane.addMouseListener(new deleteListener());
         textPane.setText("x");
         add(textPane);
     }
@@ -56,4 +52,18 @@ public class AppointmentPanel extends JPanel implements Comparable
         AppointmentPanel other = (AppointmentPanel)o;
         return getBase().getStart().compareTo(other.getBase().getStart());
     }
+    
+    public class deleteListener extends MouseAdapter{
+    	public void mouseReleased(MouseEvent e) {
+    		try {
+				Client.register.cancelAppointment(base);
+			} catch (CloakedIronManException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
+    }
+    
+    
+    
 }

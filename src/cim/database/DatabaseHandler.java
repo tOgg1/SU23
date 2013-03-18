@@ -1164,16 +1164,36 @@ public class DatabaseHandler {
 		}
 	}
 	
-	public void cancelAppointment(Appointment ap){
-		if (ap instanceof Appointment){
-			
-		}
-		else if (ap instanceof Meeting){
-			
-			
-		}
+	public void cancelAppointment(Appointment ap) throws CloakedIronManException{
+		PreparedStatement st;
+
+		try {
+			if (ap instanceof Appointment){
+				st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id  = ?");
+				st.setInt(1, ap.getId());
+				st.executeQuery();
+			}
 		
+		else if (ap instanceof Meeting){
+			st = this.con.prepareStatement("UPDATE meeting SET is_cancelled = 1 WHERE appointment_id = ?");
+			st.setInt(1, ap.getId());
+			
+		}
+		}catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
+	}
+	
+	private void cancelMeeting(Meeting meeting) throws CloakedIronManException, SQLException{
+		PreparedStatement st;
+		ArrayList<Account> accList = this.getAccountsToMeeting(meeting);
+		for (Account ac : accList){
+			RejectMessage rej = new RejectMessage(ac, meeting);
+			this.saveRejectMessage(rej);
+		}
+	}
+    
     
 
 

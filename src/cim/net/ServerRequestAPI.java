@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import cim.database.DatabaseHandler;
 import cim.models.Account;
 import cim.models.Alert;
+import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.models.MeetingResponse;
 import cim.net.packet.Request;
@@ -70,6 +71,13 @@ public class ServerRequestAPI {
 			else if(method.equals("SAVE_MEETING_RESPONSE")){
 				return save_meeting_response((MeetingResponse)args[0]);
 			}
+			
+			else if (method.equals("CANCEL_APPOINTMENT")){
+				System.out.println("hello");
+				cancel_appointment((Appointment)args[0]);
+				return new Response(null);
+			}
+			
 			return new Response(new CloakedIronManException("No server API call named '" + method + "'"));
 		} catch (Exception e) {
 			return new Response(e);
@@ -77,6 +85,10 @@ public class ServerRequestAPI {
 		
 		
 	}
+	private void cancel_appointment(Appointment appointment) throws CloakedIronManException {
+		this.db.cancelAppointment(appointment);
+	}
+
 	private Response seen_alert(Alert alert) {
 		return new Response(this.db.seenAlert(alert));
 	}
