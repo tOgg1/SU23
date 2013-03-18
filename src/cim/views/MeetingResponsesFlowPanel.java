@@ -68,7 +68,6 @@ public class MeetingResponsesFlowPanel extends JPanel {
 				MeetingResponsePanel mp = new MeetingResponsePanel();
 				mp.setModel(m);
 				this.add(mp, c);
-				System.out.println(c.gridy);
 				++c.gridy;
 				++iNumAdded;
 			} catch (Exception e) {
@@ -92,7 +91,6 @@ public class MeetingResponsesFlowPanel extends JPanel {
 				Client.register.saveMeetingResponse(this.mr);
 				MeetingResponsesFlowPanel.this.refresh();
 				// The current response has been modified
-				System.out.println(mr.getMeeting().getName() + " has been modified");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
