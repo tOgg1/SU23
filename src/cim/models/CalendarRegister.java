@@ -462,5 +462,9 @@ public class CalendarRegister
 		this.meetingResponses = list;
 		this.pcs.firePropertyChange("meetingResponses", null, list);
 	}
+	
+	public void cancelAppointment(Appointment app) throws CloakedIronManException{
+		this.parent.request(new Request("CANCEL_APPOINTMENT", app));
+	}
 
 }
