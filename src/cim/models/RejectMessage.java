@@ -38,6 +38,12 @@ public class RejectMessage extends CalendarObject {
 	public Account getWhoRejected() {
 		return whoRejected;
 	}
+	
+	public void setWhoRejected(Account a) {
+		Account old = this.whoRejected;
+		this.whoRejected = a;
+		this.pcs.firePropertyChange("whoRejected", old, this.whoRejected);
+	}
 
 	public Meeting getMeeting() {
 		return meeting;

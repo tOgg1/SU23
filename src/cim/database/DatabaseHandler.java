@@ -426,16 +426,86 @@ public class DatabaseHandler {
 	}
 	/**
 	 * This method adds reject messages to the current meeting from the account who rejected
-	 * @param m
-	 * @param a
+	 * @param m The meeting that was rejected
+	 * @param a The account that rejected
 	 */
 	private void createRejectMessages(Meeting m, Account a) throws CloakedIronManException {
 		try {
 			ArrayList<Account> accounts = this.getAccountsToMeeting(m);
+			for (Account accountTo : accounts) {
+				if (accountTo.equals(a)) {
+					continue; // No need to send message to oneself
+				}
+				RejectMessage rm = new RejectMessage(accountTo, m);
+				rm.setWhoRejected(a);
+				this.saveRejectMessage(rm);
+			}
+			
 		} catch (Exception e) {
 			throw new CloakedIronManException("Could not create reject messages", e);
 		}
 		
+	}
+	
+	private RejectMessage saveRejectMessage(RejectMessage rm) throws CloakedIronManException {
+		try {
+			if(rm.getId() == -1) {
+				rm.setId(this.getNextAutoIncrease("reject_message", "reject_message_id"));
+			}
+			if(rm.getMeeting() == null) {
+				throw new CloakedIronManException("Reject Message meeting not set.");
+			}
+			if(rm.getMeeting().getId() == -1) {
+				throw new CloakedIronManException("Reject Message meeing id not set, meeting not saved in database");
+			}
+			
+			if(rm.getRecipient() == null) {
+				throw new CloakedIronManException("Reject Message recipient not set");
+			}
+			
+			if(rm.getRecipient().getId() == -1) {
+				throw new CloakedIronManException("Reject Message recipient id not set, recipient not saved in database");
+			}
+			if (rm.getWhoRejected() != null) {
+				if(rm.getWhoRejected().getId() == -1) {
+					throw new CloakedIronManException("Who Rejected is set, but its id is not set. Save the WhoRejected account to database first.");
+				}
+			};
+			
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO reject_message " +
+					"(reject_message_id, date, to_account, who_rejected, meeting_id) " +
+					"VALUES " +
+					"(?,?,?,?,?) " +
+					"ON DUPLICATE KEY UPDATE " +
+					"date=?," +
+					"to_account=?," +
+					"who_rejected=?," +
+					"meeting_id=?");
+			st.setInt(1, rm.getId());
+			st.setDate(2, rm.getDate());
+			st.setInt(3, rm.getRecipient().getId());
+			if(rm.getWhoRejected() != null) {
+				st.setInt(4, rm.getWhoRejected().getId());
+			} else {
+				st.setNull(4, Types.INTEGER);
+			}
+			st.setInt(5, rm.getMeeting().getId());
+			
+			st.setDate(6, rm.getDate());
+			st.setInt(7, rm.getRecipient().getId());
+			if(rm.getWhoRejected() != null) {
+				st.setInt(8, rm.getWhoRejected().getId());
+			} else {
+				st.setNull(8, Types.INTEGER);
+			}
+			st.setInt(9, rm.getMeeting().getId());
+			
+			st.executeUpdate();
+			
+			return rm;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not save reject message.", e);
+		}
 	}
 	
 	/**
