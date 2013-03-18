@@ -30,7 +30,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.JScrollBar;
 
 public class CalendarView extends JPanel implements PropertyChangeListener {
 	private static JTextField txtMandag;
@@ -75,9 +74,9 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		this.application = application;
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] {30, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 30};
-		gridBagLayout.rowHeights = new int[] {30, 30, 30, 150, 30, 150, 30};
-		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gridBagLayout.columnWidths = new int[] {30, 110, 108, 75, 113, 75, 113, 75, 113, 75, 113, 75, 113, 30};
+		gridBagLayout.rowHeights = new int[] {30, 30, 30, 150, 30, 202, 30};
+		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		gridBagLayout.rowWeights = new double[]{1.0, 0.0, 0.0, 1.0};
 		this.setLayout(gridBagLayout);
 		
@@ -91,6 +90,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 			}
 		});
 		GridBagConstraints gbc_btnForrigeUke = new GridBagConstraints();
+		gbc_btnForrigeUke.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnForrigeUke.insets = new Insets(0, 0, 5, 5);
 		gbc_btnForrigeUke.gridx = 1;
 		gbc_btnForrigeUke.gridy = 1;
@@ -143,7 +143,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		
 		GridBagConstraints gbc_btnNyAvtale = new GridBagConstraints();
 		gbc_btnNyAvtale.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNyAvtale.gridx = 12;
+		gbc_btnNyAvtale.gridx = 11;
 		gbc_btnNyAvtale.gridy = 1;
 		this.add(btnNyAvtale, gbc_btnNyAvtale);
 		
@@ -418,13 +418,11 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	public void addCalendar(Calendar cal){
 		if (!this.myCalendars.contains(cal)){
 			this.myCalendars.add(cal);
-			renderCalendars();
 		}
 	}
 	
 	public void removeCalendar(Calendar cal){
 		this.myCalendars.remove(cal);
-		renderCalendars();
 	}
 
 }

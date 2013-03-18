@@ -40,14 +40,14 @@ public class AppointmentPanel extends JPanel implements Comparable
         setLayout(null);
         JTextField txtName = new JTextField("Navn");
         txtName.setColumns(20);
-        txtName.setBounds(10, 39, 114, 20);
+        txtName.setBounds(10, 39, 143, 20);
         txtName.setBackground(null);
         txtName.setBorder(null);
         txtName.setText(base.getName());
         this.add(txtName);
         
         JLabel lblDelete = new JLabel();
-        lblDelete.setBounds(134, 11, 18, 20);
+        lblDelete.setBounds(163, 11, 18, 20);
         lblDelete.setFont(new Font("FontAwesome", Font.PLAIN, 14));
         lblDelete.addMouseListener(new deleteListener());
         lblDelete.setText(Fonts.AwesomeIcons.ICON_REMOVE.toString());
@@ -56,7 +56,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         
         JLabel lblEdit = new JLabel("New label");
         lblEdit.setFont(new Font("FontAwesome", Font.PLAIN, 14));
-        lblEdit.setBounds(106, 14, 18, 14);
+        lblEdit.setBounds(135, 14, 18, 14);
         lblEdit.setText(Fonts.AwesomeIcons.ICON_PENCIL.toString());
         add(lblEdit);
         
@@ -65,15 +65,15 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtTime.setBackground(null);
         txtTime.setBorder(null);
         txtTime.setEditable(false);
-        txtTime.setBounds(10, 12, 86, 20);
+        txtTime.setBounds(10, 12, 115, 20);
         txtTime.setBackground(null);
         txtTime.setBorder(null);
-        add(txtTime);
         txtTime.setColumns(12);
+        add(txtTime);
         
         lblArrow = new JLabel("New label");
         lblArrow.setFont(new Font("FontAwesome", Font.PLAIN, 14));
-        lblArrow.setBounds(134, 41, 11, 14);
+        lblArrow.setBounds(163, 41, 11, 14);
         lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_DOWN.toString());
         lblArrow.addMouseListener(new showInfoListener());
         add(lblArrow);
@@ -81,7 +81,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtPlace = new JTextField();
         txtPlace.setText("Sted");
         txtPlace.setVisible(false);
-        txtPlace.setBounds(10, 70, 114, 20);
+        txtPlace.setBounds(10, 70, 143, 20);
         txtPlace.setBackground(null);
         txtPlace.setBorder(null);
         add(txtPlace);
@@ -113,16 +113,16 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtOkNum.setBounds(28, 98, 15, 20);
         txtOkNum.setBackground(null);
         txtOkNum.setBorder(null);
-        add(txtOkNum);
         txtOkNum.setColumns(2);
+        add(txtOkNum);
         
         txtDeclinedNum = new JTextField();
         txtDeclinedNum.setVisible(false);
         txtDeclinedNum.setBounds(66, 98, 15, 20);
         txtDeclinedNum.setBackground(null);
         txtDeclinedNum.setBorder(null);
-        add(txtDeclinedNum);
         txtDeclinedNum.setColumns(2);
+        add(txtDeclinedNum);
         
         txtGroupNum = new JTextField();
         txtGroupNum.setVisible(false);
