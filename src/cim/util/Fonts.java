@@ -1,12 +1,21 @@
 package cim.util;
 
+import java.awt.Font;
+import java.io.File;
+
 // for å få fontawesome;last ned jar fil fra http://mvnrepository.com/artifact/org.webjars/font-awesome
 // flere iconer finner du her http://www.jensd.de/wordpress/?p=178
 
 
 public class Fonts {
 	
-	public static Font getFontAwesome() {
+	public static Font getFontAwesome() throws CloakedIronManException {
+		try {
+			File f = new File("FontAwesome.otf");
+			return Font.createFont(Font.TRUETYPE_FONT, f);
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not load font", e);
+		}
 		
 	}
 

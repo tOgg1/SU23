@@ -8,6 +8,8 @@ import cim.util.CloakedIronManException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public class ApplicationWindow extends JFrame {
@@ -81,11 +83,12 @@ public class ApplicationWindow extends JFrame {
 		tabbedPane.addTab("Kalender", null, calendarView, null);
 		
 		incomingAppointmentsView = new IncomingAppointmentsView();
-		incomingAppointmentsView.setModel(Client.register.getMeetingResponses());
+		incomingAppointmentsView.addPropertyChangeListener(new MeetingResponsePropertyChangeListener());
+		
 		// Mï¿½ter til godkjenning burde ha en hjelpeklasse som bygger strengen og 
 		// legger til eventuelle "(n)" som kan representere ant. ubehandlede innkallelser.
 		tabbedPane.addTab("Mï¿½ter til godkjenning", null, incomingAppointmentsView, null);
-		
+		incomingAppointmentsView.setModel(Client.register.getMeetingResponses());
 		alertsView = new AlertsView();
 		tabbedPane.addTab("Varsler", null, alertsView, null);
 		
@@ -110,6 +113,24 @@ public class ApplicationWindow extends JFrame {
 		this.pack();
 		
 
+	}
+	
+	private class MeetingResponsePropertyChangeListener implements PropertyChangeListener {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			if (evt.getPropertyName() == "numMeetingResponses"){
+				int iNewVal = (int)evt.getNewValue();
+				String text = "Møter til godkjenning";
+				if (iNewVal > 0) {
+					text = "Møter til godkjenning (" + iNewVal + ")";
+				}
+				tabbedPane.setTitleAt(1, text);
+				System.out.println(text);
+			}
+			
+		}
+		
 	}
 
 }

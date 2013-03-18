@@ -57,17 +57,26 @@ public class MeetingResponsesFlowPanel extends JPanel {
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.NORTH;
 		c.weighty = 1.0;
+		int iNumAdded = 0;
+		
 		for(MeetingResponse m: this.model) {
 			if(m.getResponse() != MeetingResponse.Response.NOT_SEEN) {
 				continue;
 			}
-			MeetingResponsePanel mp = new MeetingResponsePanel();
-			mp.setModel(m);
-			this.add(mp, c);
-			c.weighty = 0.9;
-			System.out.println(c.gridy);
-			++c.gridy;
+			try {
+				MeetingResponsePanel mp = new MeetingResponsePanel();
+				mp.setModel(m);
+				this.add(mp, c);
+				c.weighty = 0.9;
+				System.out.println(c.gridy);
+				++c.gridy;
+				++iNumAdded;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
+		this.firePropertyChange("numMeetingResponses", null, iNumAdded);
 	}
 
 	private class MeetingResponseListener implements PropertyChangeListener {
