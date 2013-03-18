@@ -22,6 +22,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.DropMode;
 
+import cim.util.Fonts;
+
 public class AppointmentInfo extends JDialog{
 	private AlarmPanel addAlarmPanel;
 	private JTextField txtTime;

@@ -61,18 +61,19 @@ public class MeetingResponsePanel extends JPanel {
 		
 		this.buttonGroup = new ButtonGroup();
 		
-		btnAccept = new JButton("Godta");
+		btnAccept = new JButton("");
 		btnAccept.addActionListener(new AcceptListener());
-		btnAccept.setBounds(666, 7, 89, 23);
+		btnAccept.setBounds(933, 7, 23, 23);
 		buttonGroup.add(btnAccept);
 		add(btnAccept);
 		
-		btnDecline = new JButton("Forkast");
+		btnDecline = new JButton("");
 		btnDecline.addActionListener(new DeclineListener());
-		btnDecline.setBounds(765, 7, 89, 23);
+		btnDecline.setBounds(965, 7, 23, 23);
 		buttonGroup.add(btnDecline);
 		add(btnDecline);
-		setPreferredSize(new Dimension(967, 35));
+		setSize(967,35);
+		setPreferredSize(new Dimension(998, 35));
 		
 	}
 	

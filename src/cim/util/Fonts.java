@@ -1,4 +1,4 @@
-package cim.views.appointmentDialogs;
+package cim.util;
 
 // for å få fontawesome;last ned jar fil fra http://mvnrepository.com/artifact/org.webjars/font-awesome
 // flere iconer finner du her http://www.jensd.de/wordpress/?p=178

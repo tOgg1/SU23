@@ -1,5 +1,6 @@
 package cim.views;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -35,6 +36,7 @@ public class MeetingResponsesFlowPanel extends JPanel {
 	public MeetingResponsesFlowPanel() {
 		setBackground(Color.YELLOW);
 		setLayout(new GridBagLayout());
+		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(715, 403));
 		
 
@@ -51,7 +53,10 @@ public class MeetingResponsesFlowPanel extends JPanel {
 	private void refresh() {
 		this.removeAll();
 		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(0, 0, 0, 0);
 		c.gridy = 0;
+		c.anchor = GridBagConstraints.NORTH;
+		c.weighty = 1.0;
 		for(MeetingResponse m: this.model) {
 			if(m.getResponse() != MeetingResponse.Response.NOT_SEEN) {
 				continue;
@@ -59,6 +64,7 @@ public class MeetingResponsesFlowPanel extends JPanel {
 			MeetingResponsePanel mp = new MeetingResponsePanel();
 			mp.setModel(m);
 			this.add(mp, c);
+			c.weighty = 0.9;
 			System.out.println(c.gridy);
 			++c.gridy;
 		}
