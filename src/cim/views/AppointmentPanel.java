@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.awt.Color;
 import java.awt.Font;
 
 /**
@@ -60,6 +61,8 @@ public class AppointmentPanel extends JPanel implements Comparable
         
         txtTime = new JTextField();
         txtTime.setText(base.getDateFormatted("hh:mm") + "-" + base.getDateFormatted("hh:mm"));
+        txtTime.setBackground(null);
+        txtTime.setBorder(null);
         txtTime.setEditable(false);
         txtTime.setBounds(10, 12, 86, 20);
         add(txtTime);
@@ -156,10 +159,9 @@ public class AppointmentPanel extends JPanel implements Comparable
 
     public class showInfoListener extends MouseAdapter{
     	public void mouseReleased(MouseEvent e){
-    		if (lblArrow.getText() == Fonts.AwesomeIcons.ICON_CARET_DOWN.toString()){
+    		if (lblArrow.getText().equals(Fonts.AwesomeIcons.ICON_CARET_DOWN.toString())){
     			lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_UP.toString());
             	lblGroup.setVisible(true);
-            	txtTime.setVisible(true);
             	txtPlace.setVisible(true);
             	txtOkNum.setVisible(true);
             	txtDeclinedNum.setVisible(true);
@@ -167,10 +169,9 @@ public class AppointmentPanel extends JPanel implements Comparable
             	lblOK.setVisible(true);
             	lblDeclined.setVisible(true);
     		}
-    		else if(lblArrow.getText() == Fonts.AwesomeIcons.ICON_CARET_UP.toString()){
+    		else if(lblArrow.getText().equals(Fonts.AwesomeIcons.ICON_CARET_UP.toString())){
     			lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_DOWN.toString());
             	lblGroup.setVisible(false);
-            	txtTime.setVisible(false);
             	txtPlace.setVisible(false);
             	txtOkNum.setVisible(false);
             	txtDeclinedNum.setVisible(false);

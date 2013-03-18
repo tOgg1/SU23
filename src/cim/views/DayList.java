@@ -4,6 +4,8 @@ import cim.models.Account;
 import cim.models.Appointment;
 
 import javax.swing.*;
+
+import java.awt.Dimension;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Calendar;
@@ -28,6 +30,7 @@ public class DayList extends JPanel
     {
         this.children = new PriorityQueue<AppointmentPanel>();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.setPreferredSize(new Dimension(20,20));
     }
 
     public boolean add(AppointmentPanel appointment)
