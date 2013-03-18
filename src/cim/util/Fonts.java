@@ -5,6 +5,10 @@ package cim.util;
 
 
 public class Fonts {
+	
+	public static Font getFontAwesome() {
+		
+	}
 
 	public enum AwesomeIcons
 	{
