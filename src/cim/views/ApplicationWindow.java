@@ -117,7 +117,11 @@ public class ApplicationWindow extends JFrame {
 
 	}
 	
-	
+	public CalendarView getCalendarView()
+    {
+        return calendarView;
+    }
+
 	private class MeetingResponsePropertyChangeListener implements PropertyChangeListener {
 
 		@Override

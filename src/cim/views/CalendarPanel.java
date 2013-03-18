@@ -33,6 +33,11 @@ public class CalendarPanel extends JPanel
         super.add(text);
     }
 
+    public Calendar getModel()
+    {
+        return model;
+    }
+
     public boolean isDisplayed()
     {
         return isDisplayed;

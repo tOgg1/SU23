@@ -1,15 +1,5 @@
 package cim.views.appointmentDialogs;
 
-import javax.swing.JFrame;
-import java.awt.GridBagLayout;
-import javax.swing.BoxLayout;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import java.awt.GridLayout;
-import java.awt.Component;
-import javax.swing.JCheckBox;
-import javax.swing.JButton;
-
 import cim.models.Alert;
 import cim.models.Appointment;
 import cim.models.MeetingResponse;
@@ -17,28 +7,17 @@ import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
 
-import java.awt.Dialog.ModalityType;
-
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.CardLayout;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.BorderLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class AddAppointmentDialog extends JDialog{
 
@@ -164,7 +143,8 @@ public class AddAppointmentDialog extends JDialog{
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				
+
+                //TODO: Use getInvitees method in ParticipantsPanel to send invites
 				
 				int i = addDetailsPanel.getDays();
 				int j = addDetailsPanel.getMonths();

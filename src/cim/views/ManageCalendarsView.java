@@ -47,17 +47,30 @@ public class ManageCalendarsView extends JPanel
 
         ModelClickListener modelClickListener = new ModelClickListener();
 
+        JLabel label1 = new JLabel("My Calendars");
+        label1.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
+        label1.setBorder(new LineBorder(Color.GRAY, 1));
+        label1.setBounds(50,20,200, 15);
+        calendarContainer.add(label1);
+
         int index = 0;
         for(Calendar cal : myModels)
         {
             CalendarPanel model = new CalendarPanel(cal);
             model.setBorder(new LineBorder(Color.GRAY, 2));
             model.addMouseListener(modelClickListener);
-            model.setBounds(15,25+35*index++,270,30);
+            model.setBounds(15,40+(35*index++),270,30);
             allCalendars.add(model);
             calendarContainer.add(model);
         }
 
+        JLabel label2 = new JLabel("Other Calendars");
+        label2.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
+        label2.setBorder(new LineBorder(Color.GRAY, 1));
+        label2.setBounds(50,40+(35*++index),200, 15);
+        calendarContainer.add(label2);
+
+        index++;
         for(Calendar cal : allModels)
         {
             if(!Helper.containsById(myModels, cal))
@@ -65,7 +78,7 @@ public class ManageCalendarsView extends JPanel
                 CalendarPanel model = new CalendarPanel(cal);
                 model.setBorder(new LineBorder(Color.GRAY, 2));
                 model.addMouseListener(modelClickListener);
-                model.setBounds(15, 25+35*index++, 270, 30);
+                model.setBounds(15, 25+(35*index++), 270, 30);
                 allCalendars.add(model);
                 calendarContainer.add(model);
             }
@@ -88,7 +101,16 @@ public class ManageCalendarsView extends JPanel
         {
             if(selected == -1 || changedTroughLoad == false)
                 return;
-            allCalendars.get(selected).toggleDisplayed();
+            CalendarPanel panelOfInterest = allCalendars.get(selected);
+            panelOfInterest.toggleDisplayed();
+            if(panelOfInterest.isDisplayed())
+            {
+                application.getCalendarView().addCalendar(panelOfInterest.getModel());
+            }
+            else
+            {
+                application.getCalendarView().removeCalendar(panelOfInterest.getModel());
+            }
         }
     }
 

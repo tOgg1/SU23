@@ -23,6 +23,11 @@ public class CalendarRegister
 	 * Reference to all calendars
 	 */
 	private ArrayList<Calendar> calendars;
+
+    /**
+     * Reference to personal calendars
+     */
+    private ArrayList<Calendar> personalCalendars;
 	
 	/**
 	 * Reference to all active calendars
@@ -85,8 +90,8 @@ public class CalendarRegister
 	public ArrayList<Calendar> getAllCalendarsToCurrentUser(){
 		try{
 			Response res = parent.request(new Request("GET_ALL_CALENDARS_TO_ACCOUNT", account));
-			this.calendars = (ArrayList<Calendar>) res.getData()[0];
-			return this.calendars;
+			this.personalCalendars = (ArrayList<Calendar>) res.getData()[0];
+			return this.personalCalendars;
 		}catch(Exception e){
 			System.out.println("hello");
 			return new ArrayList<Calendar>();
@@ -343,19 +348,17 @@ public class CalendarRegister
 	 */
 	public ArrayList<Calendar> getAllCalendars() throws CloakedIronManException
 	{
-		if (this.calendars == null) {
-			try
-			{
-				Request req = new Request("GET_ALL_CALENDARS");
-				Response res = parent.request(req);
-				this.calendars = (ArrayList<Calendar>)res.getData()[0];
-			}
-			catch(Exception e)
-			{
-				throw new CloakedIronManException("Error initializing calendar register", e);
-			}
-		}
-		return this.calendars;
+        try
+        {
+            Request req = new Request("GET_ALL_CALENDARS");
+            Response res = parent.request(req);
+            this.calendars = (ArrayList<Calendar>)res.getData()[0];
+        }
+        catch(Exception e)
+        {
+            throw new CloakedIronManException("Error initializing calendar register", e);
+        }
+        return this.calendars;
 	}
 
 	public ArrayList<Account> getAllUsers() throws CloakedIronManException

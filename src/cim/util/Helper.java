@@ -35,7 +35,7 @@ public class Helper
     }
     /**
      * Returns the first part of the string to the separator, and removes that part from the original string
-     * @param str
+     * @param
      * @return
      */
     
@@ -101,5 +101,18 @@ public class Helper
             }
         }
         return false;
+    }
+
+    public static void removeById(Collection<? extends CalendarObject> col, CalendarObject obj)
+    {
+        CalendarObject tbr = null;
+        for(CalendarObject obj1 : col)
+        {
+            if(equalsById(obj1, obj))
+            {
+               tbr = obj1;
+            }
+        }
+        col.remove(tbr);
     }
 }

@@ -1,35 +1,25 @@
 package cim.views;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-
 import cim.models.Alert;
 import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.models.MeetingResponse;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
+import cim.util.Helper;
 import cim.views.appointmentDialogs.AddAppointmentDialog;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 public class CalendarView extends JPanel implements PropertyChangeListener {
 	private static JTextField txtMandag;
@@ -404,7 +394,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 			for (Calendar cal : myCalendars){
 				if (Client.register.getAccount().equals(cal.getOwner())){
 					cal.addAppointment((Appointment) evt.getNewValue());
-					Client.register.addAppointmentFromGUI((Appointment)evt.getNewValue(), cal);
+					Client.register.addAppointmentFromGUI((Appointment) evt.getNewValue(), cal);
 					break;
 				}
 					
@@ -416,13 +406,15 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	
 	
 	public void addCalendar(Calendar cal){
-		if (!this.myCalendars.contains(cal)){
+		if (!Helper.containsById(myCalendars,cal)){
 			this.myCalendars.add(cal);
 		}
+        renderCalendars();
 	}
 	
 	public void removeCalendar(Calendar cal){
-		this.myCalendars.remove(cal);
-	}
+		Helper.removeById(myCalendars,cal);
+        renderCalendars();
+    }
 
 }

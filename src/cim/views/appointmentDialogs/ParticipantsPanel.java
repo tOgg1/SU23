@@ -1,26 +1,32 @@
 package cim.views.appointmentDialogs;
 
-import java.util.ArrayList;
-
-import javax.swing.DefaultListModel;
 import cim.database.DatabaseHandler;
 import cim.models.Account;
+import cim.models.Attendable;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JList;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class ParticipantsPanel extends JPanel{
+public class ParticipantsPanel extends JPanel implements ActionListener{
 	private DatabaseHandler db;
 	private JTextField txtSearch;
+
+    DefaultListModel<Attendable> modelSearch;
+    DefaultListModel<Attendable> modelAttending;
+    JLabel lblSearch, lblMtedeltagere, lblSketreff;
+
+    JList listSearchResult, listParticipants;
+
+    JButton btnAddParticipant, btnRemoveParticipant,btnSearch;
+
 	public ParticipantsPanel() throws CloakedIronManException {
 		setLayout(null);
 		
-		JLabel lblSearch = new JLabel("Navn p\u00E5 person eller gruppe");
+		lblSearch = new JLabel("Navn p\u00E5 person eller gruppe");
 		lblSearch.setBounds(10, 11, 170, 14);
 		add(lblSearch);
 		
@@ -29,43 +35,67 @@ public class ParticipantsPanel extends JPanel{
 		add(txtSearch);
 		txtSearch.setColumns(10);
 		
-		JButton btnSearch = new JButton("S\u00F8k");
+		btnSearch = new JButton("S\u00F8k");
 		btnSearch.setBounds(106, 36, 89, 23);
 		add(btnSearch);
 		
-		JLabel lblSketreff = new JLabel("S\u00F8ketreff");
+		lblSketreff = new JLabel("S\u00F8ketreff");
 		lblSketreff.setBounds(10, 72, 46, 14);
 		add(lblSketreff);
 		
-		JList listSearchResult = new JList();
+	    listSearchResult = new JList();
 		ArrayList<Account> accountList = Client.register.getAllUsers();
-		DefaultListModel<Account> model = new DefaultListModel<Account>();
+        modelSearch = new DefaultListModel<Attendable>();
 	    for(Account a : accountList){
-	        model.addElement(a);
+	        modelSearch.addElement(a);
 	    }
-	    listSearchResult.setModel(model);
+	    listSearchResult.setModel(modelSearch);
 	    listSearchResult.setSelectedIndex(0);
 		listSearchResult.setBounds(10, 97, 162, 103);
 		add(listSearchResult);
-		
-		JList listParticipants = new JList();
+
+        modelAttending = new DefaultListModel<Attendable>();
+	    listParticipants = new JList();
+        listParticipants.setModel(modelAttending);
 		listParticipants.setBounds(281, 97, 162, 103);
 		add(listParticipants);
 		
-		JButton btnAddParticipant = new JButton("Legg til");
+        btnAddParticipant = new JButton("Legg til");
 		btnAddParticipant.setBounds(182, 114, 89, 23);
 		add(btnAddParticipant);
 		
-		JButton btnRemoveParticipant = new JButton("Fjern");
+	    btnRemoveParticipant = new JButton("Fjern");
 		btnRemoveParticipant.setBounds(182, 148, 89, 23);
 		add(btnRemoveParticipant);
 		
-		JLabel lblMtedeltagere = new JLabel("M\u00F8tedeltagere");
+		lblMtedeltagere = new JLabel("M\u00F8tedeltagere");
 		lblMtedeltagere.setBounds(279, 72, 130, 14);
 		add(lblMtedeltagere);
-		
-		
-		
-		
+
+        btnAddParticipant.addActionListener(this);
+        btnRemoveParticipant.addActionListener(this);
 	}
+
+    public ArrayList<Attendable> getInvitees()
+    {
+        return (ArrayList<Attendable>) modelAttending.elements();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        if(e.getSource() == btnAddParticipant)
+        {
+            Attendable att = modelSearch.get(listSearchResult.getSelectedIndex());
+            modelSearch.remove(listSearchResult.getSelectedIndex());
+            modelAttending.addElement(att);
+        }
+        else if(e.getSource() == btnRemoveParticipant)
+        {
+            Attendable att = modelAttending.get(listParticipants.getSelectedIndex());
+            modelAttending.remove(listParticipants.getSelectedIndex());
+            //TODO: Only if attendable matches search query
+            modelSearch.addElement(att);
+        }
+    }
 }

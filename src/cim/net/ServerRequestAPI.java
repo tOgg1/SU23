@@ -1,18 +1,12 @@
 package cim.net;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-
 import cim.database.DatabaseHandler;
-import cim.models.Account;
-import cim.models.Alert;
-import cim.models.Appointment;
-import cim.models.Calendar;
-import cim.models.MeetingResponse;
+import cim.models.*;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
+
+import java.sql.SQLException;
 
 /**
  * This class defines the API for the entire server request
@@ -60,7 +54,6 @@ public class ServerRequestAPI {
 			else if (method.equals("GET_MEETINGRESPONSESS_TO_ACCOUNT")){
 				return get_all_meetingResponses_to_account((Account)args[0]);
 			}
-			
 			else if (method.equals("GET_ALL_UNSEEN_ALERTS_TO_ACCOUNT")){
 				return get_all_unseen_alerts_to_account((Account) args[0]);
 			}
@@ -122,7 +115,8 @@ public class ServerRequestAPI {
 		return new Response(this.db.getAllUsers());
 	}
 	private Response get_all_calendars() throws CloakedIronManException {
-		//return new Response(new ArrayList());	
+		//return new Response(new ArrayList());
+        System.out.println("Im here!");
 		return new Response(this.db.getAllCalendars());
 	}
 	
