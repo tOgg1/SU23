@@ -39,6 +39,13 @@ public class CalendarRegister
 	/**
 	 * Reference to all rooms
 	 */
+	
+	/**
+	 * Reference to all Meeting responses to the current users
+	 */
+	private ArrayList<MeetingResponse> meetingResponses;
+	
+	
 	private ArrayList<Room> rooms;
 	Client parent;
 
@@ -54,6 +61,8 @@ public class CalendarRegister
 		groups = new ArrayList<Group>();
 		accounts = new ArrayList<Account>();
 		this.activeCalendars = new ArrayList<Calendar>();
+		this.meetingResponses = new ArrayList<MeetingResponse>();
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -129,7 +138,6 @@ public class CalendarRegister
 		//TODO: Save appointment to cal in this function?
 		try
 		{
-			this.registerAppointment(app);
 			//??cal.addAppointment(app);
 			Request req = new Request("SAVE_CALENDAR", cal);
 			Response res = parent.request(req);
@@ -410,11 +418,7 @@ public class CalendarRegister
 	 * Returns all meeting response objects to the currently logged in user
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException {
-		Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
-		return (ArrayList<MeetingResponse>)r.getData()[0];
-	}
+	
 	/**
 	 * Saves the given meeting response to the database.
 	 * @param mr
@@ -426,6 +430,15 @@ public class CalendarRegister
 	public Account getAccount()
 	{
 		return this.account;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException{
+		if(this.meetingResponses == null) {
+			Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
+			this.meetingResponses =  (ArrayList<MeetingResponse>)r.getData()[0];
+		}
+		return this.meetingResponses;
 	}
 
 }
