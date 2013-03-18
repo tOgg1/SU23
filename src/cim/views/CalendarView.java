@@ -330,6 +330,17 @@ public class CalendarView extends JPanel {
 				} else {
 					System.out.println("Appointment not set in dialog.");
 				}
+				if(alert != null) {
+					System.out.println("Alert set in dialog.");
+				} else {
+					System.out.println("Alert not set in dialog.");
+				}
+				if(meetingResponses != null) {
+					System.out.println("Meeting responses set in dialog.");
+				} else {
+					System.out.println("Meeting responses not set in dialog.");
+				}
+				
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
