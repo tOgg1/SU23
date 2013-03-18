@@ -1,6 +1,5 @@
 package cim.net.packet;
 
-import cim.models.CalendarObject;
 
 public class Event extends Packet {
 
@@ -9,29 +8,18 @@ public class Event extends Packet {
 	 */
 	private static final long serialVersionUID = 1123214312423L;
 	
-	public enum Type {
-		ADDED,
-		MODIFIED,
-		DELETED
-	}
-	private final Type type; 
-	private CalendarObject object;
-	
-	public Event(Type type) {
-		this.type = type;
+	private final String method;
+	private final Object[] args;
+	public Event(String method, Object... args){
+		this.method = method;
+		this.args = args;
 	}
 	
-	public Event(Type type, CalendarObject object) {
-		this.type = type;
-		this.object = object;
+	public String getMethod() {
+		return this.method;
 	}
-	
-	public Type getType() {
-		return this.type;
-	}
-	
-	public CalendarObject getObject() {
-		return this.object;
+	public Object[] getArgs() {
+		return this.args;
 	}
 
 }
