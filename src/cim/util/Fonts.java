@@ -3,7 +3,7 @@ package cim.util;
 import java.awt.Font;
 import java.io.File;
 
-// for å få fontawesome;last ned jar fil fra http://mvnrepository.com/artifact/org.webjars/font-awesome
+// for ï¿½ fï¿½ fontawesome;last ned jar fil fra http://mvnrepository.com/artifact/org.webjars/font-awesome
 // flere iconer finner du her http://www.jensd.de/wordpress/?p=178
 
 

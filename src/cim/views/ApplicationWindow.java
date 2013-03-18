@@ -94,7 +94,7 @@ public class ApplicationWindow extends JFrame {
 		alertsView = new AlertsView();
 		tabbedPane.addTab("Varsler", null, alertsView, null);
 		
-		manageCalendarsView = new ManageCalendarsView(Client.register.getAllCalendarsToCurrentUser(),this);
+		manageCalendarsView = new ManageCalendarsView(Client.register.getAllCalendarsToCurrentUser(), Client.register.getAllCalendars(), this);
 		tabbedPane.addTab("Administrer kalendere", null, manageCalendarsView, null);
 		
 		/*
@@ -124,9 +124,9 @@ public class ApplicationWindow extends JFrame {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName() == "numMeetingResponses"){
 				int iNewVal = (int)evt.getNewValue();
-				String text = "Møter til godkjenning";
+				String text = "Mï¿½ter til godkjenning";
 				if (iNewVal > 0) {
-					text = "Møter til godkjenning (" + iNewVal + ")";
+					text = "Mï¿½ter til godkjenning (" + iNewVal + ")";
 				}
 				tabbedPane.setTitleAt(1, text);
 			}

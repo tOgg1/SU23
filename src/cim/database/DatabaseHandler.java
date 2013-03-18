@@ -1070,10 +1070,10 @@ public class DatabaseHandler {
 	private int getAttendableId(Attendable a) throws SQLException, CloakedIronManException {
 		PreparedStatement st;
 		if (a instanceof Account) {
-			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE user_id=?");
+            st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE user_id=?");
 		} else{
 			//Its a group
-			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE group_id=?");
+            st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE group_id=?");
 		}
 		st.setInt(1, a.getId());
 		ResultSet rs = st.executeQuery();
@@ -1081,7 +1081,6 @@ public class DatabaseHandler {
 			return rs.getInt("attendable_id");
 		}
 		throw new CloakedIronManException("Could not find attendable id");
-		
 	}
 	
 	public ArrayList<MeetingResponse> getMeetingResponsesToAccount(Account a) throws CloakedIronManException {

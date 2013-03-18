@@ -1,5 +1,7 @@
 package cim.util;
 
+import cim.models.CalendarObject;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -83,5 +85,21 @@ public class Helper
     private static Calendar getEmptyCalendar() {
     	return new GregorianCalendar(0,0,0,0,0);
     }
-    
+
+    public static boolean equalsById(CalendarObject obj1, CalendarObject obj2)
+    {
+        return obj1.getId() == obj2.getId();
+    }
+
+    public static boolean containsById(Collection<? extends CalendarObject> col, CalendarObject obj)
+    {
+        for(CalendarObject obj1 : col)
+        {
+            if(equalsById(obj1, obj))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -3,6 +3,7 @@ package cim.views;
 import cim.models.Calendar;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +16,7 @@ import javax.swing.*;
 public class CalendarPanel extends JPanel
 {
     private Calendar model;
+    private boolean isDisplayed;
 
     public CalendarPanel(Calendar model)
     {
@@ -24,9 +26,25 @@ public class CalendarPanel extends JPanel
 
     public void init()
     {
-
-        JLabel text = new JLabel("Calendar " + model.getId() + " owned by " + model.getOwner().getName());
-        add(text);
+        setSize(new Dimension(300, 50));
+        isDisplayed = true;
+        JLabel text = new JLabel(model.getOwner() +"'s calendar");
+        text.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
+        super.add(text);
     }
 
+    public boolean isDisplayed()
+    {
+        return isDisplayed;
+    }
+
+    public void setDisplayed(boolean flag)
+    {
+        this.isDisplayed = flag;
+    }
+
+    public void toggleDisplayed()
+    {
+        this.isDisplayed = !this.isDisplayed;
+    }
 }
