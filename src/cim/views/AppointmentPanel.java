@@ -41,6 +41,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtName.setColumns(20);
         txtName.setBounds(10, 39, 114, 20);
         txtName.setEditable(false);
+        txtName.setText(base.getName());
         this.add(txtName);
         
         JLabel lblDelete = new JLabel();
@@ -58,7 +59,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         add(lblEdit);
         
         txtTime = new JTextField();
-        txtTime.setText("Tid");
+        txtTime.setText(base.getDateFormatted("hh:mm") + "-" + base.getDateFormatted("hh:mm"));
         txtTime.setEditable(false);
         txtTime.setBounds(10, 12, 86, 20);
         add(txtTime);
