@@ -28,7 +28,7 @@ public class AppointmentPanel extends JPanel implements Comparable
     private JTextField txtPlace;
     private JTextField txtOkNum;
     private JTextField txtDeclinedNum;
-    private JTextField txtGruopNum;
+    private JTextField txtGroupNum;
     public JLabel lblOK;
     public JLabel lblArrow;
     public JLabel lblGroup;
@@ -41,7 +41,8 @@ public class AppointmentPanel extends JPanel implements Comparable
         JTextField txtName = new JTextField("Navn");
         txtName.setColumns(20);
         txtName.setBounds(10, 39, 114, 20);
-        txtName.setEditable(false);
+        txtName.setBackground(null);
+        txtName.setBorder(null);
         txtName.setText(base.getName());
         this.add(txtName);
         
@@ -65,6 +66,8 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtTime.setBorder(null);
         txtTime.setEditable(false);
         txtTime.setBounds(10, 12, 86, 20);
+        txtTime.setBackground(null);
+        txtTime.setBorder(null);
         add(txtTime);
         txtTime.setColumns(12);
         
@@ -78,8 +81,9 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtPlace = new JTextField();
         txtPlace.setText("Sted");
         txtPlace.setVisible(false);
-        txtPlace.setEditable(false);
         txtPlace.setBounds(10, 70, 114, 20);
+        txtPlace.setBackground(null);
+        txtPlace.setBorder(null);
         add(txtPlace);
         txtPlace.setColumns(15);
         
@@ -106,24 +110,27 @@ public class AppointmentPanel extends JPanel implements Comparable
         
         txtOkNum = new JTextField();
         txtOkNum.setVisible(false);
-        txtOkNum.setEditable(false);
         txtOkNum.setBounds(28, 98, 15, 20);
+        txtOkNum.setBackground(null);
+        txtOkNum.setBorder(null);
         add(txtOkNum);
         txtOkNum.setColumns(2);
         
         txtDeclinedNum = new JTextField();
         txtDeclinedNum.setVisible(false);
-        txtDeclinedNum.setEditable(false);
         txtDeclinedNum.setBounds(66, 98, 15, 20);
+        txtDeclinedNum.setBackground(null);
+        txtDeclinedNum.setBorder(null);
         add(txtDeclinedNum);
         txtDeclinedNum.setColumns(2);
         
-        txtGruopNum = new JTextField();
-        txtGruopNum.setVisible(false);
-        txtGruopNum.setEditable(false);
-        txtGruopNum.setColumns(2);
-        txtGruopNum.setBounds(106, 98, 15, 20);
-        add(txtGruopNum);
+        txtGroupNum = new JTextField();
+        txtGroupNum.setVisible(false);
+        txtGroupNum.setColumns(2);
+        txtGroupNum.setBounds(106, 98, 15, 20);
+        txtGroupNum.setBackground(null);
+        txtGroupNum.setBorder(null);
+        add(txtGroupNum);
     }
 
     public Appointment getBase() {
@@ -165,7 +172,7 @@ public class AppointmentPanel extends JPanel implements Comparable
             	txtPlace.setVisible(true);
             	txtOkNum.setVisible(true);
             	txtDeclinedNum.setVisible(true);
-            	txtGruopNum.setVisible(true);
+            	txtGroupNum.setVisible(true);
             	lblOK.setVisible(true);
             	lblDeclined.setVisible(true);
     		}
@@ -175,7 +182,7 @@ public class AppointmentPanel extends JPanel implements Comparable
             	txtPlace.setVisible(false);
             	txtOkNum.setVisible(false);
             	txtDeclinedNum.setVisible(false);
-            	txtGruopNum.setVisible(false);
+            	txtGroupNum.setVisible(false);
             	lblOK.setVisible(false);
             	lblDeclined.setVisible(false);
     		}
