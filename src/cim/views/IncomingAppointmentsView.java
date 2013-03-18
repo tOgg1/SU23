@@ -31,7 +31,7 @@ public class IncomingAppointmentsView extends JPanel {
 	
 	public IncomingAppointmentsView() {
 		try {
-			setBackground(SystemColor.activeCaption);
+			setBackground(SystemColor.control);
 			setLayout(null);
 			setPreferredSize(new Dimension(1039, 456));
 			

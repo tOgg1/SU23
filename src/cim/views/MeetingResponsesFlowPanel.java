@@ -19,6 +19,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.awt.SystemColor;
 
 public class MeetingResponsesFlowPanel extends JPanel {
 	
@@ -34,7 +35,7 @@ public class MeetingResponsesFlowPanel extends JPanel {
 	
 	
 	public MeetingResponsesFlowPanel() {
-		setBackground(Color.YELLOW);
+		setBackground(SystemColor.control);
 		setLayout(new GridBagLayout());
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(715, 403));
@@ -67,7 +68,6 @@ public class MeetingResponsesFlowPanel extends JPanel {
 				MeetingResponsePanel mp = new MeetingResponsePanel();
 				mp.setModel(m);
 				this.add(mp, c);
-				c.weighty = 0.9;
 				System.out.println(c.gridy);
 				++c.gridy;
 				++iNumAdded;
@@ -76,6 +76,8 @@ public class MeetingResponsesFlowPanel extends JPanel {
 			}
 			
 		}
+		this.revalidate();
+		this.repaint();
 		this.firePropertyChange("numMeetingResponses", null, iNumAdded);
 	}
 

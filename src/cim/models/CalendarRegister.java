@@ -17,12 +17,29 @@ import java.util.ArrayList;
  */
 public class CalendarRegister
 {
-	ArrayList<Calendar> calendars;
-	ArrayList<Group> groups;
-	ArrayList<Appointment> appointments;
-	ArrayList<Account> accounts;
+	/**
+	 * Reference to all calendars
+	 */
+	private ArrayList<Calendar> calendars;
+	
+	/**
+	 * Reference to all active calendars
+	 */
+	private ArrayList<Calendar> activeCalendars;
+	
+	/**
+	 * reference to all groups
+	 */
+	private ArrayList<Group> groups;
+	/**
+	 * Reference to all accounts
+	 */
+	private ArrayList<Account> accounts;
 	// Trenger vi denne her?
-	ArrayList<Room> rooms;
+	/**
+	 * Reference to all rooms
+	 */
+	private ArrayList<Room> rooms;
 	Client parent;
 
 	/**
@@ -35,10 +52,11 @@ public class CalendarRegister
 		this.parent = parent;
 		calendars = new ArrayList<Calendar>();
 		groups = new ArrayList<Group>();
-		appointments = new ArrayList<Appointment>();
 		accounts = new ArrayList<Account>();
+		this.activeCalendars = new ArrayList<Calendar>();
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Calendar> getAllCalendarsToCurrentUser(){
 		try{
 			Response res = parent.request(new Request("GET_ALL_CALENDARS_TO_ACCOUNT", account));
@@ -211,18 +229,6 @@ public class CalendarRegister
 		return null;
 	}
 
-	//Useless?
-	public Appointment getAppointmentById(int appId)
-	{
-		for(Appointment app : this.appointments)
-		{
-			if(appId == app.getId())
-			{
-				return app;
-			}
-		}
-		return null;
-	}
 
 	/**
 	 * Takes an accountid and returns the corresponding account
@@ -306,14 +312,6 @@ public class CalendarRegister
 		return this.accounts;
 	}
 
-	/**
-	 * Returns all appointments in register
-	 * @return
-	 */
-	public ArrayList<Appointment> getAllAppointments()
-	{
-		return this.appointments;
-	}
 
 	/**
 	 * Returns all accounts in register
@@ -372,11 +370,6 @@ public class CalendarRegister
 			groups.add(group);
 	}
 
-	public void registerAppointment(Appointment appointment)
-	{
-		if(!containsById(appointments, appointment))
-			appointments.add(appointment);
-	}
 
 	public void registerAccount(Account account)
 	{
@@ -396,11 +389,6 @@ public class CalendarRegister
 			groups.remove(group);
 	}
 
-	public void unRegisterAppointment(Appointment appointment)
-	{
-		if(containsById(appointments, appointment))
-			appointments.add(appointment);
-	}
 
 	public void unRegisterAccount(Account account)
 	{
