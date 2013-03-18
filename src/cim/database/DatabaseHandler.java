@@ -2,6 +2,8 @@ package cim.database;
 
 import cim.models.*;
 import cim.models.MeetingResponse.Response;
+import cim.net.Server;
+import cim.net.packet.Event;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
 
@@ -14,10 +16,10 @@ public class DatabaseHandler {
 	private static String user = cim.util.PersonalSettings.MYSQL_USER;
 	private static String password = cim.util.PersonalSettings.MYSQL_PW;
 	private Connection con;
+	private Server server;
 
 
-
-	public DatabaseHandler(){
+	public DatabaseHandler(Server server){
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			con = DriverManager.getConnection(url, user, password);
@@ -41,6 +43,13 @@ public class DatabaseHandler {
 			o.printStackTrace();
 
 		}
+		this.server = server;
+	}
+	
+	public void broadcast(String method, Object... args) {
+		Event e = new Event(method);
+		e.setArgs(args);
+		this.server.broadcast(e);
 	}
 
 

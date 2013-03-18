@@ -9,9 +9,13 @@ public class Event extends Packet {
 	private static final long serialVersionUID = 1123214312423L;
 	
 	private final String method;
-	private final Object[] args;
+	private Object[] args;
 	public Event(String method, Object... args){
 		this.method = method;
+		this.args = args;
+	}
+	
+	public void setArgs(Object[] args) {
 		this.args = args;
 	}
 	
