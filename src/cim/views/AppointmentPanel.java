@@ -38,7 +38,8 @@ public class AppointmentPanel extends JPanel implements Comparable
         this.base = base;
         setLayout(null);
         JTextField txtName = new JTextField("Navn");
-        txtName.setBounds(10, 39, 61, 20);
+        txtName.setColumns(20);
+        txtName.setBounds(10, 39, 114, 20);
         txtName.setEditable(false);
         this.add(txtName);
         
@@ -61,7 +62,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtTime.setEditable(false);
         txtTime.setBounds(10, 12, 86, 20);
         add(txtTime);
-        txtTime.setColumns(10);
+        txtTime.setColumns(12);
         
         lblArrow = new JLabel("New label");
         lblArrow.setFont(new Font("FontAwesome", Font.PLAIN, 14));
@@ -74,9 +75,9 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtPlace.setText("Sted");
         txtPlace.setVisible(false);
         txtPlace.setEditable(false);
-        txtPlace.setBounds(10, 70, 86, 20);
+        txtPlace.setBounds(10, 70, 114, 20);
         add(txtPlace);
-        txtPlace.setColumns(10);
+        txtPlace.setColumns(15);
         
         lblGroup = new JLabel("New label");
         lblGroup.setVisible(false);
@@ -154,15 +155,28 @@ public class AppointmentPanel extends JPanel implements Comparable
 
     public class showInfoListener extends MouseAdapter{
     	public void mouseReleased(MouseEvent e){
-            lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_UP.toString());
-            lblGroup.setVisible(true);
-            txtTime.setVisible(true);
-            txtPlace.setVisible(true);
-            txtOkNum.setVisible(true);
-            txtDeclinedNum.setVisible(true);
-            txtGruopNum.setVisible(true);
-            lblOK.setVisible(true);
-            lblDeclined.setVisible(true);
+    		if (lblArrow.getText() == Fonts.AwesomeIcons.ICON_CARET_DOWN.toString()){
+    			lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_UP.toString());
+            	lblGroup.setVisible(true);
+            	txtTime.setVisible(true);
+            	txtPlace.setVisible(true);
+            	txtOkNum.setVisible(true);
+            	txtDeclinedNum.setVisible(true);
+            	txtGruopNum.setVisible(true);
+            	lblOK.setVisible(true);
+            	lblDeclined.setVisible(true);
+    		}
+    		else if(lblArrow.getText() == Fonts.AwesomeIcons.ICON_CARET_UP.toString()){
+    			lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_DOWN.toString());
+            	lblGroup.setVisible(false);
+            	txtTime.setVisible(false);
+            	txtPlace.setVisible(false);
+            	txtOkNum.setVisible(false);
+            	txtDeclinedNum.setVisible(false);
+            	txtGruopNum.setVisible(false);
+            	lblOK.setVisible(false);
+            	lblDeclined.setVisible(false);
+    		}
     		}
 		}
 	}
