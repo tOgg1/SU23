@@ -157,8 +157,16 @@ public class AddAppointmentDialog extends JDialog{
 				int c = addDetailsPanel.getEndHours();
 				int d = addDetailsPanel.getEndMinutes();
 				Time sluttTid = Helper.getTime(c,d);
-				String info = addDetailsPanel.getDescription(); 
+				String info = addDetailsPanel.getDescription();
+				
+				// Initializes the construction of a new Appointment from the information gathered above.
 				Appointment app = new Appointment(info,date,startTid,sluttTid,Client.register.getAccount());
+				
+				/* 
+				 * Then, if the checkbox "Legg til personer/grupper" is set,
+				*  and if the addParticipantsPanel is not empty, a Meeting-instance is created and 
+				*  meeting responses will be sent.
+				*/ 
 				app.setOwner(Client.register.getAccount());
                 ArrayList<Attendable> invitees = AddAppointmentDialog.this.addParticipantsPanel.getInvitees();
                 if(invitees.size() > 0)
