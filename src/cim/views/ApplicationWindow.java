@@ -129,7 +129,6 @@ public class ApplicationWindow extends JFrame {
 					text = "Møter til godkjenning (" + iNewVal + ")";
 				}
 				tabbedPane.setTitleAt(1, text);
-				System.out.println(text);
 			}
 			
 		}

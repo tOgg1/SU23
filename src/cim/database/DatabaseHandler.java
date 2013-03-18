@@ -4,6 +4,7 @@ import cim.models.*;
 import cim.models.MeetingResponse.Response;
 import cim.net.Server;
 import cim.net.packet.Event;
+import cim.net.packet.Event.Type;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
 
@@ -19,7 +20,7 @@ public class DatabaseHandler {
 	private Server server;
 
 
-	public DatabaseHandler(Server server){
+	public DatabaseHandler(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			con = DriverManager.getConnection(url, user, password);
@@ -43,11 +44,17 @@ public class DatabaseHandler {
 			o.printStackTrace();
 
 		}
-		this.server = server;
 	}
 	
-	public void broadcast(String method, Object... args) {
-		Event e = new Event(method);
+	public void setServer(Server s) {
+		this.server = s;
+	}
+	
+	public void broadcast(String method, Type type, Object... args) {
+		if(this.server == null) {
+			return;
+		}
+		Event e = new Event(method, type);
 		e.setArgs(args);
 		this.server.broadcast(e);
 	}
@@ -418,6 +425,8 @@ public class DatabaseHandler {
 			st.setString(4, mr.getResponseString());
 			System.out.println(mr.getResponseString());
 			st.execute();
+			this.broadcast("MEETING_RESPONSE", Type.ADDED, mr);
+			
 			
 			/*
 			 * If the meeting response is rejected, we need to add it to reject Message
@@ -449,7 +458,6 @@ public class DatabaseHandler {
 				rm.setWhoRejected(a);
 				this.saveRejectMessage(rm);
 			}
-			
 		} catch (Exception e) {
 			throw new CloakedIronManException("Could not create reject messages", e);
 		}

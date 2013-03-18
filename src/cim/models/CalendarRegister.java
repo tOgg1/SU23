@@ -69,7 +69,6 @@ public class CalendarRegister
 		groups = new ArrayList<Group>();
 		accounts = new ArrayList<Account>();
 		this.activeCalendars = new ArrayList<Calendar>();
-		this.meetingResponses = new ArrayList<MeetingResponse>();
 		
 	}
 	
@@ -453,6 +452,7 @@ public class CalendarRegister
 	public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException{
 		if(this.meetingResponses == null) {
 			Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
+			System.out.println(r.getData()[0]);
 			this.setMeetingResponses((ArrayList<MeetingResponse>)r.getData()[0]);
 		}
 		return this.meetingResponses;
@@ -461,6 +461,14 @@ public class CalendarRegister
 	public void setMeetingResponses(ArrayList<MeetingResponse> list) {
 		this.meetingResponses = list;
 		this.pcs.firePropertyChange("meetingResponses", null, list);
+	}
+	
+	public void registerMeetingResponse(MeetingResponse mr) {
+		this.meetingResponses.remove(mr);
+		if(mr.getAccount().equals(this.account)) {
+			this.meetingResponses.add(mr);
+		}
+		this.pcs.firePropertyChange("meetingResponses", null, this.meetingResponses);
 	}
 
 }

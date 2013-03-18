@@ -10,9 +10,17 @@ public class Event extends Packet {
 	
 	private final String method;
 	private Object[] args;
-	public Event(String method, Object... args){
+	private Type type;
+	
+	public enum Type {
+		ADDED,
+		UPDATED
+	}
+	
+	public Event(String method,Type type, Object... args){
 		this.method = method;
 		this.args = args;
+		this.type = type;
 	}
 	
 	public void setArgs(Object[] args) {
@@ -24,6 +32,10 @@ public class Event extends Packet {
 	}
 	public Object[] getArgs() {
 		return this.args;
+	}
+	
+	public Type getType() {
+		return this.type;
 	}
 
 }

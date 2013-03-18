@@ -10,8 +10,8 @@ import cim.util.CloakedIronManException;
 
 public class Test {
 	public static void main(String[] args) throws CloakedIronManException {
-		DatabaseHandler db = new DatabaseHandler();
+		/*DatabaseHandler db = new DatabaseHandler();
 		System.out.println(db.getAllCalendarsToAccount(db.getAccount(564)).size());
-		
+		*/
 	}
 }

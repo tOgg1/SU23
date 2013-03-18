@@ -25,7 +25,8 @@ public class ServerRequestAPI {
 	
 	public ServerRequestAPI(Server server) throws CloakedIronManException {
 		this.server = server;
-		this.db = new DatabaseHandler(server);
+		this.db = new DatabaseHandler();
+		this.db.setServer(server);
 	}
 	
 	
