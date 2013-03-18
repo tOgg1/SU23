@@ -482,7 +482,7 @@ public class DatabaseHandler {
 					"who_rejected=?," +
 					"meeting_id=?");
 			st.setInt(1, rm.getId());
-			st.setDate(2, rm.getDate());
+			st.setTimestamp(2, rm.getDate());
 			st.setInt(3, rm.getRecipient().getId());
 			if(rm.getWhoRejected() != null) {
 				st.setInt(4, rm.getWhoRejected().getId());
@@ -491,7 +491,7 @@ public class DatabaseHandler {
 			}
 			st.setInt(5, rm.getMeeting().getId());
 			
-			st.setDate(6, rm.getDate());
+			st.setTimestamp(6, rm.getDate());
 			st.setInt(7, rm.getRecipient().getId());
 			if(rm.getWhoRejected() != null) {
 				st.setInt(8, rm.getWhoRejected().getId());

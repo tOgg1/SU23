@@ -2,6 +2,7 @@ package cim.util;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -75,9 +76,8 @@ public class Helper
 		return df.format(d);
 	}
 	
-	public static Date getNow() {
-		Calendar c = Calendar.getInstance();
-		return new Date(c.getTimeInMillis());
+	public static Timestamp getNow() {
+		return new Timestamp(System.currentTimeMillis());
 	}
     
     private static Calendar getEmptyCalendar() {
