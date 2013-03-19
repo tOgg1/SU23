@@ -73,7 +73,6 @@ public class CalendarRegister
 		this.pcs = new PropertyChangeSupport(this);
 		this.parent = parent;
 		calendars = new ArrayList<Calendar>();
-		groups = new ArrayList<Group>();
 		accounts = new ArrayList<Account>();
 		this.activeCalendars = new ArrayList<Calendar>();
 		
@@ -378,8 +377,13 @@ public class CalendarRegister
 		}
 	}
 
-	public ArrayList<Group> getAllGroups()
+	@SuppressWarnings("unchecked")
+	public ArrayList<Group> getAllGroups() throws CloakedIronManException
 	{
+		if(this.groups == null) {
+			Response r = this.parent.request(new Request("GET_ALL_GROUPS"));
+			this.groups = (ArrayList<Group>)r.getData()[0];
+		}
 		return this.groups;
 	}
 
@@ -387,11 +391,6 @@ public class CalendarRegister
 	// initialize() and when fetching new objects
 	// from server
 
-	public void registerCalendar(Calendar calendar)
-	{
-		if(!containsById(calendars, calendar))
-			calendars.add(calendar);
-	}
 
 	public void registerGroup(Group group)
 	{
@@ -486,6 +485,20 @@ public class CalendarRegister
 		}
 		this.pcs.firePropertyChange("meetingResponses", null, this.meetingResponses);
 	}
+	public void registerCalendar(Calendar calendar) {
+		this.calendars.remove(calendar);
+		this.calendars.add(calendar);
+		this.pcs.firePropertyChange("calendars", null, this.calendars);
+		
+		// Also update the active calendars
+		if(this.activeCalendars.contains(calendar)) {
+			this.activeCalendars.remove(calendar);
+			this.activeCalendars.add(calendar);
+			this.pcs.firePropertyChange("activeCalendars", null, this.activeCalendars);
+		}
+		
+	}
+	
 		
 	public void cancelAppointment(Appointment appointment) throws CloakedIronManException{
 		this.parent.request(new Request("CANCEL_APPOINTMENT", appointment));
