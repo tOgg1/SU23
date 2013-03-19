@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class Account extends CalendarObject implements Attendable, Serializable
 {
-	private int attendableId;
+	private int attendableId = -1;
 	private String email;
 	private String firstName;
 	private String lastName;
@@ -126,8 +126,9 @@ public class Account extends CalendarObject implements Attendable, Serializable
 	}
 	
 	public void setAttendableId(int id) {
-		this.pcs.firePropertyChange("attendableId", this.attendableId, attendableId);
+		int oldVal = this.attendableId;
 		this.attendableId = id;
+		this.pcs.firePropertyChange("attendableId", oldVal, id);
 	}
 	
 	public int getAttendableId() {

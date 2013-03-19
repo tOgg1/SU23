@@ -3,6 +3,8 @@ package cim.views.appointmentDialogs;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -17,8 +19,9 @@ import javax.swing.JList;
 import cim.models.Calendar;
 import cim.models.Room;
 import cim.net.Client;
+import cim.util.Helper;
 
-public class AppointmentDetailsPanel extends JPanel {
+public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 	private JTextField txtDescription;
 	private JTextField txtLocation;
 
@@ -68,8 +71,9 @@ public class AppointmentDetailsPanel extends JPanel {
 		}
 		comBoxMonth.setToolTipText("");
 		comBoxMonth.setBounds(142, 49, 48, 20);
+		comBoxMonth.addActionListener(this);
 		add(comBoxMonth);
-
+		
 		JLabel lblStart = new JLabel("Start");
 		lblStart.setBounds(10, 76, 54, 14);
 		add(lblStart);
@@ -83,6 +87,7 @@ public class AppointmentDetailsPanel extends JPanel {
 		}
 
 		comBoxHours.setBounds(71, 76, 48, 20);
+		comBoxHours.addActionListener(this);
 		add(comBoxHours);
 
 		JLabel lblColon = new JLabel(":");
@@ -96,6 +101,7 @@ public class AppointmentDetailsPanel extends JPanel {
 			comBoxMinutes.addItem(minutes[i]);
 		}
 		comBoxMinutes.setBounds(142, 76, 48, 20);
+		comBoxMinutes.addActionListener(this);
 		add(comBoxMinutes);
 
 		JLabel lblEnd = new JLabel("Slutt");
@@ -109,6 +115,7 @@ public class AppointmentDetailsPanel extends JPanel {
 			comBoxEndHours.addItem(hours[i]+1);
 		}
 		comBoxEndHours.setBounds(71, 101, 48, 20);
+		comBoxEndHours.addActionListener(this);
 		add(comBoxEndHours);
 
 		JLabel lblColon2 = new JLabel(":");
@@ -121,6 +128,7 @@ public class AppointmentDetailsPanel extends JPanel {
 			comBoxEndMinutes.addItem(minutes[i]);
 		}
 		comBoxEndMinutes.setBounds(142, 101, 48, 20);
+		comBoxEndMinutes.addActionListener(this);
 		add(comBoxEndMinutes);
 
 		rbtnLocation = new JRadioButton("Sted");
@@ -152,10 +160,7 @@ public class AppointmentDetailsPanel extends JPanel {
 		arrayListRooms = Client.register.getRooms();
 		for(Room room : arrayListRooms)
 		{
-			if(room.isAvailiable())
-			{
-				roomListModel.addElement(room);
-			}
+			roomListModel.addElement(room);
 		}
 		listAvailableRooms.setModel(roomListModel);
 		listAvailableRooms.setBounds(278, 142, 182, 80);
@@ -173,6 +178,7 @@ public class AppointmentDetailsPanel extends JPanel {
 			comBoxDays.addItem(days[i]+1);
 		}
 		comBoxDays.setBounds(71, 49, 48, 20);
+		comBoxDays.addActionListener(this);
 		add(comBoxDays);
 
 		comBoxYear = new JComboBox();
@@ -183,6 +189,7 @@ public class AppointmentDetailsPanel extends JPanel {
 			comBoxYear.addItem(years[i]);
 		}
 		comBoxYear.setBounds(210, 49, 54, 20);
+		comBoxYear.addActionListener(this);
 		add(comBoxYear);
 
 		lblCalendar = new JLabel("Kalender");
@@ -205,6 +212,7 @@ public class AppointmentDetailsPanel extends JPanel {
 
 
 	}
+	
 	public int getDays()
 	{
 		return (int)comBoxDays.getSelectedItem();
@@ -240,5 +248,17 @@ public class AppointmentDetailsPanel extends JPanel {
 	public String getDescription()
 	{
 		return txtDescription.getText();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent action) {
+		roomListModel = new DefaultListModel<Room>();
+		ArrayList<Room> availableRooms = Client.register.getAvailableRooms(Helper.getDate(getYears(), getMonths(), getDays()), Helper.getTime(getHours(), getMinutes()), Helper.getTime(getEndHours(),getEndMinutes()));
+		for(Room room : availableRooms)
+		{
+			roomListModel.addElement(room);
+		}
+		System.out.println(roomListModel.getSize());
+		listAvailableRooms.setModel(roomListModel);
 	}
 }

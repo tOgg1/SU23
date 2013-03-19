@@ -51,7 +51,9 @@ public class DatabaseHandler {
 	}
 	
 	public void broadcast(String method, Type type, Object... args) {
+		
 		if(this.server == null) {
+			System.out.println("No server attached, but broadcasting: " + method + ", " + type.toString());
 			return;
 		}
 		Event e = new Event(method, type);
@@ -464,6 +466,15 @@ public class DatabaseHandler {
 				this.createRejectMessages(m,a);
 			}
 			
+			/*
+			 * If the meeting response is accepted, the calendar is changed
+			 */
+			if(mr.getResponse() == Response.ATTENDING) {
+				Calendar c = this.getCalendarToAttendable(mr.getAccount());
+				this.broadcast("CALENDAR", Type.UPDATED, c);
+			}
+			
+			
 			
 			return mr;
 		} catch (Exception e) {
@@ -471,6 +482,22 @@ public class DatabaseHandler {
 		}
 		
 	}
+	
+	
+	private Calendar getCalendarToAttendable(Attendable a) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT calendar_id FROM calendar WHERE owner_attendable_id=?");
+			st.setInt(1, a.getAttendableId());
+			ResultSet rs = st.executeQuery();
+			if(!rs.next()) {
+				throw new CloakedIronManException("Attendable has no calendar to it, which it must have.");
+			}
+			return this.getCalendar2(rs.getInt("calendar_id"));
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get calendar to attendable", e);
+		}
+	}
+	
 	/**
 	 * This method adds reject messages to the current meeting from the account who rejected
 	 * @param m The meeting that was rejected
@@ -703,20 +730,19 @@ public class DatabaseHandler {
 	 */
 	public Account getAccountByEmail(String email) throws CloakedIronManException {
 		try {
-			PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE email=?");
+			PreparedStatement st = this.con.prepareStatement("SELECT user_id FROM account WHERE email=?");
 			st.setString(1, email);
 			ResultSet rs = st.executeQuery();
-			if (rs.next()) {
-				return fillAccount(rs);
+			if(!rs.next()) {
+				return null;
 			}
-			return null;
-		} catch (SQLException e) {
-			throw new CloakedIronManException("Unable to process query.", e);
+			return this.getAccount(rs.getInt("user_id"));
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get account by email.", e);
 		}
-		
 	}
 	
-	private Appointment getAppointment2(int id) throws CloakedIronManException {
+	public Appointment getAppointment2(int id) throws CloakedIronManException {
 		try {
 			PreparedStatement st = this.con.prepareStatement("SELECT * FROM appointment LEFT JOIN meeting ON appointment.appointment_id=meeting.appointment_id WHERE appointment.appointment_id=?");
 			st.setInt(1,id);
@@ -796,10 +822,22 @@ public class DatabaseHandler {
 			PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE user_id=?");
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
-			if (rs.next()) {
-				return fillAccount(rs);
+			if (!rs.next()) {
+				throw new CloakedIronManException("No account found with id " + id);
+				
 			}
-			return null;
+			Account a = this.fillAccount(rs);
+			st.close();
+			rs.close();
+			
+			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE user_id=?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(!rs.next()) {
+				throw new CloakedIronManException("Account not saved with attendable ID");
+			}
+			a.setAttendableId(rs.getInt("attendable_id"));
+			return a;
 		} catch (Exception e) {
 			throw new CloakedIronManException("Could not get account.", e);
 		}
@@ -819,6 +857,16 @@ public class DatabaseHandler {
 			Group g = fillGroup(rs);
 			st.close();
 			rs.close();
+			
+			// Finding attendable id
+			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE group_id=?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(!rs.next()) {
+				throw new CloakedIronManException("Group has no attendable ID which is must have");
+			}
+			g.setAttendableId(rs.getInt("attendable_id"));
+			
 			
 			
 			// Must find all of its members
@@ -1212,6 +1260,7 @@ public class DatabaseHandler {
 	}
 	
 	public void cancelAppointment(Appointment ap) throws CloakedIronManException{
+		
 		PreparedStatement st;
 		try {
 			if (ap instanceof Appointment){

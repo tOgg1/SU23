@@ -1,6 +1,7 @@
 package cim.views;
 
 import cim.models.Calendar;
+import cim.net.Client;
 import cim.util.Helper;
 
 import javax.swing.*;
@@ -45,7 +46,7 @@ public class ManageCalendarsView extends JPanel
         JLabel label1 = new JLabel("My Calendars");
         label1.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
         label1.setBorder(new LineBorder(Color.GRAY, 1));
-        label1.setBounds(50,20,200, 15);
+        label1.setBounds(50, 20, 200, 15);
         calendarContainer.add(label1);
 
         int index = 0;
@@ -107,14 +108,7 @@ public class ManageCalendarsView extends JPanel
                 return;
             CalendarPanel panelOfInterest = allCalendars.get(selected);
             panelOfInterest.toggleDisplayed();
-            if(panelOfInterest.isDisplayed())
-            {
-                application.getCalendarView().addCalendar(panelOfInterest.getModel());
-            }
-            else
-            {
-                application.getCalendarView().removeCalendar(panelOfInterest.getModel());
-            }
+            Client.register.setCalendarActivity(panelOfInterest.getModel(), panelOfInterest.isDisplayed());
             changedTroughLoad = false;
         }
     }
