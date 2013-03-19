@@ -1213,6 +1213,20 @@ public class DatabaseHandler {
 			this.saveRejectMessage(rej);
 		}
 	}
+
+	public ArrayList<Group> getAllGroups() throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT group_id FROM group");
+			ResultSet rs = st.executeQuery();
+			ArrayList<Group> groups = new ArrayList<Group>();
+			while(rs.next()) {
+				groups.add(this.getGroup(rs.getInt("group_id")));
+			}
+			return groups;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get all groups.", e);
+		}
+	}
     
     
 

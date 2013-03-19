@@ -65,8 +65,11 @@ public class ServerRequestAPI {
 				return save_meeting_response((MeetingResponse)args[0]);
 			}
 			else if (method.equals("CANCEL_APPOINTMENT")){
-				cancel_appointment((Appointment)args[0]);
-				return new Response();
+				return cancel_appointment((Appointment)args[0]);
+			}
+			
+			else if (method.equals("GET_ALL_GROUPS")) {
+				return get_all_groups();
 			}
 			
 			return new Response(new CloakedIronManException("No server API call named '" + method + "'"));
@@ -76,8 +79,9 @@ public class ServerRequestAPI {
 		
 		
 	}
-	private void cancel_appointment(Appointment appointment) throws CloakedIronManException {
+	private Response cancel_appointment(Appointment appointment) throws CloakedIronManException {
 		this.db.cancelAppointment(appointment);
+		return new Response();
 	}
 
 	private Response seen_alert(Alert alert) {
@@ -138,6 +142,10 @@ public class ServerRequestAPI {
 	private Response save_meeting_response(MeetingResponse mr) throws CloakedIronManException {
 		this.db.saveMeetingResponse(mr);
 		return new Response();
+	}
+	
+	private Response get_all_groups() throws CloakedIronManException {
+		return new Response(this.db.getAllGroups());
 	}
 	
 }
