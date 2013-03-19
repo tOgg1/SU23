@@ -187,11 +187,12 @@ public class Appointment extends CalendarObject
     public Meeting toMeeting(ArrayList<Attendable> invitees)
     {
         Meeting meeting = this.toMeeting();
+        /*
         ArrayList<MeetingResponse> responses = new ArrayList<MeetingResponse>();
         for(Attendable invitee : invitees)
         {
             responses.add(new MeetingResponse((Account)invitee,meeting,"not_seen"));
-        }
+        }*/
         return meeting;
     }
 }
