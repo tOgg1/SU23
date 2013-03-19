@@ -149,7 +149,7 @@ public class DatabaseHandler {
 			rs.close();
 			
 			/*
-			 * Fill up appointments
+			 * Fill up appointments. Cancelled meetings will also be added.
 			 */
 			st = this.con.prepareStatement("SELECT appointment_id FROM appointment WHERE calendar_id=?");
 			st.setInt(1, c.getId());
@@ -373,11 +373,11 @@ public class DatabaseHandler {
 			ArrayList<Integer> ids = c.getAllAppointmentIds();
 			if (ids.size() > 0) {
 				String joinedString = Helper.join(ids, ",");
-				st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id NOT IN (" + joinedString + ")");
+				st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id NOT IN (" + joinedString + ") AND calendar_id=?");
+				st.setInt(1, c.getId());
 				st.executeUpdate();
 			}
-			
-
+			st.close();
 			for(Appointment a : c.getAppointments()) {
                 /*if(a instanceof Meeting)
                 {
@@ -1204,9 +1204,8 @@ public class DatabaseHandler {
 			
 		}
 		}catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+			e.printStackTrace();
+		}
 	}
 	
 	private void cancelMeeting(Meeting meeting) throws CloakedIronManException, SQLException{
