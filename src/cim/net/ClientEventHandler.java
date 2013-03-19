@@ -1,5 +1,6 @@
 package cim.net;
 
+import cim.models.Calendar;
 import cim.models.MeetingResponse;
 import cim.net.packet.Event;
 import cim.net.packet.Event.Type;
@@ -13,6 +14,10 @@ public class ClientEventHandler {
 				this.meeting_response_updated((MeetingResponse)e.getArgs()[0]);
 				return;
 			}
+			
+			else if (method.equals("CALENDAR")) {
+				this.calendar_updated((Calendar)e.getArgs()[0]);
+			}
 		} else if (type == Type.DELETED) {
 			
 		}
@@ -22,5 +27,9 @@ public class ClientEventHandler {
 	
 	private void meeting_response_updated(MeetingResponse mr) {
 		Client.register.registerMeetingResponse(mr);
+	}
+	
+	private void calendar_updated(Calendar c) {
+		Client.register.registerCalendar(c);
 	}
 }

@@ -387,11 +387,6 @@ public class CalendarRegister
 	// initialize() and when fetching new objects
 	// from server
 
-	public void registerCalendar(Calendar calendar)
-	{
-		if(!containsById(calendars, calendar))
-			calendars.add(calendar);
-	}
 
 	public void registerGroup(Group group)
 	{
@@ -486,6 +481,20 @@ public class CalendarRegister
 		}
 		this.pcs.firePropertyChange("meetingResponses", null, this.meetingResponses);
 	}
+	public void registerCalendar(Calendar calendar) {
+		this.calendars.remove(calendar);
+		this.calendars.add(calendar);
+		this.pcs.firePropertyChange("calendars", null, this.calendars);
+		
+		// Also update the active calendars
+		if(this.activeCalendars.contains(calendar)) {
+			this.activeCalendars.remove(calendar);
+			this.activeCalendars.add(calendar);
+			this.pcs.firePropertyChange("activeCalendars", null, this.activeCalendars);
+		}
+		
+	}
+	
 		
 	public void cancelAppointment(Appointment appointment) throws CloakedIronManException{
 		this.parent.request(new Request("CANCEL_APPOINTMENT", appointment));
