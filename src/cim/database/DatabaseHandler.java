@@ -214,7 +214,7 @@ public class DatabaseHandler {
 		c.setId(calendar_id);
 		try {
 			while(rs.next()){
-				c.addAppointment(this.getAppointment(rs.getInt("appointment_id")));
+				c.addAppointment(this.getAppointment2(rs.getInt("appointment_id")));
 			}
 			return c;
 
@@ -379,14 +379,14 @@ public class DatabaseHandler {
 			
 
 			for(Appointment a : c.getAppointments()) {
-                if(a instanceof Meeting)
+                /*if(a instanceof Meeting)
                 {
                     //TODO: Stopping here for some reason!
                     for(MeetingResponse response : ((Meeting)a).getInvitees())
                     {
                         this.saveMeetingResponse(response);
                     }
-                }
+                }*/
 				this.saveAppointment(a, c);
 			}
 			this.broadcast("CALENDAR", Type.UPDATED, c);
@@ -717,7 +717,7 @@ public class DatabaseHandler {
 			throw new CloakedIronManException("Could not get appointment.", e);
 		}
 	}
-
+	/*
 	public Appointment getAppointment(int appointment_id) throws CloakedIronManException
 	{
 		try {
@@ -744,7 +744,7 @@ public class DatabaseHandler {
 			throw new CloakedIronManException("Could not get appointment", e);
 		}
 		
-	}
+	} */
 
 
 	
@@ -851,7 +851,6 @@ public class DatabaseHandler {
 
 	private int getNextAutoIncrease(String table, String column)throws SQLException {
 		String sql = "SELECT MAX(" + column + ") as max FROM " + table;
-		System.out.println(sql);
 		PreparedStatement st = this.con.prepareStatement(sql);
 
 		ResultSet rs = st.executeQuery();
@@ -885,14 +884,14 @@ public class DatabaseHandler {
 		}
 		
 	}
-
+	
 	/**
 	 * ResultSet should be a joined query of appintment and meeting.
 	 * @param rs
 	 * @return
 	 * @throws SQLException
 	 */
-	private Meeting fillMeeting(ResultSet rs,int appointment_id) throws CloakedIronManException
+	/*private Meeting fillMeeting(ResultSet rs,int appointment_id) throws CloakedIronManException
 	{
 		try {
 			PreparedStatement st = this.con.prepareStatement("SELECT * " +
@@ -928,7 +927,7 @@ public class DatabaseHandler {
 		
 
 
-	}
+	}*/
 	
 	/**
 	 * ResultSet should be a joined query of appintment and meeting. RS pointer should be at the correct position.
