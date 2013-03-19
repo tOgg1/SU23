@@ -36,6 +36,8 @@ public class AppointmentPanel extends JPanel implements Comparable
     public JLabel lblArrow;
     public JLabel lblGroup;
     public JLabel lblDeclined;
+    private JLabel lblWait;
+    private JLabel lblPlace;
     
     public AppointmentPanel(Appointment base, Calendar calendar)
     {
@@ -86,7 +88,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtPlace = new JTextField();
         txtPlace.setText("Sted");
         txtPlace.setVisible(false);
-        txtPlace.setBounds(10, 70, 143, 20);
+        txtPlace.setBounds(38, 70, 115, 20);
         txtPlace.setBackground(null);
         txtPlace.setBorder(null);
         add(txtPlace);
@@ -95,49 +97,69 @@ public class AppointmentPanel extends JPanel implements Comparable
         lblGroup = new JLabel("New label");
         lblGroup.setVisible(false);
         lblGroup.setFont(new Font("FontAwesome", Font.PLAIN, 11));
-        lblGroup.setBounds(91, 101, 18, 14);
+        lblGroup.setBounds(10, 101, 24, 14);
         lblGroup.setText(Fonts.AwesomeIcons.ICON_GROUP.toString());
         add(lblGroup);
         
         lblOK = new JLabel("New label");
+        lblOK.setEnabled(false);
         lblOK.setVisible(false);
         lblOK.setFont(new Font("FontAwesome", Font.PLAIN, 11));
-        lblOK.setBounds(10, 101, 18, 14);
+        lblOK.setBounds(30, 101, 29, 14);
         lblOK.setText(Fonts.AwesomeIcons.ICON_OK.toString());
         add(lblOK);
         
         lblDeclined = new JLabel("New label");
+        lblDeclined.setEnabled(false);
         lblDeclined.setVisible(false);
         lblDeclined.setFont(new Font("FontAwesome", Font.PLAIN, 11));
-        lblDeclined.setBounds(53, 101, 18, 14);
+        lblDeclined.setBounds(69, 101, 25, 14);
         lblDeclined.setText(Fonts.AwesomeIcons.ICON_REMOVE.toString());
         add(lblDeclined);
         
         txtOkNum = new JTextField();
+        txtOkNum.setEnabled(false);
         txtOkNum.setVisible(false);
-        txtOkNum.setBounds(28, 98, 15, 20);
+        txtOkNum.setBounds(44, 98, 15, 20);
         txtOkNum.setBackground(null);
         txtOkNum.setBorder(null);
         txtOkNum.setColumns(2);
         add(txtOkNum);
         
         txtDeclinedNum = new JTextField();
+        txtDeclinedNum.setEnabled(false);
         txtDeclinedNum.setVisible(false);
-        txtDeclinedNum.setBounds(66, 98, 15, 20);
+        txtDeclinedNum.setBounds(79, 98, 15, 20);
         txtDeclinedNum.setBackground(null);
         txtDeclinedNum.setBorder(null);
         txtDeclinedNum.setColumns(2);
         add(txtDeclinedNum);
         
         txtGroupNum = new JTextField();
+        txtGroupNum.setEnabled(false);
         txtGroupNum.setVisible(false);
         txtGroupNum.setColumns(2);
-        txtGroupNum.setBounds(106, 98, 15, 20);
+        txtGroupNum.setBounds(124, 98, 15, 20);
         txtGroupNum.setBackground(null);
         txtGroupNum.setBorder(null);
         add(txtGroupNum);
         
         this.cal = calendar;
+        
+        lblWait = new JLabel("New label");
+        lblWait.setEnabled(false);
+        lblWait.setVisible(false);
+        lblWait.setFont(new Font("FontAwesome", Font.PLAIN, 14));
+        lblWait.setBounds(104, 101, 35, 14);
+        lblWait.setText(Fonts.AwesomeIcons.ICON_TIME.toString());
+        add(lblWait);
+        
+        lblPlace = new JLabel("New label");
+        lblPlace.setVisible(false);
+        lblPlace.setFont(new Font("FontAwesome", Font.PLAIN, 14));
+        lblPlace.setBounds(10, 72, 24, 14);
+        lblPlace.setText(Fonts.AwesomeIcons.ICON_MAP_MARKER.toString());
+        add(lblPlace);
     }
 
     public Appointment getBase() {
@@ -192,6 +214,8 @@ public class AppointmentPanel extends JPanel implements Comparable
             	txtGroupNum.setVisible(true);
             	lblOK.setVisible(true);
             	lblDeclined.setVisible(true);
+                lblPlace.setVisible(true);
+                lblWait.setVisible(true);
     		}
     		else if(lblArrow.getText().equals(Fonts.AwesomeIcons.ICON_CARET_UP.toString())){
     			setPreferredSize(new Dimension(190,65));
@@ -203,6 +227,8 @@ public class AppointmentPanel extends JPanel implements Comparable
             	txtGroupNum.setVisible(false);
             	lblOK.setVisible(false);
             	lblDeclined.setVisible(false);
+                lblPlace.setVisible(false);
+                lblWait.setVisible(false);
     		}
     		}
 		}
