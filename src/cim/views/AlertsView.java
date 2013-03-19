@@ -10,34 +10,54 @@ import java.awt.event.ActionListener;
 public class AlertsView extends JPanel{
 //	Client.register <--- objektet vi kaller metoder p�.
 	private JList alertsList;
-	private JButton btnRemoveAlert;
+
 	private DefaultListModel<RejectMessage> rejectMessageList;
+	private DefaultListModel<String> messageList;
+	private JList list;
+	private JButton btnRemoveAlarm;
+	private JButton btnRemoveAlert;
+	private JLabel lblMessages;
+	private JLabel lblAlerts;
 	
 	public AlertsView() {
 		setLayout(null);
 		
 		alertsList = new JList();
-		alertsList.setBounds(66, 75, 352, 132);
+		alertsList.setBounds(10, 311, 639, 200);
 		add(alertsList);
 		try{
-            rejectMessageList = new DefaultListModel<RejectMessage>();
+//            rejectMessageList = new DefaultListModel<RejectMessage>();
+				messageList = new DefaultListModel<String>();
             for(RejectMessage rm : Client.register.getRejectMessages()){
-            	rejectMessageList.addElement(rm);
+//            	rejectMessageList.addElement(rm);
+            	messageList.addElement(rm.toString());
             }
-            alertsList.setModel(rejectMessageList);
+            alertsList.setModel(messageList);
 		} 
 		catch(NullPointerException e) {
 			e.printStackTrace();
 		}
 		
 		btnRemoveAlert = new JButton("Fjern");
-		btnRemoveAlert.setBounds(329, 228, 89, 23);
+		btnRemoveAlert.setBounds(560, 522, 89, 23);
 		add(btnRemoveAlert);
 		btnRemoveAlert.addActionListener(new RemoveAlertButtonListener());
 		
-		JLabel lblAlerts = new JLabel("Varsler");
-		lblAlerts.setBounds(22, 31, 46, 14);
+		lblAlerts = new JLabel("Varsler");
+		lblAlerts.setBounds(10, 286, 97, 14);
 		add(lblAlerts);
+		
+		list = new JList();
+		list.setBounds(10, 36, 639, 200);
+		add(list);
+		
+		btnRemoveAlarm = new JButton("Fjern");
+		btnRemoveAlarm.setBounds(560, 247, 89, 23);
+		add(btnRemoveAlarm);
+		
+		lblMessages = new JLabel("Meldinger");
+		lblMessages.setBounds(10, 11, 97, 14);
+		add(lblMessages);
 	}
 	public class RemoveAlertButtonListener implements ActionListener{
 
