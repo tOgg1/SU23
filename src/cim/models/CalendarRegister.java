@@ -73,7 +73,6 @@ public class CalendarRegister
 		this.pcs = new PropertyChangeSupport(this);
 		this.parent = parent;
 		calendars = new ArrayList<Calendar>();
-		groups = new ArrayList<Group>();
 		accounts = new ArrayList<Account>();
 		this.activeCalendars = new ArrayList<Calendar>();
 		
@@ -378,8 +377,13 @@ public class CalendarRegister
 		}
 	}
 
-	public ArrayList<Group> getAllGroups()
+	@SuppressWarnings("unchecked")
+	public ArrayList<Group> getAllGroups() throws CloakedIronManException
 	{
+		if(this.groups == null) {
+			Response r = this.parent.request(new Request("GET_ALL_GROUPS"));
+			this.groups = (ArrayList<Group>)r.getData()[0];
+		}
 		return this.groups;
 	}
 
