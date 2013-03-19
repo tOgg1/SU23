@@ -366,7 +366,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 					
 					// Saving the alarm
 					if(alert != null) {
-						Client.register.saveAlert(a);
+						Client.register.saveAlert(alert);
 					}
 					if (a instanceof Meeting && meetingResponses.size() > 0) {
 						for(MeetingResponse mr : meetingResponses) {
@@ -375,25 +375,6 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 					}
 					
 				}
-				
-				Alert alert = ad.getAlert();
-				if(a != null) {
-					System.out.println("Appointment set in dialog.");
-				} else {
-					System.out.println("Appointment not set in dialog.");
-				}
-				if(alert != null) {
-					System.out.println("Alert set in dialog.");
-				} else {
-					System.out.println("Alert not set in dialog.");
-				}
-				if(meetingResponses != null) {
-					System.out.println("Meeting responses set in dialog.");
-					System.out.println(meetingResponses);
-				} else {
-					System.out.println("Meeting responses not set in dialog.");
-				}
-				
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}

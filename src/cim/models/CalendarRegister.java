@@ -500,12 +500,12 @@ public class CalendarRegister
 		return null;
 	}
 	
-	public void saveCalendar(Calendar c) {
-		
+	public void saveCalendar(Calendar c) throws CloakedIronManException {
+		this.parent.request(new Request("SAVE_CALENDAR", c));
 	}
 	
-	public void saveAlert(Alert a) {
-		
+	public void saveAlert(Alert a) throws CloakedIronManException {
+		// TODO: Legge inn denne metoden på serveren
 	}
 
 }
