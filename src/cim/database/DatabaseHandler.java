@@ -686,6 +686,46 @@ public class DatabaseHandler {
 			throw new CloakedIronManException("Could not handle query.", e);
 		}
 	}
+	
+	public Alert saveAlert(Alert a) throws CloakedIronManException {
+		try {
+			if(a.getOwner() == null) {
+				throw new CloakedIronManException("Owner not set in alert");
+			}
+			if(a.getOwner().getId() == -1) {
+				throw new CloakedIronManException("Owner ID not set, owner not saved in database.");
+			}
+			
+			if(a.getAppointment() == null) {
+				throw new CloakedIronManException("Appointment in alert not set.");
+			}
+			if(a.getAppointment().getId() == -1) {
+				throw new CloakedIronManException("Appointment id not set, appointment not saved in database.");
+			}
+			
+			// All good, lets save
+			PreparedStatement st = this.con.prepareStatement("INSERT INTO alarm " +
+					"(appointment_id, user_id, when, is_seen) " +
+					"VALUES " +
+					"(?,?,?,?) " +
+					"ON DUPLICATE KEY UPDATE " +
+					"when=?, is_seen=?");
+			st.setInt(1, a.getAppointment().getId());
+			st.setInt(2, a.getOwner().getId());
+			st.setTimestamp(3, a.getWhen());
+			st.setBoolean(4, a.isSeen());
+			st.setTimestamp(5, a.getWhen());
+			st.setBoolean(6, a.isSeen());
+			
+			this.broadcast("ALERT", Type.UPDATED, a);
+			return a;
+			
+			
+			
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not save alert.", e);
+		}
+	}
 
 	// getAppointment(id)
 	// get
@@ -1201,7 +1241,7 @@ public class DatabaseHandler {
 			throw new CloakedIronManException("Could not get meeting response", e);
 		}
 	}
-	
+	/*
 	public ArrayList<Alert> getAllUnseenAlertsToAccount(Account a){
 		PreparedStatement st;
 		try{
@@ -1239,7 +1279,7 @@ public class DatabaseHandler {
 		}
 		
 		
-	}
+	} */
 	public ArrayList<Account> getAllUsers() throws CloakedIronManException
 	{
 		ArrayList<Account> allUsers = new ArrayList<Account>();
@@ -1299,6 +1339,51 @@ public class DatabaseHandler {
 			return groups;
 		} catch (Exception e) {
 			throw new CloakedIronManException("Could not get all groups.", e);
+		}
+	}
+
+	public ArrayList<Alert> getAlertsToAccount(Account account) throws CloakedIronManException {
+		try {
+			if(account.getId() == -1) {
+				throw new CloakedIronManException("Account ID not set, account not saved in database.");
+			}
+			PreparedStatement st = this.con.prepareStatement("SELECT appointment_id FROM alarm WHERE user_id=?");
+			st.setInt(1, account.getId());
+			ResultSet rs = st.executeQuery();
+			ArrayList<Alert> alerts = new ArrayList<Alert>();
+			while(rs.next()) {
+				Appointment app = this.getAppointment2(rs.getInt("appointment_id"));
+				alerts.add(this.getAlert(app, account));
+			}
+			return alerts;
+			
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get all alerts to account.", e);
+		}
+	}
+
+	private Alert getAlert(Appointment app, Account account) throws CloakedIronManException {
+		try {
+			if(app.getId() == -1) {
+				throw new CloakedIronManException("Appointment id not set in database, appointment not saved in database");
+			}
+			if(account.getId() == -1) {
+				throw new CloakedIronManException("Account id not set, account not saved in database");
+			}
+			
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM alarm WHERE appointment_id=? AND user_id=?");
+			st.setInt(1, app.getId());
+			st.setInt(2, account.getId());
+			
+			ResultSet rs = st.executeQuery();
+			if(!rs.next()) {
+				throw new CloakedIronManException("Alert not found.");
+			}
+			return new Alert(app, account, rs.getTimestamp("when"), rs.getBoolean("is_seen"));
+			
+			
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get alert", e);
 		}
 	}
     
