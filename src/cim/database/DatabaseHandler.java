@@ -389,6 +389,8 @@ public class DatabaseHandler {
                 }
 				this.saveAppointment(a, c);
 			}
+			this.broadcast("CALENDAR", Type.UPDATED, c);
+			
 			
 			return c;
 		} catch (SQLException e) {
@@ -635,7 +637,7 @@ public class DatabaseHandler {
 
 	// getAppointment(id)
 	// get
-	public int saveAccount(Account acc) throws CloakedIronManException {
+	public Account saveAccount(Account acc) throws CloakedIronManException {
 		try {
 			if(acc.getId() == -1) {
 				acc.setId(this.getNextAutoIncrease("account", "user_id"));
@@ -662,7 +664,8 @@ public class DatabaseHandler {
 			} catch (Exception e) {
 
 			}
-			return acc.getId();
+			this.broadcast("ACCOUNT", Type.UPDATED, acc);
+			return acc;
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle database query.", e);
 		}
