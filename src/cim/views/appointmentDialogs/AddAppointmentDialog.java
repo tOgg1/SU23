@@ -171,7 +171,7 @@ public class AddAppointmentDialog extends JDialog{
                 ArrayList<Attendable> invitees = AddAppointmentDialog.this.addParticipantsPanel.getInvitees();
                 if(invitees.size() > 0)
                 {
-                    app = app.toMeeting(invitees);
+                    app = app.toMeeting();
                 }
 				setAppointment(app);
 				pcs.firePropertyChange("createApp", null, app);
