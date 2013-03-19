@@ -526,6 +526,15 @@ public class CalendarRegister
         this.pcs.firePropertyChange("rooms", null, this.rooms);
     }
 
+    public void registerAvailableRoom(Room room)
+    {
+        registerRoom(room);
+        this.availableRooms.remove(room);
+        this.availableRooms.add(room);
+
+        //TODO: Add an extra propertyChange?
+    }
+
     public void registerRejectMessage(RejectMessage rm)
     {
         this.rejectMessages.remove(rm);
