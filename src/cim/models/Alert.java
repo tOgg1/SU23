@@ -70,7 +70,11 @@ public class Alert extends CalendarObject {
     }
 	
 	public String toString() {
-		return "Alarm for '" + this.owner + "' til '" +  this.appointment + "'";
+//		return "Alarm for '" + this.owner + "' til '" +  this.appointment + "'";
+		return
+			"Husk " + this.appointment.getName()
+			+ " kl. " + this.appointment.getStartFormatted()
+			+ " " + this.appointment.getDateFormatted();
 	}
 	
 	
