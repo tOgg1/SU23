@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ParticipantsPanel extends JPanel implements ActionListener{
 	private DatabaseHandler db;
@@ -37,6 +39,16 @@ public class ParticipantsPanel extends JPanel implements ActionListener{
 		txtSearch.setColumns(10);
 		
 		btnSearch = new JButton("S\u00F8k");
+		btnSearch.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mouseReleased(MouseEvent arg0) 
+			{
+				
+				
+				
+			}
+		});
 		btnSearch.setBounds(106, 36, 89, 23);
 		add(btnSearch);
 		
