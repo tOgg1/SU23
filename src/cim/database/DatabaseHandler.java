@@ -728,17 +728,16 @@ public class DatabaseHandler {
 	 */
 	public Account getAccountByEmail(String email) throws CloakedIronManException {
 		try {
-			PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE email=?");
+			PreparedStatement st = this.con.prepareStatement("SELECT user_id FROM account WHERE email=?");
 			st.setString(1, email);
 			ResultSet rs = st.executeQuery();
-			if (rs.next()) {
-				return fillAccount(rs);
+			if(!rs.next()) {
+				return null;
 			}
-			return null;
-		} catch (SQLException e) {
-			throw new CloakedIronManException("Unable to process query.", e);
+			return this.getAccount(rs.getInt("user_id"));
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get account by email.", e);
 		}
-		
 	}
 	
 	public Appointment getAppointment2(int id) throws CloakedIronManException {
@@ -821,10 +820,22 @@ public class DatabaseHandler {
 			PreparedStatement st = this.con.prepareStatement("SELECT * FROM account WHERE user_id=?");
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
-			if (rs.next()) {
-				return fillAccount(rs);
+			if (!rs.next()) {
+				throw new CloakedIronManException("No account found with id " + id);
+				
 			}
-			return null;
+			Account a = this.fillAccount(rs);
+			st.close();
+			rs.close();
+			
+			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE user_id=?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(!rs.next()) {
+				throw new CloakedIronManException("Account not saved with attendable ID");
+			}
+			a.setAttendableId(rs.getInt("attendable_id"));
+			return a;
 		} catch (Exception e) {
 			throw new CloakedIronManException("Could not get account.", e);
 		}
@@ -844,6 +855,16 @@ public class DatabaseHandler {
 			Group g = fillGroup(rs);
 			st.close();
 			rs.close();
+			
+			// Finding attendable id
+			st = this.con.prepareStatement("SELECT attendable_id FROM attendable WHERE group_id=?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(!rs.next()) {
+				throw new CloakedIronManException("Group has no attendable ID which is must have");
+			}
+			g.setAttendableId(rs.getInt("attendable_id"));
+			
 			
 			
 			// Must find all of its members
