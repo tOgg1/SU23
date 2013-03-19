@@ -9,9 +9,9 @@ import java.awt.event.ActionListener;
 
 public class AlertsView extends JPanel{
 //	Client.register <--- objektet vi kaller metoder p�.
-	JList alertsList;
-	JButton btnRemoveAlert;
-	DefaultListModel<RejectMessage> rejectList;
+	private JList alertsList;
+	private JButton btnRemoveAlert;
+	private DefaultListModel<RejectMessage> rejectMessageList;
 	
 	public AlertsView() {
 		setLayout(null);
@@ -20,33 +20,32 @@ public class AlertsView extends JPanel{
 		alertsList.setBounds(66, 75, 352, 132);
 		add(alertsList);
 		try{
-            rejectList = new DefaultListModel<RejectMessage>();
-		for(RejectMessage rm : Client.register.getRejectMessages())
-		{
-			rejectList.addElement(rm);
-		}
-		alertsList.setModel(rejectList);
-		} catch(NullPointerException e)
-		{
+            rejectMessageList = new DefaultListModel<RejectMessage>();
+            for(RejectMessage rm : Client.register.getRejectMessages()){
+            	rejectMessageList.addElement(rm);
+            }
+            alertsList.setModel(rejectMessageList);
+		} 
+		catch(NullPointerException e) {
 			e.printStackTrace();
 		}
 		
 		btnRemoveAlert = new JButton("Fjern");
 		btnRemoveAlert.setBounds(329, 228, 89, 23);
 		add(btnRemoveAlert);
-		btnRemoveAlert.addActionListener(new removeButtonListener());
+		btnRemoveAlert.addActionListener(new RemoveAlertButtonListener());
 		
 		JLabel lblAlerts = new JLabel("Varsler");
 		lblAlerts.setBounds(22, 31, 46, 14);
 		add(lblAlerts);
 	}
-	public class removeButtonListener implements ActionListener{
+	public class RemoveAlertButtonListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-//			alertsList.getSelectedValue();
-			System.out.println(alertsList.getSelectedValue());
+			alertsList.getSelectedValue();
+			
 		}
 		
 	}
