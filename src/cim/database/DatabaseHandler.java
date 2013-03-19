@@ -51,7 +51,9 @@ public class DatabaseHandler {
 	}
 	
 	public void broadcast(String method, Type type, Object... args) {
+		
 		if(this.server == null) {
+			System.out.println("No server attached, but broadcasting: " + method + ", " + type.toString());
 			return;
 		}
 		Event e = new Event(method, type);
@@ -490,7 +492,7 @@ public class DatabaseHandler {
 			if(!rs.next()) {
 				throw new CloakedIronManException("Attendable has no calendar to it, which it must have.");
 			}
-			return this.getCalendar2(rs.getInt(rs.getInt("calendar_id")));
+			return this.getCalendar2(rs.getInt("calendar_id"));
 		} catch (Exception e) {
 			throw new CloakedIronManException("Could not get calendar to attendable", e);
 		}
@@ -1258,6 +1260,7 @@ public class DatabaseHandler {
 	}
 	
 	public void cancelAppointment(Appointment ap) throws CloakedIronManException{
+		
 		PreparedStatement st;
 		try {
 			if (ap instanceof Appointment){
