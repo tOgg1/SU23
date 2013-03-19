@@ -53,10 +53,15 @@ public class ParticipantsPanel extends JPanel implements ActionListener{
 					{
 						fullList = new DefaultListModel<Attendable>();
 						ArrayList<Account> accList = Client.register.getAllUsers();
+						ArrayList<Group> grList = Client.register.getAllGroups();
 						ArrayList<Attendable> attList = new ArrayList<Attendable>();
 						for(Account acc : accList)
 						{
 							attList.add((Attendable)acc);
+						}
+						for(Group gr : grList)
+						{
+							attList.add(gr);
 						}
 
 						for(Attendable att : attList)
