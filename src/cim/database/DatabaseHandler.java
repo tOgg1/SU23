@@ -1130,7 +1130,7 @@ public class DatabaseHandler {
 		}
 	}
 	
-	private Room getRoom(int id) throws CloakedIronManException {
+	public Room getRoom(int id) throws CloakedIronManException {
 		try {
 			PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting_room WHERE meeting_room_id=?");
 			st.setInt(1, id);
@@ -1169,17 +1169,23 @@ public class DatabaseHandler {
 		st = this.con.prepareStatement("SELECT * FROM appointment WHERE date = ?");
 		st.setDate(1, date);
 		ResultSet rs = st.executeQuery();
-        ArrayList<Room> available = new ArrayList<Room>();
-        while (rs.next()){
-            if (!overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
-            	System.out.println("meeting_room_id");
-                 available.add(getRoom(rs.getInt("meeting_room_id")));
-            }
-        }
-	    return available;
-		}catch(SQLException e){
-			throw new CloakedIronManException("error: ", e);
+		if (rs.wasNull()){
+			ArrayList<Room> available = new ArrayList<Room>();
+			while (rs.next()){
+				if (!overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
+					available.add(getRoom(rs.getInt("meeting_room_id")));
+				}
+			}
+			return available;
 		}
+		else{
+			return getAllRooms();
+		}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		System.out.println("hello");
+		return null;
 	}
 
     private ArrayList<Integer> getGroupIdsFromUserid(int userId) throws SQLException

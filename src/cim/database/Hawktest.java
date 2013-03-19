@@ -14,8 +14,6 @@ public class Hawktest {
 	 */
 	public static void main(String[] args) throws CloakedIronManException {
 		DatabaseHandler db = new DatabaseHandler();
-		Account a = db.getAccount(6);
-		System.out.println(db.getAlertsToAccount(a));
 		
 	}
 
