@@ -499,5 +499,13 @@ public class CalendarRegister
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public void saveCalendar(Calendar c) {
+		
+	}
+	
+	public void saveAlert(Alert a) {
+		
+	}
 
 }

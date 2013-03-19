@@ -200,7 +200,8 @@ public class AddAppointmentDialog extends JDialog{
                 AddAppointmentDialog.this.calendar = AddAppointmentDialog.this.addDetailsPanel.getCalendar();
                 
 				
-				pcs.firePropertyChange("createApp", null, app);
+				// ?? pcs.firePropertyChange("createApp", null, app);
+                
 				disposeFrame();
 			}
 		});

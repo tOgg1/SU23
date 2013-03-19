@@ -61,8 +61,9 @@ public class Calendar extends CalendarObject
 	}
 	public void addAppointment(Appointment appointment)
 	{
-		if(!this.appointments.contains(appointment))
-		this.appointments.add(appointment);
+		if(!this.appointments.contains(appointment)) {
+			this.appointments.add(appointment);
+		}
 		pcs.firePropertyChange("appointment", null, appointment);
 
 	}
