@@ -68,6 +68,23 @@ public class MeetingResponse extends CalendarObject {
 	{
 		return account.toString();
 	}
+	 public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (obj.getClass() != getClass())
+            return false;
+        MeetingResponse m = (MeetingResponse)obj;
+        if(this.getAccount() == null || m.getAccount() == null) {
+        	return false;
+        }
+        if(this.getMeeting() == null || m.getMeeting() == null) {
+        	return false;
+        }
+        return (this.getMeeting().equals(m.getMeeting()) && this.getAccount().equals(m.getAccount()));
+    }
+	
 	
 
 }

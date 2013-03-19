@@ -8,9 +8,7 @@ public class ClientEventHandler {
 	public void handleEvent(Event e) {
 		String method = e.getMethod().toUpperCase();
 		Type type = e.getType();
-		System.out.println(type.toString());
 		if(type == Type.UPDATED) {
-			System.out.println("Her");
 			if(method.equals("MEETING_RESPONSE")) {
 				this.meeting_response_updated((MeetingResponse)e.getArgs()[0]);
 				return;

@@ -467,6 +467,7 @@ public class CalendarRegister
 	}
 	
 	public void registerMeetingResponse(MeetingResponse mr) {
+		//this.removeFromList(this.meetingResponses,mr);
 		this.meetingResponses.remove(mr);
 		if(mr.getAccount().equals(this.account)) {
 			this.meetingResponses.add(mr);
