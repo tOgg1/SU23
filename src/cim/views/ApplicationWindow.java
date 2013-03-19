@@ -95,6 +95,8 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		tabbedPane.addTab("Administrer kalendere", null, manageCalendarsView, null);
 
         tabbedPane.addChangeListener(this);
+        
+        System.out.println(Client.register.getAlerts());
 		
 		/*
 		Response response = client.request(new Request("GET_ALL_CALENDARS"));
