@@ -296,7 +296,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		gbc_sondag.gridx = 11;
 		gbc_sondag.gridy = 5;
 		
-		myCalendars = Client.register.getAllCalendarsToCurrentUser();
+		myCalendars = Client.register.activeCalendars();
 		this.add(sondag, gbc_sondag);
 		
 		renderCalendars();
@@ -386,6 +386,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		System.out.println(evt.getPropertyName());
 		if (evt.getPropertyName().equals("delbase")){
 			try {
 				Client.register.cancelAppointment(((Appointment)evt.getOldValue()));
@@ -399,7 +400,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 			//Client.register. trenger saveCalendar
 		}
 		
-		if (evt.getPropertyName().equals("createApp")){
+		else if (evt.getPropertyName().equals("createApp")){
 			for (Calendar cal : myCalendars){
 				if (Client.register.getAccount().equals(cal.getOwner())){
 					cal.addAppointment((Appointment) evt.getNewValue());
@@ -408,7 +409,10 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 				}
 			}
 		}
-
+		
+		else if (evt.getPropertyName().equals("activeCalendars")){
+			myCalendars = (ArrayList<Calendar>) evt.getNewValue();
+		}
 		renderCalendars();
 	}
 	
