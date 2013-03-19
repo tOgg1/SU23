@@ -11,6 +11,9 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JList;
 
+import cim.models.Calendar;
+import cim.net.Client;
+
 public class AppointmentDetailsPanel extends JPanel {
 	private JTextField txtDescription;
 	private JTextField txtLocation;
@@ -24,11 +27,14 @@ public class AppointmentDetailsPanel extends JPanel {
 	private JComboBox comBoxYear;
 	private JComboBox comBoxDays;
 	
+	private JComboBox<Calendar> comBoxCalendars;
+	
 	private final ButtonGroup buttonGroupLocation = new ButtonGroup();
 	private JRadioButton rbtnLocation;
 	private JRadioButton rbtnRoomReservation;
 	
 	private JList listAvailableRooms;
+	private JLabel lblCalendar;
 	
 	public AppointmentDetailsPanel() {
 		this.setSize(470, 340);
@@ -162,6 +168,23 @@ public class AppointmentDetailsPanel extends JPanel {
 		}
 		comBoxYear.setBounds(210, 49, 54, 20);
 		add(comBoxYear);
+		
+		lblCalendar = new JLabel("Kalender");
+		lblCalendar.setBounds(10, 165, 71, 14);
+		add(lblCalendar);
+		
+		comBoxCalendars = new JComboBox();
+		comBoxCalendars.setBounds(71, 162, 193, 20);
+		try {
+			for(Calendar c : Client.register.getAllCalendars()) {
+				comBoxCalendars.addItem(c);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		add(comBoxCalendars);
 
 		
 		
@@ -193,6 +216,10 @@ public class AppointmentDetailsPanel extends JPanel {
 	public int getMonths()
 	{
 		return (int)comBoxMonth.getSelectedItem();
+	}
+	
+	public Calendar getCalendar() {
+		return (Calendar)this.comBoxCalendars.getSelectedItem();
 	}
 	public String getDescription()
 	{

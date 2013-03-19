@@ -3,6 +3,7 @@ package cim.views;
 import cim.models.Alert;
 import cim.models.Appointment;
 import cim.models.Calendar;
+import cim.models.Meeting;
 import cim.models.MeetingResponse;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
@@ -347,25 +348,33 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 				AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.application);
 				ad.addPropertyChangeListener(CalendarView.this);
 				ad.setVisible(true);
-				Appointment a = ad.getAppointment();
-				Alert alert = ad.getAlert();
-				ArrayList<MeetingResponse> meetingResponses = ad.getMeetingResponses();
-				if(a != null) {
-					System.out.println("Appointment set in dialog.");
-				} else {
-					System.out.println("Appointment not set in dialog.");
-				}
-				if(alert != null) {
-					System.out.println("Alert set in dialog.");
-				} else {
-					System.out.println("Alert not set in dialog.");
-				}
-				if(meetingResponses != null) {
-					System.out.println("Meeting responses set in dialog.");
-				} else {
-					System.out.println("Meeting responses not set in dialog.");
-				}
 				
+				
+				Appointment a = ad.getAppointment();
+				if (a != null) {
+					// Appointment set, lets save it!
+					
+					//Getting data
+					Calendar c = ad.getCalendar();
+					Alert alert = ad.getAlert();
+					ArrayList<MeetingResponse> meetingResponses = ad.getMeetingResponses();
+					
+					c.addAppointment(a);
+					Client.register.saveCalendar(c);
+					
+					// Saving the actual appointment /could also be meeting
+					
+					// Saving the alarm
+					if(alert != null) {
+						Client.register.saveAlert(alert);
+					}
+					if (a instanceof Meeting && meetingResponses.size() > 0) {
+						for(MeetingResponse mr : meetingResponses) {
+							Client.register.saveMeetingResponse(mr);
+						}
+					}
+					
+				}
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}

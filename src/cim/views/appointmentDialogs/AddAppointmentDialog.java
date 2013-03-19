@@ -1,8 +1,12 @@
 package cim.views.appointmentDialogs;
 
+import cim.models.Account;
 import cim.models.Alert;
 import cim.models.Appointment;
 import cim.models.Attendable;
+import cim.models.Calendar;
+import cim.models.Group;
+import cim.models.Meeting;
 import cim.models.MeetingResponse;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
@@ -42,16 +46,14 @@ public class AddAppointmentDialog extends JDialog{
 	private Appointment appointment;
 	private ArrayList<MeetingResponse> meetingResponses;
 	private Alert alert;
+	private Calendar calendar;
+	
 	private PropertyChangeSupport pcs;
 
-
-	private final JFrame application;
 
 	public AddAppointmentDialog(JFrame application) throws CloakedIronManException{
 		super(application);
 		setModalityType(ModalityType.DOCUMENT_MODAL);
-
-		this.application = application;
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 645, 716);
@@ -168,13 +170,39 @@ public class AddAppointmentDialog extends JDialog{
 				*  meeting responses will be sent.
 				*/ 
 				app.setOwner(Client.register.getAccount());
+				
+				/*
+				 * Creating all the meeting responses
+				 */
                 ArrayList<Attendable> invitees = AddAppointmentDialog.this.addParticipantsPanel.getInvitees();
                 if(invitees.size() > 0)
                 {
-                    app = app.toMeeting();
+                    Meeting meeting = app.toMeeting();
+                    setAppointment(meeting);
+                    meetingResponses = new ArrayList<MeetingResponse>();
+                    MeetingResponse mr;
+                    for(Attendable att : invitees) {
+	                	if (att instanceof Account) {
+	                		mr = new MeetingResponse((Account)att, meeting);
+	                		meetingResponses.add(mr);
+	                	} else if (att instanceof Group){
+	                		for(Account member: ((Group)att).getMembers()) {
+	                			mr = new MeetingResponse(member, meeting);
+	                			meetingResponses.add(mr);
+	                		}
+	                	}
+	                }
+                } else {
+                	setAppointment(app);
                 }
-				setAppointment(app);
-				pcs.firePropertyChange("createApp", null, app);
+                
+                // Setting calendar
+                AddAppointmentDialog.this.calendar = AddAppointmentDialog.this.addDetailsPanel.getCalendar();
+                
+				
+				// ?? pcs.firePropertyChange("createApp", null, app);
+                
+				disposeFrame();
 			}
 		});
 
@@ -204,7 +232,6 @@ public class AddAppointmentDialog extends JDialog{
 
 	protected void setAppointment(Appointment app) {
 		this.appointment = app;
-		disposeFrame();
 		
 	}
 
@@ -214,6 +241,10 @@ public class AddAppointmentDialog extends JDialog{
 	
 	public Alert getAlert() {
 		return this.alert;
+	}
+	
+	public Calendar getCalendar() {
+		return this.calendar;
 	}
 	
 	public ArrayList<MeetingResponse> getMeetingResponses() {

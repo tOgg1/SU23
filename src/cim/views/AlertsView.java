@@ -26,12 +26,16 @@ public class AlertsView extends JPanel{
 		alertsList = new JList();
 		alertsList.setBounds(66, 75, 352, 132);
 		add(alertsList);
+		try{
 		for(RejectMessage rm : Client.register.getRejectMessages())
 		{
 			rejectList.addElement(rm);
 		}
 		alertsList.setModel(rejectList);
-		
+		} catch(NullPointerException e)
+		{
+			e.printStackTrace();
+		}
 		
 		btnRemoveAlert = new JButton("Fjern");
 		btnRemoveAlert.setBounds(329, 228, 89, 23);
