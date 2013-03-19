@@ -104,7 +104,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		gbc_txtUke.gridx = 1;
 		gbc_txtUke.gridy = 0;
 		this.add(txtUke, gbc_txtUke);
-		txtUke.setColumns(10);
+		txtUke.setColumns(6);
 		
 		JButton btnNesteUke = new JButton("Neste uke");
 		btnNesteUke.addMouseListener(new MouseAdapter() {
@@ -128,18 +128,19 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		gbc_lblHoppTilUke.gridy = 0;
 		this.add(lblHoppTilUke, gbc_lblHoppTilUke);
 		
+		JButton btnNyAvtale = new JButton("Ny avtale");
+		btnNyAvtale.addActionListener(new AddAppointmentListener());
+		
 		JComboBox comboBox = new JComboBox();
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBox.gridx = 4;
 		gbc_comboBox.gridy = 0;
 		this.add(comboBox, gbc_comboBox);
 		
-		JButton btnNyAvtale = new JButton("Ny avtale");
-		btnNyAvtale.addActionListener(new AddAppointmentListener());
-		
 		GridBagConstraints gbc_btnNyAvtale = new GridBagConstraints();
+		gbc_btnNyAvtale.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNyAvtale.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNyAvtale.gridx = 10;
 		gbc_btnNyAvtale.gridy = 0;
@@ -176,9 +177,9 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		txtOnsdag.setEditable(false);
 		txtOnsdag.setText("Onsdag");
 		GridBagConstraints gbc_txtOnsdag = new GridBagConstraints();
+		gbc_txtOnsdag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtOnsdag.gridwidth = 2;
 		gbc_txtOnsdag.insets = new Insets(0, 0, 5, 5);
-		gbc_txtOnsdag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtOnsdag.gridx = 4;
 		gbc_txtOnsdag.gridy = 1;
 		this.add(txtOnsdag, gbc_txtOnsdag);
@@ -202,9 +203,9 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		txtFredag.setEditable(false);
 		txtFredag.setText("Fredag");
 		GridBagConstraints gbc_txtFredag = new GridBagConstraints();
+		gbc_txtFredag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtFredag.gridwidth = 2;
 		gbc_txtFredag.insets = new Insets(0, 0, 5, 5);
-		gbc_txtFredag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtFredag.gridx = 8;
 		gbc_txtFredag.gridy = 1;
 		this.add(txtFredag, gbc_txtFredag);
@@ -216,7 +217,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		txtLrdag.setText("L\u00F8rdag");
 		GridBagConstraints gbc_txtLrdag = new GridBagConstraints();
 		gbc_txtLrdag.gridwidth = 2;
-		gbc_txtLrdag.insets = new Insets(0, 0, 5, 5);
+		gbc_txtLrdag.insets = new Insets(0, 0, 5, 0);
 		gbc_txtLrdag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtLrdag.gridx = 10;
 		gbc_txtLrdag.gridy = 1;
@@ -235,8 +236,10 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		
 		mandag = new DayList();
 		scrollPane_5.setViewportView(mandag);
+		scrollPane_5.setPreferredSize(new Dimension(200,330));
 		
 		scrollPane_6 = new JScrollPane();
+		scrollPane_6.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_scrollPane_6 = new GridBagConstraints();
 		gbc_scrollPane_6.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_6.gridheight = 3;
@@ -248,8 +251,10 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		
 		tirsdag = new DayList();
 		scrollPane_6.setViewportView(tirsdag);
+		scrollPane_6.setPreferredSize(new Dimension(200,330));
 		
 		scrollPane_4 = new JScrollPane();
+		scrollPane_4.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_scrollPane_4 = new GridBagConstraints();
 		gbc_scrollPane_4.gridwidth = 2;
 		gbc_scrollPane_4.fill = GridBagConstraints.BOTH;
@@ -261,8 +266,10 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		
 		onsdag = new DayList();
 		scrollPane_4.setViewportView(onsdag);
+		scrollPane_4.setPreferredSize(new Dimension(200,330));
 		
 		scrollPane_3 = new JScrollPane();
+		scrollPane_3.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_scrollPane_3 = new GridBagConstraints();
 		gbc_scrollPane_3.gridwidth = 2;
 		gbc_scrollPane_3.fill = GridBagConstraints.BOTH;
@@ -274,8 +281,10 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		
 		torsdag = new DayList();
 		scrollPane_3.setViewportView(torsdag);
+		scrollPane_3.setPreferredSize(new Dimension(200,330));
 		
 		scrollPane_2 = new JScrollPane();
+		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_scrollPane_2 = new GridBagConstraints();
 		gbc_scrollPane_2.gridwidth = 2;
 		gbc_scrollPane_2.fill = GridBagConstraints.BOTH;
@@ -287,18 +296,21 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		
 		fredag = new DayList();
 		scrollPane_2.setViewportView(fredag);
+		scrollPane_2.setPreferredSize(new Dimension(200,330));
 		
 		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
 		gbc_scrollPane_1.gridwidth = 2;
 		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane_1.gridx = 10;
 		gbc_scrollPane_1.gridy = 2;
 		add(scrollPane_1, gbc_scrollPane_1);
 		
 		lordag = new DayList();
 		scrollPane_1.setViewportView(lordag);
+		scrollPane_1.setPreferredSize(new Dimension(200,150));
 		
 		txtSndag = new JTextField();
 		txtSndag.setHorizontalAlignment(SwingConstants.CENTER);
@@ -306,7 +318,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		txtSndag.setText("S\u00F8ndag");
 		GridBagConstraints gbc_txtSndag = new GridBagConstraints();
 		gbc_txtSndag.gridwidth = 2;
-		gbc_txtSndag.insets = new Insets(0, 0, 5, 5);
+		gbc_txtSndag.insets = new Insets(0, 0, 5, 0);
 		gbc_txtSndag.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtSndag.gridx = 10;
 		gbc_txtSndag.gridy = 3;
@@ -316,9 +328,9 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		myCalendars = Client.register.activeCalendars();
 		
 		scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridwidth = 2;
-		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 10;
 		gbc_scrollPane.gridy = 4;
@@ -326,6 +338,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		
 		sondag = new DayList();
 		scrollPane.setViewportView(sondag);
+		scrollPane.setPreferredSize(new Dimension(200,150));
 		
 		renderCalendars();
 	}

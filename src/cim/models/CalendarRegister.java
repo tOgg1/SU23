@@ -80,6 +80,14 @@ public class CalendarRegister
 	 */
 	private Account account; 
 	
+	
+	/**
+	 * All alerts to the current user
+	 */
+	private ArrayList<Alert> alerts;
+	
+	
+	
 	/**
 	 * Property change support
 	 */
@@ -524,11 +532,24 @@ public class CalendarRegister
     public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException{
 		if(this.meetingResponses == null) {
 			Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
-			System.out.println(r.getData()[0]);
 			this.setMeetingResponses((ArrayList<MeetingResponse>)r.getData()[0]);
 		}
 		return this.meetingResponses;
 	}
+    
+    /**
+     * Returns all the alerts to the current account
+     * @return
+     * @throws CloakedIronManException
+     */
+    @SuppressWarnings("unchecked")
+    public ArrayList<Alert> getAlerts() throws CloakedIronManException {
+    	if(this.alerts == null) {
+    		Response r = this.parent.request(new Request("GET_ALERTS_TO_ACCOUNT", this.account));
+			this.alerts = (ArrayList<Alert>)r.getData()[0];
+    	}
+    	return this.alerts;
+    }
 	
 	public void setMeetingResponses(ArrayList<MeetingResponse> list) {
 		this.meetingResponses = list;
@@ -548,6 +569,12 @@ public class CalendarRegister
         this.rooms.remove(room);
         this.rooms.add(room);
         this.pcs.firePropertyChange("rooms", null, this.rooms);
+    }
+    
+    public void registerAlert(Alert alert) {
+    	this.alerts.remove(alert);
+    	this.alerts.add(alert);
+    	this.pcs.firePropertyChange("alerts", null, this.alerts);
     }
 
     public void registerAvailableRoom(Room room)

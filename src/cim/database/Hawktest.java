@@ -14,13 +14,9 @@ public class Hawktest {
 	 */
 	public static void main(String[] args) throws CloakedIronManException {
 		DatabaseHandler db = new DatabaseHandler();
-		Account a = db.getAccount(1);
-		Meeting m = (Meeting)db.getAppointment2(5);
-		System.out.println(m);
-		MeetingResponse mr = new MeetingResponse(a, m);
-		mr.setResponse(Response.ATTENDING);
-		db.saveMeetingResponse(mr);
-		System.out.println(mr);
+		Account a = db.getAccount(6);
+		System.out.println(db.getAlertsToAccount(a));
+		
 	}
 
 }
