@@ -526,6 +526,7 @@ public class DatabaseHandler {
 			
 			st.executeUpdate();
 			
+			this.broadcast("REJECT_MESSAGE", Type.UPDATED, rm);
 			return rm;
 		} catch (Exception e) {
 			throw new CloakedIronManException("Could not save reject message.", e);
