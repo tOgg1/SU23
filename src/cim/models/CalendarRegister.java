@@ -612,8 +612,8 @@ public class CalendarRegister
 		
 	public void cancelAppointment(Appointment appointment) throws CloakedIronManException{
 		this.parent.request(new Request("CANCEL_APPOINTMENT", appointment));
-
 	}
+	
 
     public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end)
     {
@@ -669,8 +669,9 @@ public class CalendarRegister
         }
 	}
 	
-	public void saveCalendar(Calendar c) throws CloakedIronManException {
-		this.parent.request(new Request("SAVE_CALENDAR", c));
+	public Calendar saveCalendar(Calendar c) throws CloakedIronManException {
+		Response res = this.parent.request(new Request("SAVE_CALENDAR", c));
+		return (Calendar) res.getData()[0];
 	}
 	
 	public void saveAlert(Alert a) throws CloakedIronManException {
