@@ -2,6 +2,9 @@ package cim.models;
 
 import java.util.ArrayList;
 
+import cim.net.Client;
+import cim.util.CloakedIronManException;
+
 public class Calendar extends CalendarObject
 {
 	private Attendable owner;
@@ -76,10 +79,11 @@ public class Calendar extends CalendarObject
 
 		
 	}
-	public void removeAppointment(Appointment appointment)
+	public void removeAppointment(Appointment appointment) throws CloakedIronManException
 	{
 		if(!this.appointments.isEmpty())
 		this.appointments.remove(appointment);
+		Client.register.saveCalendar(this);
 		pcs.firePropertyChange("appointment", appointment, null);
 
 	}
@@ -89,6 +93,10 @@ public class Calendar extends CalendarObject
 		pcs.firePropertyChange("hasacsess", person, null);
 
 	}
+	public Calendar getUpdatedCalendar(){
+		return Client.register.getCalendarById(this.getId());
+	}
+	
    
 
 }
