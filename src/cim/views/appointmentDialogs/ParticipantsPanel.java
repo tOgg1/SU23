@@ -3,6 +3,7 @@ package cim.views.appointmentDialogs;
 import cim.database.DatabaseHandler;
 import cim.models.Account;
 import cim.models.Attendable;
+import cim.models.Group;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 
@@ -50,7 +51,6 @@ public class ParticipantsPanel extends JPanel implements ActionListener{
 				try {
 					if(search.equals(""))
 					{
-						System.out.println("Streng: "+search);
 						fullList = new DefaultListModel<Attendable>();
 						ArrayList<Account> accList = Client.register.getAllUsers();
 						ArrayList<Attendable> attList = new ArrayList<Attendable>();
@@ -98,9 +98,14 @@ public class ParticipantsPanel extends JPanel implements ActionListener{
 
 		listSearchResult = new JList();
 		ArrayList<Account> accountList = Client.register.getAllUsers();
+		ArrayList<Group> groupList = Client.register.getAllGroups();
 		modelSearch = new DefaultListModel<Attendable>();
 		for(Account a : accountList){
 			modelSearch.addElement(a);
+		}
+		for(Group g : groupList)
+		{
+			modelSearch.addElement(g);
 		}
 		listSearchResult.setModel(modelSearch);
 		listSearchResult.setSelectedIndex(0);
