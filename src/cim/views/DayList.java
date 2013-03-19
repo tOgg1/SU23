@@ -91,12 +91,6 @@ public class DayList extends JPanel
         System.out.println(calendar.get(Calendar.YEAR));
         
         DayList list = new DayList();
-        AppointmentPanel panel1 = new AppointmentPanel(new Appointment("Appointment1", new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()+0xFFFF), new Time(System.currentTimeMillis() + 0xFFFFF),new Account("Beist", "Birgerson","Beist@Birger.no", "hei")));
-        AppointmentPanel panel2 = new AppointmentPanel(new Appointment("Appointment2", new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()+0xFFFFF), new Time(System.currentTimeMillis() + 0xFFFFF),new Account("Beist", "Birgerson","Beist@Birger.no", "hei")));
-        AppointmentPanel panel3 = new AppointmentPanel(new Appointment("Appointment3", new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()+0xFF), new Time(System.currentTimeMillis() + 0xFFFFF),new Account("Beist", "Birgerson","Beist@Birger.no", "hei")));
-        log(list.add(panel1));
-        log(list.add(panel2));
-        log(list.add(panel3));
         //log(list.remove(panel2));
 
         frame.getContentPane().add(list);

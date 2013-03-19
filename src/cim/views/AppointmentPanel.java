@@ -1,6 +1,7 @@
 package cim.views;
 
 import cim.models.Appointment;
+import cim.models.Calendar;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Fonts;
@@ -24,6 +25,7 @@ import java.awt.Font;
 public class AppointmentPanel extends JPanel implements Comparable
 {
     private Appointment base;
+    private Calendar cal;
     private PropertyChangeSupport pcs;
     private JTextField txtTime;
     private JTextField txtPlace;
@@ -35,7 +37,7 @@ public class AppointmentPanel extends JPanel implements Comparable
     public JLabel lblGroup;
     public JLabel lblDeclined;
     
-    public AppointmentPanel(Appointment base)
+    public AppointmentPanel(Appointment base, Calendar calendar)
     {
     	setPreferredSize(new Dimension(190, 65));
     	
@@ -134,6 +136,8 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtGroupNum.setBackground(null);
         txtGroupNum.setBorder(null);
         add(txtGroupNum);
+        
+        this.cal = calendar;
     }
 
     public Appointment getBase() {
@@ -143,7 +147,10 @@ public class AppointmentPanel extends JPanel implements Comparable
     public int getBaseId(){
     	return this.base.getId();
     }
-
+    
+    public Calendar getCalendar(){
+    	return this.cal;
+    }
     /**
      * Comparing AppointmentPanel for sorting purposes.
      * @param o
@@ -163,7 +170,7 @@ public class AppointmentPanel extends JPanel implements Comparable
     
     public class deleteListener extends MouseAdapter{
     	public void mouseReleased(MouseEvent e) {
-				pcs.firePropertyChange("delbase", base, null);
+				pcs.firePropertyChange("delbase", AppointmentPanel.this, null);
 				base = null;}
     	}
 

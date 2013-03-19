@@ -361,7 +361,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 				
 				if ((gregCal.get(java.util.Calendar.WEEK_OF_YEAR) == weekNumber) && (gregCal.get(java.util.Calendar.YEAR)) == yearNumber){
 					DayList day = dayList[gregCal.get(java.util.Calendar.DAY_OF_WEEK) - 1];
-					AppointmentPanel panel = new AppointmentPanel(tempAppointment);
+					AppointmentPanel panel = new AppointmentPanel(tempAppointment, myCalendars.get(i));
 					panel.addPropertyChangeListener(this);
 					day.add(panel);
 					
@@ -425,41 +425,33 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	}
 
 
-	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		System.out.println(evt.getPropertyName());
 		if (evt.getPropertyName().equals("delbase")){
+			Calendar cal = ((AppointmentPanel) evt.getOldValue()).getCalendar();
 			try {
-				Client.register.cancelAppointment(((Appointment)evt.getOldValue()));
+				cal.removeAppointment(((AppointmentPanel) evt.getOldValue()).getBase());
 			} catch (CloakedIronManException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			for (Calendar cal : myCalendars){
-				cal.removeAppointment((Appointment) evt.getOldValue());
-			}
-			//Client.register. trenger saveCalendar
+			myCalendars.remove(cal);
+			cal = cal.getUpdatedCalendar();
+			myCalendars.add(cal);
+			renderCalendars();
 		}
-		
-		else if (evt.getPropertyName().equals("createApp")){
-			for (Calendar cal : myCalendars){
-				if (Client.register.getAccount().equals(cal.getOwner())){
-					cal.addAppointment((Appointment) evt.getNewValue());
-					Client.register.addAppointmentFromGUI((Appointment) evt.getNewValue(), cal);
-					break;
-				}
-			}
-		}
-		
 		else if (evt.getPropertyName().equals("activeCalendars")){
-			myCalendars = (ArrayList<Calendar>) evt.getNewValue();
+			myCalendars = ((ArrayList<Calendar>) evt.getNewValue());
+			renderCalendars();
 		}
+
 
 		renderCalendars();
 	}
-	
-	
-	public void addCalendar(Calendar cal){
+		
+
+
+		public void addCalendar(Calendar cal){
 		if (!Helper.containsById(myCalendars,cal)){
 			this.myCalendars.add(cal);
 		}
