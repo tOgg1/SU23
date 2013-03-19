@@ -9,6 +9,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
 /**
@@ -492,7 +493,9 @@ public class CalendarRegister
 
 	}
 
-	public ArrayList<RejectMessage> getRejectMessages() {
+	public DefaultListModel<RejectMessage> getRejectMessages() {
+		// Man kan dytte objekter rett inn i en DefaultListModel,
+		// akkurat som med en ArrayList
 		
 		// TODO Auto-generated method stub
 		return null;
