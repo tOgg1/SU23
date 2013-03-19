@@ -6,10 +6,7 @@ import cim.util.Helper;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class ManageCalendarsView extends JPanel
@@ -27,8 +24,6 @@ public class ManageCalendarsView extends JPanel
         this.setLayout(null);
         this.defaultColor = UIManager.getColor("Panel.background");
         this.init(myModels, allModels);
-        System.out.println(allModels.size());
-        System.out.println(myModels.size());
     }
 
     public void init(ArrayList<Calendar> myModels, ArrayList<Calendar> allModels)
@@ -59,7 +54,8 @@ public class ManageCalendarsView extends JPanel
             CalendarPanel model = new CalendarPanel(cal);
             model.setBorder(new LineBorder(Color.GRAY, 2));
             model.addMouseListener(modelClickListener);
-            model.setBounds(15,40+(35*index++),270,30);
+            model.setBounds(15, 40 + (35 * index++), 270, 30);
+            model.setDisplayed(true);
             allCalendars.add(model);
             calendarContainer.add(model);
         }
@@ -77,6 +73,7 @@ public class ManageCalendarsView extends JPanel
             {
                 CalendarPanel model = new CalendarPanel(cal);
                 model.setBorder(new LineBorder(Color.GRAY, 2));
+                model.setDisplayed(false);
                 model.addMouseListener(modelClickListener);
                 model.setBounds(15, 25+(35*index++), 270, 30);
                 allCalendars.add(model);
@@ -94,12 +91,19 @@ public class ManageCalendarsView extends JPanel
         super.add(displayCurrent);
     }
 
+
+    @Override
+    public void requestFocus() {
+        this.setFocusable(true);
+        super.requestFocus();
+    }
+
     private class ChangeDisplayListener implements ItemListener
     {
         @Override
         public void itemStateChanged(ItemEvent e)
         {
-            if(selected == -1 || changedTroughLoad == false)
+            if(selected == -1 || changedTroughLoad == true)
                 return;
             CalendarPanel panelOfInterest = allCalendars.get(selected);
             panelOfInterest.toggleDisplayed();
@@ -111,12 +115,12 @@ public class ManageCalendarsView extends JPanel
             {
                 application.getCalendarView().removeCalendar(panelOfInterest.getModel());
             }
+            changedTroughLoad = false;
         }
     }
 
     private class ModelClickListener implements MouseListener
     {
-
         @Override
         public void mouseClicked(MouseEvent e)
         {
@@ -125,22 +129,22 @@ public class ManageCalendarsView extends JPanel
             {
                 selectedPanel.setBackground(defaultColor);
                 selected = -1;
-                displayCurrent.setSelected(false);
                 changedTroughLoad = false;
+                displayCurrent.setSelected(false);
             }
             else
             {
                 if(selected != -1)
                 {
-                    allCalendars.get(selected).toggleDisplayed();
                     allCalendars.get(selected).setBackground(defaultColor);
                 }
                 selectedPanel.setBackground(Color.lightGray);
                 selected = allCalendars.indexOf(selectedPanel);
-                displayCurrent.setSelected(selectedPanel.isDisplayed());
                 changedTroughLoad = true;
+                displayCurrent.setSelected(selectedPanel.isDisplayed());
             }
-
+            System.out.println("selected: " + selected);
+            changedTroughLoad = false;
         }
 
         @Override

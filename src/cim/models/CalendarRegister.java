@@ -7,9 +7,9 @@ import cim.util.CloakedIronManException;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.sql.Time;
 import java.util.ArrayList;
-
-import javax.swing.ListModel;
+import java.util.Date;
 
 /**
  * A register containing all information currently in use by the client.
@@ -53,9 +53,26 @@ public class CalendarRegister
 	 * Reference to all Meeting responses to the current users
 	 */
 	private ArrayList<MeetingResponse> meetingResponses;
-	
-	
+
+    /**
+     * Reference to all reject messages to this account
+     */
+    private ArrayList<RejectMessage> rejectMessages;
+
+    /**
+     *
+     */
+
+    /**
+     * Reference to all rooms
+     */
 	private ArrayList<Room> rooms;
+
+    /**
+     * Reference to available rooms
+     */
+    private ArrayList<Room> availableRooms;
+
 	Client parent;
 
 	/**
@@ -88,16 +105,33 @@ public class CalendarRegister
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<Calendar> getAllCalendarsToCurrentUser(){
+	public ArrayList<Calendar> activeCalendars(){
 		try{
 			Response res = parent.request(new Request("GET_ALL_CALENDARS_TO_ACCOUNT", account));
 			this.personalCalendars = (ArrayList<Calendar>) res.getData()[0];
+			this.activeCalendars = (ArrayList<Calendar>) res.getData()[0];
 			return this.personalCalendars;
 		}catch(Exception e){
-			System.out.println("hello");
 			return new ArrayList<Calendar>();
 		}
 	}
+
+    /*public ArrayList<RejectMessage> getAllRejectMessagesToCurrentUser()
+    {
+        try
+        {
+            Response res = parent.request(new Request("GET_REJECTMESSAGES_TO_ACCOUNT", account));
+            this.rejectMessages = (ArrayList<RejectMessage>)res.getData()[0];
+            System.out.println("amount of rejectmessage: " + rejectMessages.size());
+            return this.rejectMessages;
+        }
+        catch(Exception e)
+        {
+            return new ArrayList<RejectMessage>();
+        }
+    }           */
+
+
 
 	public void initialize(Account acc) throws CloakedIronManException
 	{
@@ -462,9 +496,9 @@ public class CalendarRegister
 	{
 		return this.account;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException{
+
+    @SuppressWarnings("unchecked")
+    public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException{
 		if(this.meetingResponses == null) {
 			Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
 			System.out.println(r.getData()[0]);
@@ -485,6 +519,32 @@ public class CalendarRegister
 		}
 		this.pcs.firePropertyChange("meetingResponses", null, this.meetingResponses);
 	}
+
+    public void registerRoom(Room room)
+    {
+        this.rooms.remove(room);
+        this.rooms.add(room);
+        this.pcs.firePropertyChange("rooms", null, this.rooms);
+    }
+
+    public void registerAvailableRoom(Room room)
+    {
+        registerRoom(room);
+        this.availableRooms.remove(room);
+        this.availableRooms.add(room);
+
+        //TODO: Add an extra propertyChange?
+    }
+
+    public void registerRejectMessage(RejectMessage rm)
+    {
+        this.rejectMessages.remove(rm);
+        if(rm.getRecipient().equals(this.account))
+        {
+            this.rejectMessages.add(rm);
+        }
+        this.pcs.firePropertyChange("rejectMessages", null, this.rejectMessages);
+    }
 	public void registerCalendar(Calendar calendar) {
 		this.calendars.remove(calendar);
 		this.calendars.add(calendar);
@@ -505,9 +565,58 @@ public class CalendarRegister
 
 	}
 
+    public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end)
+    {
+        if(availableRooms != null)
+        {
+            return availableRooms;
+        }
+
+        try
+        {
+            Response res = parent.request(new Request("GET_AVAILABLE_ROOMS", new Object[]{date, start, end}));
+            this.availableRooms = (ArrayList<Room>)res.getData()[0];
+            return this.availableRooms;
+        }
+        catch(Exception e)
+        {
+            return new ArrayList<Room>();
+        }
+    }
+
+    public ArrayList<Room> getRooms()
+    {
+        if(rooms != null)
+        {
+            return rooms;
+        }
+        try
+        {
+            Response res = parent.request(new Request("GET_ALL_ROOMS", null));
+            this.rooms = (ArrayList<Room>)res.getData()[0];
+            return this.rooms;
+        }
+        catch(Exception e)
+        {
+            return new ArrayList<Room>();
+        }
+    }
+
 	public ArrayList<RejectMessage> getRejectMessages() {
-		// TODO Auto-generated method stub
-		return null;
+        if(rejectMessages != null)
+        {
+            return rejectMessages;
+        }
+        try
+        {
+            Response res = parent.request(new Request("GET_REJECTMESSAGES_TO_ACCOUNT", account));
+            this.rejectMessages = (ArrayList<RejectMessage>)res.getData()[0];
+            return this.rejectMessages;
+        }
+        catch(Exception e)
+        {
+            return new ArrayList<RejectMessage>();
+        }
 	}
 	
 	public void saveCalendar(Calendar c) throws CloakedIronManException {
@@ -515,7 +624,7 @@ public class CalendarRegister
 	}
 	
 	public void saveAlert(Alert a) throws CloakedIronManException {
-		// TODO: Legge inn denne metoden på serveren
+		// TODO: Legge inn denne metoden pï¿½ï¿½ï¿½ serveren
 	}
 
 }

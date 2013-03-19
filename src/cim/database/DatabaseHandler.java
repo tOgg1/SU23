@@ -290,6 +290,28 @@ public class DatabaseHandler {
 		}
     }
 
+    public ArrayList<RejectMessage> getAllRejectMessagesToAccount(Account acc) throws CloakedIronManException
+    {
+        try
+        {
+            ArrayList<RejectMessage> rejectMessages = new ArrayList<RejectMessage>();
+            PreparedStatement st = this.con.prepareStatement("SELECT * from reject_message WHERE to_account = ?");
+            st.setInt(1, acc.getId());
+            ResultSet rs = st.executeQuery();
+            while(rs.next())
+            {
+                RejectMessage rMessage = new RejectMessage(acc, getAppointment2(rs.getInt("meeting_id")).toMeeting());
+                rMessage.setWhoRejected(this.getAccount(rs.getInt("who_rejected")));
+                rejectMessages.add(rMessage);
+            }
+            return rejectMessages;
+        }
+        catch(Exception e)
+        {
+            throw new CloakedIronManException("Couldn't fetch reject messages to accont " + acc.toString(), e);
+        }
+    }
+
 
     public ArrayList<Group> getAllGroupsToAccount(Account acc) throws CloakedIronManException
     {

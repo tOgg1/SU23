@@ -6,7 +6,9 @@ import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
 
 /**
  * This class defines the API for the entire server request
@@ -51,6 +53,10 @@ public class ServerRequestAPI {
 			{
 				return get_all_users();
 			}
+            else if(method.equals("GET_REJECTMESSAGES_TO_ACCOUNT"))
+            {
+                return get_rejectMessages_to_account((Account)args[0]);
+            }
 			else if (method.equals("GET_MEETINGRESPONSESS_TO_ACCOUNT")){
 				return get_all_meetingResponses_to_account((Account)args[0]);
 			}
@@ -67,7 +73,14 @@ public class ServerRequestAPI {
 			else if (method.equals("CANCEL_APPOINTMENT")){
 				return cancel_appointment((Appointment)args[0]);
 			}
-			
+			else if(method.equals("GET_ALL_ROOMS"))
+            {
+                return get_all_rooms();
+            }
+            else if(method.equals("GET_AVAILABLE_ROOMS"))
+            {
+                return get_available_rooms((Date)args[0], (Time)args[1], (Time)args[2]);
+            }
 			else if (method.equals("GET_ALL_GROUPS")) {
 				return get_all_groups();
 			}
@@ -91,6 +104,10 @@ public class ServerRequestAPI {
 	private Response get_all_meetingResponses_to_account(Account account) throws CloakedIronManException {
 		return new Response(this.db.getMeetingResponsesToAccount(account));
 	}
+
+    private Response get_rejectMessages_to_account(Account account) throws CloakedIronManException {
+        return new Response(this.db.getAllRejectMessagesToAccount(account));
+    }
 
 	/**
 	 * Returns an account if the user is validated
@@ -147,5 +164,14 @@ public class ServerRequestAPI {
 	private Response get_all_groups() throws CloakedIronManException {
 		return new Response(this.db.getAllGroups());
 	}
+
+    private Response get_available_rooms(Date date, Time start, Time end) throws CloakedIronManException
+    {
+        return new Response(this.db.getAvailableRooms(date, start, end));
+    }
+
+    private Response get_all_rooms() throws CloakedIronManException{
+        return new Response(this.db.getAllRooms());
+    }
 	
 }
