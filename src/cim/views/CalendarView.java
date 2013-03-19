@@ -413,6 +413,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		else if (evt.getPropertyName().equals("activeCalendars")){
 			myCalendars = (ArrayList<Calendar>) evt.getNewValue();
 		}
+
 		renderCalendars();
 	}
 	
