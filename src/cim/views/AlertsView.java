@@ -9,42 +9,81 @@ import java.awt.event.ActionListener;
 
 public class AlertsView extends JPanel{
 //	Client.register <--- objektet vi kaller metoder pï¿½.
-	private JList alertsList;
+	private JList rejectionMessagesList;
+	private DefaultListModel<RejectMessage> rejectMessageListModel;
+	
+	private JList alertList;
+//	private DefaultListModel<Al>
+
+	
+	private JButton btnRemoveAlarm;
 	private JButton btnRemoveAlert;
-	private DefaultListModel<RejectMessage> rejectMessageList;
+	
+	private JLabel lblMessages;
+	private JLabel lblAlerts;
 	
 	public AlertsView() {
 		setLayout(null);
 		
-		alertsList = new JList();
-		alertsList.setBounds(66, 75, 352, 132);
-		add(alertsList);
+		rejectionMessagesList = new JList();
+		rejectionMessagesList.setBounds(10, 252, 639, 150);
+		add(rejectionMessagesList);
+		generateRejectMessageList();
+		
+		btnRemoveAlert = new JButton("Marker som lest1");
+		btnRemoveAlert.setBounds(499, 413, 150, 23);
+		add(btnRemoveAlert);
+		btnRemoveAlert.addActionListener(new RemoveRejectionMessageBTNListener());
+		
+		lblAlerts = new JLabel("Varsler");
+		lblAlerts.setBounds(10, 11, 97, 14);
+		add(lblAlerts);
+		
+		alertList = new JList();
+		alertList.setBounds(10, 36, 639, 150);
+		add(alertList);
+		
+		btnRemoveAlarm = new JButton("Marker som lest2");
+		btnRemoveAlarm.setBounds(499, 197, 150, 23);
+		add(btnRemoveAlarm);
+		
+		lblMessages = new JLabel("Meldinger");
+		lblMessages.setBounds(10, 227, 97, 14);
+		add(lblMessages);
+	}
+	private void generateRejectMessageList() {
 		try{
-            rejectMessageList = new DefaultListModel<RejectMessage>();
+            rejectMessageListModel = new DefaultListModel<RejectMessage>();
             for(RejectMessage rm : Client.register.getRejectMessages()){
-            	rejectMessageList.addElement(rm);
+            	rejectMessageListModel.addElement(rm);
             }
-            alertsList.setModel(rejectMessageList);
+            rejectionMessagesList.setModel(rejectMessageListModel);
 		} 
 		catch(NullPointerException e) {
 			e.printStackTrace();
 		}
-		
-		btnRemoveAlert = new JButton("Fjern");
-		btnRemoveAlert.setBounds(329, 228, 89, 23);
-		add(btnRemoveAlert);
-		btnRemoveAlert.addActionListener(new RemoveAlertButtonListener());
-		
-		JLabel lblAlerts = new JLabel("Varsler");
-		lblAlerts.setBounds(22, 31, 46, 14);
-		add(lblAlerts);
 	}
-	public class RemoveAlertButtonListener implements ActionListener{
+	private void generateAlertList() {
+		try {
+			
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+	}
+	public class RemoveRejectionMessageBTNListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			alertsList.getSelectedValue();
+			RejectMessage rm = (RejectMessage) rejectionMessagesList.getSelectedValue();
+			System.out.println(rm.getMeeting().getName());
+			
+			
+			/*
+			 * får tak i alert-objektet
+			 * setter til seen
+			 * save alert
+			 */
 			
 		}
 		

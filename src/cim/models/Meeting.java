@@ -31,7 +31,11 @@ public class Meeting extends Appointment
 	}*/
 	
 	public String toString(){
-		return "Meeting: " + this.getName();
+		String ret = "Møte: " + this.getName();
+		if (this.isCancelled) {
+			ret += " (AVLYST!)";
+		}
+		return ret;
 		/*
 		String returnString = "";
 		for (MeetingResponse r : invitees){
