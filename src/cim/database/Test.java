@@ -12,7 +12,7 @@ public class Test {
 	public static void main(String[] args) throws CloakedIronManException {
 		DatabaseHandler db = new DatabaseHandler();
 		
-		ArrayList<Room> a = db.getAvailableRooms(Helper.getDate(2013, 10, 5), Helper.getTime(6, 45), Helper.getTime(9 ,55));
+		ArrayList<Room> a = db.getAvailableRooms(Helper.getDate(2013, 1, 23), Helper.getTime(14, 00), Helper.getTime(16 ,00));
 		System.out.println(a);
 		//System.out.println(db.get);
 		//db.cancelAppointment(db.getAppointment(323));

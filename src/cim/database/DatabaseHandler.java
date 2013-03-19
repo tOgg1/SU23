@@ -1170,24 +1170,29 @@ public class DatabaseHandler {
 		st = this.con.prepareStatement("SELECT * FROM appointment WHERE date = ?");
 		st.setDate(1, date);
 		ResultSet rs = st.executeQuery();
-		if (rs.wasNull()){
-			ArrayList<Room> available = new ArrayList<Room>();
+		ArrayList<Room> notAvailable = new ArrayList<Room>();
+		if (!rs.wasNull()){
 			while (rs.next()){
 				if (!overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
-					available.add(getRoom(rs.getInt("meeting_room_id")));
+					notAvailable.add(getRoom(rs.getInt("meeting_room_id")));
 				}
 			}
+			ArrayList<Room> available = getAllRooms();
+			
+			for (Room a : notAvailable){
+				available.remove(a);
+			}			
 			return available;
-		}
-		else{
+		}else{
 			return getAllRooms();
 		}
+
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
 		System.out.println("hello");
 		return null;
-	}
+}
 
     private ArrayList<Integer> getGroupIdsFromUserid(int userId) throws SQLException
     {
