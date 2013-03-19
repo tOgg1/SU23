@@ -29,7 +29,7 @@ public class DayList extends JPanel
     public DayList()
     {
         this.children = new PriorityQueue<AppointmentPanel>();
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         
 //        JScrollPane scrollPane = new JScrollPane();
 //        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
