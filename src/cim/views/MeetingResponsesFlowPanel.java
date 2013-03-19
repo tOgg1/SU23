@@ -51,9 +51,6 @@ public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeL
 	
 	public void setModel(ArrayList<MeetingResponse> m) {
 		this.model = m;
-		/*for(MeetingResponse mr : this.model) {
-			mr.addPropertyChangeListener(new MeetingResponseListener(mr));
-		}*/
 		this.refresh();
 	}
 	
@@ -85,23 +82,6 @@ public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeL
 		this.repaint();
 		this.firePropertyChange("numMeetingResponses", null, iNumAdded);
 	}
-
-	/*
-	private class MeetingResponseListener implements PropertyChangeListener {
-		private MeetingResponse mr;
-		public MeetingResponseListener(MeetingResponse mr) {
-			this.mr = mr;
-		}
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			try {
-				Client.register.saveMeetingResponse(this.mr);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}
-	}*/
 		
 	
 	/**
