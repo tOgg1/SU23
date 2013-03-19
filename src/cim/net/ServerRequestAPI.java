@@ -6,7 +6,9 @@ import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
 
 /**
  * This class defines the API for the entire server request
@@ -74,6 +76,10 @@ public class ServerRequestAPI {
 			else if(method.equals("GET_ALL_ROOMS"))
             {
                 return get_all_rooms();
+            }
+            else if(method.equals("GET_AVAILABLE_ROOMS"))
+            {
+                return get_available_rooms((Date)args[0], (Time)args[1], (Time)args[2]);
             }
 			else if (method.equals("GET_ALL_GROUPS")) {
 				return get_all_groups();
@@ -158,6 +164,11 @@ public class ServerRequestAPI {
 	private Response get_all_groups() throws CloakedIronManException {
 		return new Response(this.db.getAllGroups());
 	}
+
+    private Response get_available_rooms(Date date, Time start, Time end) throws CloakedIronManException
+    {
+        return new Response(this.db.getAvailableRooms(date, start, end));
+    }
 
     private Response get_all_rooms() throws CloakedIronManException{
         return new Response(this.db.getAllRooms());

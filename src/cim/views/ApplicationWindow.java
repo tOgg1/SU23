@@ -126,6 +126,11 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
     }
 
     @Override
+    public void requestFocus() {
+        tabbedPane.requestFocus();
+    }
+
+    @Override
     public void stateChanged(ChangeEvent e)
     {
         if(tabbedPane.getSelectedComponent() == manageCalendarsView)
