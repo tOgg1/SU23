@@ -66,7 +66,7 @@ public class MeetingResponse extends CalendarObject {
 	}
 	public String toString()
 	{
-		return account.toString();
+		return account.toString() + ", " + meeting.toString() + ", " + this.response.toString();
 	}
 	 public boolean equals(Object obj) {
         if (obj == null)

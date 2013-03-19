@@ -7,6 +7,7 @@ import java.awt.SystemColor;
 import javax.swing.JLabel;
 
 import cim.models.MeetingResponse;
+import cim.net.Client;
 import cim.util.Fonts;
 
 import java.awt.Font;
@@ -15,7 +16,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import javax.swing.JSeparator;
 
-public class IncomingAppointmentsView extends JPanel implements PropertyChangeListener {
+public class IncomingAppointmentsView extends JPanel {
 
 	/**
 	 * Needed for somewhat reason
@@ -76,6 +77,7 @@ public class IncomingAppointmentsView extends JPanel implements PropertyChangeLi
 			
 			flowpanel = new MeetingResponsesFlowPanel();
 			flowpanel.addPropertyChangeListener(new MeetingResponsePropertyChangeListener());
+			Client.register.addPropertyChangeListener(flowpanel);
 			flowpanel.setBounds(31,79,998,366);
 			add(flowpanel);
 		} catch (Exception e) {
@@ -95,15 +97,6 @@ public class IncomingAppointmentsView extends JPanel implements PropertyChangeLi
 		public void propertyChange(PropertyChangeEvent evt) {
 			// Throwing right out
 			firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-		}
-		
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		String prop = evt.getPropertyName();
-		if(prop.equals("meetingResponse")) {
-			this.setModel((ArrayList<MeetingResponse>)evt.getNewValue());
 		}
 		
 	}

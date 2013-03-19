@@ -89,7 +89,6 @@ public class ApplicationWindow extends JFrame {
 		// legger til eventuelle "(n)" som kan representere ant. ubehandlede innkallelser.
 		tabbedPane.addTab("M�ter til godkjenning", null, incomingAppointmentsView, null);
 		incomingAppointmentsView.setModel(Client.register.getMeetingResponses());
-		Client.register.addPropertyChangeListener(incomingAppointmentsView);
 		
 		alertsView = new AlertsView();
 		tabbedPane.addTab("Varsler", null, alertsView, null);

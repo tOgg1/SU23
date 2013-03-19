@@ -21,7 +21,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.awt.SystemColor;
 
-public class MeetingResponsesFlowPanel extends JPanel {
+public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeListener {
 	
 	// Det eksisterer en plan i hodet til Beate på hvordan den her kan bygges.
 	// Håkon har også lyst til å prøve
@@ -89,13 +89,29 @@ public class MeetingResponsesFlowPanel extends JPanel {
 		public void propertyChange(PropertyChangeEvent evt) {
 			try {
 				Client.register.saveMeetingResponse(this.mr);
-				MeetingResponsesFlowPanel.this.refresh();
-				// The current response has been modified
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
 		}
+	}
+		
+	
+	/**
+	 * This method listens to property change from the Register object
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		String strProp = evt.getPropertyName();
+		if(strProp.equals("meetingResponses")) {
+			try {
+				this.setModel(Client.register.getMeetingResponses());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		System.out.println(strProp);
 		
 	}
 }
