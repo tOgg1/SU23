@@ -94,10 +94,11 @@ public class CalendarRegister
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<Calendar> getAllCalendarsToCurrentUser(){
+	public ArrayList<Calendar> activeCalendars(){
 		try{
 			Response res = parent.request(new Request("GET_ALL_CALENDARS_TO_ACCOUNT", account));
 			this.personalCalendars = (ArrayList<Calendar>) res.getData()[0];
+			this.activeCalendars = (ArrayList<Calendar>) res.getData()[0];
 			return this.personalCalendars;
 		}catch(Exception e){
 			return new ArrayList<Calendar>();
@@ -559,7 +560,7 @@ public class CalendarRegister
 	}
 	
 	public void saveAlert(Alert a) throws CloakedIronManException {
-		// TODO: Legge inn denne metoden p� serveren
+		// TODO: Legge inn denne metoden p��� serveren
 	}
 
 }

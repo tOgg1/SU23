@@ -82,20 +82,21 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		this.setContentPane(tabbedPane);
 		
 		calendarView = new CalendarView(this);
+		Client.register.addPropertyChangeListener(calendarView);
 		tabbedPane.addTab("Kalender", null, calendarView, null);
 		
 		incomingAppointmentsView = new IncomingAppointmentsView();
 		incomingAppointmentsView.addPropertyChangeListener(new MeetingResponsePropertyChangeListener());
 		
-		// M�ter til godkjenning burde ha en hjelpeklasse som bygger strengen og 
+		// M���ter til godkjenning burde ha en hjelpeklasse som bygger strengen og 
 		// legger til eventuelle "(n)" som kan representere ant. ubehandlede innkallelser.
-		tabbedPane.addTab("M�ter til godkjenning", null, incomingAppointmentsView, null);
+		tabbedPane.addTab("M���ter til godkjenning", null, incomingAppointmentsView, null);
 		incomingAppointmentsView.setModel(Client.register.getMeetingResponses());
 		
 		alertsView = new AlertsView();
 		tabbedPane.addTab("Varsler", null, alertsView, null);
 		
-		manageCalendarsView = new ManageCalendarsView(Client.register.getAllCalendarsToCurrentUser(), Client.register.getAllCalendars(), this);
+		manageCalendarsView = new ManageCalendarsView(Client.register.activeCalendars(), Client.register.getAllCalendars(), this);
 		tabbedPane.addTab("Administrer kalendere", null, manageCalendarsView, null);
 
         tabbedPane.addChangeListener(this);
@@ -140,9 +141,9 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName() == "numMeetingResponses"){
 				int iNewVal = (int)evt.getNewValue();
-				String text = "M�ter til godkjenning";
+				String text = "M���ter til godkjenning";
 				if (iNewVal > 0) {
-					text = "M�ter til godkjenning (" + iNewVal + ")";
+					text = "M���ter til godkjenning (" + iNewVal + ")";
 				}
 				tabbedPane.setTitleAt(1, text);
 			}
