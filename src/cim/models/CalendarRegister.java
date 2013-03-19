@@ -444,7 +444,18 @@ public class CalendarRegister
 	 * @throws CloakedIronManException
 	 */
 	public void saveMeetingResponse(MeetingResponse mr) throws CloakedIronManException {
+		for(MeetingResponse mri : this.meetingResponses) {
+			if(mri.equals(mr)) {
+				if(mri.getResponse() != mr.getResponse()) {
+					// Save only if changed
+					this.parent.request(new Request("SAVE_MEETING_RESPONSE", mr));
+				}
+				break;
+			}
+		}
+		// The meeting response is new, should be saved.
 		this.parent.request(new Request("SAVE_MEETING_RESPONSE", mr));
+		
 	}
 	public Account getAccount()
 	{

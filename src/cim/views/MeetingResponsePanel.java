@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import cim.models.Meeting;
 import cim.models.MeetingResponse;
 import cim.models.MeetingResponse.Response;
+import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Fonts;
 
@@ -85,6 +86,7 @@ public class MeetingResponsePanel extends JPanel {
 			lblDecline.setBounds(905, 7, 20, 20);
 			lblDecline.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			lblDecline.setToolTipText("Avslå møteinnkalling");
+			lblDecline.addMouseListener(new DeclineListener());
 			add(lblDecline);
 			
 			setSize(967,35);
@@ -132,7 +134,13 @@ public class MeetingResponsePanel extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			MeetingResponsePanel.this.model.setResponse(Response.ATTENDING);
+			try {
+				MeetingResponsePanel.this.model.setResponse(Response.ATTENDING);
+				Client.register.saveMeetingResponse(model);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			
 		}
 
 		@Override
@@ -159,7 +167,12 @@ public class MeetingResponsePanel extends JPanel {
 	private class DeclineListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			MeetingResponsePanel.this.model.setResponse(Response.NOT_ATTENDING);
+			try {
+				MeetingResponsePanel.this.model.setResponse(Response.NOT_ATTENDING);
+				Client.register.saveMeetingResponse(model);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 
 		@Override

@@ -3,6 +3,8 @@ package cim.views;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import cim.models.MeetingResponse;
 import cim.net.Client;
@@ -38,16 +40,20 @@ public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeL
 		setBackground(SystemColor.control);
 		setLayout(new GridBagLayout());
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setPreferredSize(new Dimension(715, 403));
+		setMaximumSize(new Dimension(715, 403));
 		
+		JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        add(scrollPane);
 
 	}
 	
 	public void setModel(ArrayList<MeetingResponse> m) {
 		this.model = m;
-		for(MeetingResponse mr : this.model) {
+		/*for(MeetingResponse mr : this.model) {
 			mr.addPropertyChangeListener(new MeetingResponseListener(mr));
-		}
+		}*/
 		this.refresh();
 	}
 	
@@ -80,6 +86,7 @@ public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeL
 		this.firePropertyChange("numMeetingResponses", null, iNumAdded);
 	}
 
+	/*
 	private class MeetingResponseListener implements PropertyChangeListener {
 		private MeetingResponse mr;
 		public MeetingResponseListener(MeetingResponse mr) {
@@ -94,7 +101,7 @@ public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeL
 			}
 			
 		}
-	}
+	}*/
 		
 	
 	/**
@@ -111,7 +118,6 @@ public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeL
 			}
 			
 		}
-		System.out.println(strProp);
 		
 	}
 }

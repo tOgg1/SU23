@@ -92,7 +92,6 @@ public class DatabaseHandler {
 			return true;
 		}
 		catch (SQLException e){
-			System.out.println(e);
 			return false;
 		}		
 	}
@@ -271,7 +270,6 @@ public class DatabaseHandler {
             for(Group group : groups)
             {
                 st = this.con.prepareStatement("SELECT calendar_id FROM calendar where owner_attendable_id = ?");
-                System.out.println(this.getAttendableId(group));
                 st.setInt(1, getAttendableId(group));
                 rs = st.executeQuery();
 
@@ -406,7 +404,7 @@ public class DatabaseHandler {
 	 */
 	
 	public MeetingResponse saveMeetingResponse(MeetingResponse mr) throws CloakedIronManException {
-        System.out.println("IM here too!");
+        System.out.println("Saving: " + mr);
         try {
 			Meeting m = mr.getMeeting();
 			Account a = mr.getAccount();
@@ -431,7 +429,6 @@ public class DatabaseHandler {
 			st.setInt(2, a.getId());
 			st.setString(3, mr.getResponseString());
 			st.setString(4, mr.getResponseString());
-			System.out.println(mr.getResponseString());
 			st.execute();
 			this.broadcast("MEETING_RESPONSE", Type.UPDATED, mr);
 			
@@ -1177,7 +1174,6 @@ public class DatabaseHandler {
 		try {
 			if (ap instanceof Appointment){
 				st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id = ?");
-				System.out.println(ap.getId());
 				st.setInt(1, ap.getId());
 				st.executeUpdate();
 			}
