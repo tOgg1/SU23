@@ -73,6 +73,7 @@ public class CalendarRegister
 		this.pcs = new PropertyChangeSupport(this);
 		this.parent = parent;
 		calendars = new ArrayList<Calendar>();
+		groups = new ArrayList<Group>();
 		accounts = new ArrayList<Account>();
 		this.activeCalendars = new ArrayList<Calendar>();
 		
@@ -379,9 +380,6 @@ public class CalendarRegister
 
 	public ArrayList<Group> getAllGroups()
 	{
-		if (this.groups == null) {
-			
-		}
 		return this.groups;
 	}
 
@@ -495,7 +493,6 @@ public class CalendarRegister
 	}
 
 	public ArrayList<RejectMessage> getRejectMessages() {
-		
 		// TODO Auto-generated method stub
 		return null;
 	}

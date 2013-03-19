@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ParticipantsPanel extends JPanel implements ActionListener{
 	private DatabaseHandler db;
@@ -18,6 +20,7 @@ public class ParticipantsPanel extends JPanel implements ActionListener{
 
     DefaultListModel<Attendable> modelSearch;
     DefaultListModel<Attendable> modelAttending;
+    DefaultListModel<Attendable> modelNewSearch;
     JLabel lblSearch, lblMtedeltagere, lblSketreff;
 
     JList listSearchResult, listParticipants;
@@ -37,6 +40,31 @@ public class ParticipantsPanel extends JPanel implements ActionListener{
 		txtSearch.setColumns(10);
 		
 		btnSearch = new JButton("S\u00F8k");
+		btnSearch.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mouseReleased(MouseEvent arg0) 
+			{
+				String search = txtSearch.getText();
+				int l = 0;
+				modelNewSearch = new DefaultListModel<Attendable>();
+				for(int i = 0; modelSearch.elementAt(i) != null; i++)
+				{
+					
+					for(String name : modelSearch.get(i).getName().split(" "))
+					{
+						if(name.equals(search))
+						{
+							modelNewSearch.addElement(modelSearch.get(i));
+						}
+					}
+					
+				}
+				setModel(modelNewSearch);
+				
+				
+			}
+		});
 		btnSearch.setBounds(106, 36, 89, 23);
 		add(btnSearch);
 		
@@ -88,7 +116,18 @@ public class ParticipantsPanel extends JPanel implements ActionListener{
         System.out.println(attendables.size());
         return attendables;
     }
-
+    public void setModel(DefaultListModel<Attendable> model)
+    {
+    	if(model != null)
+    	{
+    	listSearchResult.setModel(model);
+    	System.out.println("Model set");
+    	}
+    	else
+    	{
+    		System.out.println("Model not set. Pointer at null.");
+    	}
+    }
     @Override
     public void actionPerformed(ActionEvent e)
     {

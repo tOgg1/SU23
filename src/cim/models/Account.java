@@ -34,7 +34,7 @@ public class Account extends CalendarObject implements Attendable, Serializable
 	}
 	
 	public String toString() {
-		return this.getFirstName() + " " + this.getLastName() + " (" + this.getEmail() + ")";
+		return this.getFirstName() + " " + this.getLastName();
 	}
 	
 	public void addCalendar(CalendarObject calendar)
