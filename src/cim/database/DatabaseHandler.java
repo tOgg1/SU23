@@ -1172,6 +1172,7 @@ public class DatabaseHandler {
         ArrayList<Room> available = new ArrayList<Room>();
         while (rs.next()){
             if (!overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
+            	System.out.println("meeting_room_id");
                  available.add(getRoom(rs.getInt("meeting_room_id")));
             }
         }
