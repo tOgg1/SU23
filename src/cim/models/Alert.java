@@ -48,6 +48,9 @@ public class Alert extends CalendarObject {
 	public boolean isSeen() {
 		return this.isSeen;
 	}
+	public void changeIsSeen(boolean b){
+		this.isSeen = b;
+	}
 	
 	public boolean equals(Object obj) {
         if (obj == null)
