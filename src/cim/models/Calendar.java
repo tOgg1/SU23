@@ -85,14 +85,12 @@ public class Calendar extends CalendarObject
 		if (appointment instanceof Meeting){
 			Meeting m = (Meeting) appointment;
 			m.setCancelled(true);
+			
+			 // Removing and adding makes sure we get the new meeting
 			this.appointments.remove(m);
 			this.appointments.add(m);
-		}
-		else{
-		
-		if(!this.appointments.isEmpty())
-		this.appointments.remove(appointment);
-		
+		} else {
+			this.appointments.remove(appointment);
 		}
 		pcs.firePropertyChange("appointment", appointment, null);
 
