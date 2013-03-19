@@ -19,6 +19,12 @@ public class MeetingResponse extends CalendarObject {
 	private Meeting meeting;
 	private Response response;
 	
+	public MeetingResponse(Account a, Meeting m) {
+		this.account = a;
+		this.meeting = m;
+		this.response = Response.NOT_SEEN;
+	}
+	
 	public MeetingResponse(Account a, Meeting m, String r) {
 		this.account = a;
 		this.meeting = m;

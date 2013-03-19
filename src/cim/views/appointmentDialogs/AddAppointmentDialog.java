@@ -1,8 +1,11 @@
 package cim.views.appointmentDialogs;
 
+import cim.models.Account;
 import cim.models.Alert;
 import cim.models.Appointment;
 import cim.models.Attendable;
+import cim.models.Group;
+import cim.models.Meeting;
 import cim.models.MeetingResponse;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
@@ -171,10 +174,28 @@ public class AddAppointmentDialog extends JDialog{
                 ArrayList<Attendable> invitees = AddAppointmentDialog.this.addParticipantsPanel.getInvitees();
                 if(invitees.size() > 0)
                 {
-                    app = app.toMeeting();
+                    Meeting meeting = app.toMeeting();
+                    setAppointment(meeting);
+                    meetingResponses = new ArrayList<MeetingResponse>();
+                    MeetingResponse mr;
+                    for(Attendable att : invitees) {
+	                	if (att instanceof Account) {
+	                		mr = new MeetingResponse((Account)att, meeting);
+	                		meetingResponses.add(mr);
+	                	} else if (att instanceof Group){
+	                		for(Account member: ((Group)att).getMembers()) {
+	                			mr = new MeetingResponse(member, meeting);
+	                			meetingResponses.add(mr);
+	                		}
+	                	}
+	                }
+                } else {
+                	setAppointment(app);
                 }
-				setAppointment(app);
+                
+				
 				pcs.firePropertyChange("createApp", null, app);
+				disposeFrame();
 			}
 		});
 
@@ -204,7 +225,6 @@ public class AddAppointmentDialog extends JDialog{
 
 	protected void setAppointment(Appointment app) {
 		this.appointment = app;
-		disposeFrame();
 		
 	}
 

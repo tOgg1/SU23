@@ -362,6 +362,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 				}
 				if(meetingResponses != null) {
 					System.out.println("Meeting responses set in dialog.");
+					System.out.println(meetingResponses);
 				} else {
 					System.out.println("Meeting responses not set in dialog.");
 				}
