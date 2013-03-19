@@ -12,6 +12,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.PriorityQueue;
+import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,13 +31,7 @@ public class DayList extends JPanel
     public DayList()
     {
         this.children = new PriorityQueue<AppointmentPanel>();
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        
-//        JScrollPane scrollPane = new JScrollPane();
-//        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-//        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-////        scrollPane.setPreferredSize(.getSize());
-//        add(scrollPane);
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         
     }
 
