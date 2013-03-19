@@ -9,6 +9,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+import javax.swing.ListModel;
+
 /**
  * A register containing all information currently in use by the client.
  * Contains a lot of functions for storing and retreiving data. This class also takes cares
@@ -490,6 +492,12 @@ public class CalendarRegister
 	public void cancelAppointment(Appointment appointment) throws CloakedIronManException{
 		this.parent.request(new Request("CANCEL_APPOINTMENT", appointment));
 
+	}
+
+	public ArrayList<RejectMessage> getRejectMessages() {
+		
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
