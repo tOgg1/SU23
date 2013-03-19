@@ -418,18 +418,19 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 			Calendar cal = ((AppointmentPanel) evt.getOldValue()).getCalendar();
 			try {
 				cal.removeAppointment(((AppointmentPanel) evt.getOldValue()).getBase());
+				Client.register.saveCalendar(cal);
 			} catch (CloakedIronManException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			myCalendars.remove(cal);
-			cal = cal.getUpdatedCalendar();
-			myCalendars.add(cal);
-			renderCalendars();
 		}
 		else if (evt.getPropertyName().equals("activeCalendars")){
 			myCalendars = ((ArrayList<Calendar>) evt.getNewValue());
 			renderCalendars();
+		}
+		
+		else if (evt.getPropertyName().equals("editbase")){
+			//new EditAppointmentsDialog(((AppointmentPanel)evt.getNewValue()).getBase()), ((AppointmentPanel) evt.getNewValue()).getCalendar());
 		}
 
 
