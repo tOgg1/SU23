@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class ManageCalendarsView extends JPanel implements KeyListener
+public class ManageCalendarsView extends JPanel
 {
     private ArrayList<CalendarPanel> allCalendars;
     private ApplicationWindow application;
@@ -31,7 +31,6 @@ public class ManageCalendarsView extends JPanel implements KeyListener
         selected = -1;
         changedTroughLoad = false;
 
-        super.addKeyListener(this);
         setPreferredSize(new Dimension(1039, 456));
 
         JPanel calendarContainer = new JPanel();
@@ -99,45 +98,6 @@ public class ManageCalendarsView extends JPanel implements KeyListener
         super.requestFocus();
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {}
-
-    @Override
-    public void keyPressed(KeyEvent e) {}
-
-    @Override
-    public void keyReleased(KeyEvent e)
-    {
-        if(e.getKeyCode() == KeyEvent.VK_UP)
-        {
-            selected +=1;
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_DOWN)
-        {
-            selected -=1;
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
-        {
-            application.requestFocus();
-        }
-        else
-        {
-            return;
-        }
-        if(selected < 0)
-        {
-            selected=0;
-        }
-        if(selected > allCalendars.size()-1)
-        {
-            selected = allCalendars.size()-1;
-        }
-
-        System.out.println("Event");
-        System.out.println("selected: " + selected);
-        allCalendars.get(selected).dispatchEvent(new MouseEvent(this, MouseEvent.BUTTON1, System.currentTimeMillis(), 0, 1,1,1, false));
-    }
-
     private class ChangeDisplayListener implements ItemListener
     {
         @Override
@@ -161,7 +121,6 @@ public class ManageCalendarsView extends JPanel implements KeyListener
 
     private class ModelClickListener implements MouseListener
     {
-
         @Override
         public void mouseClicked(MouseEvent e)
         {
@@ -181,10 +140,10 @@ public class ManageCalendarsView extends JPanel implements KeyListener
                 }
                 selectedPanel.setBackground(Color.lightGray);
                 selected = allCalendars.indexOf(selectedPanel);
-                System.out.println("isDisp: " + selectedPanel.isDisplayed());
                 changedTroughLoad = true;
                 displayCurrent.setSelected(selectedPanel.isDisplayed());
             }
+            System.out.println("selected: " + selected);
             changedTroughLoad = false;
         }
 

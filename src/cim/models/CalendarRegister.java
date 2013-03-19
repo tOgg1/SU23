@@ -7,7 +7,9 @@ import cim.util.CloakedIronManException;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A register containing all information currently in use by the client.
@@ -65,6 +67,12 @@ public class CalendarRegister
      * Reference to all rooms
      */
 	private ArrayList<Room> rooms;
+
+    /**
+     * Reference to available rooms
+     */
+    private ArrayList<Room> availableRooms;
+
 	Client parent;
 
 	/**
@@ -512,6 +520,22 @@ public class CalendarRegister
 		this.pcs.firePropertyChange("meetingResponses", null, this.meetingResponses);
 	}
 
+    public void registerRoom(Room room)
+    {
+        this.rooms.remove(room);
+        this.rooms.add(room);
+        this.pcs.firePropertyChange("rooms", null, this.rooms);
+    }
+
+    public void registerAvailableRoom(Room room)
+    {
+        registerRoom(room);
+        this.availableRooms.remove(room);
+        this.availableRooms.add(room);
+
+        //TODO: Add an extra propertyChange?
+    }
+
     public void registerRejectMessage(RejectMessage rm)
     {
         this.rejectMessages.remove(rm);
@@ -540,6 +564,25 @@ public class CalendarRegister
 		this.parent.request(new Request("CANCEL_APPOINTMENT", appointment));
 
 	}
+
+    public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end)
+    {
+        if(availableRooms != null)
+        {
+            return availableRooms;
+        }
+
+        try
+        {
+            Response res = parent.request(new Request("GET_AVAILABLE_ROOMS", new Object[]{date, start, end}));
+            this.availableRooms = (ArrayList<Room>)res.getData()[0];
+            return this.availableRooms;
+        }
+        catch(Exception e)
+        {
+            return new ArrayList<Room>();
+        }
+    }
 
     public ArrayList<Room> getRooms()
     {
