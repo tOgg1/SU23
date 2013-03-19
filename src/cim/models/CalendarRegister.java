@@ -493,6 +493,7 @@ public class CalendarRegister
 	}
 
 	public ArrayList<RejectMessage> getRejectMessages() {
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
