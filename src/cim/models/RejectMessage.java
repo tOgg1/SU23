@@ -50,7 +50,32 @@ public class RejectMessage extends CalendarObject {
 		return meeting;
 	}
 	
-	
+	public String toString() {
+		//Is used in the AlertsView
+		String s = "";
+
+//		If meeting is cancelled
+//		s = [møtenavn] [kl] [dato] har blitt avlyst.
+		if(whoRejected == null){
+			s = meeting.getName()
+					+ " kl. " + meeting.getStartFormatted()
+					+ " " + meeting.getDateFormatted()
+					+ " har blitt avlyst.";
+		}
+// 		If someone rejected the invitation
+//		[navn] har avvist innkallingen til [møtenavn] [kl] [dato]
+		else {
+			s = whoRejected.getFirstName() 
+					+ " " + whoRejected.getLastName()
+					+ " har avvist innkallingen til "
+					+ meeting.getName()
+					+ " kl. " + meeting.getStartFormatted()
+					+ " " + meeting.getDateFormatted();
+		}
+		
+		
+		return s;
+	}
 	
 	
 	

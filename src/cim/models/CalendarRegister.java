@@ -421,11 +421,34 @@ public class CalendarRegister
 		return this.groups;
 	}
 
+    public void setCalendarActivity(Calendar cal, boolean active)
+    {
+        if(active)
+        {
+            setCalendarActive(cal);
+        }
+        else
+        {
+            setCalendarInactive(cal);
+        }
+    }
+
+    public void setCalendarActive(Calendar cal)
+    {
+        this.activeCalendars.remove(cal);
+        this.activeCalendars.add(cal);
+        this.pcs.firePropertyChange("activeCalendars", null, activeCalendars);
+    }
+
+    public void setCalendarInactive(Calendar cal)
+    {
+        this.activeCalendars.remove(cal);
+        this.pcs.firePropertyChange("activeCalendars", null, activeCalendars);
+    }
+
 	// All functions below should only be used on
 	// initialize() and when fetching new objects
 	// from server
-
-
 	public void registerGroup(Group group)
 	{
 		if(!containsById(groups, group))
