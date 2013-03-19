@@ -1,41 +1,34 @@
 package cim.models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Group extends CalendarObject implements Attendable, Serializable
+public class Group extends CalendarObject implements Attendable
 {
 	private int attendableId = -1;
 	String name;
 	Account owner;
-	Calendar calendar;
-	ArrayList<Attendable> members;
+	
+	ArrayList<Account> members;
 	
 	public Group(String name, Account owner) {
 		this.owner = owner;
 		this.name = name;
+		this.members = new ArrayList<Account>();
 	}
 	
-	public void addMember(Attendable member){
-		if(!this.members.contains(member))
-		this.members.add(member);
+	public void addMember(Account a) {
+		this.members.add(a);
 	}
 	
-	public void removeMember(Attendable member){
-		//kan ikke slette eieren
-		if (this.owner != member){
-			this.members.remove(member);
-		}
-	}
-
-    public boolean isMember(Attendable att)
+    public boolean isMember(Account a)
     {
-        return members.contains(att);
+        return members.contains(a);
+    }
+    
+    public ArrayList<Account> getMembers() {
+    	return this.members;
     }
 	
-	public void receiveInvite(Meeting meeting) {
-	
-	}
 	
 	public void changeOwner(Account owner){
 		this.owner = owner;
@@ -57,5 +50,9 @@ public class Group extends CalendarObject implements Attendable, Serializable
 	
 	public int getAttendableId() {
 		return this.attendableId;
+	}
+	
+	public String toString() {
+		return this.name;
 	}
 }
