@@ -60,12 +60,7 @@ public class ServerRequestAPI {
 			else if (method.equals("GET_MEETINGRESPONSESS_TO_ACCOUNT")){
 				return get_all_meetingResponses_to_account((Account)args[0]);
 			}
-			else if (method.equals("GET_ALL_UNSEEN_ALERTS_TO_ACCOUNT")){
-				return get_all_unseen_alerts_to_account((Account) args[0]);
-			}
-			else if (method.equals("SEEN_ALERT")){
-				return seen_alert((Alert) args[0]);
-			} 
+			
 			
 			else if(method.equals("SAVE_MEETING_RESPONSE")){
 				return save_meeting_response((MeetingResponse)args[0]);
@@ -85,6 +80,10 @@ public class ServerRequestAPI {
 				return get_all_groups();
 			}
 			
+			else if(method.equals("GET_ALERTS_TO_ACCOUNT")) {
+				return get_alerts_to_account((Account)args[0]);
+			}
+			
 			return new Response(new CloakedIronManException("No server API call named '" + method + "'"));
 		} catch (Exception e) {
 			return new Response(e);
@@ -92,13 +91,13 @@ public class ServerRequestAPI {
 		
 		
 	}
+	
+
+
+
 	private Response cancel_appointment(Appointment appointment) throws CloakedIronManException {
 		this.db.cancelAppointment(appointment);
 		return new Response();
-	}
-
-	private Response seen_alert(Alert alert) {
-		return new Response(this.db.seenAlert(alert));
 	}
 
 	private Response get_all_meetingResponses_to_account(Account account) throws CloakedIronManException {
@@ -152,10 +151,6 @@ public class ServerRequestAPI {
 		return new Response(this.db.getAccount(id));
 	}
 	
-	private Response get_all_unseen_alerts_to_account(Account acc) throws CloakedIronManException{
-		return new Response(this.db.getAllUnseenAlertsToAccount(acc));
-	}
-	
 	private Response save_meeting_response(MeetingResponse mr) throws CloakedIronManException {
 		this.db.saveMeetingResponse(mr);
 		return new Response();
@@ -173,5 +168,9 @@ public class ServerRequestAPI {
     private Response get_all_rooms() throws CloakedIronManException{
         return new Response(this.db.getAllRooms());
     }
+    
+    private Response get_alerts_to_account(Account account) throws CloakedIronManException {
+		return new Response(this.db.getAlertsToAccount(account));
+	}
 	
 }

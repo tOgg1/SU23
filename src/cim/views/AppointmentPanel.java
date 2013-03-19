@@ -195,6 +195,12 @@ public class AppointmentPanel extends JPanel implements Comparable
 				pcs.firePropertyChange("delbase", AppointmentPanel.this, null);
 				base = null;}
     	}
+    
+    public class editListener extends MouseAdapter{
+    	public void mouseReleased(MouseEvent e){
+    		pcs.firePropertyChange("editbase", "", AppointmentPanel.this);
+    	}
+    }
 
     public class showInfoListener extends MouseAdapter{
     	public void mouseReleased(MouseEvent e){
