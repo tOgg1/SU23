@@ -60,7 +60,10 @@ public class CalendarRegister
     /**
      *
      */
-	
+
+    /**
+     * Reference to all rooms
+     */
 	private ArrayList<Room> rooms;
 	Client parent;
 
@@ -485,9 +488,9 @@ public class CalendarRegister
 	{
 		return this.account;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException{
+
+    @SuppressWarnings("unchecked")
+    public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException{
 		if(this.meetingResponses == null) {
 			Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
 			System.out.println(r.getData()[0]);
@@ -537,6 +540,24 @@ public class CalendarRegister
 		this.parent.request(new Request("CANCEL_APPOINTMENT", appointment));
 
 	}
+
+    public ArrayList<Room> getRooms()
+    {
+        if(rooms != null)
+        {
+            return rooms;
+        }
+        try
+        {
+            Response res = parent.request(new Request("GET_ALL_ROOMS", null));
+            this.rooms = (ArrayList<Room>)res.getData()[0];
+            return this.rooms;
+        }
+        catch(Exception e)
+        {
+            return new ArrayList<Room>();
+        }
+    }
 
 	public ArrayList<RejectMessage> getRejectMessages() {
         if(rejectMessages != null)

@@ -31,6 +31,7 @@ public class ManageCalendarsView extends JPanel implements KeyListener
         selected = -1;
         changedTroughLoad = false;
 
+        super.addKeyListener(this);
         setPreferredSize(new Dimension(1039, 456));
 
         JPanel calendarContainer = new JPanel();
@@ -123,12 +124,18 @@ public class ManageCalendarsView extends JPanel implements KeyListener
         {
             return;
         }
-        if(selected > 0)
+        if(selected < 0)
         {
-            return;
+            selected=0;
+        }
+        if(selected > allCalendars.size()-1)
+        {
+            selected = allCalendars.size()-1;
         }
 
-        allCalendars.get(selected).dispatchEvent(new MouseEvent(allCalendars.get(selected), MouseEvent.BUTTON1, System.currentTimeMillis(), 0, 1,1,1, false));
+        System.out.println("Event");
+        System.out.println("selected: " + selected);
+        allCalendars.get(selected).dispatchEvent(new MouseEvent(this, MouseEvent.BUTTON1, System.currentTimeMillis(), 0, 1,1,1, false));
     }
 
     private class ChangeDisplayListener implements ItemListener
@@ -139,7 +146,6 @@ public class ManageCalendarsView extends JPanel implements KeyListener
             if(selected == -1 || changedTroughLoad == true)
                 return;
             CalendarPanel panelOfInterest = allCalendars.get(selected);
-            System.out.println("Changing status for: " + panelOfInterest.toString() + " status now: " + panelOfInterest.isDisplayed() + " new: " + !panelOfInterest.isDisplayed());
             panelOfInterest.toggleDisplayed();
             if(panelOfInterest.isDisplayed())
             {

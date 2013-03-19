@@ -71,7 +71,10 @@ public class ServerRequestAPI {
 			else if (method.equals("CANCEL_APPOINTMENT")){
 				return cancel_appointment((Appointment)args[0]);
 			}
-			
+			else if(method.equals("GET_ALL_ROOMS"))
+            {
+                return get_all_rooms();
+            }
 			else if (method.equals("GET_ALL_GROUPS")) {
 				return get_all_groups();
 			}
@@ -155,5 +158,9 @@ public class ServerRequestAPI {
 	private Response get_all_groups() throws CloakedIronManException {
 		return new Response(this.db.getAllGroups());
 	}
+
+    private Response get_all_rooms() throws CloakedIronManException{
+        return new Response(this.db.getAllRooms());
+    }
 	
 }
