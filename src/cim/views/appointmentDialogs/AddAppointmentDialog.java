@@ -4,6 +4,7 @@ import cim.models.Account;
 import cim.models.Alert;
 import cim.models.Appointment;
 import cim.models.Attendable;
+import cim.models.Calendar;
 import cim.models.Group;
 import cim.models.Meeting;
 import cim.models.MeetingResponse;
@@ -45,16 +46,14 @@ public class AddAppointmentDialog extends JDialog{
 	private Appointment appointment;
 	private ArrayList<MeetingResponse> meetingResponses;
 	private Alert alert;
+	private Calendar calendar;
+	
 	private PropertyChangeSupport pcs;
 
-
-	private final JFrame application;
 
 	public AddAppointmentDialog(JFrame application) throws CloakedIronManException{
 		super(application);
 		setModalityType(ModalityType.DOCUMENT_MODAL);
-
-		this.application = application;
 		setTitle("Ny avtale");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 645, 716);
@@ -171,6 +170,10 @@ public class AddAppointmentDialog extends JDialog{
 				*  meeting responses will be sent.
 				*/ 
 				app.setOwner(Client.register.getAccount());
+				
+				/*
+				 * Creating all the meeting responses
+				 */
                 ArrayList<Attendable> invitees = AddAppointmentDialog.this.addParticipantsPanel.getInvitees();
                 if(invitees.size() > 0)
                 {
@@ -192,6 +195,9 @@ public class AddAppointmentDialog extends JDialog{
                 } else {
                 	setAppointment(app);
                 }
+                
+                // Setting calendar
+                AddAppointmentDialog.this.calendar = AddAppointmentDialog.this.addDetailsPanel.getCalendar();
                 
 				
 				pcs.firePropertyChange("createApp", null, app);
@@ -234,6 +240,10 @@ public class AddAppointmentDialog extends JDialog{
 	
 	public Alert getAlert() {
 		return this.alert;
+	}
+	
+	public Calendar getCalendar() {
+		return this.calendar;
 	}
 	
 	public ArrayList<MeetingResponse> getMeetingResponses() {
