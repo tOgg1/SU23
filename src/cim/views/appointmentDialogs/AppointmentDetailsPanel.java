@@ -63,7 +63,6 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 		add(lblDate);
 
 		comBoxMonth = new JComboBox();
-		comBoxMonth.addActionListener(this);
 		int[] monthArray = new int[12];
 		for(int i = 0; i < 12; i++)
 		{
@@ -72,6 +71,7 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 		}
 		comBoxMonth.setToolTipText("");
 		comBoxMonth.setBounds(142, 49, 48, 20);
+		comBoxMonth.addActionListener(this);
 		add(comBoxMonth);
 		
 		JLabel lblStart = new JLabel("Start");
@@ -79,7 +79,6 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 		add(lblStart);
 
 		comBoxHours = new JComboBox();
-		comBoxHours.addActionListener(this);
 		int[] hours = new int[24];
 		for(int i = 0; i < 24; i++)
 		{
@@ -88,6 +87,7 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 		}
 
 		comBoxHours.setBounds(71, 76, 48, 20);
+		comBoxHours.addActionListener(this);
 		add(comBoxHours);
 
 		JLabel lblColon = new JLabel(":");
@@ -95,13 +95,13 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 		add(lblColon);
 
 		comBoxMinutes = new JComboBox();
-		comBoxMinutes.addActionListener(this);
 		int[] minutes = {00,15,30,45};
 		for(int i = 0; i < 4; i++)
 		{
 			comBoxMinutes.addItem(minutes[i]);
 		}
 		comBoxMinutes.setBounds(142, 76, 48, 20);
+		comBoxMinutes.addActionListener(this);
 		add(comBoxMinutes);
 
 		JLabel lblEnd = new JLabel("Slutt");
@@ -109,13 +109,13 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 		add(lblEnd);
 
 		comBoxEndHours = new JComboBox();
-		comBoxEndHours.addActionListener(this);
 		for(int i = 0; i < 24; i++)
 		{
 			hours[i] = i;
 			comBoxEndHours.addItem(hours[i]+1);
 		}
 		comBoxEndHours.setBounds(71, 101, 48, 20);
+		comBoxEndHours.addActionListener(this);
 		add(comBoxEndHours);
 
 		JLabel lblColon2 = new JLabel(":");
@@ -123,12 +123,12 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 		add(lblColon2);
 
 		comBoxEndMinutes = new JComboBox();
-		comBoxEndMinutes.addActionListener(this);
 		for(int i = 0; i < 4; i++)
 		{
 			comBoxEndMinutes.addItem(minutes[i]);
 		}
 		comBoxEndMinutes.setBounds(142, 101, 48, 20);
+		comBoxEndMinutes.addActionListener(this);
 		add(comBoxEndMinutes);
 
 		rbtnLocation = new JRadioButton("Sted");
@@ -177,8 +177,8 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 			days[i] = i;
 			comBoxDays.addItem(days[i]+1);
 		}
-		comBoxDays.addActionListener(this);
 		comBoxDays.setBounds(71, 49, 48, 20);
+		comBoxDays.addActionListener(this);
 		add(comBoxDays);
 
 		comBoxYear = new JComboBox();
@@ -258,6 +258,7 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 		{
 			roomListModel.addElement(room);
 		}
+		System.out.println(roomListModel.getSize());
 		listAvailableRooms.setModel(roomListModel);
 	}
 }
