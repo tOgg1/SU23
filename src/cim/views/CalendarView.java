@@ -431,11 +431,9 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 			myCalendars = ((ArrayList<Calendar>) evt.getNewValue());
 			renderCalendars();
 		}
-<<<<<<< HEAD
-=======
+
 
 		renderCalendars();
->>>>>>> 8b70f1ef4ec32ad8ee23db887460c6f9cc3053a7
 	}
 		
 
