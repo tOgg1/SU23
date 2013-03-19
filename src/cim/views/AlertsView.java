@@ -101,11 +101,20 @@ public class AlertsView extends JPanel{
 	}
 	
 	public class BTNMarkAlertAsReadListener implements ActionListener{
-
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Alert alert = (Alert) alertList.getSelectedValue();
-//			alert.isSeen()
+			if(!alert.isSeen()){
+				alert.changeIsSeen(true);
+				try {
+//TODO Hva skal saveAlert egentlig gjøre? Hvorfor save når man har vært inne i alert-objektet og endret?
+					Client.register.saveAlert(alert);
+				} catch (CloakedIronManException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}
 		
 	}
