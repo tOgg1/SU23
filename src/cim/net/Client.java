@@ -65,7 +65,7 @@ public class Client {
 		} catch (IOException e) {
 			Log.e("Client", e.getMessage());
 			throw new CloakedIronManException("Streams could not be created.", e);
-			
+
 		}
 
         //Creating register
@@ -132,7 +132,7 @@ public class Client {
 	}
 	
 	private class EventListenerThread extends Thread implements Runnable {
-		
+
 		public void run() {
 			while(true) {
 				try {

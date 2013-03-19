@@ -6,13 +6,10 @@ import cim.util.Helper;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
-public class ManageCalendarsView extends JPanel
+public class ManageCalendarsView extends JPanel implements KeyListener
 {
     private ArrayList<CalendarPanel> allCalendars;
     private ApplicationWindow application;
@@ -27,8 +24,6 @@ public class ManageCalendarsView extends JPanel
         this.setLayout(null);
         this.defaultColor = UIManager.getColor("Panel.background");
         this.init(myModels, allModels);
-        System.out.println(allModels.size());
-        System.out.println(myModels.size());
     }
 
     public void init(ArrayList<Calendar> myModels, ArrayList<Calendar> allModels)
@@ -59,7 +54,7 @@ public class ManageCalendarsView extends JPanel
             CalendarPanel model = new CalendarPanel(cal);
             model.setBorder(new LineBorder(Color.GRAY, 2));
             model.addMouseListener(modelClickListener);
-            model.setBounds(15,40+(35*index++),270,30);
+            model.setBounds(15, 40 + (35 * index++), 270, 30);
             model.setDisplayed(true);
             allCalendars.add(model);
             calendarContainer.add(model);
@@ -96,14 +91,55 @@ public class ManageCalendarsView extends JPanel
         super.add(displayCurrent);
     }
 
+
+    @Override
+    public void requestFocus() {
+        this.setFocusable(true);
+        super.requestFocus();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyPressed(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
+        if(e.getKeyCode() == KeyEvent.VK_UP)
+        {
+            selected +=1;
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_DOWN)
+        {
+            selected -=1;
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+        {
+            application.requestFocus();
+        }
+        else
+        {
+            return;
+        }
+        if(selected > 0)
+        {
+            return;
+        }
+
+        allCalendars.get(selected).dispatchEvent(new MouseEvent(allCalendars.get(selected), MouseEvent.BUTTON1, System.currentTimeMillis(), 0, 1,1,1, false));
+    }
+
     private class ChangeDisplayListener implements ItemListener
     {
         @Override
         public void itemStateChanged(ItemEvent e)
         {
-            if(selected == -1 || changedTroughLoad == false)
+            if(selected == -1 || changedTroughLoad == true)
                 return;
             CalendarPanel panelOfInterest = allCalendars.get(selected);
+            System.out.println("Changing status for: " + panelOfInterest.toString() + " status now: " + panelOfInterest.isDisplayed() + " new: " + !panelOfInterest.isDisplayed());
             panelOfInterest.toggleDisplayed();
             if(panelOfInterest.isDisplayed())
             {
@@ -113,6 +149,7 @@ public class ManageCalendarsView extends JPanel
             {
                 application.getCalendarView().removeCalendar(panelOfInterest.getModel());
             }
+            changedTroughLoad = false;
         }
     }
 
@@ -127,8 +164,8 @@ public class ManageCalendarsView extends JPanel
             {
                 selectedPanel.setBackground(defaultColor);
                 selected = -1;
-                displayCurrent.setSelected(false);
                 changedTroughLoad = false;
+                displayCurrent.setSelected(false);
             }
             else
             {
@@ -139,10 +176,10 @@ public class ManageCalendarsView extends JPanel
                 selectedPanel.setBackground(Color.lightGray);
                 selected = allCalendars.indexOf(selectedPanel);
                 System.out.println("isDisp: " + selectedPanel.isDisplayed());
-                displayCurrent.setSelected(selectedPanel.isDisplayed());
                 changedTroughLoad = true;
+                displayCurrent.setSelected(selectedPanel.isDisplayed());
             }
-
+            changedTroughLoad = false;
         }
 
         @Override

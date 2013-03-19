@@ -9,8 +9,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
-import javax.swing.ListModel;
-
 /**
  * A register containing all information currently in use by the client.
  * Contains a lot of functions for storing and retreiving data. This class also takes cares
@@ -53,7 +51,15 @@ public class CalendarRegister
 	 * Reference to all Meeting responses to the current users
 	 */
 	private ArrayList<MeetingResponse> meetingResponses;
-	
+
+    /**
+     * Reference to all reject messages to this account
+     */
+    private ArrayList<RejectMessage> rejectMessages;
+
+    /**
+     *
+     */
 	
 	private ArrayList<Room> rooms;
 	Client parent;
@@ -94,10 +100,26 @@ public class CalendarRegister
 			this.personalCalendars = (ArrayList<Calendar>) res.getData()[0];
 			return this.personalCalendars;
 		}catch(Exception e){
-			System.out.println("hello");
 			return new ArrayList<Calendar>();
 		}
 	}
+
+    /*public ArrayList<RejectMessage> getAllRejectMessagesToCurrentUser()
+    {
+        try
+        {
+            Response res = parent.request(new Request("GET_REJECTMESSAGES_TO_ACCOUNT", account));
+            this.rejectMessages = (ArrayList<RejectMessage>)res.getData()[0];
+            System.out.println("amount of rejectmessage: " + rejectMessages.size());
+            return this.rejectMessages;
+        }
+        catch(Exception e)
+        {
+            return new ArrayList<RejectMessage>();
+        }
+    }           */
+
+
 
 	public void initialize(Account acc) throws CloakedIronManException
 	{
@@ -485,6 +507,16 @@ public class CalendarRegister
 		}
 		this.pcs.firePropertyChange("meetingResponses", null, this.meetingResponses);
 	}
+
+    public void registerRejectMessage(RejectMessage rm)
+    {
+        this.rejectMessages.remove(rm);
+        if(rm.getRecipient().equals(this.account))
+        {
+            this.rejectMessages.add(rm);
+        }
+        this.pcs.firePropertyChange("rejectMessages", null, this.rejectMessages);
+    }
 	public void registerCalendar(Calendar calendar) {
 		this.calendars.remove(calendar);
 		this.calendars.add(calendar);
@@ -506,8 +538,20 @@ public class CalendarRegister
 	}
 
 	public ArrayList<RejectMessage> getRejectMessages() {
-		// TODO Auto-generated method stub
-		return null;
+        if(rejectMessages != null)
+        {
+            return rejectMessages;
+        }
+        try
+        {
+            Response res = parent.request(new Request("GET_REJECTMESSAGES_TO_ACCOUNT", account));
+            this.rejectMessages = (ArrayList<RejectMessage>)res.getData()[0];
+            return this.rejectMessages;
+        }
+        catch(Exception e)
+        {
+            return new ArrayList<RejectMessage>();
+        }
 	}
 	
 	public void saveCalendar(Calendar c) throws CloakedIronManException {
@@ -515,7 +559,7 @@ public class CalendarRegister
 	}
 	
 	public void saveAlert(Alert a) throws CloakedIronManException {
-		// TODO: Legge inn denne metoden på serveren
+		// TODO: Legge inn denne metoden pï¿½ serveren
 	}
 
 }

@@ -52,4 +52,9 @@ public class CalendarPanel extends JPanel
     {
         this.isDisplayed = !this.isDisplayed;
     }
+
+    @Override
+    public String toString() {
+        return "Model: " + model.toString();
+    }
 }

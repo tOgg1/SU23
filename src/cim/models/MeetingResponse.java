@@ -1,7 +1,5 @@
 package cim.models;
 
-import java.io.Serializable;
-
 public class MeetingResponse extends CalendarObject {
 	
 	/**
@@ -13,7 +11,6 @@ public class MeetingResponse extends CalendarObject {
 		NOT_ATTENDING,
 		ATTENDING;
 	}
-	
 	
 	private Account account;
 	private Meeting meeting;
@@ -72,6 +69,7 @@ public class MeetingResponse extends CalendarObject {
 	}
 	public String toString()
 	{
+
 		return account.toString() + ", " + meeting.toString() + ", " + this.response.toString();
 	}
 	 public boolean equals(Object obj) {

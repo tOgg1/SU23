@@ -7,12 +7,14 @@ import cim.net.Client;
 import cim.util.CloakedIronManException;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
-public class ApplicationWindow extends JFrame {
+public class ApplicationWindow extends JFrame implements ChangeListener {
 
 	/**
 	 * Because dunno
@@ -95,6 +97,8 @@ public class ApplicationWindow extends JFrame {
 		
 		manageCalendarsView = new ManageCalendarsView(Client.register.getAllCalendarsToCurrentUser(), Client.register.getAllCalendars(), this);
 		tabbedPane.addTab("Administrer kalendere", null, manageCalendarsView, null);
+
+        tabbedPane.addChangeListener(this);
 		
 		/*
 		Response response = client.request(new Request("GET_ALL_CALENDARS"));
@@ -121,7 +125,16 @@ public class ApplicationWindow extends JFrame {
         return calendarView;
     }
 
-	private class MeetingResponsePropertyChangeListener implements PropertyChangeListener {
+    @Override
+    public void stateChanged(ChangeEvent e)
+    {
+        if(tabbedPane.getSelectedComponent() == manageCalendarsView)
+        {
+            manageCalendarsView.requestFocus();
+        }
+    }
+
+    private class MeetingResponsePropertyChangeListener implements PropertyChangeListener {
 
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
