@@ -6,8 +6,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 
 import cim.models.CalendarRegister;
+import cim.models.RejectMessage;
 import cim.net.Client;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,6 +18,7 @@ public class AlertsView extends JPanel{
 //	Client.register <--- objektet vi kaller metoder på.
 	JList alertsList;
 	JButton btnRemoveAlert;
+	DefaultListModel<RejectMessage> rejectList;
 	
 	public AlertsView() {
 		setLayout(null);
@@ -23,7 +26,11 @@ public class AlertsView extends JPanel{
 		alertsList = new JList();
 		alertsList.setBounds(66, 75, 352, 132);
 		add(alertsList);
-		alertsList.setModel(Client.register.getRejectMessages());
+		for(RejectMessage rm : Client.register.getRejectMessages())
+		{
+			rejectList.addElement(rm);
+		}
+		alertsList.setModel(rejectList);
 		
 		
 		btnRemoveAlert = new JButton("Fjern");
