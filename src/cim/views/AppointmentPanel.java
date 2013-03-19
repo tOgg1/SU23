@@ -64,11 +64,12 @@ public class AppointmentPanel extends JPanel implements Comparable
         JLabel lblEdit = new JLabel("New label");
         lblEdit.setFont(new Font("FontAwesome", Font.PLAIN, 14));
         lblEdit.setBounds(135, 14, 18, 14);
+        lblEdit.addMouseListener(new editListener());
         lblEdit.setText(Fonts.AwesomeIcons.ICON_PENCIL.toString());
         add(lblEdit);
         
         txtTime = new JTextField();
-        txtTime.setText(base.getDateFormatted("hh:mm") + "-" + base.getDateFormatted("hh:mm"));
+        txtTime.setText(base.getStartFormatted("hh:mm") + "-" + base.getEndFormatted("hh:mm"));
         txtTime.setBackground(null);
         txtTime.setBorder(null);
         txtTime.setEditable(false);
@@ -86,8 +87,8 @@ public class AppointmentPanel extends JPanel implements Comparable
         add(lblArrow);
         
         txtPlace = new JTextField();
-        txtPlace.setText("Sted");
         txtPlace.setVisible(false);
+        txtPlace.setText(base.getWhere());
         txtPlace.setBounds(38, 70, 115, 20);
         txtPlace.setBackground(null);
         txtPlace.setBorder(null);
@@ -118,6 +119,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         add(lblDeclined);
         
         txtOkNum = new JTextField();
+        txtOkNum.setText("");
         txtOkNum.setEnabled(false);
         txtOkNum.setVisible(false);
         txtOkNum.setBounds(44, 98, 15, 20);
