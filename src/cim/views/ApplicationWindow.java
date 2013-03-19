@@ -28,11 +28,6 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 	private AlertsView alertsView;
 	private ManageCalendarsView manageCalendarsView;
 	
-	private ArrayList<Calendar> allCalendars;
-	private ArrayList<Alert> alerts;
-	private ArrayList<Calendar> myCalendars;
-	
-	private ArrayList<MeetingResponse> meetingResponses;
 	
 //	private static JTextField txtMandag;
 //	private static JTextField txtTirsdag;
@@ -100,6 +95,8 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		tabbedPane.addTab("Administrer kalendere", null, manageCalendarsView, null);
 
         tabbedPane.addChangeListener(this);
+        
+        System.out.println(Client.register.getAlerts());
 		
 		/*
 		Response response = client.request(new Request("GET_ALL_CALENDARS"));
