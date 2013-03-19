@@ -442,6 +442,15 @@ public class DatabaseHandler {
 				this.createRejectMessages(m,a);
 			}
 			
+			/*
+			 * If the meeting response is accepted, the calendar is changed
+			 */
+			if(mr.getResponse() == Response.ATTENDING) {
+				Calendar c = this.getCalendarToAttendable(mr.getAccount());
+				this.broadcast("CALENDAR", Type.UPDATED, c);
+			}
+			
+			
 			
 			return mr;
 		} catch (Exception e) {
@@ -449,6 +458,22 @@ public class DatabaseHandler {
 		}
 		
 	}
+	
+	
+	private Calendar getCalendarToAttendable(Attendable a) throws CloakedIronManException {
+		try {
+			PreparedStatement st = this.con.prepareStatement("SELECT calendar_id FROM calendar WHERE owner_attendable_id=?");
+			st.setInt(1, a.getAttendableId());
+			ResultSet rs = st.executeQuery();
+			if(!rs.next()) {
+				throw new CloakedIronManException("Attendable has no calendar to it, which it must have.");
+			}
+			return this.getCalendar2(rs.getInt(rs.getInt("calendar_id")));
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get calendar to attendable", e);
+		}
+	}
+	
 	/**
 	 * This method adds reject messages to the current meeting from the account who rejected
 	 * @param m The meeting that was rejected
