@@ -1216,7 +1216,7 @@ public class DatabaseHandler {
 
 	public ArrayList<Group> getAllGroups() throws CloakedIronManException {
 		try {
-			PreparedStatement st = this.con.prepareStatement("SELECT group_id FROM group");
+			PreparedStatement st = this.con.prepareStatement("SELECT group_id FROM cim.group");
 			ResultSet rs = st.executeQuery();
 			ArrayList<Group> groups = new ArrayList<Group>();
 			while(rs.next()) {
