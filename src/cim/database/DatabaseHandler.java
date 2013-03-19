@@ -628,6 +628,8 @@ public class DatabaseHandler {
 				st.close();
 			}
 			
+			this.broadcast("APPOINTMENT", Type.UPDATED, a);
+			
 			return a;
 			
 			
@@ -816,7 +818,7 @@ public class DatabaseHandler {
 	 * @return
 	 * @throws CloakedIronManException 
 	 */
-	public int saveGroup(Group group) throws CloakedIronManException {
+	public Group saveGroup(Group group) throws CloakedIronManException {
 		try {
 			if(group.getId() == -1) {
 				group.setId(this.getNextAutoIncrease("cim.group", "group_id"));
@@ -838,7 +840,8 @@ public class DatabaseHandler {
 			} catch (Exception e) {
 
 			}
-			return group.getId();
+			this.broadcast("GROUP", Type.UPDATED, group);
+			return group;
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle database query.", e);
 		}
