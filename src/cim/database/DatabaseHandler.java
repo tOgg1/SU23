@@ -663,8 +663,17 @@ public class DatabaseHandler {
 			
 			// If meeting
 			if(a instanceof Meeting) {
-				st = this.con.prepareStatement("INSERT IGNORE INTO meeting (appointment_id) VALUES (?)");
-				st.setInt(1, a.getId());
+				Meeting m = (Meeting)a;
+				System.out.println(m.isCancelled());
+				st = this.con.prepareStatement("INSERT INTO meeting " +
+						"(appointment_id,is_cancelled) " +
+						"VALUES " +
+						"(?,?) " +
+						"ON DUPLICATE KEY UPDATE " +
+						"is_cancelled=?");
+				st.setInt(1, m.getId());
+				st.setBoolean(2, m.isCancelled());
+				st.setBoolean(3, m.isCancelled());
 				st.execute();
 				st.close();
 			}
