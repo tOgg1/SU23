@@ -44,8 +44,9 @@ public class Group extends CalendarObject implements Attendable
 	}
 	
 	public void setAttendableId(int id) {
-		this.pcs.firePropertyChange("attendableId", this.attendableId, attendableId);
+		int oldVal = this.attendableId;
 		this.attendableId = id;
+		this.pcs.firePropertyChange("attendableId", oldVal, id);
 	}
 	
 	public int getAttendableId() {

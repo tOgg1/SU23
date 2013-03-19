@@ -741,7 +741,7 @@ public class DatabaseHandler {
 		
 	}
 	
-	private Appointment getAppointment2(int id) throws CloakedIronManException {
+	public Appointment getAppointment2(int id) throws CloakedIronManException {
 		try {
 			PreparedStatement st = this.con.prepareStatement("SELECT * FROM appointment LEFT JOIN meeting ON appointment.appointment_id=meeting.appointment_id WHERE appointment.appointment_id=?");
 			st.setInt(1,id);
