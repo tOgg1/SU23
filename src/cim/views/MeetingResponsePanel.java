@@ -11,12 +11,15 @@ import cim.util.Fonts;
 
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.SystemColor;
 import java.awt.Font;
 
@@ -35,9 +38,8 @@ public class MeetingResponsePanel extends JPanel {
 	private JLabel lblWhat;
 	private JLabel lblWhere;
 	private JLabel lblFrom;
-	private JButton btnDecline;
-	private JButton btnAccept;
-	private ButtonGroup buttonGroup;
+	private JLabel lblAccept;
+	private JLabel lblDecline;
 	
 	public MeetingResponsePanel() throws CloakedIronManException {
 		try {
@@ -66,29 +68,29 @@ public class MeetingResponsePanel extends JPanel {
 			
 			lblFrom = new JLabel("from");
 			lblFrom.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-			lblFrom.setBounds(578, 11, 344, 14);
+			lblFrom.setBounds(578, 11, 289, 14);
 			add(lblFrom);
 			
-			this.buttonGroup = new ButtonGroup();
 			
-			btnAccept = new JButton("");
-			btnAccept.setToolTipText("Godkjenn m\u00F8teinnkalling");
-			btnAccept.setFont(Fonts.getFontAwesome());
-			btnAccept.setText(Fonts.AwesomeIcons.ICON_ARROW_DOWN.toString());
-			btnAccept.addActionListener(new AcceptListener());
-			btnAccept.setBounds(933, 7, 23, 23);
-			buttonGroup.add(btnAccept);
-			add(btnAccept);
+			lblAccept = new JLabel(Fonts.AwesomeIcons.ICON_HAPPY.toString());
+			lblAccept.setFont(new Font("FontAwesome", Font.PLAIN, 24));
+			lblAccept.setBounds(876, 7, 20, 20);
+			lblAccept.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			lblAccept.setToolTipText("Godta møteinnkalling");
+			lblAccept.addMouseListener(new AcceptListener());
+			add(lblAccept);
 			
-			btnDecline = new JButton("\uF007");
-			btnDecline.setToolTipText("Avsl\u00E5 m\u00F8teinkalling");
-			btnDecline.setFont(Fonts.getFontAwesome());
-			btnDecline.addActionListener(new DeclineListener());
-			btnDecline.setBounds(965, 7, 23, 23);
-			buttonGroup.add(btnDecline);
-			add(btnDecline);
+			lblDecline = new JLabel(Fonts.AwesomeIcons.ICON_ANGRY.toString());
+			lblDecline.setFont(new Font("FontAwesome", Font.PLAIN, 24));
+			lblDecline.setBounds(905, 7, 20, 20);
+			lblDecline.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			lblDecline.setToolTipText("Avslå møteinnkalling");
+			add(lblDecline);
+			
 			setSize(967,35);
 			setPreferredSize(new Dimension(998, 35));
+			
+			
 		} catch(Exception e) {
 			throw new CloakedIronManException("Could not create meeting response panel.", e);
 		}
@@ -114,14 +116,6 @@ public class MeetingResponsePanel extends JPanel {
 		this.lblWhere.setText(m.getWhere());
 		this.lblWhat.setText(m.getName());
 		this.lblFrom.setText(m.getOwner().getName());
-		if(this.model.getResponse() == Response.ATTENDING) {
-			this.buttonGroup.setSelected(this.btnAccept.getModel(), true);
-			this.buttonGroup.setSelected(this.btnDecline.getModel(), false);
-		} else {
-
-			this.buttonGroup.setSelected(this.btnAccept.getModel(), false);
-			this.buttonGroup.setSelected(this.btnDecline.getModel(), true);
-		}
 	}
 	
 	private class ModelListener implements PropertyChangeListener {
@@ -134,15 +128,57 @@ public class MeetingResponsePanel extends JPanel {
 		
 	}
 	
-	private class AcceptListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+	private class AcceptListener implements MouseListener {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
 			MeetingResponsePanel.this.model.setResponse(Response.ATTENDING);
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			
 		}
 	}
 	
-	private class DeclineListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+	private class DeclineListener implements MouseListener {
+		@Override
+		public void mouseClicked(MouseEvent e) {
 			MeetingResponsePanel.this.model.setResponse(Response.NOT_ATTENDING);
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
 			
 		}
 	}

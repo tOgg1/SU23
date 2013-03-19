@@ -65,11 +65,9 @@ public class IncomingAppointmentsView extends JPanel implements PropertyChangeLi
 			lblFrom.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 			add(lblFrom);
 			
-			JLabel lblRSVP = new JLabel("RSVP");
-			lblRSVP.setBounds(907, 54, 46, 14);
-			lblRSVP.setFont(Fonts.getFontAwesome());
-			lblRSVP.setText(Fonts.AwesomeIcons.ICON_OK.toString());
-			//lblRSVP.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+			JLabel lblRSVP = new JLabel("RVSP");
+			lblRSVP.setBounds(907, 47, 59, 21);
+			lblRSVP.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 			add(lblRSVP);
 			
 			JSeparator separator = new JSeparator();

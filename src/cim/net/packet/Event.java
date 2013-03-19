@@ -13,8 +13,8 @@ public class Event extends Packet {
 	private Type type;
 	
 	public enum Type {
-		ADDED,
-		UPDATED
+		UPDATED,
+		DELETED
 	}
 	
 	public Event(String method,Type type, Object... args){

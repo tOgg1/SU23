@@ -2,17 +2,27 @@ package cim.net;
 
 import cim.models.MeetingResponse;
 import cim.net.packet.Event;
+import cim.net.packet.Event.Type;
 
 public class ClientEventHandler {
 	public void handleEvent(Event e) {
 		String method = e.getMethod().toUpperCase();
-		System.out.println(method);
-		if(method.equals("MEETING_RESPONSE")) {
-			this.meeting_response((MeetingResponse)e.getArgs()[0]);
+		Type type = e.getType();
+		System.out.println(type.toString());
+		if(type == Type.UPDATED) {
+			System.out.println("Her");
+			if(method.equals("MEETING_RESPONSE")) {
+				this.meeting_response_updated((MeetingResponse)e.getArgs()[0]);
+				return;
+			}
+		} else if (type == Type.DELETED) {
+			
 		}
+		System.out.println(method + " was not caught.");
+		
 	}
 	
-	private void meeting_response(MeetingResponse mr) {
-		System.out.println(mr);
+	private void meeting_response_updated(MeetingResponse mr) {
+		Client.register.registerMeetingResponse(mr);
 	}
 }

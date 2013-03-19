@@ -9,13 +9,8 @@ import java.io.File;
 
 public class Fonts {
 	
-	public static Font getFontAwesome() throws CloakedIronManException {
-		try {
-			File f = new File("FontAwesome.otf");
-			return Font.createFont(Font.TRUETYPE_FONT, f);
-		} catch (Exception e) {
-			throw new CloakedIronManException("Could not load font", e);
-		}
+	public static Font getFontAwesome() {
+		return new Font("FontAwesome", Font.PLAIN, 14);
 		
 	}
 
@@ -24,6 +19,8 @@ public class Fonts {
 		ICON_OK('\uf00c'),
 		ICON_REMOVE('\uf00d'),
 		ICON_PENCIL('\uf040'),
+		ICON_HAPPY('\uf04a'),
+		ICON_ANGRY('\uf04c'),
 		ICON_ARROW_LEFT('\uf060'),
 		ICON_ARROW_RIGHT('\uf061'),
 		ICON_ARROW_UP('\uf062'),

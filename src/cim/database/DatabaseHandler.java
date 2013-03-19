@@ -433,7 +433,7 @@ public class DatabaseHandler {
 			st.setString(4, mr.getResponseString());
 			System.out.println(mr.getResponseString());
 			st.execute();
-			this.broadcast("MEETING_RESPONSE", Type.ADDED, mr);
+			this.broadcast("MEETING_RESPONSE", Type.UPDATED, mr);
 			
 			
 			/*
