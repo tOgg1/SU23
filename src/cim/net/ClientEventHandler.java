@@ -17,6 +17,7 @@ public class ClientEventHandler {
 			
 			else if (method.equals("CALENDAR")) {
 				this.calendar_updated((Calendar)e.getArgs()[0]);
+				System.out.println("New calendar event");
 				return;
 			}
 		} else if (type == Type.DELETED) {

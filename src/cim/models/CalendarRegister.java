@@ -421,11 +421,34 @@ public class CalendarRegister
 		return this.groups;
 	}
 
+    public void setCalendarActivity(Calendar cal, boolean active)
+    {
+        if(active)
+        {
+            setCalendarActive(cal);
+        }
+        else
+        {
+            setCalendarInactive(cal);
+        }
+    }
+
+    public void setCalendarActive(Calendar cal)
+    {
+        this.activeCalendars.remove(cal);
+        this.activeCalendars.add(cal);
+        this.pcs.firePropertyChange("activeCalendars", null, activeCalendars);
+    }
+
+    public void setCalendarInactive(Calendar cal)
+    {
+        this.activeCalendars.remove(cal);
+        this.pcs.firePropertyChange("activeCalendars", null, activeCalendars);
+    }
+
 	// All functions below should only be used on
 	// initialize() and when fetching new objects
 	// from server
-
-
 	public void registerGroup(Group group)
 	{
 		if(!containsById(groups, group))
@@ -562,8 +585,8 @@ public class CalendarRegister
 		
 	public void cancelAppointment(Appointment appointment) throws CloakedIronManException{
 		this.parent.request(new Request("CANCEL_APPOINTMENT", appointment));
-
 	}
+	
 
     public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end)
     {
@@ -619,8 +642,9 @@ public class CalendarRegister
         }
 	}
 	
-	public void saveCalendar(Calendar c) throws CloakedIronManException {
-		this.parent.request(new Request("SAVE_CALENDAR", c));
+	public Calendar saveCalendar(Calendar c) throws CloakedIronManException {
+		Response res = this.parent.request(new Request("SAVE_CALENDAR", c));
+		return (Calendar) res.getData()[0];
 	}
 	
 	public void saveAlert(Alert a) throws CloakedIronManException {
