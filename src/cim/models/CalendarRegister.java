@@ -26,10 +26,6 @@ public class CalendarRegister
 	 */
 	private ArrayList<Calendar> calendars;
 
-    /**
-     * Reference to personal calendars
-     */
-    private ArrayList<Calendar> personalCalendars;
 	
 	/**
 	 * Reference to all active calendars
@@ -44,10 +40,7 @@ public class CalendarRegister
 	 * Reference to all accounts
 	 */
 	private ArrayList<Account> accounts;
-	// Trenger vi denne her?
-	/**
-	 * Reference to all rooms
-	 */
+
 	
 	/**
 	 * Reference to all Meeting responses to the current users
@@ -99,7 +92,6 @@ public class CalendarRegister
 		this.parent = parent;
 		calendars = new ArrayList<Calendar>();
 		accounts = new ArrayList<Account>();
-		this.activeCalendars = new ArrayList<Calendar>();
 		
 	}
 	
@@ -114,30 +106,18 @@ public class CalendarRegister
 
 	@SuppressWarnings("unchecked")
 	public ArrayList<Calendar> activeCalendars(){
-		try{
-			Response res = parent.request(new Request("GET_ALL_CALENDARS_TO_ACCOUNT", account));
-			this.personalCalendars = (ArrayList<Calendar>) res.getData()[0];
-			this.activeCalendars = (ArrayList<Calendar>) res.getData()[0];
-			return this.personalCalendars;
-		}catch(Exception e){
-			return new ArrayList<Calendar>();
+		try {
+			if(this.activeCalendars == null){
+				Response res = parent.request(new Request("GET_ALL_CALENDARS_TO_ACCOUNT", account));
+				this.activeCalendars = (ArrayList<Calendar>) res.getData()[0];
+			}
+			return this.activeCalendars;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
 
-    /*public ArrayList<RejectMessage> getAllRejectMessagesToCurrentUser()
-    {
-        try
-        {
-            Response res = parent.request(new Request("GET_REJECTMESSAGES_TO_ACCOUNT", account));
-            this.rejectMessages = (ArrayList<RejectMessage>)res.getData()[0];
-            System.out.println("amount of rejectmessage: " + rejectMessages.size());
-            return this.rejectMessages;
-        }
-        catch(Exception e)
-        {
-            return new ArrayList<RejectMessage>();
-        }
-    }           */
 
 
 
@@ -652,6 +632,7 @@ public class CalendarRegister
         }
     }
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<RejectMessage> getRejectMessages() {
         if(rejectMessages != null)
         {
@@ -665,6 +646,7 @@ public class CalendarRegister
         }
         catch(Exception e)
         {
+        	e.printStackTrace();
             return new ArrayList<RejectMessage>();
         }
 	}

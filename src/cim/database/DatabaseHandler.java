@@ -403,14 +403,6 @@ public class DatabaseHandler {
 			}
 			st.close();
 			for(Appointment a : c.getAppointments()) {
-                /*if(a instanceof Meeting)
-                {
-                    //TODO: Stopping here for some reason!
-                    for(MeetingResponse response : ((Meeting)a).getInvitees())
-                    {
-                        this.saveMeetingResponse(response);
-                    }
-                }*/
 				this.saveAppointment(a, c);
 			}
 			this.broadcast("CALENDAR", Type.UPDATED, c);
@@ -484,7 +476,7 @@ public class DatabaseHandler {
 	}
 	
 	
-	private Calendar getCalendarToAttendable(Attendable a) throws CloakedIronManException {
+	public Calendar getCalendarToAttendable(Attendable a) throws CloakedIronManException {
 		try {
 			PreparedStatement st = this.con.prepareStatement("SELECT calendar_id FROM calendar WHERE owner_attendable_id=?");
 			st.setInt(1, a.getAttendableId());
@@ -671,8 +663,17 @@ public class DatabaseHandler {
 			
 			// If meeting
 			if(a instanceof Meeting) {
-				st = this.con.prepareStatement("INSERT IGNORE INTO meeting (appointment_id) VALUES (?)");
-				st.setInt(1, a.getId());
+				Meeting m = (Meeting)a;
+				System.out.println(m.isCancelled());
+				st = this.con.prepareStatement("INSERT INTO meeting " +
+						"(appointment_id,is_cancelled) " +
+						"VALUES " +
+						"(?,?) " +
+						"ON DUPLICATE KEY UPDATE " +
+						"is_cancelled=?");
+				st.setInt(1, m.getId());
+				st.setBoolean(2, m.isCancelled());
+				st.setBoolean(3, m.isCancelled());
 				st.execute();
 				st.close();
 			}
@@ -1130,7 +1131,7 @@ public class DatabaseHandler {
 		}
 	}
 	
-	private Room getRoom(int id) throws CloakedIronManException {
+	public Room getRoom(int id) throws CloakedIronManException {
 		try {
 			PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting_room WHERE meeting_room_id=?");
 			st.setInt(1, id);
@@ -1169,16 +1170,23 @@ public class DatabaseHandler {
 		st = this.con.prepareStatement("SELECT * FROM appointment WHERE date = ?");
 		st.setDate(1, date);
 		ResultSet rs = st.executeQuery();
-        ArrayList<Room> available = new ArrayList<Room>();
-        while (rs.next()){
-            if (!overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
-                 available.add(getRoom(rs.getInt("meeting_room_id")));
-            }
-        }
-	    return available;
-		}catch(SQLException e){
-			throw new CloakedIronManException("error: ", e);
+		if (rs.wasNull()){
+			ArrayList<Room> available = new ArrayList<Room>();
+			while (rs.next()){
+				if (!overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
+					available.add(getRoom(rs.getInt("meeting_room_id")));
+				}
+			}
+			return available;
 		}
+		else{
+			return getAllRooms();
+		}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		System.out.println("hello");
+		return null;
 	}
 
     private ArrayList<Integer> getGroupIdsFromUserid(int userId) throws SQLException

@@ -81,9 +81,17 @@ public class Calendar extends CalendarObject
 	}
 	public void removeAppointment(Appointment appointment) throws CloakedIronManException
 	{
-		if(!this.appointments.isEmpty())
-		this.appointments.remove(appointment);
-		Client.register.saveCalendar(this);
+		
+		if (appointment instanceof Meeting){
+			Meeting m = (Meeting) appointment;
+			m.setCancelled(true);
+			
+			 // Removing and adding makes sure we get the new meeting
+			this.appointments.remove(m);
+			this.appointments.add(m);
+		} else {
+			this.appointments.remove(appointment);
+		}
 		pcs.firePropertyChange("appointment", appointment, null);
 
 	}
