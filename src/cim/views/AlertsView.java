@@ -1,7 +1,9 @@
 package cim.views;
 
+import cim.models.Alert;
 import cim.models.RejectMessage;
 import cim.net.Client;
+import cim.util.CloakedIronManException;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -13,27 +15,17 @@ public class AlertsView extends JPanel{
 	private DefaultListModel<RejectMessage> rejectMessageListModel;
 	
 	private JList alertList;
-//	private DefaultListModel<Al>
+	private DefaultListModel<Alert> alertListModel;
 
 	
-	private JButton btnRemoveAlarm;
-	private JButton btnRemoveAlert;
+	private JButton btnMarkAlarmAsRead;
+	private JButton btnMarkAlertAsRead;
 	
 	private JLabel lblMessages;
 	private JLabel lblAlerts;
 	
 	public AlertsView() {
 		setLayout(null);
-		
-		rejectionMessagesList = new JList();
-		rejectionMessagesList.setBounds(10, 252, 639, 150);
-		add(rejectionMessagesList);
-		generateRejectMessageList();
-		
-		btnRemoveAlert = new JButton("Marker som lest1");
-		btnRemoveAlert.setBounds(499, 413, 150, 23);
-		add(btnRemoveAlert);
-		btnRemoveAlert.addActionListener(new RemoveRejectionMessageBTNListener());
 		
 		lblAlerts = new JLabel("Varsler");
 		lblAlerts.setBounds(10, 11, 97, 14);
@@ -42,14 +34,27 @@ public class AlertsView extends JPanel{
 		alertList = new JList();
 		alertList.setBounds(10, 36, 639, 150);
 		add(alertList);
+		generateAlertList();
 		
-		btnRemoveAlarm = new JButton("Marker som lest2");
-		btnRemoveAlarm.setBounds(499, 197, 150, 23);
-		add(btnRemoveAlarm);
+		btnMarkAlarmAsRead = new JButton("Marker som lest2");
+		btnMarkAlarmAsRead.setBounds(499, 197, 150, 23);
+		add(btnMarkAlarmAsRead);
+		btnMarkAlarmAsRead.addActionListener(new BTNMarkAlertAsReadListener());
 		
 		lblMessages = new JLabel("Meldinger");
 		lblMessages.setBounds(10, 227, 97, 14);
 		add(lblMessages);
+		
+		rejectionMessagesList = new JList();
+		rejectionMessagesList.setBounds(10, 252, 639, 150);
+		add(rejectionMessagesList);
+		generateRejectMessageList();
+		
+		btnMarkAlertAsRead = new JButton("Marker som lest1");
+		btnMarkAlertAsRead.setBounds(499, 413, 150, 23);
+		add(btnMarkAlertAsRead);
+		btnMarkAlertAsRead.addActionListener(new BTNMarkRejectionAsReadListener());
+
 	}
 	private void generateRejectMessageList() {
 		try{
@@ -65,12 +70,19 @@ public class AlertsView extends JPanel{
 	}
 	private void generateAlertList() {
 		try {
-			
-		} catch (NullPointerException e) {
+			alertListModel = new DefaultListModel<Alert>();
+			for(Alert alert : Client.register.getAlerts()){
+				alertListModel.addElement(alert);
+			}
+			alertList.setModel(alertListModel);
+		} catch (CloakedIronManException e) {
 			e.printStackTrace();
 		}
 	}
-	public class RemoveRejectionMessageBTNListener implements ActionListener{
+	/*
+	 * Listeners
+	 */
+	public class BTNMarkRejectionAsReadListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -86,6 +98,16 @@ public class AlertsView extends JPanel{
 			 */
 			
 		}
+	}
+	
+	public class BTNMarkAlertAsReadListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Alert alert = (Alert) alertList.getSelectedValue();
+//			alert.isSeen()
+		}
 		
 	}
+
 }
