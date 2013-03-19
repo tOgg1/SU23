@@ -28,11 +28,6 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 	private AlertsView alertsView;
 	private ManageCalendarsView manageCalendarsView;
 	
-	private ArrayList<Calendar> allCalendars;
-	private ArrayList<Alert> alerts;
-	private ArrayList<Calendar> myCalendars;
-	
-	private ArrayList<MeetingResponse> meetingResponses;
 	
 //	private static JTextField txtMandag;
 //	private static JTextField txtTirsdag;
