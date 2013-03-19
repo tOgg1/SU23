@@ -28,6 +28,8 @@ public class Fonts {
 		ICON_GROUP('\uf0c0'),
 	    ICON_SAVE('\uf0c7'),
 	    ICON_USER('\uf007'),
+	    ICON_TIME('\uf017'),
+	    ICON_MAP_MARKER('\uf041'),
 	    ICON_CARET_LEFT('\uf0d9'), 
 	    ICON_CARET_RIGHT('\uf0da'),
 	    ICON_CARET_DOWN('\uf0d7'),
