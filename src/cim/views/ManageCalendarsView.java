@@ -60,6 +60,7 @@ public class ManageCalendarsView extends JPanel
             model.setBorder(new LineBorder(Color.GRAY, 2));
             model.addMouseListener(modelClickListener);
             model.setBounds(15,40+(35*index++),270,30);
+            model.setDisplayed(true);
             allCalendars.add(model);
             calendarContainer.add(model);
         }
@@ -77,6 +78,7 @@ public class ManageCalendarsView extends JPanel
             {
                 CalendarPanel model = new CalendarPanel(cal);
                 model.setBorder(new LineBorder(Color.GRAY, 2));
+                model.setDisplayed(false);
                 model.addMouseListener(modelClickListener);
                 model.setBounds(15, 25+(35*index++), 270, 30);
                 allCalendars.add(model);
@@ -132,11 +134,11 @@ public class ManageCalendarsView extends JPanel
             {
                 if(selected != -1)
                 {
-                    allCalendars.get(selected).toggleDisplayed();
                     allCalendars.get(selected).setBackground(defaultColor);
                 }
                 selectedPanel.setBackground(Color.lightGray);
                 selected = allCalendars.indexOf(selectedPanel);
+                System.out.println("isDisp: " + selectedPanel.isDisplayed());
                 displayCurrent.setSelected(selectedPanel.isDisplayed());
                 changedTroughLoad = true;
             }
