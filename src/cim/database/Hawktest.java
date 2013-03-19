@@ -1,6 +1,7 @@
 package cim.database;
 
 import cim.models.Account;
+import cim.models.Calendar;
 import cim.models.Group;
 import cim.models.Meeting;
 import cim.models.MeetingResponse;
@@ -14,8 +15,16 @@ public class Hawktest {
 	 */
 	public static void main(String[] args) throws CloakedIronManException {
 		DatabaseHandler db = new DatabaseHandler();
+		
 		Account a = db.getAccount(6);
-		System.out.println(db.getAlertsToAccount(a));
+		
+		Calendar c = db.getCalendarToAttendable(a);
+		System.out.println(c.getAppointments());
+		Meeting m = (Meeting)db.getAppointment2(16);
+		System.out.println(m);
+		c.removeAppointment(m);
+		System.out.println(c.getAppointments());
+		db.saveCalendar(c);
 		
 	}
 

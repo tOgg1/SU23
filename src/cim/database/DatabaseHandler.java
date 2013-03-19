@@ -403,14 +403,6 @@ public class DatabaseHandler {
 			}
 			st.close();
 			for(Appointment a : c.getAppointments()) {
-                /*if(a instanceof Meeting)
-                {
-                    //TODO: Stopping here for some reason!
-                    for(MeetingResponse response : ((Meeting)a).getInvitees())
-                    {
-                        this.saveMeetingResponse(response);
-                    }
-                }*/
 				this.saveAppointment(a, c);
 			}
 			this.broadcast("CALENDAR", Type.UPDATED, c);
@@ -484,7 +476,7 @@ public class DatabaseHandler {
 	}
 	
 	
-	private Calendar getCalendarToAttendable(Attendable a) throws CloakedIronManException {
+	public Calendar getCalendarToAttendable(Attendable a) throws CloakedIronManException {
 		try {
 			PreparedStatement st = this.con.prepareStatement("SELECT calendar_id FROM calendar WHERE owner_attendable_id=?");
 			st.setInt(1, a.getAttendableId());
