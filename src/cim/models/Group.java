@@ -13,11 +13,20 @@ public class Group extends CalendarObject implements Attendable
 	public Group(String name, Account owner) {
 		this.owner = owner;
 		this.name = name;
+		this.members = new ArrayList<Account>();
+	}
+	
+	public void addMember(Account a) {
+		this.members.add(a);
 	}
 	
     public boolean isMember(Account a)
     {
         return members.contains(a);
+    }
+    
+    public ArrayList<Account> getMembers() {
+    	return this.members;
     }
 	
 	
@@ -41,5 +50,9 @@ public class Group extends CalendarObject implements Attendable
 	
 	public int getAttendableId() {
 		return this.attendableId;
+	}
+	
+	public String toString() {
+		return this.name;
 	}
 }

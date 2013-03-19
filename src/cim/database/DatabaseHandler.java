@@ -786,10 +786,24 @@ public class DatabaseHandler {
 			PreparedStatement st = this.con.prepareStatement("SELECT * FROM cim.group WHERE group_id=?");
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
-			if (rs.next()) {
-				return fillGroup(rs);
+			
+			if (!rs.next()) {
+				throw new CloakedIronManException("Could not find a group with id " + id);
+				
 			}
-			return null;
+			Group g = fillGroup(rs);
+			st.close();
+			rs.close();
+			
+			
+			// Must find all of its members
+			st = this.con.prepareStatement("SELECT user_id FROM member_of WHERE group_id=?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			while(rs.next()) {
+				g.addMember(this.getAccount(rs.getInt("user_id")));
+			}
+			return g;
 		} catch (SQLException | CloakedIronManException e) {
 			throw new CloakedIronManException("Could not get group.", e);
 		}
