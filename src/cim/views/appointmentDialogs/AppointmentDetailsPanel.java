@@ -218,11 +218,21 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 	
 	public AppointmentDetailsPanel(Account account, Appointment appointment) {
 		this();
-		comBoxMonth.setSelectedItem(appointment.getDate().getMonth());
-		comBoxDays.setSelectedItem(appointment.getDate().getDay());
-		comBoxYear.setSelectedItem(appointment.getDate().getYear());
-		comBoxMinutes.setSelectedItem(appointment.getDate().getMinutes());
-		comBoxEndHours.setSelectedItem(appointment.getEnd().getHours());
+		String[] dateSplit = appointment.getDate().toString().split("-");
+		comBoxMonth.setSelectedItem(Integer.parseInt(dateSplit[1]));
+		comBoxDays.setSelectedItem(Integer.parseInt(dateSplit[2]));
+		comBoxYear.setSelectedItem(Integer.parseInt(dateSplit[0]));
+		
+		String[] startSplit = appointment.getStart().toString().split(":");
+		
+		
+		comBoxHours.setSelectedItem(Integer.parseInt(startSplit[0]));
+		comBoxMinutes.setSelectedItem(Integer.parseInt(startSplit[1]));
+		
+		String[] endSplit = appointment.getEnd().toString().split(":");
+		
+		comBoxEndHours.setSelectedItem(Integer.parseInt(endSplit[0]));
+		comBoxEndMinutes.setSelectedItem(Integer.parseInt(endSplit[1]));
 		
 		
 	}

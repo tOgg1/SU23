@@ -38,7 +38,7 @@ public class EditAppointmentDialog extends JDialog{
 	public EditAppointmentDialog(Account account, Appointment appointment) throws CloakedIronManException {
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Endre avtale");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 690, 713);
 		
 		mainPanel = new JPanel();
