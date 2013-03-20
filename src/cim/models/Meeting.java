@@ -31,7 +31,7 @@ public class Meeting extends Appointment
 	}*/
 	
 	public String toString(){
-		String ret = "Møte: " + this.getName();
+		String ret = "Møte: " + this.getName() + " " + this.getStartFormatted() + "-" + this.getEndFormatted() + ", " + this.getDateFormatted("YYYY-MM-dd");
 		if (this.isCancelled) {
 			ret += " (AVLYST!)";
 		}
