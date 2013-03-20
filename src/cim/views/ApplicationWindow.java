@@ -161,12 +161,14 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			String propertyName = evt.getPropertyName();
-			if(propertyName.equals("unreadElementsCount")){
+//			String propertyName = evt.getPropertyName();
+//			if(propertyName.equals("unreadElementsCount")){
+			if(evt.getPropertyName() == "unreadElementsCount"){
+				System.out.println("LOL, inni if-en");
 				int newValue = (int)evt.getNewValue();
 				String varsler = "Varsler";
 				if(newValue > 0){
-					varsler += "("+newValue+")";
+					varsler += " ("+newValue+")";
 				}
 			}
 		}

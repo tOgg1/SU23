@@ -2,6 +2,7 @@ package cim.views;
 
 import cim.models.Alert;
 import cim.models.CalendarRegister;
+import cim.models.MeetingResponse;
 import cim.models.RejectMessage;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
@@ -108,6 +109,33 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		this.pcs.firePropertyChange("unreadElementsCount", oldCount, this.unReadElements);
 	
 	}
+//	private void refresh() {
+//		this.removeAll();
+//		int iNumAdded = 0;
+//		for(MeetingResponse m: this.model) {
+//			if(m.getResponse() != MeetingResponse.Response.NOT_SEEN) {
+//				continue;
+//			}
+//			try {
+//				MeetingResponsePanel mp = new MeetingResponsePanel();
+//				mp.setModel(m);
+//				this.add(mp);
+//				++iNumAdded;
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			
+//		}
+//		this.revalidate();
+//		this.repaint();
+//		this.firePropertyChange("numMeetingResponses", null, iNumAdded);
+//	}
+	private void refresh(){
+		countUnreadElements();
+		this.revalidate();
+		this.removeAll();
+		this.repaint();
+	}
 	private void generateRejectMessageList() {
 		try{
             rejectMessageListModel = new DefaultListModel<RejectMessage>();
@@ -160,6 +188,7 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 				alert.changeIsSeen(true);
 				try {
 					Client.register.saveAlert(alert);
+					refresh();
 				} catch (CloakedIronManException e1) {
 					e1.printStackTrace();
 				}
@@ -172,12 +201,12 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		if(propertyName.equals("alerts")){
 			generateAlertList(); 
 			// Setter modell på nytt og god stemning
-			countUnreadElements();
+			refresh();
 		}
 		else if(propertyName.equals("rejectMessages")){
 			generateRejectMessageList(); 
 			//Samme som over. Ny modell og gode greier.
-			countUnreadElements();
+			refresh();
 		}
 		
 	}
