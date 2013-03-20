@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.ScrollPane;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.awt.SystemColor;
@@ -35,17 +36,13 @@ public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeL
 	private static final long serialVersionUID = -2690042605018985496L;
 	private ArrayList<MeetingResponse> model;
 	
-	
 	public MeetingResponsesFlowPanel() {
 		setBackground(SystemColor.control);
-		setLayout(new GridBagLayout());
-		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setMaximumSize(new Dimension(715, 403));
+		//setLayout(new GridBagLayout());
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		//setMaximumSize(new Dimension(715, 403));
 		
-		JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        add(scrollPane);
+       
 
 	}
 	
@@ -56,7 +53,25 @@ public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeL
 	
 	private void refresh() {
 		this.removeAll();
-		GridBagConstraints c = new GridBagConstraints();
+		int iNumAdded = 0;
+		for(MeetingResponse m: this.model) {
+			if(m.getResponse() != MeetingResponse.Response.NOT_SEEN) {
+				continue;
+			}
+			try {
+				MeetingResponsePanel mp = new MeetingResponsePanel();
+				mp.setModel(m);
+				this.add(mp);
+				++iNumAdded;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		this.revalidate();
+		this.repaint();
+		this.firePropertyChange("numMeetingResponses", null, iNumAdded);
+		/*GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(0, 0, 0, 0);
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.NORTH;
@@ -81,6 +96,8 @@ public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeL
 		this.revalidate();
 		this.repaint();
 		this.firePropertyChange("numMeetingResponses", null, iNumAdded);
+		*/
+		
 	}
 		
 	
