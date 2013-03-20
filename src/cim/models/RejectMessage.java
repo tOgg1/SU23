@@ -52,7 +52,7 @@ public class RejectMessage extends CalendarObject {
 		return meeting;
 	}
 	
-	public boolean getIsSeen(){
+	public boolean isSeen(){
 		return this.isSeen;
 	}
 	public void changeIsSeen(boolean b){

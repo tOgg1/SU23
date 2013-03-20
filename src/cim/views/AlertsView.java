@@ -61,22 +61,28 @@ public class AlertsView extends JPanel{
 	}
 	public int getUnreadAlerts(){
 		int count = 0;
-		try { // Count all unseen alerts
+		
+		// Count all unseen alerts
+		try { 
 			for(Alert alert : Client.register.getAlerts()){
 				if(!alert.isSeen()){
 					count++;
 				}
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
+		// Count all unseen rejectMessages
 		try {
-//			for(RejectMessage rejectMessage : Client.register.getAlerts()){
-//				if(rejectMessage.)
-//			}
+			for(RejectMessage rejectMessage : Client.register.getRejectMessages()){
+				if(!rejectMessage.isSeen()){
+					count++;
+				}
+			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
+//		Return count of total unseen objects
 		return count;
 	}
 	private void generateRejectMessageList() {
@@ -109,10 +115,11 @@ public class AlertsView extends JPanel{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-//			RejectMessage rm = (RejectMessage) rejectionMessagesList.getSelectedValue();
-//			System.out.println(rm.getMeeting().getName());
-//			TODO Markere Rejection som lest.
+			RejectMessage rm = (RejectMessage) rejectionMessagesList.getSelectedValue();
+			if(!rm.isSeen()){
+				rm.changeIsSeen(true);
+				//TODO mekke save.RejectMessage
+			}
 			
 		}
 	}
