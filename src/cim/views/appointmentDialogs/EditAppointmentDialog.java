@@ -18,8 +18,12 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class EditAppointmentDialog extends JDialog{
+public class EditAppointmentDialog extends JDialog implements ActionListener{
 	// Panels
 	private JPanel mainPanel;
 	private AppointmentDetailsPanel addDetailsPanel;
@@ -38,7 +42,7 @@ public class EditAppointmentDialog extends JDialog{
 	public EditAppointmentDialog(Account account, Appointment appointment) throws CloakedIronManException {
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Endre avtale");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 690, 713);
 		
 		mainPanel = new JPanel();
@@ -119,6 +123,7 @@ public class EditAppointmentDialog extends JDialog{
 			mainPanel.add(btnSave, gbc_btnSave);
 			
 			btnCancelDialog = new JButton("      Avbryt      ");
+			btnCancelDialog.addActionListener(this);
 			GridBagConstraints gbc_btnCancelDialog = new GridBagConstraints();
 			gbc_btnCancelDialog.fill = GridBagConstraints.BOTH;
 			gbc_btnCancelDialog.insets = new Insets(0, 0, 0, 5);
@@ -127,6 +132,8 @@ public class EditAppointmentDialog extends JDialog{
 			mainPanel.add(btnCancelDialog, gbc_btnCancelDialog);
 		
 		}
+		
+	
 		else{ 
 		//Vanlig m�tedeltager f�r kun endre sin egen alarm, ingenting annet.
 			
@@ -138,10 +145,33 @@ public class EditAppointmentDialog extends JDialog{
 			mainPanel.add(addAlarmPanel);
 			
 			btnCancelDialog = new JButton("Avbryt");
+			btnCancelDialog.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					
+					
+					disposeFrame();
+				
+				}
+			});
 			mainPanel.add(btnCancelDialog);
 			
 			btnSave = new JButton("Lagre endringer");
+			btnSave.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent e) {
+				}
+			});
 			mainPanel.add(btnSave);
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+	}
+	public void disposeFrame()
+	{
+		this.dispose();
 	}
 }

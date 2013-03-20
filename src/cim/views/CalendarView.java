@@ -9,6 +9,7 @@ import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
 import cim.views.appointmentDialogs.AddAppointmentDialog;
+import cim.views.appointmentDialogs.EditAppointmentDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -443,7 +444,13 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		}
 		
 		else if (evt.getPropertyName().equals("editbase")){
-			//new EditAppointmentsDialog(((AppointmentPanel)evt.getNewValue()).getBase()), ((AppointmentPanel) evt.getNewValue()).getCalendar());
+			try {
+				EditAppointmentDialog edit = new EditAppointmentDialog(Client.register.getAccount(), ((AppointmentPanel)evt.getNewValue()).getBase());
+				edit.setVisible(true);
+			} catch (CloakedIronManException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 
