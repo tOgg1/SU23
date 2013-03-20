@@ -538,14 +538,15 @@ public class DatabaseHandler {
 			};
 			
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO reject_message " +
-					"(reject_message_id, date, to_account, who_rejected, meeting_id) " +
+					"(reject_message_id, date, to_account, who_rejected, meeting_id, is_seen) " +
 					"VALUES " +
-					"(?,?,?,?,?) " +
+					"(?,?,?,?,?,?) " +
 					"ON DUPLICATE KEY UPDATE " +
 					"date=?," +
 					"to_account=?," +
 					"who_rejected=?," +
-					"meeting_id=?");
+					"meeting_id=?," +
+					"is_seen=?");
 			st.setInt(1, rm.getId());
 			st.setTimestamp(2, rm.getDate());
 			st.setInt(3, rm.getRecipient().getId());
@@ -555,15 +556,17 @@ public class DatabaseHandler {
 				st.setNull(4, Types.INTEGER);
 			}
 			st.setInt(5, rm.getMeeting().getId());
+			st.setBoolean(6, rm.isSeen());
 			
-			st.setTimestamp(6, rm.getDate());
-			st.setInt(7, rm.getRecipient().getId());
+			st.setTimestamp(7, rm.getDate());
+			st.setInt(8, rm.getRecipient().getId());
 			if(rm.getWhoRejected() != null) {
-				st.setInt(8, rm.getWhoRejected().getId());
+				st.setInt(9, rm.getWhoRejected().getId());
 			} else {
-				st.setNull(8, Types.INTEGER);
+				st.setNull(9, Types.INTEGER);
 			}
-			st.setInt(9, rm.getMeeting().getId());
+			st.setInt(10, rm.getMeeting().getId());
+			st.setBoolean(11, rm.isSeen());
 			
 			st.executeUpdate();
 			

@@ -2,6 +2,9 @@ package cim.views;
 
 import cim.models.Appointment;
 import cim.models.Calendar;
+import cim.models.Meeting;
+import cim.models.MeetingResponse;
+import cim.models.MeetingResponse.Response;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Fonts;
@@ -12,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -32,13 +36,14 @@ public class AppointmentPanel extends JPanel implements Comparable
     private JTextField txtPlace;
     private JTextField txtOkNum;
     private JTextField txtDeclinedNum;
-    private JTextField txtGroupNum;
+    private JTextField txtWaitNum;
     public JLabel lblOK;
     public JLabel lblArrow;
     public JLabel lblGroup;
     public JLabel lblDeclined;
     private JLabel lblWait;
     private JLabel lblPlace;
+    public Meeting meeting;
     
     public AppointmentPanel(Appointment base, Calendar calendar)
     {
@@ -55,7 +60,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         this.add(txtName);
         
         JLabel lblDelete = new JLabel();
-        lblDelete.setBounds(162, 11, 18, 20);
+        lblDelete.setBounds(162, 11, 28, 20);
         lblDelete.setFont(new Font("FontAwesome", Font.PLAIN, 14));
         lblDelete.addMouseListener(new deleteListener());
         lblDelete.setText(Fonts.AwesomeIcons.ICON_REMOVE.toString());
@@ -82,7 +87,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         
         lblArrow = new JLabel("New label");
         lblArrow.setFont(new Font("FontAwesome", Font.PLAIN, 14));
-        lblArrow.setBounds(163, 41, 11, 14);
+        lblArrow.setBounds(163, 41, 17, 14);
         lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_DOWN.toString());
         lblArrow.addMouseListener(new showInfoListener());
         add(lblArrow);
@@ -118,36 +123,39 @@ public class AppointmentPanel extends JPanel implements Comparable
         lblDeclined.setBounds(69, 101, 25, 14);
         lblDeclined.setText(Fonts.AwesomeIcons.ICON_REMOVE.toString());
         add(lblDeclined);
+        if(this.base instanceof Meeting) {
+        	Meeting meeting = (Meeting)this.base;
+        	txtOkNum = new JTextField();
+            txtOkNum.setText(getResponses("Attending", meeting));
+            txtOkNum.setEnabled(false);
+            txtOkNum.setVisible(false);
+            txtOkNum.setBounds(44, 98, 15, 20);
+            txtOkNum.setBackground(null);
+            txtOkNum.setBorder(null);
+            txtOkNum.setColumns(2);
+            add(txtOkNum);
+            
+            txtDeclinedNum = new JTextField();
+            txtDeclinedNum.setText(getResponses("Not_Attending", meeting));
+            txtDeclinedNum.setEnabled(false);
+            txtDeclinedNum.setVisible(false);
+            txtDeclinedNum.setBounds(79, 98, 15, 20);
+            txtDeclinedNum.setBackground(null);
+            txtDeclinedNum.setBorder(null);
+            txtDeclinedNum.setColumns(2);
+            add(txtDeclinedNum);
+            
+            txtWaitNum = new JTextField();
+            txtWaitNum.setText(getResponses("Not_Seen", meeting));
+            txtWaitNum.setEnabled(false);
+            txtWaitNum.setVisible(false);
+            txtWaitNum.setColumns(2);
+            txtWaitNum.setBounds(124, 98, 15, 20);
+            txtWaitNum.setBackground(null);
+            txtWaitNum.setBorder(null);
+            add(txtWaitNum);
+        }
         
-        txtOkNum = new JTextField();
-        txtOkNum.setText("2");
-        txtOkNum.setEnabled(false);
-        txtOkNum.setVisible(false);
-        txtOkNum.setBounds(44, 98, 15, 20);
-        txtOkNum.setBackground(null);
-        txtOkNum.setBorder(null);
-        txtOkNum.setColumns(2);
-        add(txtOkNum);
-        
-        txtDeclinedNum = new JTextField();
-        txtDeclinedNum.setText("1");
-        txtDeclinedNum.setEnabled(false);
-        txtDeclinedNum.setVisible(false);
-        txtDeclinedNum.setBounds(79, 98, 15, 20);
-        txtDeclinedNum.setBackground(null);
-        txtDeclinedNum.setBorder(null);
-        txtDeclinedNum.setColumns(2);
-        add(txtDeclinedNum);
-        
-        txtGroupNum = new JTextField();
-        txtGroupNum.setText("4");
-        txtGroupNum.setEnabled(false);
-        txtGroupNum.setVisible(false);
-        txtGroupNum.setColumns(2);
-        txtGroupNum.setBounds(124, 98, 15, 20);
-        txtGroupNum.setBackground(null);
-        txtGroupNum.setBorder(null);
-        add(txtGroupNum);
         
         this.cal = calendar;
         
@@ -165,6 +173,8 @@ public class AppointmentPanel extends JPanel implements Comparable
         lblPlace.setBounds(10, 72, 24, 14);
         lblPlace.setText(Fonts.AwesomeIcons.ICON_MAP_MARKER.toString());
         add(lblPlace);
+
+        
     }
 
     public Appointment getBase() {
@@ -178,6 +188,48 @@ public class AppointmentPanel extends JPanel implements Comparable
     public Calendar getCalendar(){
     	return this.cal;
     }
+    
+    public Meeting getMeeting(){
+    	return this.meeting;
+    }
+    
+    
+    
+    public String getResponses(String s, Meeting m) {
+    	int Attending = 0; int Not_Attending = 0; int Not_Seen = 0;
+    	ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
+		try {
+			meetingResponses = Client.register.getMeetingResponsesToMeeting(m);
+			System.out.print(meetingResponses);
+		} catch (CloakedIronManException e) {
+			e.printStackTrace();
+		}
+		for (MeetingResponse resp: meetingResponses){
+			if (resp.equals(Response.NOT_SEEN)){
+				Not_Seen += 1;
+			}
+			else if (resp.equals(Response.NOT_ATTENDING)){
+				Not_Attending += 1;
+			}
+			else if (resp.equals(Response.ATTENDING)){
+				Attending += 1;
+			}
+		}
+		if (s == "Attending"){
+			return Attending + "";
+		}
+		else if (s == "Not_Attending"){
+			return Not_Attending + "";
+		}
+		else if (s == "Not_Seen"){
+			return Not_Seen + "";
+		}
+		else {
+			return "5";
+		}
+
+    }
+    
     /**
      * Comparing AppointmentPanel for sorting purposes.
      * @param o
@@ -221,7 +273,7 @@ public class AppointmentPanel extends JPanel implements Comparable
             	txtPlace.setVisible(true);
             	txtOkNum.setVisible(true);
             	txtDeclinedNum.setVisible(true);
-            	txtGroupNum.setVisible(true);
+            	txtWaitNum.setVisible(true);
             	lblOK.setVisible(true);
             	lblDeclined.setVisible(true);
                 lblPlace.setVisible(true);
@@ -234,7 +286,7 @@ public class AppointmentPanel extends JPanel implements Comparable
             	txtPlace.setVisible(false);
             	txtOkNum.setVisible(false);
             	txtDeclinedNum.setVisible(false);
-            	txtGroupNum.setVisible(false);
+            	txtWaitNum.setVisible(false);
             	lblOK.setVisible(false);
             	lblDeclined.setVisible(false);
                 lblPlace.setVisible(false);
