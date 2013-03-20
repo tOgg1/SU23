@@ -235,6 +235,10 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 		comBoxEndMinutes.setSelectedItem(Integer.parseInt(endSplit[1]));
 		
 		
+		txtDescription.setText(appointment.getInfo());
+		txtLocation.setText(appointment.getPlace());
+		
+		
 	}
 
 	public int getDays()
@@ -285,12 +289,11 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 			{
 				roomListModel.addElement(room);
 			}
-			System.out.println(roomListModel.getSize());
 			listAvailableRooms.setModel(roomListModel);
+			
 		} catch (CloakedIronManException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 }
