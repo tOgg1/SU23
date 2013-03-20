@@ -20,6 +20,8 @@ import java.awt.Insets;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class EditAppointmentDialog extends JDialog implements ActionListener{
 	// Panels
@@ -143,15 +145,33 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 			mainPanel.add(addAlarmPanel);
 			
 			btnCancelDialog = new JButton("Avbryt");
+			btnCancelDialog.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					
+					
+					disposeFrame();
+				
+				}
+			});
 			mainPanel.add(btnCancelDialog);
 			
 			btnSave = new JButton("Lagre endringer");
+			btnSave.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent e) {
+				}
+			});
 			mainPanel.add(btnSave);
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+	}
+	public void disposeFrame()
+	{
 		this.dispose();
 	}
 }
