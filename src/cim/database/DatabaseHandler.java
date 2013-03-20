@@ -1192,6 +1192,7 @@ public class DatabaseHandler {
 		} catch (Exception e) {
 			
 		}
+		return null;
 	}
 	/*
 	public Room getRoom(int meeting_room_id) throws SQLException
