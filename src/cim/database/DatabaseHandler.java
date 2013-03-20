@@ -606,11 +606,17 @@ public class DatabaseHandler {
 	 */
 	private Appointment saveAppointment(Appointment a, Calendar c) throws CloakedIronManException {
 		try {
+			
+			Appointment oldAppointment = null;
+			
 			if(c.getId() == -1) {
 				throw new CloakedIronManException("Calendar not saved in the database");
 			}
+			
 			if(a.getId() == -1) {
 				a.setId(this.getNextAutoIncrease("appointment", "appointment_id"));
+			} else {
+				oldAppointment = this.getAppointment2(a.getId());
 			}
 			if(a.getOwner() == null) {
 				throw new CloakedIronManException("Owner not set");
@@ -623,6 +629,8 @@ public class DatabaseHandler {
 					throw new CloakedIronManException("Room not saved in database");
 				}
 			}
+			
+			
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO appointment " +
 					"(appointment_id, name, date, start, end, info, calendar_id, place, meeting_room_id, appointment_owner) " +
 					"VALUES " +
@@ -676,6 +684,22 @@ public class DatabaseHandler {
 				st.setBoolean(3, m.isCancelled());
 				st.execute();
 				st.close();
+				
+				// Must change meeting responses if date is changed
+				if(oldAppointment != null) {
+					
+					if(!oldAppointment.getDate().equals(m.getDate()) ||
+							!oldAppointment.getStart().equals(m.getStart())||
+							!oldAppointment.getEnd().equals(m.getEnd()))
+					{
+						ArrayList<MeetingResponse> mrs = this.getMeetingResponsesToMeeting(m);
+						for(MeetingResponse mr : mrs) {
+							mr.setResponse(Response.NOT_SEEN);
+							this.saveMeetingResponse(mr);
+						}
+					}
+				}
+				
 			}
 			
 			this.broadcast("APPOINTMENT", Type.UPDATED, a);
@@ -685,6 +709,29 @@ public class DatabaseHandler {
 			
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
+		}
+	}
+	
+	private ArrayList<MeetingResponse> getMeetingResponsesToMeeting(Meeting m) throws CloakedIronManException {
+		try {
+			
+			if(m.getId() == -1) {
+				throw new CloakedIronManException("Meeting has no ID, meeting not saved in database.");
+			}
+			
+			ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
+			
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting_response WHERE meeting_appointment_id=?");
+			st.setInt(1, m.getId());
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				MeetingResponse mr = new MeetingResponse(this.getAccount(rs.getInt("account_user_id")), m, rs.getString("status"));
+				meetingResponses.add(mr);
+			}
+			
+			return meetingResponses;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get meeting responses to meeting.", e);
 		}
 	}
 	
