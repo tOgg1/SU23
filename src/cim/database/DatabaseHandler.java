@@ -1218,12 +1218,13 @@ public class DatabaseHandler {
 		ArrayList<Room> notAvailable = new ArrayList<Room>();
 		if (!rs.wasNull()){
 			while (rs.next()){
-				if (!overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
+
+				if (overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
 					notAvailable.add(getRoom(rs.getInt("meeting_room_id")));
 				}
 			}
 			ArrayList<Room> available = getAllRooms();
-			
+			System.out.println(notAvailable);
 			for (Room a : notAvailable){
 				available.remove(a);
 			}			
@@ -1235,7 +1236,6 @@ public class DatabaseHandler {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		System.out.println("hello");
 		return null;
 }
 
@@ -1255,7 +1255,7 @@ public class DatabaseHandler {
     }
 	
 	private boolean overlap(Time start, Time start2, Time end, Time end2){
-		return !(end.before(start2)) || (end2.before(start));
+		return start.before(end2) && start2.after(end);
 	}
 	
 	
