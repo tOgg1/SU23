@@ -36,9 +36,9 @@ public class ManageCalendarsView extends JPanel
 
         JPanel calendarContainer = new JPanel();
         calendarContainer.setLayout(null);
-        calendarContainer.setBounds(31, 11, 300, 456 - 20);
         calendarContainer.setBorder(new LineBorder(Color.GRAY, 3));
-        calendarContainer.setPreferredSize(new Dimension(300,456-20));
+        //calendarContainer.setBounds(31,11,300,436);
+
         allCalendars = new ArrayList<CalendarPanel>();
 
         ModelClickListener modelClickListener = new ModelClickListener();
@@ -59,6 +59,7 @@ public class ManageCalendarsView extends JPanel
             model.setDisplayed(true);
             allCalendars.add(model);
             calendarContainer.add(model);
+            colorizePanel(model);
         }
 
         JLabel label2 = new JLabel("Other Calendars");
@@ -79,17 +80,33 @@ public class ManageCalendarsView extends JPanel
                 model.setBounds(15, 25+(35*index++), 270, 30);
                 allCalendars.add(model);
                 calendarContainer.add(model);
+                colorizePanel(model);
+
             }
         }
+        calendarContainer.setPreferredSize(new Dimension(300,25+35*index));
 
-        //JSeparator separator
+        JScrollPane scrollContainer = new JScrollPane(calendarContainer);
+        scrollContainer.setBounds(31,11,320,436);
 
-        super.add(calendarContainer);
+
+        super.add(scrollContainer);
 
         displayCurrent = new JCheckBox("Display selected calendar");
         displayCurrent.addItemListener(new ChangeDisplayListener());
         displayCurrent.setBounds(350,20,150,50);
         super.add(displayCurrent);
+    }
+
+    private void colorizePanel(CalendarPanel panel)
+    {
+        System.out.println(allCalendars.indexOf(panel));
+        if(allCalendars.indexOf(panel) == selected)
+        {
+            panel.setBackground(Color.GRAY);
+            return;
+        }
+        panel.setBackground(panel.isDisplayed() ? Color.lightGray : defaultColor);
     }
 
     @Override
@@ -118,25 +135,22 @@ public class ManageCalendarsView extends JPanel
         public void mouseClicked(MouseEvent e)
         {
             CalendarPanel selectedPanel = (CalendarPanel)e.getSource();
+            int oldSelected = selected;
             if(selected == allCalendars.indexOf(selectedPanel))
             {
-                selectedPanel.setBackground(defaultColor);
                 selected = -1;
                 changedTroughLoad = false;
                 displayCurrent.setSelected(false);
             }
             else
             {
-                if(selected != -1)
-                {
-                    allCalendars.get(selected).setBackground(defaultColor);
-                }
-                selectedPanel.setBackground(Color.lightGray);
                 selected = allCalendars.indexOf(selectedPanel);
                 changedTroughLoad = true;
                 displayCurrent.setSelected(selectedPanel.isDisplayed());
             }
-            System.out.println("selected: " + selected);
+            if(oldSelected != -1)
+                colorizePanel(allCalendars.get(oldSelected));
+            colorizePanel(selectedPanel);
             changedTroughLoad = false;
         }
 
