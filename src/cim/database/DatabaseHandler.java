@@ -1241,6 +1241,15 @@ public class DatabaseHandler {
 		return null;
 }
 
+	
+	private boolean overlap(Time start, Time start2, Time end, Time end2){
+		if (start.compareTo(end2) <= 0 && start2.compareTo(end) >= 0){
+			return true;
+		}
+		return false;
+	}
+	
+	
     private ArrayList<Integer> getGroupIdsFromUserid(int userId) throws SQLException
     {
         PreparedStatement st;
@@ -1255,13 +1264,6 @@ public class DatabaseHandler {
         }
         return groupIds;
     }
-	
-	private boolean overlap(Time start, Time start2, Time end, Time end2){
-		if (start.compareTo(end2) <= 0 && start2.compareTo(end) >= 0){
-			return true;
-		}
-		return false;
-	}
 	
 	
 	
