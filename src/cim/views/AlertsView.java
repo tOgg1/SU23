@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class AlertsView extends JPanel implements PropertyChangeListener{
 	/*
@@ -29,17 +30,17 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 	private JList alertList;
 	private DefaultListModel<Alert> alertListModel;
 
-	
 	private JButton btnMarkAlarmAsRead;
 	private JButton btnMarkAlertAsRead;
 	
 	private JLabel lblMessages;
 	private JLabel lblAlerts;
 	
-	private int unReadAlerts; 
+	private int unReadElements; 
 	//Kombinerer begge listene sine uleste elementer
 	private PropertyChangeListener alertListListener;
 	private PropertyChangeListener rejectMessageListener;
+	private PropertyChangeSupport pcs;
 	
 	public AlertsView() {
 //		Client.register.addPropertyChangeListener(new CalendarRegistryListener());
@@ -76,14 +77,15 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		btnMarkAlertAsRead.addActionListener(new BTNMarkRejectionAsReadListener());
 
 	}
-	public void countUnreadAlerts(){
-		int count = 0;
-		
+	public int getUnreadElements(){
+		return 0;
+	}
+	private void countUnreadElements(){
 		// Count all unseen alerts
 		try { 
 			for(Alert alert : Client.register.getAlerts()){
 				if(!alert.isSeen()){
-					count++;
+					this.unReadElements++;
 				}
 			}
 		} catch (Exception e) {
@@ -93,13 +95,14 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		try {
 			for(RejectMessage rejectMessage : Client.register.getRejectMessages()){
 				if(!rejectMessage.isSeen()){
-					count++;
+					this.unReadElements++;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-//		Return count of total unseen objects
+		this.pcs.firePropertyChange("unreadElementsCount", null, unReadElements);
+	
 	}
 	private void generateRejectMessageList() {
 		try{
@@ -160,27 +163,17 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		}
 		
 	}
-//	public class CalendarRegistryListener implements PropertyChangeListener{
-//
-//		@Override
-//		public void propertyChange(PropertyChangeEvent evt) {
-//			System.out.println("ALERTVIEW, propChanged: "+ evt.getPropertyName());
-////			
-////			generateAlertList();
-////			generateRejectMessageList();
-//			
-//		}
-//		
-//	}
 	public void propertyChange(PropertyChangeEvent evt) {
 		String propertyName = evt.getPropertyName();
 		if(propertyName.equals("alerts")){
 			generateAlertList(); 
 			// Setter modell på nytt og god stemning
+			countUnreadElements();
 		}
 		else if(propertyName.equals("rejectMessages")){
 			generateRejectMessageList(); 
 			//Samme som over. Ny modell og gode greier.
+			countUnreadElements();
 		}
 		
 	}
