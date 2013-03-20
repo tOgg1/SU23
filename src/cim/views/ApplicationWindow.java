@@ -1,8 +1,5 @@
 package cim.views;
 
-import cim.models.Alert;
-import cim.models.Calendar;
-import cim.models.MeetingResponse;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 
@@ -12,7 +9,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 
 public class ApplicationWindow extends JFrame implements ChangeListener {
 
@@ -137,6 +133,7 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
         if(tabbedPane.getSelectedComponent() == manageCalendarsView)
         {
             manageCalendarsView.requestFocus();
+            manageCalendarsView.reload(Client.register.getManagedCalendars(), Client.register.activeCalendars());
         }
     }
 

@@ -33,6 +33,11 @@ public class CalendarPanel extends JPanel
         super.add(text);
     }
 
+    public void setModel(Calendar model)
+    {
+        this.model = model;
+    }
+
     public Calendar getModel()
     {
         return model;

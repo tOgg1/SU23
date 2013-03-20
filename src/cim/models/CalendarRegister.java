@@ -11,8 +11,6 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.sun.xml.internal.ws.api.addressing.WSEndpointReference.Metadata;
-
 /**
  * A register containing all information currently in use by the client.
  * Contains a lot of functions for storing and retreiving data. This class also takes cares
@@ -302,33 +300,35 @@ public class CalendarRegister
 
 	/**
 	 * Returns all groups managed by either passed-in account (personal calendar) or by one of the accounts groups
-	 * @param acc
 	 * @return
 	 */
-	public ArrayList<Calendar> getManagedCalendars(Account acc)
+	public ArrayList<Calendar> getManagedCalendars()
 	{
 		ArrayList<Calendar> tempCals = new ArrayList<Calendar>();
 		ArrayList<Group> tempGroups = new ArrayList<Group>();
 
 		//Add all groups being managed by acc to tempGroups
-		for(Group group : this.groups)
-		{
-			if(group.getOwner() == acc)
-			{
-				tempGroups.add(group);
-			}
-		}
+        if(this.groups != null)
+        {
+            for(Group group : this.groups)
+            {
+                if(group.getOwner().getId() == account.getId())
+                {
+                    tempGroups.add(group);
+                }
+            }
+        }
 
 		for(Calendar cal : this.calendars)
 		{
-			if(cal.getOwner() == acc)
+			if(cal.getOwner().getId() == account.getId())
 			{
 				tempCals.add(cal);
 			}
 
 			for(Group group : tempGroups)
 			{
-				if(cal.getOwner() == group)
+				if(cal.getOwner().getId() == group.getId())
 				{
 					tempCals.add(cal);
 				}

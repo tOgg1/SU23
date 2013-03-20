@@ -33,6 +33,21 @@ public class ManageCalendarsView extends JPanel
         this.init(myModels, allModels);
     }
 
+    //DRIT TREIGT I know
+    public void reload(ArrayList<Calendar> myModels, ArrayList<Calendar> allModels)
+    {
+        for(CalendarPanel panel : allCalendars)
+        {
+            for(Calendar cal : allModels)
+            {
+                if(panel.getModel().getId() == cal.getId())
+                {
+                    panel.setModel(cal);
+                }
+            }
+        }
+    }
+
     public void init(ArrayList<Calendar> myModels, ArrayList<Calendar> allModels)
     {
         selected = -1;
@@ -116,6 +131,15 @@ public class ManageCalendarsView extends JPanel
         super.add(displayCurrent);
     }
 
+    public void updateModel(Calendar cal)
+    {
+        for(CalendarPanel panel : allCalendars)
+        {
+            if(panel.getModel().getId() == cal.getId())
+                panel.setModel(cal);
+        }
+    }
+
     private void colorizePanel(CalendarPanel panel)
     {
         System.out.println(allCalendars.indexOf(panel));
@@ -180,7 +204,7 @@ public class ManageCalendarsView extends JPanel
                         JLabel information1 = new JLabel();
                         JLabel information2 = new JLabel();
                         JLabel information3 = new JLabel();
-                        information1.setBounds(25,10, 275,30);
+                        information1.setBounds(25, 10, 275, 30);
                         information1.setText("Appointment: " + app.getName());
                         information1.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
                         information2.setText("\nDate: " + app.getDateFormatted());
