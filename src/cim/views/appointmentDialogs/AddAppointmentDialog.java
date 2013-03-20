@@ -22,6 +22,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class AddAppointmentDialog extends JDialog{
@@ -192,7 +193,19 @@ public class AddAppointmentDialog extends JDialog{
 	                		}
 	                	}
 	                }
-                } else {
+                } 
+                if(chckbxLeggTilPersonlig.isSelected())
+                {
+                	int x = addAlarmPanel.getYear();
+                	int y = addAlarmPanel.getMonth();
+                	int z = addAlarmPanel.getDays();
+                	
+                	int h = addAlarmPanel.getHours();
+                	int m = addAlarmPanel.getMinutes();
+                	long timeStampValue = Helper.getTime(x,y,z,h,m);
+                	Timestamp time = new Timestamp(timeStampValue);
+                }
+                else {
                 	setAppointment(app);
                 }
                 
