@@ -1,5 +1,6 @@
 package cim.views;
 
+import cim.models.Alert;
 import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.models.Meeting;
@@ -256,12 +257,36 @@ public class AppointmentPanel extends JPanel implements Comparable
     public class editListener extends MouseAdapter{
     	public void mouseReleased(MouseEvent e){
     		try {
-				EditAppointmentDialog edit = new EditAppointmentDialog(Client.register.getAccount(), base, cal);
-			} catch (CloakedIronManException e1) {
-				e1.printStackTrace();
+				EditAppointmentDialog edit = new EditAppointmentDialog(Client.register.getAccount(), base);
+				edit.setVisible(true);
+				Appointment a = edit.getAppointment();
+				if (a != null){
+					Alert alert = edit.getAlert();
+					ArrayList<MeetingResponse> meetingResponses = edit.getMeetingResponses();
+					
+					cal.addAppointment(a);
+					Client.register.saveCalendar(cal);
+					
+					// Saving the actual appointment /could also be meeting
+					
+					// Saving the alarm
+					if(alert != null) {
+						Client.register.saveAlert(alert);
+					}
+					if (a instanceof Meeting && meetingResponses.size() > 0) {
+						for(MeetingResponse mr : meetingResponses) {
+							Client.register.saveMeetingResponse(mr);
+						}
+					}
+					
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
 			}
-    		
+			
     	}
+    	
+
     }
 
     public class showInfoListener extends MouseAdapter{
@@ -292,9 +317,11 @@ public class AppointmentPanel extends JPanel implements Comparable
                 lblPlace.setVisible(false);
                 lblWait.setVisible(false);
     		}
-    		}
+    	}
 		}
-	}
+    }
+
+
     
     
 

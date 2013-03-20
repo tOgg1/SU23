@@ -61,11 +61,10 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 	
 //	public EditAppointmentDialog(Account account, Appointment appointment){ //Bytt til denne n�r GUI er koblet mot resten
 	@SuppressWarnings("unused")
-	public EditAppointmentDialog(Account account, Appointment appointment, Calendar calendar) throws CloakedIronManException {
+	public EditAppointmentDialog(Account account, Appointment appointment2) throws CloakedIronManException {
 		
 		this.calendar = calendar;
 		this.account = account;
-		this.appointment = appointment;
 		
 		
 		setModalityType(ModalityType.DOCUMENT_MODAL);
@@ -90,7 +89,7 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 			
 			// M�teleder f�r endre p� alt, og kan ogs� avlyse hele shiten
 				
-				addDetailsPanel = new AppointmentDetailsPanel(account, appointment);
+				addDetailsPanel = new AppointmentDetailsPanel(account, appointment2);
 				addDetailsPanel.setSize(470, 240);
 				GridBagConstraints gbc_addDetailsPanel = new GridBagConstraints();
 				gbc_addDetailsPanel.gridwidth = 7;
@@ -284,9 +283,7 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
         	setAppointment(app);
         }
         
-        // Setting calendar
-        this.calendar = addDetailsPanel.getCalendar();
-        
+                
         
 		this.disposeFrame();
 	}
@@ -296,6 +293,9 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 	public void setAlert(Alert al)
 	{
 		this.alert = al;
+	}
+	public Alert getAlert(){
+		return this.alert;
 	}
 	
 	@Override
@@ -308,6 +308,13 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 	}
 	protected void setAppointment(Appointment app) {
 		this.appointment = app;
-		
+	}
+	
+	public ArrayList<MeetingResponse> getMeetingResponses(){
+		return this.meetingResponses;
+	}
+	
+	public Appointment getAppointment(){
+		return this.appointment;
 	}
 }
