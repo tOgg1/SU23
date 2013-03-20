@@ -16,6 +16,8 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JList;
 
+import cim.models.Account;
+import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.models.Room;
 import cim.net.Client;
@@ -213,6 +215,17 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 
 	}
 	
+	public AppointmentDetailsPanel(Account account, Appointment appointment) {
+		this();
+		comBoxMonth.setSelectedItem(appointment.getDate().getMonth());
+		comBoxDays.setSelectedItem(appointment.getDate().getDay());
+		comBoxYear.setSelectedItem(appointment.getDate().getYear());
+		comBoxMinutes.setSelectedItem(appointment.getDate().getMinutes());
+		comBoxEndHours.setSelectedItem(appointment.getEnd().getHours());
+		
+		
+	}
+
 	public int getDays()
 	{
 		return (int)comBoxDays.getSelectedItem();

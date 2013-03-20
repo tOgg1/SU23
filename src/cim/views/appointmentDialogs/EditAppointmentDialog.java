@@ -34,10 +34,10 @@ public class EditAppointmentDialog extends JDialog{
 	private JButton btnCancelDialog;
 	private JButton btnCancelAppointment;
 	
-//	public EditAppointmentDialog(Account account, Appointment appointment){ //Bytt til denne når GUI er koblet mot resten
-	public EditAppointmentDialog() throws CloakedIronManException {
+//	public EditAppointmentDialog(Account account, Appointment appointment){ //Bytt til denne nï¿½r GUI er koblet mot resten
+	public EditAppointmentDialog(Account account, Appointment appointment) throws CloakedIronManException {
 		setModalityType(ModalityType.DOCUMENT_MODAL);
-		setTitle("Ny avtale");
+		setTitle("Endre avtale");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 690, 713);
 		
@@ -46,9 +46,9 @@ public class EditAppointmentDialog extends JDialog{
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		getContentPane().add(mainPanel, BorderLayout.NORTH);
 		
-//		if(account.equals(appointment.getOwner())){ //Bytt til denne når GUI er koblet mot resten
+//		if(account.equals(appointment.getOwner())){ //Bytt til denne nï¿½r GUI er koblet mot resten
 		
-		if(true){ //Ninjatriks: endre denne til false når man vil jobbe (i Windowbuilder) med det som hentes i 'else'
+		if(true){ //Ninjatriks: endre denne til false nï¿½r man vil jobbe (i Windowbuilder) med det som hentes i 'else'
 			GridBagLayout gbl_mainPanel = new GridBagLayout();
 			gbl_mainPanel.columnWidths = new int[] {400, 0, 0, 0, 0, 0, 0, 0, 30, 30};
 			gbl_mainPanel.rowHeights = new int[] {225, 30, 225, 30, 100, 30, 30};
@@ -56,9 +56,9 @@ public class EditAppointmentDialog extends JDialog{
 			gbl_mainPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 			mainPanel.setLayout(gbl_mainPanel);
 			
-			// Møteleder får endre på alt, og kan også avlyse hele shiten
+			// Mï¿½teleder fï¿½r endre pï¿½ alt, og kan ogsï¿½ avlyse hele shiten
 				
-				addDetailsPanel = new AppointmentDetailsPanel();
+				addDetailsPanel = new AppointmentDetailsPanel(account, appointment);
 				addDetailsPanel.setSize(470, 240);
 				GridBagConstraints gbc_addDetailsPanel = new GridBagConstraints();
 				gbc_addDetailsPanel.gridwidth = 7;
@@ -128,9 +128,9 @@ public class EditAppointmentDialog extends JDialog{
 		
 		}
 		else{ 
-		//Vanlig møtedeltager får kun endre sin egen alarm, ingenting annet.
+		//Vanlig mï¿½tedeltager fï¿½r kun endre sin egen alarm, ingenting annet.
 			
-			//Her må det inn noe som henter informasjon om tid/sted osv.
+			//Her mï¿½ det inn noe som henter informasjon om tid/sted osv.
 			appointmentInfo = new AppointmentInfo();
 			mainPanel.add(appointmentInfo);
 			
