@@ -5,6 +5,7 @@ import cim.models.Calendar;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Fonts;
+import cim.views.appointmentDialogs.EditAppointmentDialog;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -202,7 +203,12 @@ public class AppointmentPanel extends JPanel implements Comparable
     
     public class editListener extends MouseAdapter{
     	public void mouseReleased(MouseEvent e){
-    		pcs.firePropertyChange("editbase", "", AppointmentPanel.this);
+    		try {
+				EditAppointmentDialog edit = new EditAppointmentDialog(Client.register.getAccount(), base, cal);
+			} catch (CloakedIronManException e1) {
+				e1.printStackTrace();
+			}
+    		
     	}
     }
 

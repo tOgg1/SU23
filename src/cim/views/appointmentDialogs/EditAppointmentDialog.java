@@ -13,8 +13,16 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import cim.models.Account;
+import cim.models.Alert;
 import cim.models.Appointment;
+import cim.models.Attendable;
+import cim.models.Calendar;
+import cim.models.Group;
+import cim.models.Meeting;
+import cim.models.MeetingResponse;
+import cim.net.Client;
 import cim.util.CloakedIronManException;
+import cim.util.Helper;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -24,8 +32,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class EditAppointmentDialog extends JDialog implements ActionListener{
+	
+	private Appointment appointment;
+	private Account account;
+	private Calendar calendar;
+	
 	// Panels
 	private JPanel mainPanel;
 	private AppointmentDetailsPanel addDetailsPanel;
@@ -39,10 +56,18 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 	private JButton btnSave;
 	private JButton btnCancelDialog;
 	private JButton btnCancelAppointment;
+	private Alert alert;
+	private ArrayList<MeetingResponse> meetingResponses;
 	
 //	public EditAppointmentDialog(Account account, Appointment appointment){ //Bytt til denne n�r GUI er koblet mot resten
 	@SuppressWarnings("unused")
-	public EditAppointmentDialog(Account account, Appointment appointment) throws CloakedIronManException {
+	public EditAppointmentDialog(Account account, Appointment appointment, Calendar calendar) throws CloakedIronManException {
+		
+		this.calendar = calendar;
+		this.account = account;
+		this.appointment = appointment;
+		
+		
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Endre avtale");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -55,7 +80,7 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 		
 //		if(account.equals(appointment.getOwner())){ //Bytt til denne n�r GUI er koblet mot resten
 		
-		if(true){ //Ninjatriks: endre denne til false n�r man vil jobbe (i Windowbuilder) med det som hentes i 'else'
+		//Ninjatriks: endre denne til false n�r man vil jobbe (i Windowbuilder) med det som hentes i 'else'
 			GridBagLayout gbl_mainPanel = new GridBagLayout();
 			gbl_mainPanel.columnWidths = new int[] {400, 0, 0, 0, 0, 0, 0, 0, 30, 30};
 			gbl_mainPanel.rowHeights = new int[] {225, 30, 225, 30, 100, 30, 30};
@@ -158,11 +183,12 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 			gbc_btnCancelDialog.gridx = 3;
 			gbc_btnCancelDialog.gridy = 6;
 			mainPanel.add(btnCancelDialog, gbc_btnCancelDialog);
+			this.setVisible(true);
 		
-		}
+		
 		
 	
-		else{ 
+	
 		//Vanlig m�tedeltager f�r kun endre sin egen alarm, ingenting annet.
 			
 			//Her m� det inn noe som henter informasjon om tid/sted osv.
@@ -177,7 +203,6 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					
-					
 					disposeFrame();
 				
 				}
@@ -186,16 +211,93 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 			
 			btnSave = new JButton("Lagre endringer");
 			btnSave.addMouseListener(new MouseAdapter() {
-				@Override
 				public void mouseReleased(MouseEvent e) {
-					
+					editAppointment();
 					
 				}
 			});
 			mainPanel.add(btnSave);
 		}
+	
+	
+	public void editAppointment(){
+        //TODO: Use getInvitees method in ParticipantsPanel to send invites
+		int i = addDetailsPanel.getDays();
+		int j = addDetailsPanel.getMonths();
+		int k = addDetailsPanel.getYears();
+		Date date = Helper.getDate(k,j,i);
+		int a = addDetailsPanel.getHours();
+		int b = addDetailsPanel.getMinutes();
+		Time startTid = Helper.getTime(a,b);
+		int c = addDetailsPanel.getEndHours();
+		int d = addDetailsPanel.getEndMinutes();
+		Time sluttTid = Helper.getTime(c,d);
+		String info = addDetailsPanel.getDescription();
+		
+		// Initializes the construction of a new Appointment from the information gathered above.
+		Appointment app = new Appointment(info,date,startTid,sluttTid,Client.register.getAccount());
+		if(chckbxLeggTilPersonlig.isSelected())
+        {
+        	int x = addAlarmPanel.getYear();
+        	int y = addAlarmPanel.getMonth();
+        	int z = addAlarmPanel.getDays();
+        	
+        	int h = addAlarmPanel.getHours();
+        	int m = addAlarmPanel.getMinutes();
+        	Timestamp time = Helper.getTime(x,y,z,h,m,0);
+        	Alert alert = new Alert(app,Client.register.getAccount(),time);
+        	setAlert(alert);
+        	
+        }
+		/* 
+		 * Then, if the checkbox "Legg til personer/grupper" is set,
+		*  and if the addParticipantsPanel is not empty, a Meeting-instance is created and 
+		*  meeting responses will be sent.
+		*/ 
+		app.setOwner(Client.register.getAccount());
+		
+		/*
+		 * Creating all the meeting responses
+		 */
+        ArrayList<Attendable> invitees = this.addParticipantsPanel.getInvitees();
+        if(invitees.size() > 0)
+        {
+            Meeting meeting = app.toMeeting();
+            setAppointment(meeting);
+            meetingResponses = new ArrayList<MeetingResponse>();
+            MeetingResponse mr;
+            for(Attendable att : invitees) {
+            	if (att instanceof Account) {
+            		mr = new MeetingResponse((Account)att, meeting);
+            		meetingResponses.add(mr);
+            	} else if (att instanceof Group){
+            		for(Account member: ((Group)att).getMembers()) {
+            			mr = new MeetingResponse(member, meeting);
+            			meetingResponses.add(mr);
+            		}
+            	}
+            }
+        } 
+        
+        else {
+        
+        	setAppointment(app);
+        }
+        
+        // Setting calendar
+        this.calendar = addDetailsPanel.getCalendar();
+        
+        
+		this.disposeFrame();
 	}
 
+	
+	
+	public void setAlert(Alert al)
+	{
+		this.alert = al;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -203,5 +305,9 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 	public void disposeFrame()
 	{
 		this.dispose();
+	}
+	protected void setAppointment(Appointment app) {
+		this.appointment = app;
+		
 	}
 }
