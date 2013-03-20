@@ -54,7 +54,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         this.add(txtName);
         
         JLabel lblDelete = new JLabel();
-        lblDelete.setBounds(163, 11, 18, 20);
+        lblDelete.setBounds(162, 11, 18, 20);
         lblDelete.setFont(new Font("FontAwesome", Font.PLAIN, 14));
         lblDelete.addMouseListener(new deleteListener());
         lblDelete.setText(Fonts.AwesomeIcons.ICON_REMOVE.toString());
@@ -63,7 +63,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         
         JLabel lblEdit = new JLabel("New label");
         lblEdit.setFont(new Font("FontAwesome", Font.PLAIN, 14));
-        lblEdit.setBounds(135, 14, 18, 14);
+        lblEdit.setBounds(135, 14, 28, 14);
         lblEdit.addMouseListener(new editListener());
         lblEdit.setText(Fonts.AwesomeIcons.ICON_PENCIL.toString());
         add(lblEdit);
@@ -89,7 +89,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtPlace = new JTextField();
         txtPlace.setVisible(false);
         txtPlace.setText(base.getWhere());
-        txtPlace.setBounds(38, 70, 115, 20);
+        txtPlace.setBounds(20, 70, 115, 20);
         txtPlace.setBackground(null);
         txtPlace.setBorder(null);
         add(txtPlace);
@@ -119,7 +119,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         add(lblDeclined);
         
         txtOkNum = new JTextField();
-        txtOkNum.setText("");
+        txtOkNum.setText("2");
         txtOkNum.setEnabled(false);
         txtOkNum.setVisible(false);
         txtOkNum.setBounds(44, 98, 15, 20);
@@ -129,6 +129,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         add(txtOkNum);
         
         txtDeclinedNum = new JTextField();
+        txtDeclinedNum.setText("1");
         txtDeclinedNum.setEnabled(false);
         txtDeclinedNum.setVisible(false);
         txtDeclinedNum.setBounds(79, 98, 15, 20);
@@ -138,6 +139,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         add(txtDeclinedNum);
         
         txtGroupNum = new JTextField();
+        txtGroupNum.setText("4");
         txtGroupNum.setEnabled(false);
         txtGroupNum.setVisible(false);
         txtGroupNum.setColumns(2);
@@ -158,7 +160,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         
         lblPlace = new JLabel("New label");
         lblPlace.setVisible(false);
-        lblPlace.setFont(new Font("FontAwesome", Font.PLAIN, 14));
+        lblPlace.setFont(new Font("FontAwesome", Font.PLAIN, 12));
         lblPlace.setBounds(10, 72, 24, 14);
         lblPlace.setText(Fonts.AwesomeIcons.ICON_MAP_MARKER.toString());
         add(lblPlace);
