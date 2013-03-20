@@ -193,7 +193,6 @@ public class AppointmentPanel extends JPanel implements Comparable
     	ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
 		try {
 			meetingResponses = Client.register.getMeetingResponsesToMeeting(m);
-			System.out.print("sup" + meetingResponses);
 		} catch (CloakedIronManException e) {
 			e.printStackTrace();
 		}
@@ -315,14 +314,10 @@ public class AppointmentPanel extends JPanel implements Comparable
         			}
     			}
     		}
-<<<<<<< HEAD
-=======
-    		}
     		catch(NullPointerException a)
     		{
     			System.out.println("This is not a meeting");
     		}
     	}
->>>>>>> 71083bcdc1eaf602d66e83729848bbea61629dab
-		}
-    }
+    }}
+    
