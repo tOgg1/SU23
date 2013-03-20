@@ -24,6 +24,9 @@ public class AlertsView extends JPanel{
 	private JLabel lblMessages;
 	private JLabel lblAlerts;
 	
+	private int unReadAlerts; 
+	//Kombinerer begge listene sine uleste elementer
+	
 	public AlertsView() {
 		setLayout(null);
 		
@@ -36,7 +39,7 @@ public class AlertsView extends JPanel{
 		add(alertList);
 		generateAlertList();
 		
-		btnMarkAlarmAsRead = new JButton("Marker som lest2");
+		btnMarkAlarmAsRead = new JButton("Marker som lest"); //Alarm (alerts)
 		btnMarkAlarmAsRead.setBounds(499, 197, 150, 23);
 		add(btnMarkAlarmAsRead);
 		btnMarkAlarmAsRead.addActionListener(new BTNMarkAlertAsReadListener());
@@ -50,11 +53,31 @@ public class AlertsView extends JPanel{
 		add(rejectionMessagesList);
 		generateRejectMessageList();
 		
-		btnMarkAlertAsRead = new JButton("Marker som lest1");
+		btnMarkAlertAsRead = new JButton("Marker som lest"); //RejectMessages
 		btnMarkAlertAsRead.setBounds(499, 413, 150, 23);
 		add(btnMarkAlertAsRead);
 		btnMarkAlertAsRead.addActionListener(new BTNMarkRejectionAsReadListener());
 
+	}
+	public int getUnreadAlerts(){
+		int count = 0;
+		try { // Count all unseen alerts
+			for(Alert alert : Client.register.getAlerts()){
+				if(!alert.isSeen()){
+					count++;
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		try {
+//			for(RejectMessage rejectMessage : Client.register.getAlerts()){
+//				if(rejectMessage.)
+//			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return count;
 	}
 	private void generateRejectMessageList() {
 		try{
@@ -87,15 +110,9 @@ public class AlertsView extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			RejectMessage rm = (RejectMessage) rejectionMessagesList.getSelectedValue();
-			System.out.println(rm.getMeeting().getName());
-			
-			
-			/*
-			 * får tak i alert-objektet
-			 * setter til seen
-			 * save alert
-			 */
+//			RejectMessage rm = (RejectMessage) rejectionMessagesList.getSelectedValue();
+//			System.out.println(rm.getMeeting().getName());
+//			TODO Markere Rejection som lest.
 			
 		}
 	}
@@ -108,10 +125,8 @@ public class AlertsView extends JPanel{
 			if(!alert.isSeen()){
 				alert.changeIsSeen(true);
 				try {
-//TODO Hva skal saveAlert egentlig gjøre? Hvorfor save når man har vært inne i alert-objektet og endret?
 					Client.register.saveAlert(alert);
 				} catch (CloakedIronManException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
