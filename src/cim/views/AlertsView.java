@@ -53,7 +53,7 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		alertList.setBounds(10, 36, 639, 150);
 		add(alertList);
 		generateAlertList();
-//		alertList.addPropertyChangeListener(alertListListener);
+		alertList.addPropertyChangeListener(alertListListener);
 		
 		btnMarkAlarmAsRead = new JButton("Fjern alarm"); //Alarm (alerts)
 		btnMarkAlarmAsRead.setBounds(499, 197, 150, 23);
@@ -175,6 +175,8 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 //	}
 	public void propertyChange(PropertyChangeEvent evt) {
 		System.out.println("ALARMVIEWprpChanged: " + evt.getPropertyName());
+		String propertyName = evt.getPropertyName();
+		
 //		String strProp = evt.getPropertyName();
 //		if(strProp.equals("meetingResponses")) {
 //			try {
