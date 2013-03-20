@@ -91,6 +91,7 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		incomingAppointmentsView.setModel(Client.register.getMeetingResponsesToAccount());
 		
 		alertsView = new AlertsView();
+		alertsView.addPropertyChangeListener(new AlertViewPropertyChangeListener());
 		tabbedPane.addTab("Varsler", null, alertsView, null);
 		
 		manageCalendarsView = new ManageCalendarsView(Client.register.activeCalendars(), Client.register.getAllCalendars(), this);
@@ -154,5 +155,15 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		}
 		
 	}
+    
+    private class AlertViewPropertyChangeListener implements PropertyChangeListener {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			// TODO Beate, lag denne metoden til å fange opp endringer i viewet
+			
+		}
+    	
+    }
 
 }
