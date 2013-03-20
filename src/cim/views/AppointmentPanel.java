@@ -287,6 +287,7 @@ public class AppointmentPanel extends JPanel implements Comparable
 
     public class showInfoListener extends MouseAdapter{
     	public void mouseReleased(MouseEvent e){
+    		try {
     		if (lblArrow.getText().equals(Fonts.AwesomeIcons.ICON_CARET_DOWN.toString())){
     			setPreferredSize(new Dimension(190,130));
     			lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_UP.toString());
@@ -316,6 +317,11 @@ public class AppointmentPanel extends JPanel implements Comparable
                 	lblDeclined.setVisible(false);
                 	lblGroup.setVisible(false);
         		}
+    		}
+    		}
+    		catch(NullPointerException a)
+    		{
+    			System.out.println("This is not a meeting");
     		}
     	}
 		}
