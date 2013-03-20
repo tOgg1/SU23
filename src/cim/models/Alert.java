@@ -48,6 +48,9 @@ public class Alert extends CalendarObject {
 	public boolean isSeen() {
 		return this.isSeen;
 	}
+	public void changeIsSeen(boolean b){
+		this.isSeen = b;
+	}
 	
 	public boolean equals(Object obj) {
         if (obj == null)
@@ -67,7 +70,11 @@ public class Alert extends CalendarObject {
     }
 	
 	public String toString() {
-		return "Alarm for '" + this.owner + "' til '" +  this.appointment + "'";
+//		return "Alarm for '" + this.owner + "' til '" +  this.appointment + "'";
+		return
+			"Husk " + this.appointment.getName()
+			+ " kl. " + this.appointment.getStartFormatted()
+			+ " " + this.appointment.getDateFormatted();
 	}
 	
 	

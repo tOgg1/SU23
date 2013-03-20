@@ -96,7 +96,7 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 
         tabbedPane.addChangeListener(this);
         
-		
+
 		/*
 		Response response = client.request(new Request("GET_ALL_CALENDARS"));
 		allCalendars = (ArrayList<Calendar>) response.getData()[0];
