@@ -1190,7 +1190,7 @@ public class DatabaseHandler {
 			r.setId(rs.getInt("meeting_room_id"));
 			return r;
 		} catch (Exception e) {
-			throw new CloakedIronManException("Could not fetch room.", e);
+			
 		}
 	}
 	/*
@@ -1225,6 +1225,7 @@ public class DatabaseHandler {
 				//System.out.println(start.compareTo(rs.getDate("end")) <= 0);
 				//System.out.println(rs.getDate("start").compareTo(end) >= 0);
 				//System.out.println();
+				System.out.println("Hei");
 				Timestamp startB = Helper.getTimestampFromObjects(date, rs.getTime("start"));
 				Timestamp endB = Helper.getTimestampFromObjects(date, rs.getTime("end"));
 				if (overlap(startA, startB, endA, endB)){

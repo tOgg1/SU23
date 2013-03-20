@@ -19,6 +19,7 @@ import javax.swing.JList;
 import cim.models.Calendar;
 import cim.models.Room;
 import cim.net.Client;
+import cim.util.CloakedIronManException;
 import cim.util.Helper;
 
 public class AppointmentDetailsPanel extends JPanel implements ActionListener {
@@ -253,12 +254,20 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent action) {
 		roomListModel = new DefaultListModel<Room>();
-		ArrayList<Room> availableRooms = Client.register.getAvailableRooms(Helper.getDate(getYears(), getMonths(), getDays()), Helper.getTime(getHours(), getMinutes()), Helper.getTime(getEndHours(),getEndMinutes()));
-		for(Room room : availableRooms)
-		{
-			roomListModel.addElement(room);
+		System.out.println("HAAHHAHAHAHAHA: "+Helper.getDate(getYears(),getMonths(),getDays()));
+		ArrayList<Room> availableRooms;
+		try {
+			availableRooms = Client.register.getAvailableRooms(Helper.getDate(getYears(), getMonths(), getDays()), Helper.getTime(getHours(), getMinutes()), Helper.getTime(getEndHours(),getEndMinutes()));
+			for(Room room : availableRooms)
+			{
+				roomListModel.addElement(room);
+			}
+			System.out.println(roomListModel.getSize());
+			listAvailableRooms.setModel(roomListModel);
+		} catch (CloakedIronManException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		System.out.println(roomListModel.getSize());
-		listAvailableRooms.setModel(roomListModel);
+		
 	}
 }
