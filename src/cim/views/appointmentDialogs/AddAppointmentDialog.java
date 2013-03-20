@@ -164,7 +164,19 @@ public class AddAppointmentDialog extends JDialog{
 				
 				// Initializes the construction of a new Appointment from the information gathered above.
 				Appointment app = new Appointment(info,date,startTid,sluttTid,Client.register.getAccount());
-				
+				if(chckbxLeggTilPersonlig.isSelected())
+                {
+                	int x = addAlarmPanel.getYear();
+                	int y = addAlarmPanel.getMonth();
+                	int z = addAlarmPanel.getDays();
+                	
+                	int h = addAlarmPanel.getHours();
+                	int m = addAlarmPanel.getMinutes();
+                	Timestamp time = Helper.getTime(x,y,z,h,m,0);
+                	Alert alert = new Alert(app,Client.register.getAccount(),time);
+                	setAlert(alert);
+                	
+                }
 				/* 
 				 * Then, if the checkbox "Legg til personer/grupper" is set,
 				*  and if the addParticipantsPanel is not empty, a Meeting-instance is created and 
