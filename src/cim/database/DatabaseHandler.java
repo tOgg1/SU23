@@ -751,17 +751,19 @@ public class DatabaseHandler {
 			
 			// All good, lets save
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO alarm " +
-					"(appointment_id, user_id, when, is_seen) " +
+					"(appointment_id, user_id, alarm.when, is_seen) " +
 					"VALUES " +
 					"(?,?,?,?) " +
 					"ON DUPLICATE KEY UPDATE " +
-					"when=?, is_seen=?");
+					"alarm.when=?, is_seen=?");
 			st.setInt(1, a.getAppointment().getId());
 			st.setInt(2, a.getOwner().getId());
 			st.setTimestamp(3, a.getWhen());
 			st.setBoolean(4, a.isSeen());
 			st.setTimestamp(5, a.getWhen());
 			st.setBoolean(6, a.isSeen());
+			
+			st.execute();
 			
 			this.broadcast("ALERT", Type.UPDATED, a);
 			return a;
