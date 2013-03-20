@@ -205,6 +205,7 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 			for(Calendar c : Client.register.getAllCalendars()) {
 				comBoxCalendars.addItem(c);
 			}
+			comBoxCalendars.setSelectedItem(Client.register.getCalendarByAccount(Client.register.getAccount()));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

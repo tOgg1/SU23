@@ -451,17 +451,6 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 			renderCalendars();
 		}
 		
-		else if (evt.getPropertyName().equals("editbase")){
-			try {
-				EditAppointmentDialog edit = new EditAppointmentDialog(Client.register.getAccount(), ((AppointmentPanel)evt.getNewValue()).getBase());
-				edit.setVisible(true);
-			} catch (CloakedIronManException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-
 		renderCalendars();
 	}
 		
