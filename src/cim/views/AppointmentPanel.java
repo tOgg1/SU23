@@ -122,36 +122,39 @@ public class AppointmentPanel extends JPanel implements Comparable
         lblDeclined.setBounds(69, 101, 25, 14);
         lblDeclined.setText(Fonts.AwesomeIcons.ICON_REMOVE.toString());
         add(lblDeclined);
+        if(this.base instanceof Meeting) {
+        	Meeting meeting = (Meeting)this.base;
+        	txtOkNum = new JTextField();
+            txtOkNum.setText(getResponses("Attending", meeting));
+            txtOkNum.setEnabled(false);
+            txtOkNum.setVisible(false);
+            txtOkNum.setBounds(44, 98, 15, 20);
+            txtOkNum.setBackground(null);
+            txtOkNum.setBorder(null);
+            txtOkNum.setColumns(2);
+            add(txtOkNum);
+            
+            txtDeclinedNum = new JTextField();
+            txtDeclinedNum.setText(getResponses("Not_Attending", meeting));
+            txtDeclinedNum.setEnabled(false);
+            txtDeclinedNum.setVisible(false);
+            txtDeclinedNum.setBounds(79, 98, 15, 20);
+            txtDeclinedNum.setBackground(null);
+            txtDeclinedNum.setBorder(null);
+            txtDeclinedNum.setColumns(2);
+            add(txtDeclinedNum);
+            
+            txtWaitNum = new JTextField();
+            txtWaitNum.setText(getResponses("Not_Seen", meeting));
+            txtWaitNum.setEnabled(false);
+            txtWaitNum.setVisible(false);
+            txtWaitNum.setColumns(2);
+            txtWaitNum.setBounds(124, 98, 15, 20);
+            txtWaitNum.setBackground(null);
+            txtWaitNum.setBorder(null);
+            add(txtWaitNum);
+        }
         
-        txtOkNum = new JTextField();
-        txtOkNum.setText(getResponses("Attending", base.toMeeting()));
-        txtOkNum.setEnabled(false);
-        txtOkNum.setVisible(false);
-        txtOkNum.setBounds(44, 98, 15, 20);
-        txtOkNum.setBackground(null);
-        txtOkNum.setBorder(null);
-        txtOkNum.setColumns(2);
-        add(txtOkNum);
-        
-        txtDeclinedNum = new JTextField();
-        txtDeclinedNum.setText(getResponses("Not_Attending", base.toMeeting()));
-        txtDeclinedNum.setEnabled(false);
-        txtDeclinedNum.setVisible(false);
-        txtDeclinedNum.setBounds(79, 98, 15, 20);
-        txtDeclinedNum.setBackground(null);
-        txtDeclinedNum.setBorder(null);
-        txtDeclinedNum.setColumns(2);
-        add(txtDeclinedNum);
-        
-        txtWaitNum = new JTextField();
-        txtWaitNum.setText(getResponses("Not_Seen", base.toMeeting()));
-        txtWaitNum.setEnabled(false);
-        txtWaitNum.setVisible(false);
-        txtWaitNum.setColumns(2);
-        txtWaitNum.setBounds(124, 98, 15, 20);
-        txtWaitNum.setBackground(null);
-        txtWaitNum.setBorder(null);
-        add(txtWaitNum);
         
         this.cal = calendar;
         
