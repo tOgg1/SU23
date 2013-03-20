@@ -33,7 +33,7 @@ public class AddAppointmentDialog extends JDialog{
 	private static final long serialVersionUID = 7800782603404937292L;
 	// Panels
 	private JPanel mainPanel;
-	private AppointmentDetailsPanel addDetailsPanel;
+	AppointmentDetailsPanel addDetailsPanel;
 	private ParticipantsPanel addParticipantsPanel;
 	private AlarmPanel addAlarmPanel;
 
@@ -47,7 +47,7 @@ public class AddAppointmentDialog extends JDialog{
 	private Appointment appointment;
 	private ArrayList<MeetingResponse> meetingResponses;
 	private Alert alert;
-	private Calendar calendar;
+	Calendar calendar;
 	
 	private PropertyChangeSupport pcs;
 
