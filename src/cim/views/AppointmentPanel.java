@@ -69,7 +69,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         add(lblEdit);
         
         txtTime = new JTextField();
-        txtTime.setText(base.getStartFormatted("hh:mm") + "-" + base.getEndFormatted("hh:mm"));
+        txtTime.setText(base.getStartFormatted() + "-" + base.getEndFormatted());
         txtTime.setBackground(null);
         txtTime.setBorder(null);
         txtTime.setEditable(false);

@@ -89,7 +89,9 @@ public class AlertsView extends JPanel{
 		try{
             rejectMessageListModel = new DefaultListModel<RejectMessage>();
             for(RejectMessage rm : Client.register.getRejectMessages()){
-            	rejectMessageListModel.addElement(rm);
+            	if(!rm.isSeen()){ // Add only unseen elements
+            		rejectMessageListModel.addElement(rm);
+            	}
             }
             rejectionMessagesList.setModel(rejectMessageListModel);
 		} 
@@ -101,7 +103,9 @@ public class AlertsView extends JPanel{
 		try {
 			alertListModel = new DefaultListModel<Alert>();
 			for(Alert alert : Client.register.getAlerts()){
-				alertListModel.addElement(alert);
+				if(!alert.isSeen()){ // Add only unseen elements
+					alertListModel.addElement(alert);
+				}
 			}
 			alertList.setModel(alertListModel);
 		} catch (CloakedIronManException e) {
