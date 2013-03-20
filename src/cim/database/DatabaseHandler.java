@@ -751,17 +751,19 @@ public class DatabaseHandler {
 			
 			// All good, lets save
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO alarm " +
-					"(appointment_id, user_id, when, is_seen) " +
+					"(appointment_id, user_id, alarm.when, is_seen) " +
 					"VALUES " +
 					"(?,?,?,?) " +
 					"ON DUPLICATE KEY UPDATE " +
-					"when=?, is_seen=?");
+					"alarm.when=?, is_seen=?");
 			st.setInt(1, a.getAppointment().getId());
 			st.setInt(2, a.getOwner().getId());
 			st.setTimestamp(3, a.getWhen());
 			st.setBoolean(4, a.isSeen());
 			st.setTimestamp(5, a.getWhen());
 			st.setBoolean(6, a.isSeen());
+			
+			st.execute();
 			
 			this.broadcast("ALERT", Type.UPDATED, a);
 			return a;
@@ -1212,6 +1214,8 @@ public class DatabaseHandler {
 	public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end) throws CloakedIronManException{
 		try{
 		PreparedStatement st;
+		Timestamp startA = Helper.getTimestampFromObjects(date, start);
+		Timestamp endA = Helper.getTimestampFromObjects(date, end);
 		st = this.con.prepareStatement("SELECT * FROM appointment WHERE date = ?");
 		st.setDate(1, date);
 		ResultSet rs = st.executeQuery();
@@ -1221,8 +1225,9 @@ public class DatabaseHandler {
 				//System.out.println(start.compareTo(rs.getDate("end")) <= 0);
 				//System.out.println(rs.getDate("start").compareTo(end) >= 0);
 				//System.out.println();
-
-				if (overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
+				Timestamp startB = Helper.getTimestampFromObjects(date, rs.getTime("start"));
+				Timestamp endB = Helper.getTimestampFromObjects(date, rs.getTime("end"));
+				if (overlap(startA, startB, endA, endB)){
 					notAvailable.add(getRoom(rs.getInt("meeting_room_id")));
 				}
 			}
@@ -1242,11 +1247,8 @@ public class DatabaseHandler {
 }
 
 	
-	private boolean overlap(Time start, Time start2, Time end, Time end2){
-		if (start.compareTo(end2) <= 0 && start2.compareTo(end) >= 0){
-			return true;
-		}
-		return false;
+	private boolean overlap(Timestamp start, Timestamp start2, Timestamp end, Timestamp end2){
+		return (start.getTime() <= end2.getTime()) && (end.getTime() >= start2.getTime());
 	}
 	
 	
