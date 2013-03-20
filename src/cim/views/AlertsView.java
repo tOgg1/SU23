@@ -130,11 +130,28 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 //		this.repaint();
 //		this.firePropertyChange("numMeetingResponses", null, iNumAdded);
 //	}
-	private void refresh(){
-		countUnreadElements();
+	private void refresh(JList list){
+//		countUnreadElements();
 		this.revalidate();
-		this.removeAll();
+//		this.removeAll();
 		this.repaint();
+		
+	}
+
+	private void refreshRMList() {
+		rejectionMessagesList = new JList();
+		generateRejectMessageList();
+	}
+	private void refreshAlarmList() {
+//		remove(rejectionMessagesList);
+//		alertList = new JList<>();
+//		generateAlertList();
+		remove(alertList);
+		alertList = new JList();
+		alertList.setBounds(10, 36, 639, 150);
+		add(alertList);
+		generateAlertList();
+		alertList.addPropertyChangeListener(alertListListener);
 	}
 	private void generateRejectMessageList() {
 		try{
@@ -159,6 +176,7 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 				}
 			}
 			alertList.setModel(alertListModel);
+			System.out.println("Ny alertModell");
 		} catch (CloakedIronManException e) {
 			e.printStackTrace();
 		}
@@ -170,27 +188,38 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			RejectMessage rm = (RejectMessage) rejectionMessagesList.getSelectedValue();
-			if(!rm.isSeen()){
-				rm.changeIsSeen(true);
-				//TODO mekke save.RejectMessage
+			if(-1 < rejectionMessagesList.getSelectedIndex()){ // -1 == ingen verdi valgt
+				RejectMessage rm = (RejectMessage) rejectionMessagesList.getSelectedValue();
+				if(!rm.isSeen()){
+					rm.changeIsSeen(true);
+					//TODO mekke saveRejectMessage i calReg
+					try {
+						Client.register.saveRejectionMessage(rm);
+						refreshRMList();
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+				}
 			}
 			
 		}
+
 	}
 	
 	public class BTNMarkAlertAsReadListener implements ActionListener{
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Alert alert = (Alert) alertList.getSelectedValue();
-			if(!alert.isSeen()){
-				alert.changeIsSeen(true);
-				try {
-					Client.register.saveAlert(alert);
-					refresh();
-				} catch (CloakedIronManException e1) {
-					e1.printStackTrace();
+			if(-1 < alertList.getSelectedIndex()) { // -1 == ingen verdi valgt
+				Alert alert = (Alert) alertList.getSelectedValue();
+				if(!alert.isSeen()){
+					alert.changeIsSeen(true);
+					try {
+						Client.register.saveAlert(alert);
+						refreshAlarmList();
+					} catch (CloakedIronManException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		}
@@ -199,14 +228,16 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 	public void propertyChange(PropertyChangeEvent evt) {
 		String propertyName = evt.getPropertyName();
 		if(propertyName.equals("alerts")){
-			generateAlertList(); 
+//			generateAlertList(); 
 			// Setter modell på nytt og god stemning
-			refresh();
+			System.out.println("ERMERGERD. Ny alarm registrert");
+			refreshAlarmList();
+			System.out.println("HERPSHERP, refreshAlarm SKAL ha kjoert naa, ass!");
 		}
 		else if(propertyName.equals("rejectMessages")){
 			generateRejectMessageList(); 
 			//Samme som over. Ny modell og gode greier.
-			refresh();
+			refreshRMList();
 		}
 		
 	}
