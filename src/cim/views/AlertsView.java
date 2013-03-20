@@ -44,6 +44,8 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 	
 	public AlertsView() {
 //		Client.register.addPropertyChangeListener(new CalendarRegistryListener());
+		pcs = new PropertyChangeSupport(unReadElements);
+		unReadElements = 0;
 		setLayout(null);
 		
 		lblAlerts = new JLabel("Alarmer/varsler");
@@ -76,11 +78,13 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		add(btnMarkAlertAsRead);
 		btnMarkAlertAsRead.addActionListener(new BTNMarkRejectionAsReadListener());
 
+		countUnreadElements();
 	}
 	public int getUnreadElements(){
-		return 0;
+		return this.unReadElements;
 	}
 	private void countUnreadElements(){
+		int oldCount = this.unReadElements;
 		// Count all unseen alerts
 		try { 
 			for(Alert alert : Client.register.getAlerts()){
@@ -101,7 +105,7 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.pcs.firePropertyChange("unreadElementsCount", null, unReadElements);
+		this.pcs.firePropertyChange("unreadElementsCount", oldCount, this.unReadElements);
 	
 	}
 	private void generateRejectMessageList() {

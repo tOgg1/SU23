@@ -161,8 +161,14 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			// TODO Beate, lag denne metoden til å fange opp endringer i viewet
-			
+			String propertyName = evt.getPropertyName();
+			if(propertyName.equals("unreadElementsCount")){
+				int newValue = (int)evt.getNewValue();
+				String varsler = "Varsler";
+				if(newValue > 0){
+					varsler += "("+newValue+")";
+				}
+			}
 		}
     	
     }
