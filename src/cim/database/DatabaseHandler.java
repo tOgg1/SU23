@@ -1214,6 +1214,8 @@ public class DatabaseHandler {
 	public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end) throws CloakedIronManException{
 		try{
 		PreparedStatement st;
+		Timestamp startA = Helper.getTimestampFromObjects(date, start);
+		Timestamp endA = Helper.getTimestampFromObjects(date, end);
 		st = this.con.prepareStatement("SELECT * FROM appointment WHERE date = ?");
 		st.setDate(1, date);
 		ResultSet rs = st.executeQuery();
@@ -1223,8 +1225,9 @@ public class DatabaseHandler {
 				//System.out.println(start.compareTo(rs.getDate("end")) <= 0);
 				//System.out.println(rs.getDate("start").compareTo(end) >= 0);
 				//System.out.println();
-
-				if (overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
+				Timestamp startB = Helper.getTimestampFromObjects(date, rs.getTime("start"));
+				Timestamp endB = Helper.getTimestampFromObjects(date, rs.getTime("end"));
+				if (overlap(startA, startB, endA, endB)){
 					notAvailable.add(getRoom(rs.getInt("meeting_room_id")));
 				}
 			}
@@ -1243,6 +1246,12 @@ public class DatabaseHandler {
 		return null;
 }
 
+	
+	private boolean overlap(Timestamp start, Timestamp start2, Timestamp end, Timestamp end2){
+		return (start.getTime() <= end2.getTime()) && (end.getTime() >= start2.getTime());
+	}
+	
+	
     private ArrayList<Integer> getGroupIdsFromUserid(int userId) throws SQLException
     {
         PreparedStatement st;
@@ -1257,13 +1266,6 @@ public class DatabaseHandler {
         }
         return groupIds;
     }
-	
-	private boolean overlap(Time start, Time start2, Time end, Time end2){
-		if (start.compareTo(end2) <= 0 && start2.compareTo(end) >= 0){
-			return true;
-		}
-		return false;
-	}
 	
 	
 	

@@ -202,10 +202,13 @@ public class AddAppointmentDialog extends JDialog{
                 	
                 	int h = addAlarmPanel.getHours();
                 	int m = addAlarmPanel.getMinutes();
-                	long timeStampValue = Helper.getTime(x,y,z,h,m);
-                	Timestamp time = new Timestamp(timeStampValue);
+                	Timestamp time = Helper.getTime(x,y,z,h,m,0);
+                	Alert alert = new Alert(app,Client.register.getAccount(),time);
+                	setAlert(alert);
+                	
                 }
                 else {
+                	if(chckbxLeggTilPersonlig.isSelected())
                 	setAppointment(app);
                 }
                 
@@ -254,6 +257,10 @@ public class AddAppointmentDialog extends JDialog{
 	
 	public Alert getAlert() {
 		return this.alert;
+	}
+	public void setAlert(Alert al)
+	{
+		this.alert = al;
 	}
 	
 	public Calendar getCalendar() {

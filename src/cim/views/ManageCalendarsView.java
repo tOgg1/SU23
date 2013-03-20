@@ -92,7 +92,6 @@ public class ManageCalendarsView extends JPanel
         super.add(displayCurrent);
     }
 
-
     @Override
     public void requestFocus() {
         this.setFocusable(true);
