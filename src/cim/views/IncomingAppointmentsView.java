@@ -1,6 +1,8 @@
 package cim.views;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import java.awt.Dimension;
 import java.awt.SystemColor;
@@ -29,6 +31,7 @@ public class IncomingAppointmentsView extends JPanel {
 	MeetingResponsesFlowPanel flowpanel;
 	
 	private JLabel lblMeetings;
+	private JScrollPane scroll;
 	
 	public IncomingAppointmentsView() {
 		try {
@@ -78,8 +81,18 @@ public class IncomingAppointmentsView extends JPanel {
 			flowpanel = new MeetingResponsesFlowPanel();
 			flowpanel.addPropertyChangeListener(new MeetingResponsePropertyChangeListener());
 			Client.register.addPropertyChangeListener(flowpanel);
-			flowpanel.setBounds(31,79,998,366);
-			add(flowpanel);
+			//flowpanel.setBounds(31,79,998,366);
+			//flowpanel.setBounds(31,79,998,120);
+			
+			this.scroll = new JScrollPane();
+			this.scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			this.scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			this.scroll.setBounds(31,79,998,366);
+			this.scroll.setViewportView(flowpanel);
+			
+			
+			add(this.scroll);
+			//add(this.flowpanel);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

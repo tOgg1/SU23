@@ -83,6 +83,9 @@ public class CalendarRegister
 	 * Property change support
 	 */
 	private PropertyChangeSupport pcs;
+
+
+	private ArrayList<Room> availableRooms;
 	
 	public CalendarRegister(Client parent)
 	{
@@ -591,10 +594,11 @@ public class CalendarRegister
 	}
 	
 
-    public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end)
+    public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end) throws CloakedIronManException
     {
-    	return this.getRooms();
-        /*if(availableRooms != null)
+        Response res = parent.request(new Request("GET_AVAILABLE_ROOMS", new Object[]{date, start, end}));
+        this.availableRooms = (ArrayList<Room>)res.getData()[0];
+        return this.availableRooms;        /*if(availableRooms != null)
         {
             return availableRooms;
         }
