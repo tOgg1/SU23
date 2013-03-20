@@ -19,13 +19,15 @@ public class Hawktest {
 	 */
 	public static void main(String[] args) throws CloakedIronManException {
 		DatabaseHandler db = new DatabaseHandler();
-		Calendar c = db.getCalendar2(2);
+		Calendar c = db.getCalendar2(6);
 		ArrayList<Appointment> apps = c.getAppointments();
-		Meeting m = (Meeting)apps.get(4);
+		System.out.println(apps);
+		
+		/*Meeting m = (Meeting)apps.get(4);
 		System.out.println(apps);
 		m.setDate(Helper.getDate(2013, 2,1));
 		System.out.println(apps);
-		db.saveCalendar(c);
+		db.saveCalendar(c);*/
 		/*Meeting m = (Meeting)db.getAppointment2(6);
 		ArrayList<MeetingResponse> list = db.getMeetingResponsesToMeeting(m);
 		System.out.println(list);*/
