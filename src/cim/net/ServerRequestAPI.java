@@ -84,6 +84,10 @@ public class ServerRequestAPI {
 				return get_alerts_to_account((Account)args[0]);
 			}
 			
+			else if(method.equals("SAVE_ALERT")) {
+				return save_alert((Alert)args[0]);
+			}
+			
 			return new Response(new CloakedIronManException("No server API call named '" + method + "'"));
 		} catch (Exception e) {
 			return new Response(e);
@@ -172,5 +176,9 @@ public class ServerRequestAPI {
     private Response get_alerts_to_account(Account account) throws CloakedIronManException {
 		return new Response(this.db.getAlertsToAccount(account));
 	}
+    
+    private Response save_alert(Alert a) throws CloakedIronManException{
+    	return new Response(this.db.saveAlert(a));
+    }
 	
 }

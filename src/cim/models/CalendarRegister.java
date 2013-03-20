@@ -644,13 +644,13 @@ public class CalendarRegister
         }
 	}
 	
-	public Calendar saveCalendar(Calendar c) throws CloakedIronManException {
-		Response res = this.parent.request(new Request("SAVE_CALENDAR", c));
-		return (Calendar) res.getData()[0];
+	public void saveCalendar(Calendar c) throws CloakedIronManException {
+		this.parent.request(new Request("SAVE_CALENDAR", c));
+		//return (Calendar) res.getData()[0];
 	}
 	
 	public void saveAlert(Alert a) throws CloakedIronManException {
-		// TODO: Legge inn denne metoden p��� serveren
+		this.parent.request(new Request("SAVE_ALERT", a));
 	}
 
 }
