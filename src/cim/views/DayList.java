@@ -31,7 +31,7 @@ public class DayList extends JPanel
     public DayList()
     {
         this.children = new PriorityQueue<AppointmentPanel>();
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         
     }
 

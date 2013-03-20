@@ -28,25 +28,27 @@ import java.awt.Font;
  */
 public class AppointmentPanel extends JPanel implements Comparable
 {
-    private Appointment base;
-    private Calendar cal;
-    private PropertyChangeSupport pcs;
-    private JTextField txtTime;
-    private JTextField txtPlace;
-    private JTextField txtOkNum;
-    private JTextField txtDeclinedNum;
-    private JTextField txtWaitNum;
+    public static Appointment base;
+    public Calendar cal;
+    public PropertyChangeSupport pcs;
+    public JTextField txtTime;
+    public JTextField txtPlace;
+    public JTextField txtOkNum;
+    public JTextField txtDeclinedNum;
+    public JTextField txtWaitNum;
     public JLabel lblOK;
     public JLabel lblArrow;
     public JLabel lblGroup;
     public JLabel lblDeclined;
-    private JLabel lblWait;
-    private JLabel lblPlace;
+    public JLabel lblWait;
+    public JLabel lblPlace;
     public Meeting meeting;
     
     public AppointmentPanel(Appointment base, Calendar calendar)
     {
     	setPreferredSize(new Dimension(190, 65));
+    	//setMinimumSize(new Dimension(190, 65));
+    	//setMaximumSize(new Dimension(190, 65));
     	
         this.base = base;
         setLayout(null);
@@ -122,6 +124,21 @@ public class AppointmentPanel extends JPanel implements Comparable
         lblDeclined.setBounds(69, 101, 25, 14);
         lblDeclined.setText(Fonts.AwesomeIcons.ICON_REMOVE.toString());
         add(lblDeclined);
+        
+        lblWait = new JLabel("New label");
+        lblWait.setEnabled(false);
+        lblWait.setVisible(false);
+        lblWait.setFont(new Font("FontAwesome", Font.PLAIN, 14));
+        lblWait.setBounds(104, 101, 35, 14);
+        lblWait.setText(Fonts.AwesomeIcons.ICON_TIME.toString());
+        add(lblWait);
+        
+        lblPlace = new JLabel("New label");
+        lblPlace.setVisible(false);
+        lblPlace.setFont(new Font("FontAwesome", Font.PLAIN, 12));
+        lblPlace.setBounds(10, 72, 24, 14);
+        lblPlace.setText(Fonts.AwesomeIcons.ICON_MAP_MARKER.toString());
+        add(lblPlace);
         if(this.base instanceof Meeting) {
         	Meeting meeting = (Meeting)this.base;
         	txtOkNum = new JTextField();
@@ -154,24 +171,8 @@ public class AppointmentPanel extends JPanel implements Comparable
             txtWaitNum.setBorder(null);
             add(txtWaitNum);
         }
-        
-        
         this.cal = calendar;
-        
-        lblWait = new JLabel("New label");
-        lblWait.setEnabled(false);
-        lblWait.setVisible(false);
-        lblWait.setFont(new Font("FontAwesome", Font.PLAIN, 14));
-        lblWait.setBounds(104, 101, 35, 14);
-        lblWait.setText(Fonts.AwesomeIcons.ICON_TIME.toString());
-        add(lblWait);
-        
-        lblPlace = new JLabel("New label");
-        lblPlace.setVisible(false);
-        lblPlace.setFont(new Font("FontAwesome", Font.PLAIN, 12));
-        lblPlace.setBounds(10, 72, 24, 14);
-        lblPlace.setText(Fonts.AwesomeIcons.ICON_MAP_MARKER.toString());
-        add(lblPlace);
+
 
         
     }
@@ -187,30 +188,25 @@ public class AppointmentPanel extends JPanel implements Comparable
     public Calendar getCalendar(){
     	return this.cal;
     }
-    
-    public Meeting getMeeting(){
-    	return this.meeting;
-    }
-    
-    
+
     
     public String getResponses(String s, Meeting m) {
     	int Attending = 0; int Not_Attending = 0; int Not_Seen = 0;
     	ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
 		try {
 			meetingResponses = Client.register.getMeetingResponsesToMeeting(m);
-			System.out.print(meetingResponses);
+			System.out.print("sup" + meetingResponses);
 		} catch (CloakedIronManException e) {
 			e.printStackTrace();
 		}
 		for (MeetingResponse resp: meetingResponses){
-			if (resp.equals(Response.NOT_SEEN)){
+			if (resp.getResponse().equals(Response.NOT_SEEN)){
 				Not_Seen += 1;
 			}
-			else if (resp.equals(Response.NOT_ATTENDING)){
+			else if (resp.getResponse().equals(Response.NOT_ATTENDING)){
 				Not_Attending += 1;
 			}
-			else if (resp.equals(Response.ATTENDING)){
+			else if (resp.getResponse().equals(Response.ATTENDING)){
 				Attending += 1;
 			}
 		}
@@ -224,7 +220,7 @@ public class AppointmentPanel extends JPanel implements Comparable
 			return Not_Seen + "";
 		}
 		else {
-			return "5";
+			return null;
 		}
 
     }
@@ -263,28 +259,32 @@ public class AppointmentPanel extends JPanel implements Comparable
     		if (lblArrow.getText().equals(Fonts.AwesomeIcons.ICON_CARET_DOWN.toString())){
     			setPreferredSize(new Dimension(190,130));
     			lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_UP.toString());
-            	lblGroup.setVisible(true);
-            	txtPlace.setVisible(true);
-            	txtOkNum.setVisible(true);
-            	txtDeclinedNum.setVisible(true);
-            	txtWaitNum.setVisible(true);
-            	lblOK.setVisible(true);
-            	lblDeclined.setVisible(true);
-                lblPlace.setVisible(true);
-                lblWait.setVisible(true);
+    			txtPlace.setVisible(true);
+            	lblPlace.setVisible(true);
+        		if(AppointmentPanel.base instanceof Meeting) {
+        			lblGroup.setVisible(true);
+                 	lblWait.setVisible(true);
+        			txtOkNum.setVisible(true);
+                	txtDeclinedNum.setVisible(true);
+                	txtWaitNum.setVisible(true);
+                	lblOK.setVisible(true);
+                	lblDeclined.setVisible(true);
+        		}
     		}
     		else if(lblArrow.getText().equals(Fonts.AwesomeIcons.ICON_CARET_UP.toString())){
     			setPreferredSize(new Dimension(190,65));
     			lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_DOWN.toString());
-            	lblGroup.setVisible(false);
             	txtPlace.setVisible(false);
-            	txtOkNum.setVisible(false);
-            	txtDeclinedNum.setVisible(false);
-            	txtWaitNum.setVisible(false);
-            	lblOK.setVisible(false);
-            	lblDeclined.setVisible(false);
                 lblPlace.setVisible(false);
-                lblWait.setVisible(false);
+        		if(AppointmentPanel.base instanceof Meeting) {
+                    lblWait.setVisible(false);
+                	txtOkNum.setVisible(false);
+                	txtDeclinedNum.setVisible(false);
+                	txtWaitNum.setVisible(false);
+                	lblOK.setVisible(false);
+                	lblDeclined.setVisible(false);
+                	lblGroup.setVisible(false);
+        		}
     		}
     		}
 		}

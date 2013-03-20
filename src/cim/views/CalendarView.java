@@ -355,6 +355,11 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 				
 				gregCal = new GregorianCalendar();
 				Appointment tempAppointment = myCalendars.get(i).getAppointments().get(j);
+				if (tempAppointment instanceof Meeting){
+					if(((Meeting) tempAppointment).isCancelled()){
+						continue;
+					}
+				}
 				
 				Date tempDate = tempAppointment.getDate();
 				gregCal.setTimeInMillis(tempDate.getTime());								
@@ -440,6 +445,9 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		}
 		else if (evt.getPropertyName().equals("activeCalendars")){
 			myCalendars = ((ArrayList<Calendar>) evt.getNewValue());
+			renderCalendars();
+		}
+		else if (evt.getPropertyName().equals("meetingResponses")){
 			renderCalendars();
 		}
 		
