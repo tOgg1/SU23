@@ -90,7 +90,9 @@ public class MeetingResponsePanel extends JPanel {
 			add(lblDecline);
 			
 			setSize(967,35);
-			setPreferredSize(new Dimension(998, 35));
+			setMinimumSize(new Dimension(967, 35));
+			setPreferredSize(new Dimension(967, 35));
+			setMaximumSize(new Dimension(967, 35));
 			
 			
 		} catch(Exception e) {

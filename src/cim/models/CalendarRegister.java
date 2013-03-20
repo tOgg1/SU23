@@ -11,6 +11,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.sun.xml.internal.ws.api.addressing.WSEndpointReference.Metadata;
+
 /**
  * A register containing all information currently in use by the client.
  * Contains a lot of functions for storing and retreiving data. This class also takes cares
@@ -43,7 +45,7 @@ public class CalendarRegister
 
 	
 	/**
-	 * Reference to all Meeting responses to the current users
+	 * Reference to all Meeting responses to the current user
 	 */
 	private ArrayList<MeetingResponse> meetingResponses;
 
@@ -61,11 +63,7 @@ public class CalendarRegister
      */
 	private ArrayList<Room> rooms;
 
-    /**
-     * Reference to available rooms
-     */
-    private ArrayList<Room> availableRooms;
-
+   
 	Client parent;
 
 	/**
@@ -85,6 +83,9 @@ public class CalendarRegister
 	 * Property change support
 	 */
 	private PropertyChangeSupport pcs;
+
+
+	private ArrayList<Room> availableRooms;
 	
 	public CalendarRegister(Client parent)
 	{
@@ -490,6 +491,10 @@ public class CalendarRegister
 	 * @throws CloakedIronManException
 	 */
 	public void saveMeetingResponse(MeetingResponse mr) throws CloakedIronManException {
+		// The meeting response is new, should be saved.
+		this.parent.request(new Request("SAVE_MEETING_RESPONSE", mr));
+		return;
+		/*
 		for(MeetingResponse mri : this.meetingResponses) {
 			if(mri.equals(mr)) {
 				if(mri.getResponse() != mr.getResponse()) {
@@ -498,9 +503,8 @@ public class CalendarRegister
 				}
 				break;
 			}
-		}
-		// The meeting response is new, should be saved.
-		this.parent.request(new Request("SAVE_MEETING_RESPONSE", mr));
+		}*/
+		
 		
 	}
 	public Account getAccount()
@@ -509,9 +513,9 @@ public class CalendarRegister
 	}
 
     @SuppressWarnings("unchecked")
-    public ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException{
+    private ArrayList<MeetingResponse> getMeetingResponses() throws CloakedIronManException{
 		if(this.meetingResponses == null) {
-			Response r = this.parent.request(new Request("GET_MEETINGRESPONSESS_TO_ACCOUNT", this.account));
+			Response r = this.parent.request(new Request("GET_MEETING_RESPONSES"));
 			this.setMeetingResponses((ArrayList<MeetingResponse>)r.getData()[0]);
 		}
 		return this.meetingResponses;
@@ -553,18 +557,13 @@ public class CalendarRegister
     
     public void registerAlert(Alert alert) {
     	this.alerts.remove(alert);
-    	this.alerts.add(alert);
+    	if(alert.getOwner().equals(this.account)) {
+    		this.alerts.add(alert);
+    	}
+    	
     	this.pcs.firePropertyChange("alerts", null, this.alerts);
     }
 
-    public void registerAvailableRoom(Room room)
-    {
-        registerRoom(room);
-        this.availableRooms.remove(room);
-        this.availableRooms.add(room);
-
-        //TODO: Add an extra propertyChange?
-    }
 
     public void registerRejectMessage(RejectMessage rm)
     {
@@ -595,9 +594,11 @@ public class CalendarRegister
 	}
 	
 
-    public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end)
+    public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end) throws CloakedIronManException
     {
-        if(availableRooms != null)
+        Response res = parent.request(new Request("GET_AVAILABLE_ROOMS", new Object[]{date, start, end}));
+        this.availableRooms = (ArrayList<Room>)res.getData()[0];
+        return this.availableRooms;        /*if(availableRooms != null)
         {
             return availableRooms;
         }
@@ -611,10 +612,11 @@ public class CalendarRegister
         catch(Exception e)
         {
             return new ArrayList<Room>();
-        }
+        }*/
     }
 
-    public ArrayList<Room> getRooms()
+    @SuppressWarnings("unchecked")
+	public ArrayList<Room> getRooms()
     {
         if(rooms != null)
         {
@@ -651,13 +653,34 @@ public class CalendarRegister
         }
 	}
 	
-	public Calendar saveCalendar(Calendar c) throws CloakedIronManException {
-		Response res = this.parent.request(new Request("SAVE_CALENDAR", c));
-		return (Calendar) res.getData()[0];
+	public void saveCalendar(Calendar c) throws CloakedIronManException {
+		this.parent.request(new Request("SAVE_CALENDAR", c));
+		//return (Calendar) res.getData()[0];
 	}
 	
 	public void saveAlert(Alert a) throws CloakedIronManException {
-		// TODO: Legge inn denne metoden p��� serveren
+		this.parent.request(new Request("SAVE_ALERT", a));
 	}
+	
+	public ArrayList<MeetingResponse> getMeetingResponsesToMeeting(Meeting m) throws CloakedIronManException {
+		ArrayList<MeetingResponse> ret = new ArrayList<MeetingResponse>();
+		for(MeetingResponse mr : this.getMeetingResponses()) {
+			if(m.equals(mr.getMeeting())) {
+				ret.add(mr);
+			}
+		}
+		return ret;
+	}
+	
+	public ArrayList<MeetingResponse> getMeetingResponsesToAccount() throws CloakedIronManException {
+		ArrayList<MeetingResponse> ret = new ArrayList<MeetingResponse>();
+		for(MeetingResponse mr : this.getMeetingResponses()) {
+			if(this.account.equals(mr.getAccount())) {
+				ret.add(mr);
+			}
+		}
+		return ret;
+	}
+	
 
 }
