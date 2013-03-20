@@ -45,7 +45,17 @@ public class Helper
     	c.set(Calendar.MINUTE, mins);
     	return new Time(c.getTimeInMillis());
     }
-    
+    public static Time getTime(int year, int month, int day, int hour, int minutes)
+    {
+    	Calendar c = getEmptyCalendar();
+    	c.set(Calendar.YEAR, year);
+    	c.set(Calendar.MONTH, month);
+    	c.set(Calendar.DAY_OF_MONTH, day);
+    	c.set(Calendar.HOUR, hour);
+    	c.set(Calendar.MINUTE, minutes);
+    	return new Time(c.getTimeInMillis());
+    	
+    }
     public static Date getDate(int year, int month, int day) {
     	Calendar c = getEmptyCalendar();
     	c.set(year, month-1, day);
