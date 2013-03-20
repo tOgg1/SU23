@@ -9,6 +9,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import cim.models.Account;
 import cim.models.Appointment;
@@ -20,6 +22,8 @@ import java.awt.Insets;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class EditAppointmentDialog extends JDialog implements ActionListener{
 	// Panels
@@ -37,6 +41,7 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 	private JButton btnCancelAppointment;
 	
 //	public EditAppointmentDialog(Account account, Appointment appointment){ //Bytt til denne n�r GUI er koblet mot resten
+	@SuppressWarnings("unused")
 	public EditAppointmentDialog(Account account, Appointment appointment) throws CloakedIronManException {
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Endre avtale");
@@ -71,6 +76,19 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 				mainPanel.add(addDetailsPanel, gbc_addDetailsPanel);
 			
 			chckbxAddParticipants = new JCheckBox("Legg til personer/grupper");
+			chckbxAddParticipants.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent arg0) {
+					if(chckbxAddParticipants.isSelected())
+					{
+						addParticipantsPanel.setVisible(true);
+					}
+					else
+					{
+						addParticipantsPanel.setVisible(false);
+					}
+
+				}
+			});
 			GridBagConstraints gbc_chckbxAddParticipants = new GridBagConstraints();
 			gbc_chckbxAddParticipants.fill = GridBagConstraints.BOTH;
 			gbc_chckbxAddParticipants.insets = new Insets(0, 0, 5, 5);
@@ -88,6 +106,18 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 			mainPanel.add(addParticipantsPanel, gbc_addParticipantsPanel);
 			
 			chckbxLeggTilPersonlig = new JCheckBox("Legg til personlig alarm");
+			chckbxLeggTilPersonlig.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent arg0) {
+					if(chckbxLeggTilPersonlig.isSelected())
+					{
+						addAlarmPanel.setVisible(true);
+					}
+					else
+					{
+						addAlarmPanel.setVisible(false);
+					}
+				}
+			});
 			GridBagConstraints gbc_chckbxLeggTilPersonlig = new GridBagConstraints();
 			gbc_chckbxLeggTilPersonlig.fill = GridBagConstraints.BOTH;
 			gbc_chckbxLeggTilPersonlig.insets = new Insets(0, 0, 5, 5);
@@ -143,15 +173,35 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 			mainPanel.add(addAlarmPanel);
 			
 			btnCancelDialog = new JButton("Avbryt");
+			btnCancelDialog.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					
+					
+					disposeFrame();
+				
+				}
+			});
 			mainPanel.add(btnCancelDialog);
 			
 			btnSave = new JButton("Lagre endringer");
+			btnSave.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					
+					
+				}
+			});
 			mainPanel.add(btnSave);
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+	}
+	public void disposeFrame()
+	{
 		this.dispose();
 	}
 }

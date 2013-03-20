@@ -18,7 +18,7 @@ public class RejectMessage extends CalendarObject {
 	private Account whoRejected;
 	private final Meeting meeting;
 	
-	private boolean isSeen;
+	private boolean isSeen = false;
 	
 	public RejectMessage(Account recipient, Meeting meeting) {
 		this.recipient = recipient;

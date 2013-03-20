@@ -126,37 +126,40 @@ public class ParticipantsPanel extends JPanel implements ActionListener, Documen
         }
 
         DefaultListModel<Attendable> resultList = new DefaultListModel<Attendable>();
-
-        for(int i = 0; i < allModels.size(); i++)
+        for(String searchPart : search.split(" "))
         {
-            for(String s : allModels.getElementAt(i).getName().toLowerCase().split(" "))
+            for(int i = 0; i < allModels.size(); i++)
             {
-                char[] searchArray = search.toCharArray();
-                char[] modelArray = s.toCharArray();
-                int j = 0;
-                for(Character ch : searchArray)
+                for(String s : allModels.getElementAt(i).getName().toLowerCase().split(" "))
                 {
-                    ch = Character.toLowerCase(ch);
-                    if(j > modelArray.length-1)
+                    char[] searchArray = searchPart.toCharArray();
+                    char[] modelArray = s.toCharArray();
+                    int j = 0;
+                    for(Character ch : searchArray)
                     {
-                        break;
-                    }
-                    if(ch == modelArray[j])
-                    {
-                        ++j;
-                        if(j < searchArray.length)
-                            continue;
-                    }
+                        ch = Character.toLowerCase(ch);
+                        if(j > modelArray.length-1)
+                        {
+                            break;
+                        }
+                        if(ch == modelArray[j])
+                        {
+                            ++j;
+                            if(j < searchArray.length)
+                                continue;
+                        }
 
-                    if(j != searchArray.length)
-                    {
-                        break;
+                        if(j != searchArray.length)
+                        {
+                            break;
+                        }
+
+                        if(modelAttending.contains(allModels.elementAt(i)))
+                            break;
+
+                        if(!resultList.contains(allModels.elementAt(i)))
+                            resultList.addElement(allModels.elementAt(i));
                     }
-
-                    if(modelAttending.contains(allModels.elementAt(i)))
-                        break;
-
-                    resultList.addElement(allModels.elementAt(i));
                 }
             }
         }

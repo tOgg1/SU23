@@ -181,18 +181,14 @@ public class Appointment extends CalendarObject
 
     public Meeting toMeeting()
     {
-        return new Meeting(getName(), getDate(), getStart(), getEnd(), getOwner());
+    	Meeting m = new Meeting(getName(), getDate(), getStart(), getEnd(), getOwner());
+    	m.setId(this.getId());
+    	return m;
     }
 
     public Meeting toMeeting(ArrayList<Attendable> invitees)
     {
         Meeting meeting = this.toMeeting();
-        /*
-        ArrayList<MeetingResponse> responses = new ArrayList<MeetingResponse>();
-        for(Attendable invitee : invitees)
-        {
-            responses.add(new MeetingResponse((Account)invitee,meeting,"not_seen"));
-        }*/
         return meeting;
     }
 }
