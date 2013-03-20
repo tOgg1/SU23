@@ -92,7 +92,7 @@ public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeL
 		String strProp = evt.getPropertyName();
 		if(strProp.equals("meetingResponses")) {
 			try {
-				this.setModel(Client.register.getMeetingResponses());
+				this.setModel(Client.register.getMeetingResponsesToAccount());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -1444,6 +1444,23 @@ public class DatabaseHandler {
 			throw new CloakedIronManException("Could not get alert", e);
 		}
 	}
+
+	public ArrayList<MeetingResponse> getAllMeetingResponses() throws CloakedIronManException {
+			try {
+			ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
+			
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting_response");
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				MeetingResponse mr = new MeetingResponse(this.getAccount(rs.getInt("account_user_id")), (Meeting)this.getAppointment2(rs.getInt("meeting_appointment_id")), rs.getString("status"));
+				meetingResponses.add(mr);
+			}
+			
+			return meetingResponses;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get meeting responses to meeting.", e);
+		}
+	}
     
     
 

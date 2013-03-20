@@ -88,7 +88,7 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		// Det er laget. @hawk
 		
 		tabbedPane.addTab("Møter til godkjenning", null, incomingAppointmentsView, null);
-		incomingAppointmentsView.setModel(Client.register.getMeetingResponses());
+		incomingAppointmentsView.setModel(Client.register.getMeetingResponsesToAccount());
 		
 		alertsView = new AlertsView();
 		tabbedPane.addTab("Varsler", null, alertsView, null);
