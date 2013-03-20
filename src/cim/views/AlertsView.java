@@ -76,7 +76,7 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		btnMarkAlertAsRead.addActionListener(new BTNMarkRejectionAsReadListener());
 
 	}
-	public int getUnreadAlerts(){
+	public void countUnreadAlerts(){
 		int count = 0;
 		
 		// Count all unseen alerts
@@ -100,7 +100,6 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 			e.printStackTrace();
 		}
 //		Return count of total unseen objects
-		return count;
 	}
 	private void generateRejectMessageList() {
 		try{
@@ -174,18 +173,15 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 //		
 //	}
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println("ALARMVIEWprpChanged: " + evt.getPropertyName());
 		String propertyName = evt.getPropertyName();
-		
-//		String strProp = evt.getPropertyName();
-//		if(strProp.equals("meetingResponses")) {
-//			try {
-//				this.setModel(Client.register.getMeetingResponsesToAccount());
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			
-//		}
+		if(propertyName.equals("alerts")){
+			generateAlertList(); 
+			// Setter modell på nytt og god stemning
+		}
+		else if(propertyName.equals("rejectMessages")){
+			generateRejectMessageList(); 
+			//Samme som over. Ny modell og gode greier.
+		}
 		
 	}
 
