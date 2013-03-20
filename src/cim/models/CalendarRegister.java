@@ -61,11 +61,7 @@ public class CalendarRegister
      */
 	private ArrayList<Room> rooms;
 
-    /**
-     * Reference to available rooms
-     */
-    private ArrayList<Room> availableRooms;
-
+   
 	Client parent;
 
 	/**
@@ -553,18 +549,13 @@ public class CalendarRegister
     
     public void registerAlert(Alert alert) {
     	this.alerts.remove(alert);
-    	this.alerts.add(alert);
+    	if(alert.getOwner().equals(this.account)) {
+    		this.alerts.add(alert);
+    	}
+    	
     	this.pcs.firePropertyChange("alerts", null, this.alerts);
     }
 
-    public void registerAvailableRoom(Room room)
-    {
-        registerRoom(room);
-        this.availableRooms.remove(room);
-        this.availableRooms.add(room);
-
-        //TODO: Add an extra propertyChange?
-    }
 
     public void registerRejectMessage(RejectMessage rm)
     {
@@ -597,7 +588,8 @@ public class CalendarRegister
 
     public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end)
     {
-        if(availableRooms != null)
+    	return this.getRooms();
+        /*if(availableRooms != null)
         {
             return availableRooms;
         }
@@ -611,10 +603,11 @@ public class CalendarRegister
         catch(Exception e)
         {
             return new ArrayList<Room>();
-        }
+        }*/
     }
 
-    public ArrayList<Room> getRooms()
+    @SuppressWarnings("unchecked")
+	public ArrayList<Room> getRooms()
     {
         if(rooms != null)
         {
@@ -651,13 +644,13 @@ public class CalendarRegister
         }
 	}
 	
-	public Calendar saveCalendar(Calendar c) throws CloakedIronManException {
-		Response res = this.parent.request(new Request("SAVE_CALENDAR", c));
-		return (Calendar) res.getData()[0];
+	public void saveCalendar(Calendar c) throws CloakedIronManException {
+		this.parent.request(new Request("SAVE_CALENDAR", c));
+		//return (Calendar) res.getData()[0];
 	}
 	
 	public void saveAlert(Alert a) throws CloakedIronManException {
-		// TODO: Legge inn denne metoden p��� serveren
+		this.parent.request(new Request("SAVE_ALERT", a));
 	}
 
 }
