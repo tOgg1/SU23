@@ -1,6 +1,7 @@
 package cim.views;
 
 import cim.models.Alert;
+import cim.models.CalendarRegister;
 import cim.models.RejectMessage;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
@@ -8,8 +9,19 @@ import cim.util.CloakedIronManException;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class AlertsView extends JPanel{
+public class AlertsView extends JPanel implements PropertyChangeListener{
+	/*
+	 * 
+	 * CalendarRegister fyrer av "alerts" når det kommer oppdateringer fra 
+	 * serveren med en ny alarm. Du kan da hente de nye alertsene med Client.register.getAlerts()
+CalendarRegister fyrer av "rejectMessages" når det kommer oppdateringer fra serveren 
+med en ny reject message. Du kan da hente de nye meldingene med Client.register.getRejectMessages()
+
+
+	 */
 //	Client.register <--- objektet vi kaller metoder pï¿½.
 	private JList rejectionMessagesList;
 	private DefaultListModel<RejectMessage> rejectMessageListModel;
@@ -26,11 +38,14 @@ public class AlertsView extends JPanel{
 	
 	private int unReadAlerts; 
 	//Kombinerer begge listene sine uleste elementer
+	private PropertyChangeListener alertListListener;
+	private PropertyChangeListener rejectMessageListener;
 	
 	public AlertsView() {
+//		Client.register.addPropertyChangeListener(new CalendarRegistryListener());
 		setLayout(null);
 		
-		lblAlerts = new JLabel("Varsler");
+		lblAlerts = new JLabel("Alarmer/varsler");
 		lblAlerts.setBounds(10, 11, 97, 14);
 		add(lblAlerts);
 		
@@ -38,13 +53,14 @@ public class AlertsView extends JPanel{
 		alertList.setBounds(10, 36, 639, 150);
 		add(alertList);
 		generateAlertList();
+		alertList.addPropertyChangeListener(alertListListener);
 		
-		btnMarkAlarmAsRead = new JButton("Marker som lest"); //Alarm (alerts)
+		btnMarkAlarmAsRead = new JButton("Fjern alarm"); //Alarm (alerts)
 		btnMarkAlarmAsRead.setBounds(499, 197, 150, 23);
 		add(btnMarkAlarmAsRead);
 		btnMarkAlarmAsRead.addActionListener(new BTNMarkAlertAsReadListener());
 		
-		lblMessages = new JLabel("Meldinger");
+		lblMessages = new JLabel("Beskjeder");
 		lblMessages.setBounds(10, 227, 97, 14);
 		add(lblMessages);
 		
@@ -52,8 +68,9 @@ public class AlertsView extends JPanel{
 		rejectionMessagesList.setBounds(10, 252, 639, 150);
 		add(rejectionMessagesList);
 		generateRejectMessageList();
+		rejectionMessagesList.addPropertyChangeListener(rejectMessageListener);
 		
-		btnMarkAlertAsRead = new JButton("Marker som lest"); //RejectMessages
+		btnMarkAlertAsRead = new JButton("Fjern beskjed"); //RejectMessages
 		btnMarkAlertAsRead.setBounds(499, 413, 150, 23);
 		add(btnMarkAlertAsRead);
 		btnMarkAlertAsRead.addActionListener(new BTNMarkRejectionAsReadListener());
@@ -142,6 +159,33 @@ public class AlertsView extends JPanel{
 				}
 			}
 		}
+		
+	}
+//	public class CalendarRegistryListener implements PropertyChangeListener{
+//
+//		@Override
+//		public void propertyChange(PropertyChangeEvent evt) {
+//			System.out.println("ALERTVIEW, propChanged: "+ evt.getPropertyName());
+////			
+////			generateAlertList();
+////			generateRejectMessageList();
+//			
+//		}
+//		
+//	}
+	public void propertyChange(PropertyChangeEvent evt) {
+		System.out.println("ALARMVIEWprpChanged: " + evt.getPropertyName());
+		String propertyName = evt.getPropertyName();
+		
+//		String strProp = evt.getPropertyName();
+//		if(strProp.equals("meetingResponses")) {
+//			try {
+//				this.setModel(Client.register.getMeetingResponsesToAccount());
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			
+//		}
 		
 	}
 
