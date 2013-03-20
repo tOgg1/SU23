@@ -57,8 +57,8 @@ public class ServerRequestAPI {
             {
                 return get_rejectMessages_to_account((Account)args[0]);
             }
-			else if (method.equals("GET_MEETINGRESPONSESS_TO_ACCOUNT")){
-				return get_all_meetingResponses_to_account((Account)args[0]);
+			else if (method.equals("GET_MEETING_RESPONSES")){
+				return get_meeting_responses();
 			}
 			
 			
@@ -104,8 +104,8 @@ public class ServerRequestAPI {
 		return new Response();
 	}
 
-	private Response get_all_meetingResponses_to_account(Account account) throws CloakedIronManException {
-		return new Response(this.db.getMeetingResponsesToAccount(account));
+	private Response get_meeting_responses() throws CloakedIronManException {
+		return new Response(this.db.getAllMeetingResponses());
 	}
 
     private Response get_rejectMessages_to_account(Account account) throws CloakedIronManException {

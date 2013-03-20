@@ -18,6 +18,8 @@ public class RejectMessage extends CalendarObject {
 	private Account whoRejected;
 	private final Meeting meeting;
 	
+	private boolean isSeen;
+	
 	public RejectMessage(Account recipient, Meeting meeting) {
 		this.recipient = recipient;
 		this.meeting = meeting;
@@ -50,6 +52,12 @@ public class RejectMessage extends CalendarObject {
 		return meeting;
 	}
 	
+	public boolean isSeen(){
+		return this.isSeen;
+	}
+	public void changeIsSeen(boolean b){
+		this.isSeen = b;
+	}
 	public String toString() {
 		//Is used in the AlertsView
 		String s = "";
