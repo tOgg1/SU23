@@ -672,7 +672,6 @@ public class DatabaseHandler {
 			// If meeting
 			if(a instanceof Meeting) {
 				Meeting m = (Meeting)a;
-				System.out.println(m.isCancelled());
 				st = this.con.prepareStatement("INSERT INTO meeting " +
 						"(appointment_id,is_cancelled) " +
 						"VALUES " +
@@ -687,7 +686,6 @@ public class DatabaseHandler {
 				
 				// Must change meeting responses if date is changed
 				if(oldAppointment != null) {
-					
 					if(!oldAppointment.getDate().equals(m.getDate()) ||
 							!oldAppointment.getStart().equals(m.getStart())||
 							!oldAppointment.getEnd().equals(m.getEnd()))
@@ -712,7 +710,7 @@ public class DatabaseHandler {
 		}
 	}
 	
-	private ArrayList<MeetingResponse> getMeetingResponsesToMeeting(Meeting m) throws CloakedIronManException {
+	ArrayList<MeetingResponse> getMeetingResponsesToMeeting(Meeting m) throws CloakedIronManException {
 		try {
 			
 			if(m.getId() == -1) {
