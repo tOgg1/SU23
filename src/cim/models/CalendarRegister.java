@@ -530,11 +530,16 @@ public class CalendarRegister
     public ArrayList<Alert> getAlerts() throws CloakedIronManException {
     	if(this.alerts == null) {
     		Response r = this.parent.request(new Request("GET_ALERTS_TO_ACCOUNT", this.account));
-			this.alerts = (ArrayList<Alert>)r.getData()[0];
+			this.setAlerts((ArrayList<Alert>)r.getData()[0]);
     	}
     	return this.alerts;
     }
 	
+	private void setAlerts(ArrayList<Alert> list) {
+		this.alerts = list;
+		this.pcs.firePropertyChange("alerts", null, list);
+	}
+
 	public void setMeetingResponses(ArrayList<MeetingResponse> list) {
 		this.meetingResponses = list;
 		this.pcs.firePropertyChange("meetingResponses", null, list);
@@ -643,7 +648,7 @@ public class CalendarRegister
         try
         {
             Response res = parent.request(new Request("GET_REJECTMESSAGES_TO_ACCOUNT", account));
-            this.rejectMessages = (ArrayList<RejectMessage>)res.getData()[0];
+            this.setRejectMessages((ArrayList<RejectMessage>)res.getData()[0]);
             return this.rejectMessages;
         }
         catch(Exception e)
@@ -651,6 +656,10 @@ public class CalendarRegister
         	e.printStackTrace();
             return new ArrayList<RejectMessage>();
         }
+	}
+	public void setRejectMessages(ArrayList<RejectMessage> list) {
+		this.rejectMessages = list;
+		this.pcs.firePropertyChange("rejectMessages", null, list);
 	}
 	
 	public void saveCalendar(Calendar c) throws CloakedIronManException {
