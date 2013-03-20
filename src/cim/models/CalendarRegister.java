@@ -670,6 +670,9 @@ public class CalendarRegister
 	public void saveAlert(Alert a) throws CloakedIronManException {
 		this.parent.request(new Request("SAVE_ALERT", a));
 	}
+	public void saveRejectionMessage(RejectMessage rm) {
+		//TODO Trenger metode som gjør det samme som saveAlert
+	}
 	
 	public ArrayList<MeetingResponse> getMeetingResponsesToMeeting(Meeting m) throws CloakedIronManException {
 		ArrayList<MeetingResponse> ret = new ArrayList<MeetingResponse>();
