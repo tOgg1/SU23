@@ -22,6 +22,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class AddAppointmentDialog extends JDialog{
@@ -163,7 +164,19 @@ public class AddAppointmentDialog extends JDialog{
 				
 				// Initializes the construction of a new Appointment from the information gathered above.
 				Appointment app = new Appointment(info,date,startTid,sluttTid,Client.register.getAccount());
-				
+				if(chckbxLeggTilPersonlig.isSelected())
+                {
+                	int x = addAlarmPanel.getYear();
+                	int y = addAlarmPanel.getMonth();
+                	int z = addAlarmPanel.getDays();
+                	
+                	int h = addAlarmPanel.getHours();
+                	int m = addAlarmPanel.getMinutes();
+                	Timestamp time = Helper.getTime(x,y,z,h,m,0);
+                	Alert alert = new Alert(app,Client.register.getAccount(),time);
+                	setAlert(alert);
+                	
+                }
 				/* 
 				 * Then, if the checkbox "Legg til personer/grupper" is set,
 				*  and if the addParticipantsPanel is not empty, a Meeting-instance is created and 
@@ -192,7 +205,10 @@ public class AddAppointmentDialog extends JDialog{
 	                		}
 	                	}
 	                }
-                } else {
+                } 
+                
+                else {
+                
                 	setAppointment(app);
                 }
                 
@@ -241,6 +257,10 @@ public class AddAppointmentDialog extends JDialog{
 	
 	public Alert getAlert() {
 		return this.alert;
+	}
+	public void setAlert(Alert al)
+	{
+		this.alert = al;
 	}
 	
 	public Calendar getCalendar() {

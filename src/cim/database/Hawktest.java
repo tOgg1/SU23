@@ -1,12 +1,16 @@
 package cim.database;
 
+import java.util.ArrayList;
+
 import cim.models.Account;
+import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.models.Group;
 import cim.models.Meeting;
 import cim.models.MeetingResponse;
 import cim.models.MeetingResponse.Response;
 import cim.util.CloakedIronManException;
+import cim.util.Helper;
 
 public class Hawktest {
 
@@ -15,19 +19,18 @@ public class Hawktest {
 	 */
 	public static void main(String[] args) throws CloakedIronManException {
 		DatabaseHandler db = new DatabaseHandler();
-<<<<<<< HEAD
-=======
+		Calendar c = db.getCalendar2(6);
+		ArrayList<Appointment> apps = c.getAppointments();
+		System.out.println(apps);
 		
-		Account a = db.getAccount(6);
-		
-		Calendar c = db.getCalendarToAttendable(a);
-		System.out.println(c.getAppointments());
-		Meeting m = (Meeting)db.getAppointment2(16);
-		System.out.println(m);
-		c.removeAppointment(m);
-		System.out.println(c.getAppointments());
-		db.saveCalendar(c);
->>>>>>> 71f75574c037322a7c92df3339bd3dda2867469b
+		/*Meeting m = (Meeting)apps.get(4);
+		System.out.println(apps);
+		m.setDate(Helper.getDate(2013, 2,1));
+		System.out.println(apps);
+		db.saveCalendar(c);*/
+		/*Meeting m = (Meeting)db.getAppointment2(6);
+		ArrayList<MeetingResponse> list = db.getMeetingResponsesToMeeting(m);
+		System.out.println(list);*/
 		
 	}
 

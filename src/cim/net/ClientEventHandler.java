@@ -23,9 +23,11 @@ public class ClientEventHandler {
 			}
 			else if (method.equals("ALERT")) {
 				this.alert_updated((Alert)e.getArgs()[0]);
+				return;
 			}
 			else if (method.equals("REJECT_MESSAGE")) {
 				this.reject_message_updated((RejectMessage)e.getArgs()[0]);
+				return;
 			}
 			
 			

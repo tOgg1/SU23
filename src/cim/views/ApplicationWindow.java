@@ -83,12 +83,15 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		incomingAppointmentsView = new IncomingAppointmentsView();
 		incomingAppointmentsView.addPropertyChangeListener(new MeetingResponsePropertyChangeListener());
 		
-		// M���ter til godkjenning burde ha en hjelpeklasse som bygger strengen og 
+		// Møter til godkjenning burde ha en hjelpeklasse som bygger strengen og 
 		// legger til eventuelle "(n)" som kan representere ant. ubehandlede innkallelser.
-		tabbedPane.addTab("M���ter til godkjenning", null, incomingAppointmentsView, null);
-		incomingAppointmentsView.setModel(Client.register.getMeetingResponses());
+		// Det er laget. @hawk
+		
+		tabbedPane.addTab("Møter til godkjenning", null, incomingAppointmentsView, null);
+		incomingAppointmentsView.setModel(Client.register.getMeetingResponsesToAccount());
 		
 		alertsView = new AlertsView();
+		alertsView.addPropertyChangeListener(new AlertViewPropertyChangeListener());
 		tabbedPane.addTab("Varsler", null, alertsView, null);
 		
 		manageCalendarsView = new ManageCalendarsView(Client.register.activeCalendars(), Client.register.getAllCalendars(), this);
@@ -143,9 +146,9 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName() == "numMeetingResponses"){
 				int iNewVal = (int)evt.getNewValue();
-				String text = "M���ter til godkjenning";
+				String text = "Møter til godkjenning";
 				if (iNewVal > 0) {
-					text = "M���ter til godkjenning (" + iNewVal + ")";
+					text = "Møter til godkjenning (" + iNewVal + ")";
 				}
 				tabbedPane.setTitleAt(1, text);
 			}
@@ -153,5 +156,15 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		}
 		
 	}
+    
+    private class AlertViewPropertyChangeListener implements PropertyChangeListener {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			// TODO Beate, lag denne metoden til å fange opp endringer i viewet
+			
+		}
+    	
+    }
 
 }

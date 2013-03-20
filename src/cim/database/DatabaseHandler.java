@@ -606,11 +606,17 @@ public class DatabaseHandler {
 	 */
 	private Appointment saveAppointment(Appointment a, Calendar c) throws CloakedIronManException {
 		try {
+			
+			Appointment oldAppointment = null;
+			
 			if(c.getId() == -1) {
 				throw new CloakedIronManException("Calendar not saved in the database");
 			}
+			
 			if(a.getId() == -1) {
 				a.setId(this.getNextAutoIncrease("appointment", "appointment_id"));
+			} else {
+				oldAppointment = this.getAppointment2(a.getId());
 			}
 			if(a.getOwner() == null) {
 				throw new CloakedIronManException("Owner not set");
@@ -623,6 +629,8 @@ public class DatabaseHandler {
 					throw new CloakedIronManException("Room not saved in database");
 				}
 			}
+			
+			
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO appointment " +
 					"(appointment_id, name, date, start, end, info, calendar_id, place, meeting_room_id, appointment_owner) " +
 					"VALUES " +
@@ -664,7 +672,6 @@ public class DatabaseHandler {
 			// If meeting
 			if(a instanceof Meeting) {
 				Meeting m = (Meeting)a;
-				System.out.println(m.isCancelled());
 				st = this.con.prepareStatement("INSERT INTO meeting " +
 						"(appointment_id,is_cancelled) " +
 						"VALUES " +
@@ -676,6 +683,21 @@ public class DatabaseHandler {
 				st.setBoolean(3, m.isCancelled());
 				st.execute();
 				st.close();
+				
+				// Must change meeting responses if date is changed
+				if(oldAppointment != null) {
+					if(!oldAppointment.getDate().equals(m.getDate()) ||
+							!oldAppointment.getStart().equals(m.getStart())||
+							!oldAppointment.getEnd().equals(m.getEnd()))
+					{
+						ArrayList<MeetingResponse> mrs = this.getMeetingResponsesToMeeting(m);
+						for(MeetingResponse mr : mrs) {
+							mr.setResponse(Response.NOT_SEEN);
+							this.saveMeetingResponse(mr);
+						}
+					}
+				}
+				
 			}
 			
 			this.broadcast("APPOINTMENT", Type.UPDATED, a);
@@ -685,6 +707,29 @@ public class DatabaseHandler {
 			
 		} catch (SQLException e) {
 			throw new CloakedIronManException("Could not handle query.", e);
+		}
+	}
+	
+	ArrayList<MeetingResponse> getMeetingResponsesToMeeting(Meeting m) throws CloakedIronManException {
+		try {
+			
+			if(m.getId() == -1) {
+				throw new CloakedIronManException("Meeting has no ID, meeting not saved in database.");
+			}
+			
+			ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
+			
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting_response WHERE meeting_appointment_id=?");
+			st.setInt(1, m.getId());
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				MeetingResponse mr = new MeetingResponse(this.getAccount(rs.getInt("account_user_id")), m, rs.getString("status"));
+				meetingResponses.add(mr);
+			}
+			
+			return meetingResponses;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get meeting responses to meeting.", e);
 		}
 	}
 	
@@ -706,17 +751,19 @@ public class DatabaseHandler {
 			
 			// All good, lets save
 			PreparedStatement st = this.con.prepareStatement("INSERT INTO alarm " +
-					"(appointment_id, user_id, when, is_seen) " +
+					"(appointment_id, user_id, alarm.when, is_seen) " +
 					"VALUES " +
 					"(?,?,?,?) " +
 					"ON DUPLICATE KEY UPDATE " +
-					"when=?, is_seen=?");
+					"alarm.when=?, is_seen=?");
 			st.setInt(1, a.getAppointment().getId());
 			st.setInt(2, a.getOwner().getId());
 			st.setTimestamp(3, a.getWhen());
 			st.setBoolean(4, a.isSeen());
 			st.setTimestamp(5, a.getWhen());
 			st.setBoolean(6, a.isSeen());
+			
+			st.execute();
 			
 			this.broadcast("ALERT", Type.UPDATED, a);
 			return a;
@@ -1143,8 +1190,9 @@ public class DatabaseHandler {
 			r.setId(rs.getInt("meeting_room_id"));
 			return r;
 		} catch (Exception e) {
-			throw new CloakedIronManException("Could not fetch room.", e);
+			
 		}
+		return null;
 	}
 	/*
 	public Room getRoom(int meeting_room_id) throws SQLException
@@ -1167,18 +1215,25 @@ public class DatabaseHandler {
 	public ArrayList<Room> getAvailableRooms(Date date, Time start, Time end) throws CloakedIronManException{
 		try{
 		PreparedStatement st;
+		Timestamp startA = Helper.getTimestampFromObjects(date, start);
+		Timestamp endA = Helper.getTimestampFromObjects(date, end);
 		st = this.con.prepareStatement("SELECT * FROM appointment WHERE date = ?");
 		st.setDate(1, date);
 		ResultSet rs = st.executeQuery();
 		ArrayList<Room> notAvailable = new ArrayList<Room>();
 		if (!rs.wasNull()){
 			while (rs.next()){
-				if (!overlap(start, rs.getTime("start"), end, rs.getTime("end"))){
+				//System.out.println(start.compareTo(rs.getDate("end")) <= 0);
+				//System.out.println(rs.getDate("start").compareTo(end) >= 0);
+				//System.out.println();
+				System.out.println("Hei");
+				Timestamp startB = Helper.getTimestampFromObjects(date, rs.getTime("start"));
+				Timestamp endB = Helper.getTimestampFromObjects(date, rs.getTime("end"));
+				if (overlap(startA, startB, endA, endB)){
 					notAvailable.add(getRoom(rs.getInt("meeting_room_id")));
 				}
 			}
 			ArrayList<Room> available = getAllRooms();
-			
 			for (Room a : notAvailable){
 				available.remove(a);
 			}			
@@ -1190,10 +1245,15 @@ public class DatabaseHandler {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		System.out.println("hello");
 		return null;
 }
 
+	
+	private boolean overlap(Timestamp start, Timestamp start2, Timestamp end, Timestamp end2){
+		return (start.getTime() <= end2.getTime()) && (end.getTime() >= start2.getTime());
+	}
+	
+	
     private ArrayList<Integer> getGroupIdsFromUserid(int userId) throws SQLException
     {
         PreparedStatement st;
@@ -1208,10 +1268,6 @@ public class DatabaseHandler {
         }
         return groupIds;
     }
-	
-	private boolean overlap(Time start, Time start2, Time end, Time end2){
-		return !(end.before(start2)) || (end2.before(start));
-	}
 	
 	
 	
@@ -1397,6 +1453,23 @@ public class DatabaseHandler {
 			
 		} catch (Exception e) {
 			throw new CloakedIronManException("Could not get alert", e);
+		}
+	}
+
+	public ArrayList<MeetingResponse> getAllMeetingResponses() throws CloakedIronManException {
+			try {
+			ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
+			
+			PreparedStatement st = this.con.prepareStatement("SELECT * FROM meeting_response");
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				MeetingResponse mr = new MeetingResponse(this.getAccount(rs.getInt("account_user_id")), (Meeting)this.getAppointment2(rs.getInt("meeting_appointment_id")), rs.getString("status"));
+				meetingResponses.add(mr);
+			}
+			
+			return meetingResponses;
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get meeting responses to meeting.", e);
 		}
 	}
     

@@ -16,9 +16,12 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JList;
 
+import cim.models.Account;
+import cim.models.Appointment;
 import cim.models.Calendar;
 import cim.models.Room;
 import cim.net.Client;
+import cim.util.CloakedIronManException;
 import cim.util.Helper;
 
 public class AppointmentDetailsPanel extends JPanel implements ActionListener {
@@ -213,6 +216,31 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 
 	}
 	
+	public AppointmentDetailsPanel(Account account, Appointment appointment) {
+		this();
+		String[] dateSplit = appointment.getDate().toString().split("-");
+		comBoxMonth.setSelectedItem(Integer.parseInt(dateSplit[1]));
+		comBoxDays.setSelectedItem(Integer.parseInt(dateSplit[2]));
+		comBoxYear.setSelectedItem(Integer.parseInt(dateSplit[0]));
+		
+		String[] startSplit = appointment.getStart().toString().split(":");
+		
+		
+		comBoxHours.setSelectedItem(Integer.parseInt(startSplit[0]));
+		comBoxMinutes.setSelectedItem(Integer.parseInt(startSplit[1]));
+		
+		String[] endSplit = appointment.getEnd().toString().split(":");
+		
+		comBoxEndHours.setSelectedItem(Integer.parseInt(endSplit[0]));
+		comBoxEndMinutes.setSelectedItem(Integer.parseInt(endSplit[1]));
+		
+		
+		txtDescription.setText(appointment.getInfo());
+		txtLocation.setText(appointment.getPlace());
+		
+		
+	}
+
 	public int getDays()
 	{
 		return (int)comBoxDays.getSelectedItem();
@@ -253,12 +281,19 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent action) {
 		roomListModel = new DefaultListModel<Room>();
-		ArrayList<Room> availableRooms = Client.register.getAvailableRooms(Helper.getDate(getYears(), getMonths(), getDays()), Helper.getTime(getHours(), getMinutes()), Helper.getTime(getEndHours(),getEndMinutes()));
-		for(Room room : availableRooms)
-		{
-			roomListModel.addElement(room);
+		System.out.println("HAAHHAHAHAHAHA: "+Helper.getDate(getYears(),getMonths(),getDays()));
+		ArrayList<Room> availableRooms;
+		try {
+			availableRooms = Client.register.getAvailableRooms(Helper.getDate(getYears(), getMonths(), getDays()), Helper.getTime(getHours(), getMinutes()), Helper.getTime(getEndHours(),getEndMinutes()));
+			for(Room room : availableRooms)
+			{
+				roomListModel.addElement(room);
+			}
+			listAvailableRooms.setModel(roomListModel);
+			
+		} catch (CloakedIronManException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		System.out.println(roomListModel.getSize());
-		listAvailableRooms.setModel(roomListModel);
 	}
 }

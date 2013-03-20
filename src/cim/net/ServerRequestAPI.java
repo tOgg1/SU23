@@ -57,8 +57,8 @@ public class ServerRequestAPI {
             {
                 return get_rejectMessages_to_account((Account)args[0]);
             }
-			else if (method.equals("GET_MEETINGRESPONSESS_TO_ACCOUNT")){
-				return get_all_meetingResponses_to_account((Account)args[0]);
+			else if (method.equals("GET_MEETING_RESPONSES")){
+				return get_meeting_responses();
 			}
 			
 			
@@ -84,6 +84,10 @@ public class ServerRequestAPI {
 				return get_alerts_to_account((Account)args[0]);
 			}
 			
+			else if(method.equals("SAVE_ALERT")) {
+				return save_alert((Alert)args[0]);
+			}
+			
 			return new Response(new CloakedIronManException("No server API call named '" + method + "'"));
 		} catch (Exception e) {
 			return new Response(e);
@@ -100,8 +104,8 @@ public class ServerRequestAPI {
 		return new Response();
 	}
 
-	private Response get_all_meetingResponses_to_account(Account account) throws CloakedIronManException {
-		return new Response(this.db.getMeetingResponsesToAccount(account));
+	private Response get_meeting_responses() throws CloakedIronManException {
+		return new Response(this.db.getAllMeetingResponses());
 	}
 
     private Response get_rejectMessages_to_account(Account account) throws CloakedIronManException {
@@ -172,5 +176,9 @@ public class ServerRequestAPI {
     private Response get_alerts_to_account(Account account) throws CloakedIronManException {
 		return new Response(this.db.getAlertsToAccount(account));
 	}
+    
+    private Response save_alert(Alert a) throws CloakedIronManException{
+    	return new Response(this.db.saveAlert(a));
+    }
 	
 }
