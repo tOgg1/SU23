@@ -194,21 +194,9 @@ public class AddAppointmentDialog extends JDialog{
 	                	}
 	                }
                 } 
-                if(chckbxLeggTilPersonlig.isSelected())
-                {
-                	int x = addAlarmPanel.getYear();
-                	int y = addAlarmPanel.getMonth();
-                	int z = addAlarmPanel.getDays();
-                	
-                	int h = addAlarmPanel.getHours();
-                	int m = addAlarmPanel.getMinutes();
-                	Timestamp time = Helper.getTime(x,y,z,h,m,0);
-                	Alert alert = new Alert(app,Client.register.getAccount(),time);
-                	setAlert(alert);
-                	
-                }
+                
                 else {
-                	if(chckbxLeggTilPersonlig.isSelected())
+                
                 	setAppointment(app);
                 }
                 
