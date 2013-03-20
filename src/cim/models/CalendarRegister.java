@@ -652,6 +652,10 @@ public class CalendarRegister
             return new ArrayList<RejectMessage>();
         }
 	}
+	public void setRejectMessages(ArrayList<RejectMessage> list) {
+		this.rejectMessages = list;
+		this.pcs.firePropertyChange("rejectMessages", null, list);
+	}
 	
 	public void saveCalendar(Calendar c) throws CloakedIronManException {
 		this.parent.request(new Request("SAVE_CALENDAR", c));
