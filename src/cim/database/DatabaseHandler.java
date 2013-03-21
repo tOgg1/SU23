@@ -292,26 +292,49 @@ public class DatabaseHandler {
 		}
     }
 
-    public ArrayList<RejectMessage> getAllRejectMessagesToAccount(Account acc) throws CloakedIronManException
-    {
-        try
-        {
-            ArrayList<RejectMessage> rejectMessages = new ArrayList<RejectMessage>();
-            PreparedStatement st = this.con.prepareStatement("SELECT * from reject_message WHERE to_account = ?");
+ 
+    public ArrayList<RejectMessage> getRejectMessagesToAccount(Account acc) throws CloakedIronManException {
+    	try {
+    		if(acc.getId() == -1) {
+    			throw new CloakedIronManException("Account ID not set, account not saved in database.");
+    		}
+    		
+    		
+    		ArrayList<RejectMessage> rejectMessages = new ArrayList<RejectMessage>();
+            PreparedStatement st = this.con.prepareStatement("SELECT reject_message_id from reject_message WHERE to_account = ?");
             st.setInt(1, acc.getId());
             ResultSet rs = st.executeQuery();
             while(rs.next())
             {
-                RejectMessage rMessage = new RejectMessage(acc, getAppointment2(rs.getInt("meeting_id")).toMeeting());
-                rMessage.setWhoRejected(this.getAccount(rs.getInt("who_rejected")));
-                rejectMessages.add(rMessage);
+            	rejectMessages.add(this.getRejectMessage(rs.getInt("reject_message_id")));
             }
             return rejectMessages;
-        }
-        catch(Exception e)
-        {
-            throw new CloakedIronManException("Couldn't fetch reject messages to accont " + acc.toString(), e);
-        }
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get all reject messages to account.", e);
+		}
+    }
+    
+    RejectMessage getRejectMessage(int id) throws CloakedIronManException {
+    	try {
+			PreparedStatement st = this.con.prepareStatement("SELECT * from reject_message WHERE reject_message_id=?");
+			st.setInt(1,id);
+			ResultSet rs = st.executeQuery();
+			if(!rs.next()) {
+				throw new CloakedIronManException("Could not find a reject message with id " + id );
+			}
+			RejectMessage rm = new RejectMessage(this.getAccount(rs.getInt("to_account")), (Meeting)this.getAppointment2(rs.getInt("meeting_id")), rs.getTimestamp("date"));
+			rm.changeIsSeen(rs.getBoolean("is_seen"));
+			rm.setId(rs.getInt("reject_message_id"));
+			int whoRejectedID = rs.getInt("who_rejected");
+			if(!rs.wasNull()) {
+				rm.setWhoRejected(this.getAccount(whoRejectedID));
+			}
+			return rm;
+			
+			
+		} catch (Exception e) {
+			throw new CloakedIronManException("Could not get reject message", e);
+		}
     }
 
 
@@ -395,13 +418,23 @@ public class DatabaseHandler {
 			// Delete all appointments not in the calendars list
 			
 			ArrayList<Integer> ids = c.getAllAppointmentIds();
+			System.out.println(ids);
+			
+			// First, send out warning about the alarms that is about
+			
+			
 			if (ids.size() > 0) {
 				String joinedString = Helper.join(ids, ",");
 				st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id NOT IN (" + joinedString + ") AND calendar_id=?");
 				st.setInt(1, c.getId());
 				st.executeUpdate();
+				st.close();
+			} else {
+				st = this.con.prepareStatement("DELETE FROM appointment WHERE calendar_id=?");
+				st.setInt(1, c.getId());
+				st.executeUpdate();
+				st.close();
 			}
-			st.close();
 			for(Appointment a : c.getAppointments()) {
 				this.saveAppointment(a, c);
 			}
@@ -512,7 +545,7 @@ public class DatabaseHandler {
 		
 	}
 	
-	private RejectMessage saveRejectMessage(RejectMessage rm) throws CloakedIronManException {
+	public RejectMessage saveRejectMessage(RejectMessage rm) throws CloakedIronManException {
 		try {
 			if(rm.getId() == -1) {
 				rm.setId(this.getNextAutoIncrease("reject_message", "reject_message_id"));

@@ -10,6 +10,7 @@ import cim.util.Log;
 import cim.util.PersonalSettings;
 import cim.util.Settings;
 import cim.views.ApplicationWindow;
+import cim.views.AuthenticateView;
 
 import java.io.File;
 import java.io.IOException;
