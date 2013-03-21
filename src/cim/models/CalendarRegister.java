@@ -537,7 +537,7 @@ public class CalendarRegister
 	
 	private void setAlerts(ArrayList<Alert> list) {
 		this.alerts = list;
-		this.pcs.firePropertyChange("alerts", null, list);
+		this.pcs.firePropertyChange("alertZ", null, list);
 	}
 
 	public void setMeetingResponses(ArrayList<MeetingResponse> list) {
@@ -667,6 +667,9 @@ public class CalendarRegister
 	
 	public void saveAlert(Alert a) throws CloakedIronManException {
 		this.parent.request(new Request("SAVE_ALERT", a));
+	}
+	public void saveRejectionMessage(RejectMessage rm) {
+		//TODO Trenger metode som gjør det samme som saveAlert
 	}
 	
 	public ArrayList<MeetingResponse> getMeetingResponsesToMeeting(Meeting m) throws CloakedIronManException {
