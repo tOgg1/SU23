@@ -249,7 +249,7 @@ public class AppointmentPanel extends JPanel implements Comparable
     	public void mouseReleased(MouseEvent e){
     		try {
 				EditAppointmentDialog edit = new EditAppointmentDialog(Client.register.getAccount(), base);
-				edit.setVisible(true);
+				//edit.setVisible(true);
 				Appointment a = edit.getAppointment();
 				if (a != null){
 					Alert alert = edit.getAlert();

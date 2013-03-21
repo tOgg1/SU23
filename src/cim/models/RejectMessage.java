@@ -20,10 +20,14 @@ public class RejectMessage extends CalendarObject {
 	
 	private boolean isSeen = false;
 	
-	public RejectMessage(Account recipient, Meeting meeting) {
+	public RejectMessage(Account recipient, Meeting meeting, Timestamp date) {
 		this.recipient = recipient;
 		this.meeting = meeting;
-		this.date = Helper.getNow();
+		this.date = date;
+	}
+	
+	public RejectMessage(Account recipient, Meeting meeting) {
+		this(recipient, meeting, Helper.getNow());
 	}
 
 	public static long getSerialversionuid() {

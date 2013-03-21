@@ -212,6 +212,7 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 
 
 		add(comBoxCalendars);
+		comBoxCalendars.setSelectedIndex(0);
 
 
 
@@ -219,6 +220,7 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 	
 	public AppointmentDetailsPanel(Account account, Appointment appointment) {
 		this();
+		System.out.println(appointment.getInfo());
 		String[] dateSplit = appointment.getDate().toString().split("-");
 		comBoxMonth.setSelectedItem(Integer.parseInt(dateSplit[1]));
 		comBoxDays.setSelectedItem(Integer.parseInt(dateSplit[2]));
@@ -236,9 +238,8 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 		comBoxEndMinutes.setSelectedItem(Integer.parseInt(endSplit[1]));
 		
 		
-		txtDescription.setText(appointment.getInfo());
+		txtDescription.setText(appointment.getName());
 		txtLocation.setText(appointment.getPlace());
-		
 		
 	}
 
@@ -270,6 +271,11 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 	{
 		return (int)comBoxMonth.getSelectedItem();
 	}
+	
+	public String getPlace(){
+		return txtLocation.getText();
+		
+	}
 
 	public Calendar getCalendar() {
 		return (Calendar)this.comBoxCalendars.getSelectedItem();
@@ -282,7 +288,6 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent action) {
 		roomListModel = new DefaultListModel<Room>();
-		System.out.println("HAAHHAHAHAHAHA: "+Helper.getDate(getYears(),getMonths(),getDays()));
 		ArrayList<Room> availableRooms;
 		try {
 			availableRooms = Client.register.getAvailableRooms(Helper.getDate(getYears(), getMonths(), getDays()), Helper.getTime(getHours(), getMinutes()), Helper.getTime(getEndHours(),getEndMinutes()));

@@ -8,6 +8,7 @@ import cim.models.Calendar;
 import cim.models.Group;
 import cim.models.Meeting;
 import cim.models.MeetingResponse;
+import cim.models.RejectMessage;
 import cim.models.MeetingResponse.Response;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
@@ -19,11 +20,16 @@ public class Hawktest {
 	 */
 	public static void main(String[] args) throws CloakedIronManException {
 		DatabaseHandler db = new DatabaseHandler();
+
+		RejectMessage rm1 = db.getRejectMessage(1);
+		RejectMessage rm2 = db.getRejectMessage(3);
+
+		System.out.println(rm1.getWhoRejected());
+		System.out.println(rm2.getWhoRejected());
+
+		System.out.println(rm1.isSeen());
+		System.out.println(rm1.getMeeting());
 		
-		
-		Calendar c = db.getCalendar2(6);
-		ArrayList<Appointment> apps = c.getAppointments();
-		System.out.println(apps);
 		
 		/*Meeting m = (Meeting)apps.get(4);
 		System.out.println(apps);
