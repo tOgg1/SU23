@@ -47,6 +47,8 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 	private ArrayList<Room> arrayListRooms;
 	private DefaultListModel<Room> roomListModel;
 	private JLabel lblCalendar;
+	
+	private Room room;
 
 	public AppointmentDetailsPanel() {
 		this.setSize(470, 340);
@@ -220,7 +222,6 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 	
 	public AppointmentDetailsPanel(Account account, Appointment appointment) {
 		this();
-		System.out.println(appointment.getInfo());
 		String[] dateSplit = appointment.getDate().toString().split("-");
 		comBoxMonth.setSelectedItem(Integer.parseInt(dateSplit[1]));
 		comBoxDays.setSelectedItem(Integer.parseInt(dateSplit[2]));
@@ -275,6 +276,9 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 	public String getPlace(){
 		return txtLocation.getText();
 		
+	}
+	public Room getRoom(){
+		return (Room)listAvailableRooms.getSelectedValue();
 	}
 
 	public Calendar getCalendar() {

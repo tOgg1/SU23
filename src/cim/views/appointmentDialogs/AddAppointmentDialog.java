@@ -158,9 +158,15 @@ public class AddAppointmentDialog extends JDialog{
 				String info = addDetailsPanel.getDescription();
 				String place = addDetailsPanel.getPlace();
 				
+				Room room = addDetailsPanel.getRoom();
 				// Initializes the construction of a new Appointment from the information gathered above.
 				Appointment app = new Appointment(info,date,startTid,sluttTid,Client.register.getAccount());
+				if (room != null){
+					app.setRoom(room);
+				}
+				else{
 				app.setPlace(place);
+				}
 				if(chckbxLeggTilPersonlig.isSelected())
                 {
                 	int x = addAlarmPanel.getYear();
