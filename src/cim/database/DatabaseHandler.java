@@ -736,6 +736,12 @@ public class DatabaseHandler {
 				
 			}
 			
+			// Ninjafixing adding alert to appointment
+			if(a.getAlert() != null) {
+				this.saveAlert(a.getAlert());
+				a.setAlert(null);
+			}
+			
 			this.broadcast("APPOINTMENT", Type.UPDATED, a);
 			
 			return a;
