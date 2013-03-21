@@ -1,6 +1,7 @@
 package cim.views;
 
 import cim.models.*;
+import cim.models.MeetingResponse.Response;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
@@ -446,6 +447,8 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 					ArrayList<MeetingResponse> meetingResponses = ad.getMeetingResponses();
 					
 					c.addAppointment(a);
+					System.out.println(a.getRoom());
+					
 					Client.register.saveCalendar(c);
 					
 					// Saving the actual appointment /could also be meeting
@@ -473,10 +476,31 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		System.out.println(evt.getPropertyName());
 		if (evt.getPropertyName().equals("delbase")){
-			Calendar cal = ((AppointmentPanel) evt.getOldValue()).getCalendar();
 			try {
-				cal.removeAppointment(((AppointmentPanel) evt.getOldValue()).getBase());
-				Client.register.saveCalendar(cal);
+				Appointment appointment = ((AppointmentPanel) evt.getOldValue()).getBase();
+				if (Client.register.getAccount().equals(appointment.getOwner())) {
+					Calendar cal = ((AppointmentPanel) evt.getOldValue()).getCalendar();
+					cal.removeAppointment(((AppointmentPanel) evt.getOldValue()).getBase());
+					Client.register.saveCalendar(cal);
+				} else {
+					if (appointment instanceof Meeting) {
+						// You're trying to delete a meeting you are attending to
+						Meeting meeting = (Meeting)appointment;
+						MeetingResponse response = new MeetingResponse(Client.register.getAccount(), meeting);
+						response.setResponse(Response.NOT_ATTENDING);
+						Client.register.saveMeetingResponse(response);
+						
+					} else {
+						// You cannot delete another persons appointment
+						JOptionPane.showMessageDialog(CalendarView.this.application,
+							    "Denne avtalen er ikke din, og du kan ikke slette den.",
+							    "Ugyldig operasjon",
+							    JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+				
+				
+				
 			} catch (CloakedIronManException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
