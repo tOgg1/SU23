@@ -106,8 +106,13 @@ public class AlertsView extends JPanel implements PropertyChangeListener{
 	}
 
 	private void refreshRMList() {
+		remove(rejectionMessagesList);
 		rejectionMessagesList = new JList();
+		rejectionMessagesList.setBounds(10, 252, 639, 150);
+		add(rejectionMessagesList);
 		generateRejectMessageList();
+		rejectionMessagesList.addPropertyChangeListener(rejectMessageListener);
+		
 	}
 	private void refreshAlarmList() {
 		remove(alertList);
