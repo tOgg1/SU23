@@ -239,6 +239,9 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 			//Samme som over. Ny modell og gode greier.
 			refreshRMList();
 		}
+		else if(propertyName.equals("alertZ")){
+			System.out.println("FIRE from setAlerts");
+		}
 		
 	}
 

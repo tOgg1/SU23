@@ -537,7 +537,7 @@ public class CalendarRegister
 	
 	private void setAlerts(ArrayList<Alert> list) {
 		this.alerts = list;
-		this.pcs.firePropertyChange("alerts", null, list);
+		this.pcs.firePropertyChange("alertZ", null, list);
 	}
 
 	public void setMeetingResponses(ArrayList<MeetingResponse> list) {

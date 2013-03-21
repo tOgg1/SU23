@@ -87,6 +87,7 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		incomingAppointmentsView.setModel(Client.register.getMeetingResponsesToAccount());
 		
 		alertsView = new AlertsView();
+		Client.register.addPropertyChangeListener(alertsView);
 		alertsView.addPropertyChangeListener(new AlertViewPropertyChangeListener());
 		tabbedPane.addTab("Varsler", null, alertsView, null);
 		
