@@ -20,6 +20,15 @@ public class Hawktest {
 	 */
 	public static void main(String[] args) throws CloakedIronManException {
 		DatabaseHandler db = new DatabaseHandler();
+		
+		Calendar c = db.getCalendar2(5);
+		db.saveCalendar(c);
+		System.out.println(c.getAppointments());
+		/*Meeting m = (Meeting)c.getAppointments().get(6);
+		m.setCancelled(true);
+		
+		db.saveCalendar(c);
+		System.out.println(m);*/
 		/*
 		Meeting m = (Meeting)db.getAppointment2(3);
 		
