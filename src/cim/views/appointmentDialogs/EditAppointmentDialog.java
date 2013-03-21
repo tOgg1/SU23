@@ -205,7 +205,6 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 
 		addAlarmPanel = new AlarmPanel();
 		mainPanel.add(addAlarmPanel);
-
 		mainPanel.add(btnCancelDialog);
 	}
 
