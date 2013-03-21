@@ -31,7 +31,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	JComboBox comboBox;
 	
 	private ArrayList<Calendar> myCalendars;
-	
+
 	private DayList mandag;
 	private DayList tirsdag;
 	private DayList onsdag;
@@ -42,13 +42,10 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	
 	private int weekNumber;
 	private int yearNumber;
-	
-	
+
 	private GregorianCalendar gregCal;
 	private GregorianCalendar cal;
 
-
-	
 	/**
 	 * Create the panel.
 	 */
@@ -63,7 +60,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	private JScrollPane scrollPane_6;
 	public CalendarView(ApplicationWindow application) {
 		cal = new GregorianCalendar();
-		
+
 		weekNumber = cal.get(java.util.Calendar.WEEK_OF_YEAR);
 		yearNumber = cal.get(java.util.Calendar.YEAR);
 		

@@ -178,7 +178,6 @@ public class ManageCalendarsView extends JPanel
             appointmentInfo.setBorder(new LineBorder(Color.GRAY, 2));
             appointmentInfo.setLayout(null);
             final JPanel appointments = new JPanel();
-            appointments.setBorder(new LineBorder(Color.GRAY, 2));
             appointments.setLayout(null);
             JLabel size, name, appointmentTitle;
             int count = relatedAppointments.size();
@@ -236,6 +235,7 @@ public class ManageCalendarsView extends JPanel
 
             JScrollPane scrollAppointments = new JScrollPane(appointments);
             scrollAppointments.setBounds(50, 100, 325, 200);
+            scrollAppointments.setBorder(new LineBorder(Color.GRAY,  2));
             appointmentTitle.setBounds(170, 80, 100, 10);
 
             calendarInformation.add(name);

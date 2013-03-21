@@ -17,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 //import cim.models.CalendarRegister;
 
@@ -99,7 +100,15 @@ public class Client {
 		} else {
 			this.exit();
 		}
-        
+        while(true)
+        {
+            try {
+                this.requestOutput.writeObject(new ArrayList<Server>());
+                this.requestOutput.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
 	}
 	
 	public Response request(Request req) throws CloakedIronManException {
