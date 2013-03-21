@@ -1,6 +1,7 @@
 package cim.views.appointmentDialogs;
 
 import cim.models.*;
+import cim.models.MeetingResponse.Response;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
@@ -183,13 +184,15 @@ public class AddAppointmentDialog extends JDialog{
 				*  and if the addParticipantsPanel is not empty, a Meeting-instance is created and 
 				*  meeting responses will be sent.
 				*/ 
-				app.setOwner(Client.register.getAccount());
+				Account loggedInAccount = Client.register.getAccount();
+				app.setOwner(loggedInAccount);
 				/*
 				 * Creating all the meeting responses
 				 */
                 ArrayList<Attendable> invitees = AddAppointmentDialog.this.addParticipantsPanel.getInvitees();
                 if(invitees.size() > 0)
                 {
+                	
                     Meeting meeting = app.toMeeting();
                     setAppointment(meeting);
                     meetingResponses = new ArrayList<MeetingResponse>();
@@ -197,15 +200,26 @@ public class AddAppointmentDialog extends JDialog{
                     MeetingResponse mr;
                     for(Attendable att : invitees) {
 	                	if (att instanceof Account) {
+	                		if(att.equals(loggedInAccount)) {
+	                			continue; // Do not add logged in account here
+	                		}
 	                		mr = new MeetingResponse((Account)att, meeting);
 	                		meetingResponses.add(mr);
 	                	} else if (att instanceof Group){
 	                		for(Account member: ((Group)att).getMembers()) {
+	                			if(att.equals(loggedInAccount)) {
+	                				continue;
+	                			}
 	                			mr = new MeetingResponse(member, meeting);
 	                			meetingResponses.add(mr);
 	                		}
 	                	}
 	                }
+                    // At last, add oneself
+                    MeetingResponse mr2 = new MeetingResponse(loggedInAccount, meeting);
+                    mr2.setResponse(Response.ATTENDING);
+                    meetingResponses.add(mr2);
+                    
                 } 
                 
                 else {
