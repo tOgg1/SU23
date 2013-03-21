@@ -172,7 +172,11 @@ public class AppointmentPanel extends JPanel implements Comparable
             txtWaitNum.setBackground(null);
             txtWaitNum.setBorder(null);
             add(txtWaitNum);
-        }  
+        } 
+        
+        
+        
+        
     }
 
     public Appointment getBase() {

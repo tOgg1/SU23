@@ -302,9 +302,7 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 			availableRooms = Client.register.getAvailableRooms(Helper.getDate(getYears(), getMonths(), getDays()), Helper.getTime(getHours(), getMinutes()), Helper.getTime(getEndHours(),getEndMinutes()));
 			for(Room room : availableRooms)
 			{
-				if (room.getSize() >= (int)comBoxRoomSize.getSelectedItem()){
 					roomListModel.addElement(room);
-				}
 			}
 			listAvailableRooms.setModel(roomListModel);
 			

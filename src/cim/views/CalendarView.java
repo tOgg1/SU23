@@ -434,6 +434,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 					ArrayList<MeetingResponse> meetingResponses = ad.getMeetingResponses();
 					
 					c.addAppointment(a);
+					System.out.println(c);
 					Client.register.saveCalendar(c);
 					
 					// Saving the actual appointment /could also be meeting
