@@ -192,22 +192,25 @@ public class AddAppointmentDialog extends JDialog{
                 } 
                 
                 else {
-                
+                	Alert alert = null;
+                	if(chckbxLeggTilPersonlig.isSelected())
+                    {
+                    	int x = addAlarmPanel.getYear();
+                    	int y = addAlarmPanel.getMonth();
+                    	int z = addAlarmPanel.getDays();
+                    	
+                    	int h = addAlarmPanel.getHours();
+                    	int m = addAlarmPanel.getMinutes();
+                    	Timestamp time = Helper.getTime(x,y,z,h,m,0);
+                    	alert = new Alert(app,Client.register.getAccount(),time);
+                    	
+                    }
+                	app.setAlert(alert);
                 	setAppointment(app);
-                }
-                if(chckbxLeggTilPersonlig.isSelected())
-                {
-                	int x = addAlarmPanel.getYear();
-                	int y = addAlarmPanel.getMonth();
-                	int z = addAlarmPanel.getDays();
                 	
-                	int h = addAlarmPanel.getHours();
-                	int m = addAlarmPanel.getMinutes();
-                	Timestamp time = Helper.getTime(x,y,z,h,m,0);
-                	Alert alert = new Alert(app,Client.register.getAccount(),time);
-                	setAlert(alert);
-                	
+                
                 }
+                
                 // Setting calendar
                 AddAppointmentDialog.this.calendar = AddAppointmentDialog.this.addDetailsPanel.getCalendar();
                 
