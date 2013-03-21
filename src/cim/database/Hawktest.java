@@ -20,17 +20,15 @@ public class Hawktest {
 	 */
 	public static void main(String[] args) throws CloakedIronManException {
 		DatabaseHandler db = new DatabaseHandler();
-
-		RejectMessage rm1 = db.getRejectMessage(1);
-		RejectMessage rm2 = db.getRejectMessage(3);
-
-		System.out.println(rm1.getWhoRejected());
-		System.out.println(rm2.getWhoRejected());
-
-		System.out.println(rm1.isSeen());
-		System.out.println(rm1.getMeeting());
+		/*
+		Meeting m = (Meeting)db.getAppointment2(3);
 		
+		MeetingResponse mr = db.getMeetingResponsesToMeeting(m).get(0);
+		System.out.println(mr);
 		
+		mr.setResponse(Response.NOT_ATTENDING);
+
+		*/
 		/*Meeting m = (Meeting)apps.get(4);
 		System.out.println(apps);
 		m.setDate(Helper.getDate(2013, 2,1));

@@ -100,9 +100,7 @@ public class AlertsView extends JPanel implements PropertyChangeListener{
 			e.printStackTrace();
 		}
 		this.unReadElements = newValue;
-		System.out.println("countlol. New: "+this.unReadElements+" old: " + oldCount);
 		this.firePropertyChange("unreadElementsCount", oldCount, this.unReadElements);
-		System.out.println("ETTER fire.");
 	}
 
 	private void refreshRMList() {

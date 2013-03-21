@@ -211,6 +211,11 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+		for (int i = 0; i < 30; i+= 5){
+			comBoxRoomSize.addItem(i);
+			
+		}
 
 
 		add(comBoxCalendars);
@@ -297,7 +302,9 @@ public class AppointmentDetailsPanel extends JPanel implements ActionListener {
 			availableRooms = Client.register.getAvailableRooms(Helper.getDate(getYears(), getMonths(), getDays()), Helper.getTime(getHours(), getMinutes()), Helper.getTime(getEndHours(),getEndMinutes()));
 			for(Room room : availableRooms)
 			{
-				roomListModel.addElement(room);
+				if (room.getSize() >= (int)comBoxRoomSize.getSelectedItem()){
+					roomListModel.addElement(room);
+				}
 			}
 			listAvailableRooms.setModel(roomListModel);
 			
