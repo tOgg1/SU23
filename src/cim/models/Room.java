@@ -42,4 +42,8 @@ public class Room extends CalendarObject
     public String getName() {
 		return name;
 	}
+    
+    public int getSize(){
+    	return this.size;
+    }
 }
