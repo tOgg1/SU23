@@ -16,6 +16,7 @@ public class Appointment extends CalendarObject
 	private Time start;
 	private Time end;
 	private Account owner;
+	private Alert alert;
 	
 	/*
 	 * Must not be set.
@@ -190,5 +191,13 @@ public class Appointment extends CalendarObject
     {
         Meeting meeting = this.toMeeting();
         return meeting;
+    }
+    public Alert getAlert()
+    {
+    	return this.alert;
+    }
+    public void setAlert(Alert alert)
+    {
+    	this.alert = alert;
     }
 }
