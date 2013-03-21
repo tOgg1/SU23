@@ -59,6 +59,7 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 	private Alert alert;
 	private ArrayList<MeetingResponse> meetingResponses;
 
+	int id = 0;
 	//	public EditAppointmentDialog(Account account, Appointment appointment){ //Bytt til denne n�r GUI er koblet mot resten
 	@SuppressWarnings("unused")
 	public EditAppointmentDialog(Account account, Appointment appointment2) throws CloakedIronManException {
@@ -189,7 +190,7 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 		mainPanel.add(btnCancelDialog, gbc_btnCancelDialog);
 		this.setVisible(true);
 
-
+		id = appointment2.getId();
 
 
 
@@ -197,7 +198,8 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 
 		//Her m� det inn noe som henter informasjon om tid/sted osv.
 		appointmentInfo = new AppointmentInfo();
-		mainPanel.add(appointmentInfo);
+		//mainPanel.add(appointmentInfo);
+		appointmentInfo.setVisible(true);
 
 		addAlarmPanel = new AlarmPanel();
 		mainPanel.add(addAlarmPanel);
@@ -222,6 +224,8 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 
 		// Initializes the construction of a new Appointment from the information gathered above.
 		Appointment app = new Appointment(info,date,startTid,sluttTid,Client.register.getAccount());
+		app.setId(id);
+		app.setPlace(addDetailsPanel.getPlace());
 		if(chckbxLeggTilPersonlig.isSelected())
 		{
 			int x = addAlarmPanel.getYear();
@@ -270,7 +274,7 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 			setAppointment(app);
 		}
 
-
+		System.out.println(app.getId());
 
 		this.disposeFrame();
 	}

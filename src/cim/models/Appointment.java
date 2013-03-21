@@ -27,9 +27,9 @@ public class Appointment extends CalendarObject
 	
 	
 	
-	public Appointment(String name, Date date, Time start, Time end, Account owner)
+	public Appointment(String info, Date date, Time start, Time end, Account owner)
 	{
-		this.name = name;
+		this.name = info;
 		this.date = date;
 		this.start = start;
 		this.end = end;

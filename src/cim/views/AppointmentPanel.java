@@ -247,6 +247,7 @@ public class AppointmentPanel extends JPanel implements Comparable
     
     public class editListener extends MouseAdapter{
     	public void mouseReleased(MouseEvent e){
+    		System.out.println(base.getId());
     		try {
 				EditAppointmentDialog edit = new EditAppointmentDialog(Client.register.getAccount(), base);
 				edit.setVisible(true);
