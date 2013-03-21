@@ -141,6 +141,21 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		gbc_btnNyAvtale.gridx = 10;
 		gbc_btnNyAvtale.gridy = 0;
 		this.add(btnNyAvtale, gbc_btnNyAvtale);
+
+        JButton btnQuit = new JButton("Logg ut");
+        GridBagConstraints gbc_btnQuit = new GridBagConstraints();
+        gbc_btnQuit.fill = GridBagConstraints.HORIZONTAL;
+        gbc_btnQuit.insets = new Insets(0, 0, 5, 5);
+        gbc_btnQuit.gridx = 11;
+        gbc_btnQuit.gridy = 0;
+        this.add(btnQuit, gbc_btnQuit);
+        btnQuit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
 		
 		txtMandag = new JTextField();
 		txtMandag.setHorizontalAlignment(SwingConstants.CENTER);

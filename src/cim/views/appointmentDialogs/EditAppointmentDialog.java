@@ -1,33 +1,14 @@
 package cim.views.appointmentDialogs;
 
-import java.awt.Component;
-import java.awt.GridLayout;
-import java.awt.Dialog.ModalityType;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import cim.models.Account;
-import cim.models.Alert;
-import cim.models.Appointment;
-import cim.models.Attendable;
-import cim.models.Calendar;
-import cim.models.Group;
-import cim.models.Meeting;
-import cim.models.MeetingResponse;
+import cim.models.*;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
 
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.BorderLayout;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -207,6 +188,7 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 		mainPanel.add(addAlarmPanel);
 
 		mainPanel.add(btnCancelDialog);
+        mainPanel.setVisible(true);
 	}
 
 

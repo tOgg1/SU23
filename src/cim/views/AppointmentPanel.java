@@ -1,10 +1,6 @@
 package cim.views;
 
-import cim.models.Alert;
-import cim.models.Appointment;
-import cim.models.Calendar;
-import cim.models.Meeting;
-import cim.models.MeetingResponse;
+import cim.models.*;
 import cim.models.MeetingResponse.Response;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
@@ -12,14 +8,12 @@ import cim.util.Fonts;
 import cim.views.appointmentDialogs.EditAppointmentDialog;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 
 /**
  * Created with IntelliJ IDEA.
@@ -276,8 +270,6 @@ public class AppointmentPanel extends JPanel implements Comparable
 			}
 			
     	}
-    	
-
     }
 
     public class showInfoListener extends MouseAdapter{
