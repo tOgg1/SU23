@@ -396,6 +396,10 @@ public class DatabaseHandler {
 			
 			ArrayList<Integer> ids = c.getAllAppointmentIds();
 			System.out.println(ids);
+			
+			// First, send out warning about the alarms that is about
+			
+			
 			if (ids.size() > 0) {
 				String joinedString = Helper.join(ids, ",");
 				st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id NOT IN (" + joinedString + ") AND calendar_id=?");
@@ -518,7 +522,7 @@ public class DatabaseHandler {
 		
 	}
 	
-	private RejectMessage saveRejectMessage(RejectMessage rm) throws CloakedIronManException {
+	public RejectMessage saveRejectMessage(RejectMessage rm) throws CloakedIronManException {
 		try {
 			if(rm.getId() == -1) {
 				rm.setId(this.getNextAutoIncrease("reject_message", "reject_message_id"));
