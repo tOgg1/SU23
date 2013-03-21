@@ -113,7 +113,7 @@ public class ServerRequestAPI {
 	}
 
     private Response get_rejectMessages_to_account(Account account) throws CloakedIronManException {
-        return new Response(this.db.getAllRejectMessagesToAccount(account));
+        return new Response(this.db.getRejectMessagesToAccount(account));
     }
 
 	/**
