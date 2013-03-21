@@ -60,13 +60,13 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 	private ArrayList<MeetingResponse> meetingResponses;
 
 	int id = 0;
-	//	public EditAppointmentDialog(Account account, Appointment appointment){ //Bytt til denne n�r GUI er koblet mot resten
-	@SuppressWarnings("unused")
+
+	
 	public EditAppointmentDialog(Account account, Appointment appointment2) throws CloakedIronManException {
 
 		this.calendar = calendar;
 		this.account = account;
-
+		
 
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Endre avtale");
@@ -91,6 +91,7 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 		// M�teleder f�r endre p� alt, og kan ogs� avlyse hele shiten
 
 		addDetailsPanel = new AppointmentDetailsPanel(account, appointment2);
+		mainPanel.add(addDetailsPanel);
 		addDetailsPanel.setSize(470, 240);
 		GridBagConstraints gbc_addDetailsPanel = new GridBagConstraints();
 		gbc_addDetailsPanel.gridwidth = 7;
@@ -188,7 +189,6 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 		gbc_btnCancelDialog.gridx = 3;
 		gbc_btnCancelDialog.gridy = 6;
 		mainPanel.add(btnCancelDialog, gbc_btnCancelDialog);
-		this.setVisible(true);
 
 		id = appointment2.getId();
 
@@ -197,9 +197,11 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 		//Vanlig m�tedeltager f�r kun endre sin egen alarm, ingenting annet.
 
 		//Her m� det inn noe som henter informasjon om tid/sted osv.
-		appointmentInfo = new AppointmentInfo();
+		//appointmentInfo = new AppointmentInfo();
 		//mainPanel.add(appointmentInfo);
-		appointmentInfo.setVisible(true);
+		//appointmentInfo.setVisible(true);
+		
+		this.setVisible(true);
 
 		addAlarmPanel = new AlarmPanel();
 		mainPanel.add(addAlarmPanel);
@@ -274,7 +276,7 @@ public class EditAppointmentDialog extends JDialog implements ActionListener{
 			setAppointment(app);
 		}
 
-		System.out.println(app.getId());
+		System.out.println("vi er i edit: " + app.getId());
 
 		this.disposeFrame();
 	}
