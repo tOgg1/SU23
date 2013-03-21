@@ -1,6 +1,7 @@
 *.class
 .metadata
 src/cim/util/PersonalSettings.java
+serverlog.txt
 .idea/*
 .idea/contents/*
 .idea/scopes/*
