@@ -26,7 +26,6 @@ import java.awt.SystemColor;
 
 public class MeetingResponsesFlowPanel extends JPanel implements PropertyChangeListener {
 	
-	// Det eksisterer en plan i hodet til Beate på hvordan den her kan bygges.
 	// Håkon har også lyst til å prøve
 	
 	
