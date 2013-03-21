@@ -21,9 +21,12 @@ public class Hawktest {
 		DatabaseHandler db = new DatabaseHandler();
 		
 		
-		Calendar c = db.getCalendar2(6);
+		Calendar c = db.getCalendar2(1);
 		ArrayList<Appointment> apps = c.getAppointments();
+		apps.remove(0);
 		System.out.println(apps);
+		db.saveCalendar(c);
+		
 		
 		/*Meeting m = (Meeting)apps.get(4);
 		System.out.println(apps);

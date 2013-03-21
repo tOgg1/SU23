@@ -85,11 +85,11 @@ public class Client {
 		
 		
 		// Spawning authenticate window
-		AuthenticateView auth = new AuthenticateView(this);
+		/*AuthenticateView auth = new AuthenticateView(this);
 		auth.setVisible(true);
-		Account acc = auth.getAccount();
-		//Response resp = this.request(new Request("GET_ACCOUNT", PersonalSettings.DEFAULT_ACCOUNT_ID));
-		//Account acc = (Account) resp.getData()[0];
+		Account acc = auth.getAccount();*/
+		Response resp = this.request(new Request("GET_ACCOUNT", PersonalSettings.DEFAULT_ACCOUNT_ID));
+		Account acc = (Account) resp.getData()[0];
 		//Starting up register
         register.initialize(acc);
 		if (acc != null) {

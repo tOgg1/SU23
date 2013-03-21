@@ -395,13 +395,19 @@ public class DatabaseHandler {
 			// Delete all appointments not in the calendars list
 			
 			ArrayList<Integer> ids = c.getAllAppointmentIds();
+			System.out.println(ids);
 			if (ids.size() > 0) {
 				String joinedString = Helper.join(ids, ",");
 				st = this.con.prepareStatement("DELETE FROM appointment WHERE appointment_id NOT IN (" + joinedString + ") AND calendar_id=?");
 				st.setInt(1, c.getId());
 				st.executeUpdate();
+				st.close();
+			} else {
+				st = this.con.prepareStatement("DELETE FROM appointment WHERE calendar_id=?");
+				st.setInt(1, c.getId());
+				st.executeUpdate();
+				st.close();
 			}
-			st.close();
 			for(Appointment a : c.getAppointments()) {
 				this.saveAppointment(a, c);
 			}
