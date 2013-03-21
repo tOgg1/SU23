@@ -438,7 +438,7 @@ public class DatabaseHandler {
 			for(Appointment a : c.getAppointments()) {
 				this.saveAppointment(a, c);
 			}
-			this.broadcast("CALENDAR", Type.UPDATED, c);
+			this.broadcast("CALENDAR", Type.UPDATED, this.getCalendar(c.getId()));
 			
 			
 			return c;
@@ -492,12 +492,10 @@ public class DatabaseHandler {
 			}
 			
 			/*
-			 * If the meeting response is accepted, the calendar is changed
+			 * Rerender calendar
 			 */
-			if(mr.getResponse() == Response.ATTENDING) {
-				Calendar c = this.getCalendarToAttendable(mr.getAccount());
-				this.broadcast("CALENDAR", Type.UPDATED, c);
-			}
+			Calendar c = this.getCalendarToAttendable(mr.getAccount());
+			this.broadcast("CALENDAR", Type.UPDATED, c);
 			
 			
 			
@@ -720,19 +718,56 @@ public class DatabaseHandler {
 				st.execute();
 				st.close();
 				
-				// Must change meeting responses if date is changed
-				if(oldAppointment != null) {
-					if(!oldAppointment.getDate().equals(m.getDate()) ||
-							!oldAppointment.getStart().equals(m.getStart())||
-							!oldAppointment.getEnd().equals(m.getEnd()))
-					{
-						ArrayList<MeetingResponse> mrs = this.getMeetingResponsesToMeeting(m);
-						for(MeetingResponse mr : mrs) {
-							mr.setResponse(Response.NOT_SEEN);
-							this.saveMeetingResponse(mr);
+				if(m.isCancelled()) {
+					// If meeting is cancelled, we need to delete all of the invites and re-render their calendars
+					st = this.con.prepareStatement("SELECT account_user_id FROM meeting_response WHERE meeting_appointment_id=?");
+					st.setInt(1, m.getId());
+					ResultSet rs = st.executeQuery();
+					ArrayList<Account> accounts = new ArrayList<Account>();
+					while(rs.next()) {
+						accounts.add(this.getAccount(rs.getInt("account_user_id")));
+					}
+					st.close();
+					rs.close();
+					
+					st = this.con.prepareStatement("DELETE FROM meeting_response WHERE meeting_appointment_id=?");
+					st.setInt(1, m.getId());
+					st.execute();
+					st.close();
+					
+					for(Account acc: accounts) {
+						// Create reject message, will be broadcasted
+						RejectMessage rm = new RejectMessage(acc, m);
+						this.saveRejectMessage(rm);
+						
+						
+						// Re-render calendar for the people						
+						Calendar calendarToAccount = this.getCalendarToAttendable(acc);
+						this.broadcast("CALENDAR", Type.UPDATED, calendarToAccount);
+						
+					}
+					
+				} else {
+					// Must change meeting responses if date is changed
+					if(oldAppointment != null) {
+						if(!oldAppointment.getDate().equals(m.getDate()) ||
+								!oldAppointment.getStart().equals(m.getStart())||
+								!oldAppointment.getEnd().equals(m.getEnd()))
+						{
+							Account appointmentOwner = m.getOwner();
+							ArrayList<MeetingResponse> mrs = this.getMeetingResponsesToMeeting(m);
+							for(MeetingResponse mr : mrs) {
+								if(mr.getAccount().equals(m.getOwner())) {
+									continue; // Do not set to not seen if meeting owner
+								}
+								mr.setResponse(Response.NOT_SEEN);
+								this.saveMeetingResponse(mr);
+							}
 						}
 					}
 				}
+				
+				
 				
 			}
 			

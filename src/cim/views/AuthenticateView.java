@@ -1,30 +1,16 @@
 package cim.views;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.BoxLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import javax.swing.JLabel;
-import java.awt.Insets;
-import javax.swing.JPasswordField;
-
 import cim.models.Account;
 import cim.net.Client;
 import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
 
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.Dialog.ModalityType;
+import java.awt.event.ActionListener;
 
 public class AuthenticateView extends JDialog {
 
@@ -40,6 +26,7 @@ public class AuthenticateView extends JDialog {
 	 */
 	public AuthenticateView(Client client) {
 		this.client = client;
+        this.setResizable(false);
 		
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("Cloaked Ironman - Logg inn");

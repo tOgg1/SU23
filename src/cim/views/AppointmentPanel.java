@@ -1,10 +1,6 @@
 package cim.views;
 
-import cim.models.Alert;
-import cim.models.Appointment;
-import cim.models.Calendar;
-import cim.models.Meeting;
-import cim.models.MeetingResponse;
+import cim.models.*;
 import cim.models.MeetingResponse.Response;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
@@ -12,14 +8,14 @@ import cim.util.Fonts;
 import cim.views.appointmentDialogs.EditAppointmentDialog;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,10 +41,21 @@ public class AppointmentPanel extends JPanel implements Comparable
     public JLabel lblWait;
     public JLabel lblPlace;
     public Meeting meeting;
-    
+    static int color;
+
+    private Color getColourFromCalendar(Calendar cal)
+    {
+        int calHash = cal.hashCode();
+        Random random = new Random();
+        Color col = new Color(0xFF - 0xFB%calHash/(2+random.nextInt(2)), 0xFF - 0xFB%calHash/(2+random.nextInt(2)), 0xFF - 0xFB%calHash/(2+random.nextInt(2)));
+        return col;
+    }
+
     public AppointmentPanel(Appointment base, Calendar calendar)
     {
     	setPreferredSize(new Dimension(190, 65));
+        setBackground(this.getColourFromCalendar(calendar));
+        setBorder(new LineBorder(Color.WHITE, 1));
         this.base = base;
         setLayout(null);
         pcs = new PropertyChangeSupport(this);
@@ -280,8 +287,6 @@ public class AppointmentPanel extends JPanel implements Comparable
 			}
 			
     	}
-    	
-
     }
 
     public class showInfoListener extends MouseAdapter{

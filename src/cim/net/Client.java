@@ -7,7 +7,6 @@ import cim.net.packet.Request;
 import cim.net.packet.Response;
 import cim.util.CloakedIronManException;
 import cim.util.Log;
-import cim.util.PersonalSettings;
 import cim.util.Settings;
 import cim.views.ApplicationWindow;
 import cim.views.AuthenticateView;
@@ -18,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 //import cim.models.CalendarRegister;
 
@@ -85,11 +85,11 @@ public class Client {
 		
 		
 		// Spawning authenticate window
-		/*AuthenticateView auth = new AuthenticateView(this);
+		AuthenticateView auth = new AuthenticateView(this);
 		auth.setVisible(true);
-		Account acc = auth.getAccount();*/
-		Response resp = this.request(new Request("GET_ACCOUNT", PersonalSettings.DEFAULT_ACCOUNT_ID));
-		Account acc = (Account) resp.getData()[0];
+		Account acc = auth.getAccount();
+		//Response resp = this.request(new Request("GET_ACCOUNT", PersonalSettings.DEFAULT_ACCOUNT_ID));
+		//Account acc = (Account) resp.getData()[0];
 		//Starting up register
         register.initialize(acc);
 		if (acc != null) {
