@@ -88,6 +88,10 @@ public class ServerRequestAPI {
 				return save_alert((Alert)args[0]);
 			}
 			
+			else if(method.equals("SAVE_REJECT_MESSAGE")) {
+				return save_reject_message((RejectMessage)args[0]);
+			}
+			
 			return new Response(new CloakedIronManException("No server API call named '" + method + "'"));
 		} catch (Exception e) {
 			return new Response(e);
@@ -109,7 +113,7 @@ public class ServerRequestAPI {
 	}
 
     private Response get_rejectMessages_to_account(Account account) throws CloakedIronManException {
-        return new Response(this.db.getAllRejectMessagesToAccount(account));
+        return new Response(this.db.getRejectMessagesToAccount(account));
     }
 
 	/**
@@ -179,6 +183,10 @@ public class ServerRequestAPI {
     
     private Response save_alert(Alert a) throws CloakedIronManException{
     	return new Response(this.db.saveAlert(a));
+    }
+    
+    private Response save_reject_message(RejectMessage rm) throws CloakedIronManException {
+    	return new Response(this.db.saveRejectMessage(rm));
     }
 	
 }
