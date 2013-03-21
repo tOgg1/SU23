@@ -28,6 +28,8 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	private static JTextField txtSndag;
 	private static JTextField txtUke;
 	
+	JComboBox comboBox;
+	
 	private ArrayList<Calendar> myCalendars;
 	
 	private DayList mandag;
@@ -78,8 +80,15 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		btnForrigeUke.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				
 				weekNumber--;
+				
+				if (weekNumber <= 0){
+					yearNumber--;
+					weekNumber = 52;
+				}
 				txtUke.setText("Uke " + weekNumber);
+				
 				renderCalendars();
 			}
 		});
@@ -106,6 +115,10 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		btnNesteUke.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent e) {
 				weekNumber++;
+				if (weekNumber > 52){
+					yearNumber++;
+					weekNumber = 1;
+				}
 				txtUke.setText("Uke " + weekNumber);
 				renderCalendars();
 			}
@@ -127,13 +140,32 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		JButton btnNyAvtale = new JButton("Ny avtale");
 		btnNyAvtale.addActionListener(new AddAppointmentListener());
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox();
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBox.gridx = 4;
 		gbc_comboBox.gridy = 0;
 		this.add(comboBox, gbc_comboBox);
+		
+		for(int i = 1; i < 53; i++){
+			comboBox.addItem((Integer)i);
+			comboBox.setSelectedItem(weekNumber);
+		}
+		
+		comboBox.addPropertyChangeListener(new PropertyChangeListener(){
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				int week = (int) comboBox.getSelectedItem();
+				System.out.println(week);
+				weekNumber = week;
+				txtUke.setText("Uke " + weekNumber);
+				renderCalendars();
+			}
+			
+		});
+		
 		
 		GridBagConstraints gbc_btnNyAvtale = new GridBagConstraints();
 		gbc_btnNyAvtale.fill = GridBagConstraints.HORIZONTAL;
