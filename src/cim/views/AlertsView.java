@@ -15,16 +15,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class AlertsView extends JPanel implements PropertyChangeListener{
-	/*
-	 * 
-	 * CalendarRegister fyrer av "alerts" når det kommer oppdateringer fra 
-	 * serveren med en ny alarm. Du kan da hente de nye alertsene med Client.register.getAlerts()
-CalendarRegister fyrer av "rejectMessages" når det kommer oppdateringer fra serveren 
-med en ny reject message. Du kan da hente de nye meldingene med Client.register.getRejectMessages()
-
-
-	 */
-//	Client.register <--- objektet vi kaller metoder pï¿½.
 	private JList rejectionMessagesList;
 	private DefaultListModel<RejectMessage> rejectMessageListModel;
 	
@@ -44,11 +34,11 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 	private PropertyChangeSupport pcs;
 	
 	public AlertsView() {
-//		Client.register.addPropertyChangeListener(new CalendarRegistryListener());
 		pcs = new PropertyChangeSupport(unReadElements);
 		unReadElements = 0;
 		setLayout(null);
 		
+		// Alerts
 		lblAlerts = new JLabel("Alarmer/varsler");
 		lblAlerts.setBounds(10, 11, 97, 14);
 		add(lblAlerts);
@@ -64,6 +54,8 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		add(btnMarkAlarmAsRead);
 		btnMarkAlarmAsRead.addActionListener(new BTNMarkAlertAsReadListener());
 		
+		
+		//Rejection Messages
 		lblMessages = new JLabel("Beskjeder");
 		lblMessages.setBounds(10, 227, 97, 14);
 		add(lblMessages);
@@ -86,11 +78,12 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 	}
 	private void countUnreadElements(){
 		int oldCount = this.unReadElements;
+		int newValue = 0;
 		// Count all unseen alerts
 		try { 
 			for(Alert alert : Client.register.getAlerts()){
 				if(!alert.isSeen()){
-					this.unReadElements++;
+					newValue++;
 				}
 			}
 		} catch (Exception e) {
@@ -100,42 +93,16 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		try {
 			for(RejectMessage rejectMessage : Client.register.getRejectMessages()){
 				if(!rejectMessage.isSeen()){
-					this.unReadElements++;
+					newValue++;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.pcs.firePropertyChange("unreadElementsCount", oldCount, this.unReadElements);
-	
-	}
-//	private void refresh() {
-//		this.removeAll();
-//		int iNumAdded = 0;
-//		for(MeetingResponse m: this.model) {
-//			if(m.getResponse() != MeetingResponse.Response.NOT_SEEN) {
-//				continue;
-//			}
-//			try {
-//				MeetingResponsePanel mp = new MeetingResponsePanel();
-//				mp.setModel(m);
-//				this.add(mp);
-//				++iNumAdded;
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			
-//		}
-//		this.revalidate();
-//		this.repaint();
-//		this.firePropertyChange("numMeetingResponses", null, iNumAdded);
-//	}
-	private void refresh(JList list){
-//		countUnreadElements();
-		this.revalidate();
-//		this.removeAll();
-		this.repaint();
-		
+		this.unReadElements = newValue;
+		System.out.println("countlol. New: "+this.unReadElements+" old: " + oldCount);
+		this.firePropertyChange("unreadElementsCount", oldCount, this.unReadElements);
+		System.out.println("ETTER fire.");
 	}
 
 	private void refreshRMList() {
@@ -143,9 +110,6 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 		generateRejectMessageList();
 	}
 	private void refreshAlarmList() {
-//		remove(rejectionMessagesList);
-//		alertList = new JList<>();
-//		generateAlertList();
 		remove(alertList);
 		alertList = new JList();
 		alertList.setBounds(10, 36, 639, 150);
@@ -176,7 +140,6 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 				}
 			}
 			alertList.setModel(alertListModel);
-			System.out.println("Ny alertModell");
 		} catch (CloakedIronManException e) {
 			e.printStackTrace();
 		}
@@ -192,7 +155,6 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 				RejectMessage rm = (RejectMessage) rejectionMessagesList.getSelectedValue();
 				if(!rm.isSeen()){
 					rm.changeIsSeen(true);
-					//TODO mekke saveRejectMessage i calReg
 					try {
 						Client.register.saveRejectionMessage(rm);
 						refreshRMList();
@@ -228,21 +190,13 @@ med en ny reject message. Du kan da hente de nye meldingene med Client.register.
 	public void propertyChange(PropertyChangeEvent evt) {
 		String propertyName = evt.getPropertyName();
 		if(propertyName.equals("alerts")){
-//			generateAlertList(); 
-			// Setter modell på nytt og god stemning
-			System.out.println("ERMERGERD. Ny alarm registrert");
+			countUnreadElements();
 			refreshAlarmList();
-			System.out.println("HERPSHERP, refreshAlarm SKAL ha kjoert naa, ass!");
 		}
 		else if(propertyName.equals("rejectMessages")){
-			generateRejectMessageList(); 
-			//Samme som over. Ny modell og gode greier.
+			countUnreadElements();
 			refreshRMList();
 		}
-		else if(propertyName.equals("alertZ")){
-			System.out.println("FIRE from setAlerts");
-		}
-		
 	}
 
 }

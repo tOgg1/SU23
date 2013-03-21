@@ -89,7 +89,7 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 		alertsView = new AlertsView();
 		Client.register.addPropertyChangeListener(alertsView);
 		alertsView.addPropertyChangeListener(new AlertViewPropertyChangeListener());
-		tabbedPane.addTab("Varsler", null, alertsView, null);
+		tabbedPane.addTab(varslerTabName(), null, alertsView, null);
 		
 		manageCalendarsView = new ManageCalendarsView(Client.register.activeCalendars(), Client.register.getAllCalendars(), this);
 		tabbedPane.addTab("Administrer kalendere", null, manageCalendarsView, null);
@@ -118,6 +118,14 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 
 	}
 	
+	private String varslerTabName(){
+		int value = alertsView.getUnreadElements();
+		String varsler = "Varsler";
+		if(value > 0){
+			varsler += " ("+value+")";
+		}
+		return varsler;
+	}
 	public CalendarView getCalendarView()
     {
         return calendarView;
@@ -159,14 +167,13 @@ public class ApplicationWindow extends JFrame implements ChangeListener {
 
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-//			String propertyName = evt.getPropertyName();
-//			if(propertyName.equals("unreadElementsCount")){
 			if(evt.getPropertyName() == "unreadElementsCount"){
 				int newValue = (int)evt.getNewValue();
 				String varsler = "Varsler";
 				if(newValue > 0){
 					varsler += " ("+newValue+")";
 				}
+				tabbedPane.setTitleAt(2, varsler);
 			}
 		}
     	
