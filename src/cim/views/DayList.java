@@ -76,26 +76,4 @@ public class DayList extends JPanel
     
 
     //For testing
-    public static void main(String[] args)
-    {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        GregorianCalendar calendar = new GregorianCalendar();
-        Date date = new Date(20012301032013l);
-        System.out.println(date.getYear());
-        calendar.set(2013,date.getMonth(), date.getDay());
-        System.out.println(calendar.get(Calendar.YEAR));
-        
-        DayList list = new DayList();
-        //log(list.remove(panel2));
-
-        frame.getContentPane().add(list);
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    public static void log(Object s)
-    {
-        System.out.println(s.toString());
-    }
 }

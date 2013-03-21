@@ -156,9 +156,11 @@ public class AddAppointmentDialog extends JDialog{
 				int d = addDetailsPanel.getEndMinutes();
 				Time sluttTid = Helper.getTime(c,d);
 				String info = addDetailsPanel.getDescription();
+				String place = addDetailsPanel.getPlace();
 				
 				// Initializes the construction of a new Appointment from the information gathered above.
 				Appointment app = new Appointment(info,date,startTid,sluttTid,Client.register.getAccount());
+				app.setPlace(place);
 				if(chckbxLeggTilPersonlig.isSelected())
                 {
                 	int x = addAlarmPanel.getYear();
@@ -178,7 +180,6 @@ public class AddAppointmentDialog extends JDialog{
 				*  meeting responses will be sent.
 				*/ 
 				app.setOwner(Client.register.getAccount());
-				
 				/*
 				 * Creating all the meeting responses
 				 */
@@ -210,7 +211,6 @@ public class AddAppointmentDialog extends JDialog{
                 
                 // Setting calendar
                 AddAppointmentDialog.this.calendar = AddAppointmentDialog.this.addDetailsPanel.getCalendar();
-                
 
                 // ?? pcs.firePropertyChange("createApp", null, app);
                 
