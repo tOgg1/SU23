@@ -21,15 +21,15 @@ public class Appointment extends CalendarObject
 	/*
 	 * Must not be set.
 	 */
-	private String info;
 	private String place;
 	protected Room room;
+	private String info;
 	
 	
 	
-	public Appointment(String info, Date date, Time start, Time end, Account owner)
+	public Appointment(String name, Date date, Time start, Time end, Account owner)
 	{
-		this.name = info;
+		this.name = name;
 		this.date = date;
 		this.start = start;
 		this.end = end;
@@ -129,16 +129,7 @@ public class Appointment extends CalendarObject
 
 
 
-	public String getInfo() {
-		return info;
-	}
-
-
-
-	public void setInfo(String info) {
-		this.pcs.firePropertyChange("info", this.info, info);
-		this.info = info;
-	}
+	
 
 
 
@@ -184,6 +175,9 @@ public class Appointment extends CalendarObject
     {
     	Meeting m = new Meeting(getName(), getDate(), getStart(), getEnd(), getOwner());
     	m.setId(this.getId());
+    	m.setRoom(this.room);
+    	m.setAlert(this.alert);
+    	m.setPlace(this.place);
     	return m;
     }
 
@@ -199,5 +193,13 @@ public class Appointment extends CalendarObject
     public void setAlert(Alert alert)
     {
     	this.alert = alert;
+    }
+    
+    public void setInfo(String info) {
+    	this.info = info;
+    }
+    
+    public String getInfo() {
+    	return this.info;
     }
 }

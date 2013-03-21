@@ -7,7 +7,6 @@ public class Room extends CalendarObject
 	private String name;
 	
 	private int size;
-	private String info;
 	private boolean isBooked;
 	
 	
@@ -36,7 +35,7 @@ public class Room extends CalendarObject
 	}
     public String toString()
     {
-    	return "Navn: " + this.name + "\nStorrelse: " + this.size + "\nInfo: " + this.info;
+    	return this.name + " (" + this.size + ")";
     }
     
     public String getName() {
