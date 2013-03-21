@@ -73,19 +73,21 @@ public class MeetingResponsePanel extends JPanel {
 			add(lblFrom);
 			
 			
-			lblAccept = new JLabel(Fonts.AwesomeIcons.ICON_HAPPY.toString());
+			lblAccept = new JLabel("");
 			lblAccept.setFont(new Font("FontAwesome", Font.PLAIN, 24));
-			lblAccept.setBounds(876, 7, 20, 20);
+			lblAccept.setBounds(862, 7, 34, 20);
 			lblAccept.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			lblAccept.setToolTipText("Godta møteinnkalling");
+			lblAccept.setText(Fonts.AwesomeIcons.ICON_OK.toString());
 			lblAccept.addMouseListener(new AcceptListener());
 			add(lblAccept);
 			
-			lblDecline = new JLabel(Fonts.AwesomeIcons.ICON_ANGRY.toString());
+			lblDecline = new JLabel("");
 			lblDecline.setFont(new Font("FontAwesome", Font.PLAIN, 24));
 			lblDecline.setBounds(905, 7, 20, 20);
 			lblDecline.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			lblDecline.setToolTipText("Avslå møteinnkalling");
+			lblDecline.setText(Fonts.AwesomeIcons.ICON_REMOVE.toString());
 			lblDecline.addMouseListener(new DeclineListener());
 			add(lblDecline);
 			

@@ -1,15 +1,10 @@
 package cim.views;
 
-import cim.models.Alert;
-import cim.models.Appointment;
-import cim.models.Calendar;
-import cim.models.Meeting;
-import cim.models.MeetingResponse;
+import cim.models.*;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
 import cim.views.appointmentDialogs.AddAppointmentDialog;
-import cim.views.appointmentDialogs.EditAppointmentDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +51,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	 * Create the panel.
 	 */
 	
-	private final JFrame application;
+	private final ApplicationWindow application;
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
@@ -64,7 +59,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	private JScrollPane scrollPane_4;
 	private JScrollPane scrollPane_5;
 	private JScrollPane scrollPane_6;
-	public CalendarView(JFrame application) {
+	public CalendarView(ApplicationWindow application) {
 		cal = new GregorianCalendar();
 		
 		weekNumber = cal.get(java.util.Calendar.WEEK_OF_YEAR);
@@ -392,7 +387,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 
 		public void actionPerformed(ActionEvent e) {
 			try {
-				AddAppointmentDialog ad = new AddAppointmentDialog(CalendarView.this.application);
+				AddAppointmentDialog ad = new AddAppointmentDialog((CalendarView.this.application));
 				ad.addPropertyChangeListener(CalendarView.this);
 				ad.setVisible(true);
 				

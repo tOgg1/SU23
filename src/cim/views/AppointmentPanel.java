@@ -30,7 +30,7 @@ import java.awt.Font;
  */
 public class AppointmentPanel extends JPanel implements Comparable
 {
-    public static Appointment base;
+    public Appointment base;
     public Calendar cal;
     public PropertyChangeSupport pcs;
     public JTextField txtTime;
@@ -49,11 +49,11 @@ public class AppointmentPanel extends JPanel implements Comparable
     public AppointmentPanel(Appointment base, Calendar calendar)
     {
     	setPreferredSize(new Dimension(190, 65));
-    	//setMinimumSize(new Dimension(190, 65));
-    	//setMaximumSize(new Dimension(190, 65));
-    	
         this.base = base;
         setLayout(null);
+        pcs = new PropertyChangeSupport(this);
+        this.cal = calendar; 
+        
         JTextField txtName = new JTextField("Navn");
         txtName.setColumns(20);
         txtName.setBounds(10, 39, 143, 20);
@@ -68,8 +68,7 @@ public class AppointmentPanel extends JPanel implements Comparable
         lblDelete.addMouseListener(new deleteListener());
         lblDelete.setText(Fonts.AwesomeIcons.ICON_REMOVE.toString());
         add(lblDelete);
-        pcs = new PropertyChangeSupport(this);
-        
+
         JLabel lblEdit = new JLabel("New label");
         lblEdit.setFont(new Font("FontAwesome", Font.PLAIN, 14));
         lblEdit.setBounds(135, 14, 28, 14);
@@ -101,39 +100,35 @@ public class AppointmentPanel extends JPanel implements Comparable
         txtPlace.setBounds(20, 70, 115, 20);
         txtPlace.setBackground(null);
         txtPlace.setBorder(null);
-        add(txtPlace);
         txtPlace.setColumns(15);
+        add(txtPlace);
         
         lblGroup = new JLabel("New label");
         lblGroup.setVisible(false);
         lblGroup.setFont(new Font("FontAwesome", Font.PLAIN, 11));
         lblGroup.setBounds(10, 101, 24, 14);
         lblGroup.setText(Fonts.AwesomeIcons.ICON_GROUP.toString());
-        add(lblGroup);
-        
+
         lblOK = new JLabel("New label");
         lblOK.setEnabled(false);
         lblOK.setVisible(false);
         lblOK.setFont(new Font("FontAwesome", Font.PLAIN, 11));
         lblOK.setBounds(30, 101, 29, 14);
         lblOK.setText(Fonts.AwesomeIcons.ICON_OK.toString());
-        add(lblOK);
-        
+       
         lblDeclined = new JLabel("New label");
         lblDeclined.setEnabled(false);
         lblDeclined.setVisible(false);
         lblDeclined.setFont(new Font("FontAwesome", Font.PLAIN, 11));
         lblDeclined.setBounds(69, 101, 25, 14);
         lblDeclined.setText(Fonts.AwesomeIcons.ICON_REMOVE.toString());
-        add(lblDeclined);
-        
+      
         lblWait = new JLabel("New label");
         lblWait.setEnabled(false);
         lblWait.setVisible(false);
         lblWait.setFont(new Font("FontAwesome", Font.PLAIN, 14));
         lblWait.setBounds(104, 101, 35, 14);
         lblWait.setText(Fonts.AwesomeIcons.ICON_TIME.toString());
-        add(lblWait);
         
         lblPlace = new JLabel("New label");
         lblPlace.setVisible(false);
@@ -141,8 +136,13 @@ public class AppointmentPanel extends JPanel implements Comparable
         lblPlace.setBounds(10, 72, 24, 14);
         lblPlace.setText(Fonts.AwesomeIcons.ICON_MAP_MARKER.toString());
         add(lblPlace);
+        
         if(this.base instanceof Meeting) {
         	Meeting meeting = (Meeting)this.base;
+            add(lblGroup);
+            add(lblDeclined);
+            add(lblOK);
+            add(lblWait);   
         	txtOkNum = new JTextField();
             txtOkNum.setText(getResponses("Attending", meeting));
             txtOkNum.setEnabled(false);
@@ -172,11 +172,7 @@ public class AppointmentPanel extends JPanel implements Comparable
             txtWaitNum.setBackground(null);
             txtWaitNum.setBorder(null);
             add(txtWaitNum);
-        }
-        this.cal = calendar;
-
-
-        
+        }  
     }
 
     public Appointment getBase() {
@@ -197,7 +193,6 @@ public class AppointmentPanel extends JPanel implements Comparable
     	ArrayList<MeetingResponse> meetingResponses = new ArrayList<MeetingResponse>();
 		try {
 			meetingResponses = Client.register.getMeetingResponsesToMeeting(m);
-			System.out.print("sup" + meetingResponses);
 		} catch (CloakedIronManException e) {
 			e.printStackTrace();
 		}
@@ -293,7 +288,7 @@ public class AppointmentPanel extends JPanel implements Comparable
     			lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_UP.toString());
     			txtPlace.setVisible(true);
             	lblPlace.setVisible(true);
-        		if(AppointmentPanel.base instanceof Meeting) {
+        		if(AppointmentPanel.this.base instanceof Meeting) {
         			lblGroup.setVisible(true);
                  	lblWait.setVisible(true);
         			txtOkNum.setVisible(true);
@@ -308,7 +303,7 @@ public class AppointmentPanel extends JPanel implements Comparable
     			lblArrow.setText(Fonts.AwesomeIcons.ICON_CARET_DOWN.toString());
             	txtPlace.setVisible(false);
                 lblPlace.setVisible(false);
-        		if(AppointmentPanel.base instanceof Meeting) {
+        		if(AppointmentPanel.this.base instanceof Meeting) {
                     lblWait.setVisible(false);
                 	txtOkNum.setVisible(false);
                 	txtDeclinedNum.setVisible(false);
@@ -316,18 +311,13 @@ public class AppointmentPanel extends JPanel implements Comparable
                 	lblOK.setVisible(false);
                 	lblDeclined.setVisible(false);
                 	lblGroup.setVisible(false);
-        		}
-    		}
+        			}
+    			}
     		}
     		catch(NullPointerException a)
     		{
     			System.out.println("This is not a meeting");
     		}
     	}
-		}
-    }
-
-
+    }}
     
-    
-

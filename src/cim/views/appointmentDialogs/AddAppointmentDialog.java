@@ -1,16 +1,10 @@
 package cim.views.appointmentDialogs;
 
-import cim.models.Account;
-import cim.models.Alert;
-import cim.models.Appointment;
-import cim.models.Attendable;
-import cim.models.Calendar;
-import cim.models.Group;
-import cim.models.Meeting;
-import cim.models.MeetingResponse;
+import cim.models.*;
 import cim.net.Client;
 import cim.util.CloakedIronManException;
 import cim.util.Helper;
+import cim.views.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -51,8 +45,9 @@ public class AddAppointmentDialog extends JDialog{
 	
 	private PropertyChangeSupport pcs;
 
+    ApplicationWindow application;
 
-	public AddAppointmentDialog(JFrame application) throws CloakedIronManException{
+	public AddAppointmentDialog(ApplicationWindow application) throws CloakedIronManException{
 		super(application);
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setTitle("Ny avtale");
@@ -193,6 +188,7 @@ public class AddAppointmentDialog extends JDialog{
                     Meeting meeting = app.toMeeting();
                     setAppointment(meeting);
                     meetingResponses = new ArrayList<MeetingResponse>();
+
                     MeetingResponse mr;
                     for(Attendable att : invitees) {
 	                	if (att instanceof Account) {
@@ -215,8 +211,8 @@ public class AddAppointmentDialog extends JDialog{
                 // Setting calendar
                 AddAppointmentDialog.this.calendar = AddAppointmentDialog.this.addDetailsPanel.getCalendar();
                 
-				
-				// ?? pcs.firePropertyChange("createApp", null, app);
+
+                // ?? pcs.firePropertyChange("createApp", null, app);
                 
 				disposeFrame();
 			}
